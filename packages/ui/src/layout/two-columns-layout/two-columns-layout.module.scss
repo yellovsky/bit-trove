@@ -1,0 +1,24 @@
+@use '../../scss/screen-interval.module.scss' as si;
+
+.holder {
+  display: grid;
+  column-gap: 3.5rem;
+
+  grid-template-columns: 1fr 15rem;
+
+  &.contentRight {
+    grid-template-columns: 15rem 1fr;
+  }
+
+  @include si.screen-interval($to: 'sm') {
+    grid-template-columns: 1fr;
+
+    &.contentRight {
+      grid-template-columns: 1fr;
+    }
+
+    .extraColumn {
+      display: none;
+    }
+  }
+}

@@ -3,14 +3,15 @@ import { Effect, pipe } from 'effect';
 import { ApolloError, gql } from '@apollo/client';
 import { ContentPageHeader } from '@repo/ui/content-page-header';
 import { NOT_FOUND_APOLLO_ERROR } from '@repo/api-models/apollo';
-import { shortenItemsCount } from'@repo/utils/shorten-items-count'
+import { shortenItemsCount } from '@repo/utils/shorten-items-count';
 import type { BlogPostEntityFragment } from '@repo/api-models/blog-post';
 
 // local modules
 import { getRSCClient, makeRscQuery } from '../../../src/apollo/apollo.rsc';
 import { getStringUrlParam, rscMetadata, rscPage, type RSCPageProps } from '../../../src/rsc';
 import { pagePadding as pagePaddingCn } from './page.module.scss';
-
+import { RichTextBlock } from '@repo/ui/rich-text-block';
+import { TwoColumnsLayout } from '@repo/ui/two-columns-layout';
 // ==========================================================
 //               B L O G   P O S T   Q U E R Y
 // ==========================================================
@@ -100,9 +101,16 @@ export default rscPage(
           viewsCount={shortenItemsCount(blogPost.data.attributes.views_count)}
           publishDate={publishDate}
           commentsCount={commentsCount}
+          cover={'http://localhost:1337' + blogPost.data.attributes.cover.data?.attributes.url}
         >
           {blogPost.data.attributes.title}
         </ContentPageHeader>
+
+        <TwoColumnsLayout className={pagePaddingCn} extraContent={'extra'}>
+          {blogPost.data.attributes.blocks.map((block) => (
+            <RichTextBlock key={block.id} block={block} />
+          ))}
+        </TwoColumnsLayout>
       </>
     );
   }

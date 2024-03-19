@@ -1,0 +1,10 @@
+.holder {
+  line-height: 1.6;
+  word-wrap: break-word;
+  color: var(--text-color);
+  -webkit-font-smoothing: antialiased;
+
+  p {
+    padding-bottom: 1rem;
+  }
+}

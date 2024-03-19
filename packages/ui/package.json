@@ -10,7 +10,9 @@
     "./small-views-badge": "./src/small-badges/views-badge/index.tsx",
     "./small-publish-date-badge": "./src/small-badges/publish-date-badge/index.tsx",
     "./small-author-badge": "./src/small-badges/author-badge/index.tsx",
-    "./small-comments-count-badge": "./src/small-badges/comments-count-badge/index.tsx"
+    "./small-comments-count-badge": "./src/small-badges/comments-count-badge/index.tsx",
+    "./rich-text-block": "./src/blocks/rich-text-block/index.ts",
+    "./two-columns-layout": "./src/layout/two-columns-layout/index.ts"
   },
   "scripts": {
     "generate:component": "turbo gen react-component",
@@ -19,7 +21,12 @@
   "dependencies": {
     "@repo/api-models": "*",
     "classnames": "^2.5.1",
-    "next": "^14.1.1"
+    "next": "^14.1.1",
+    "prismjs": "^1.29.0",
+    "react-markdown": "^9.0.1",
+    "react-syntax-highlighter": "^15.5.0",
+    "rehype-raw": "^7.0.0",
+    "remark-gfm": "^4.0.0"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",
@@ -29,6 +36,7 @@
     "@types/node": "^20.11.24",
     "@types/react": "^18.2.61",
     "@types/react-dom": "^18.2.19",
+    "@types/react-syntax-highlighter": "^15.5.11",
     "eslint": "^8.57.0",
     "react": "^18.2.0",
     "typescript": "^5.3.3"

@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_blocks_image_blocks",
+  "info": {
+    "displayName": "Image Block"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "image": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false
+    }
+  }
+}

@@ -3,6 +3,7 @@ import { gql } from '@apollo/client';
 import type { TagEntityFragment } from '@repo/api-models/tag';
 import type { ImageEntityFragment } from '@repo/api-models/image';
 import type { SeoFragment } from '@repo/api-models/seo';
+import type { RichTextBlockragment } from './block';
 
 export type BlogPostEntityFragment = {
   id: string;
@@ -13,6 +14,7 @@ export type BlogPostEntityFragment = {
     views_count: number;
     tags: { data: TagEntityFragment[] };
     cover: { data: ImageEntityFragment | null };
+    blocks: RichTextBlockragment[];
   };
 };
 
@@ -35,6 +37,9 @@ export const BLOG_POST_ENTITY_FRAGMENT = gql`
         data {
           ...TagEntityFragment
         }
+      }
+      blocks {
+        ...RichTextBlockFragment
       }
     }
   }

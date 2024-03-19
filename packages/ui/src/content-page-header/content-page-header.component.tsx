@@ -9,9 +9,11 @@ import { PublishDateBadge } from '@repo/ui/small-publish-date-badge';
 
 // local modules
 import {
-  title as titleCn,
-  badgesHolder as badgesHolderCn,
   top as topCn,
+  cover as coverCn,
+  title as titleCn,
+  holder as holderCn,
+  badgesHolder as badgesHolderCn,
 } from './content-page-header.module.scss';
 import { SmallCommentsCountBadge } from '../small-badges/comments-count-badge';
 
@@ -22,6 +24,7 @@ interface ContentPageHeaderProps extends PropsWithChildren {
   commentsCount?: number;
   tags?: Array<{ href: string | UrlObject; name: string }>;
   className?: string;
+  cover?: string;
   author?: {
     avatar?: string;
     name: string;
@@ -54,10 +57,13 @@ export const ContentPageHeader: FC<ContentPageHeaderProps> = (props) => {
     );
 
   return (
-    <div className={props.className}>
-      {topBadges}
-      <h1 className={titleCn}>{props.children}</h1>
-      {bottomBadges}
-    </div>
+    <>
+      <div className={cn(props.className, holderCn)}>
+        {topBadges}
+        <h1 className={titleCn}>{props.children}</h1>
+        {bottomBadges}
+      </div>
+      {props.cover ? <img className={coverCn} src={props.cover} /> : null}
+    </>
   );
 };

@@ -2,14 +2,10 @@
   "name": "@repo/api-models",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
   "license": "MIT",
+  "type": "module",
   "exports": {
-    "./blog-post": "./src/blog-post.ts",
-    "./image": "./src/image.ts",
-    "./tag": "./src/tag.ts",
-    "./apollo": "./src/apollo.ts",
-    "./seo": "./src/seo.ts"
+    "./*": "./src/*.ts"
   },
   "main": "index.js",
   "scripts": {
