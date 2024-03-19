@@ -1,0 +1,39 @@
+@mixin focus-visible {
+  &:focus-visible {
+    @content;
+  }
+
+  @supports not selector(:focus-visible) {
+    &:focus {
+      @content;
+    }
+  }
+}
+
+@mixin focus-outline-style {
+  outline: none;
+  box-shadow: 0 0 0 0.125rem var(--color-accent-hover);
+}
+
+@mixin interactive {
+  @content ('default');
+
+  @media (hover: hover) {
+    &:not(:disabled):hover {
+      @content ('hover');
+    }
+  }
+
+  &:not(:disabled):active {
+    @content ('active');
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    @content ('disabled');
+  }
+
+  @include focus-visible {
+    @content ('focus');
+  }
+}

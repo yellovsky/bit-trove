@@ -1,0 +1,9 @@
+@use '../../scss/interactive.module.scss' as i;
+
+.img {
+  display: block;
+  border-radius: 100%;
+  border-style: solid;
+  border-width: 0.0625rem;
+  border-color: currentColor;
+}

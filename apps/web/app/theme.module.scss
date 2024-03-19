@@ -1,0 +1,27 @@
+@use 'sass:map';
+
+$light-theme: (
+  palette: (
+    text-color: #000000,
+    text-color-passive: #999999,
+    page-bg-color: #ffffff,
+
+    link-color: #38a3a5,
+    link-color-hover: #57cc99,
+    link-color-active: #22577a,
+  ),
+);
+
+@mixin theme($theme) {
+  // ===================================================
+  //                P A L E T T E
+  // ===================================================
+  $palette: map.get($theme, 'palette');
+  @each $color-name, $color in $palette {
+    --#{$color-name}: #{$color};
+  }
+}
+
+.lightTheme {
+  @include theme($light-theme);
+}

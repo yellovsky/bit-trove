@@ -1,0 +1,65 @@
+@use 'sass:map';
+@use '../../scss/interactive.module.scss' as i;
+
+$colors-schemas: (
+  (
+    color: #fff,
+    bg-color: #3f37c9,
+    bg-color-hover: #4361ee,
+    bg-color-active: #3a0ca3,
+  ),
+  (
+    color: #fff,
+    bg-color: #2d6a4f,
+    bg-color-hover: #40916c,
+    bg-color-active: #1b4332,
+  ),
+  (
+    color: #000,
+    bg-color: #f8961e,
+    bg-color-hover: #f9844a,
+    bg-color-active: #f3722c,
+  ),
+  (
+    color: #fff,
+    bg-color: #a4161a,
+    bg-color-hover: #ba181b,
+    bg-color-active: #660708,
+  ),
+  (
+    color: #fff,
+    bg-color: #6f4518,
+    bg-color-hover: #8b5e34,
+    bg-color-active: #603808,
+  ),
+  (
+    color: #000,
+    bg-color: #3dccc7,
+    bg-color-hover: #68d8d6,
+    bg-color-active: #07beb8,
+  )
+);
+
+.holder {
+  @for $i from 1 through length($colors-schemas) {
+    $schema: nth($colors-schemas, $i);
+
+    &.type#{$i} {
+      letter-spacing: 0.0625rem;
+      text-transform: uppercase;
+
+      color: map.get($schema, 'color');
+      background-color: map.get($schema, 'bg-color');
+
+      @include i.interactive using ($state) {
+        @if $state == 'hover' {
+          color: map.get($schema, 'color');
+          background-color: map.get($schema, 'bg-color-hover');
+        } @else if $state == 'active' {
+          color: map.get($schema, 'color');
+          background-color: map.get($schema, 'bg-color-active');
+        }
+      }
+    }
+  }
+}

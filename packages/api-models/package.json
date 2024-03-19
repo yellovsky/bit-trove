@@ -1,0 +1,35 @@
+{
+  "name": "@repo/api-models",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "exports": {
+    "./blog-post": "./src/blog-post.ts",
+    "./image": "./src/image.ts",
+    "./tag": "./src/tag.ts",
+    "./apollo": "./src/apollo.ts",
+    "./seo": "./src/seo.ts"
+  },
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint . --max-warnings 0"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.9.7",
+    "axios": "^1.6.8",
+    "effect": "^2.4.7",
+    "graphql": "^16.8.1",
+    "next": "^14.1.1",
+    "qs": "^6.12.0"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "@repo/eslint-config": "*",
+    "@repo/typescript-config": "*",
+    "@types/eslint": "^8.56.5",
+    "@types/node": "^20.11.24",
+    "eslint": "^8.57.0",
+    "typescript": "^5.3.3"
+  }
+}

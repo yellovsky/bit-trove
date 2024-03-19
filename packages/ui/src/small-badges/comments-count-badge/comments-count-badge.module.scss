@@ -1,0 +1,14 @@
+.holder {
+  color: var(--text-color-passive);
+}
+
+.icon {
+  width: 1rem;
+  height: 1rem;
+  background-color: currentColor;
+
+  mask-size: contain;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-image: url('./comment.svg');
+}

@@ -1,0 +1,32 @@
+@use '../../scss/interactive.module.scss' as i;
+
+.holder {
+  gap: 0.25rem;
+  display: flex;
+
+  display: flex;
+  font-size: 0.7rem;
+  align-items: center;
+  border-radius: 0.5rem;
+  padding: 0.25rem 0.75rem;
+
+  &.narrow {
+    padding: 0.25rem 0;
+  }
+
+  &.link {
+    @include i.interactive using ($state) {
+      gap: 0.25rem;
+      display: flex;
+      font-size: 0.8rem;
+      align-items: center;
+      color: var(--link-color);
+
+      @if $state == 'hover' {
+        color: var(--link-color-hover);
+      } @else if $state == 'active' {
+        color: var(--link-color-active);
+      }
+    }
+  }
+}

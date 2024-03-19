@@ -1,0 +1,21 @@
+// global modules
+import { ApolloError, isApolloError } from '@apollo/client'
+
+export const UNKNOWN_APOLLO_ERROR = new ApolloError({
+  networkError: {
+    message: 'Unknown error',
+    name: 'unknown_error',
+    statusCode: 500,
+  },
+})
+
+export const NOT_FOUND_APOLLO_ERROR = new ApolloError({
+  networkError: {
+    message: 'Not found',
+    name: 'not_found',
+    statusCode: 404,
+  },
+})
+
+export const ensureApolloError = (error: Error) =>
+  isApolloError(error) ? error : UNKNOWN_APOLLO_ERROR
