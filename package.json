@@ -1,24 +1,26 @@
 {
   "name": "js-dump",
   "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
-    "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "lint": "turbo lint"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
+    "jest-environment-jsdom": "29.7.0",
     "prettier": "^3.0.1",
+    "ts-jest": "29.1.1",
     "turbo": "latest"
   },
+  "packageManager": "yarn@1.22.22",
   "engines": {
     "node": ">=18"
-  },
-  "packageManager": "yarn@1.22.22",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ]
+  }
 }

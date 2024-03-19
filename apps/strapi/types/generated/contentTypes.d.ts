@@ -675,6 +675,15 @@ export interface ApiBlogpostBlogpost extends Schema.CollectionType {
     tags: Attribute.Relation<'api::blogpost.blogpost', 'oneToMany', 'api::tag.tag'>;
     cover: Attribute.Media;
     seo: Attribute.Component<'seo.seo'>;
+    views_count: Attribute.BigInteger &
+      Attribute.Required &
+      Attribute.SetMinMax<
+        {
+          min: '0';
+        },
+        string
+      > &
+      Attribute.DefaultTo<'0'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

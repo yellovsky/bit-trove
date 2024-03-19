@@ -13,22 +13,22 @@ type SmallBadgeDivProps = HTMLAttributes<HTMLDivElement> & CommonSmallBadgeProps
 
 type SmallBadgeProps = SmallBadgeLinkProps | SmallBadgeDivProps;
 
-export const SmallBadge: FC<SmallBadgeProps> = (props) => {
+export const SmallBadge: FC<SmallBadgeProps> = ({ narrow, icon, ...rest }) => {
   const content = (
     <>
-      {props.icon ? <div>{props.icon}</div> : null}
-      <div>{props.children}</div>
+      {icon ? <div>{icon}</div> : null}
+      <div>{rest.children}</div>
     </>
   );
 
-  const commonCn = cn(props.className, holderCn, props.narrow && narrowCn);
+  const commonCn = cn(rest.className, holderCn, narrow && narrowCn);
 
-  return 'href' in props ? (
-    <Link {...props} className={cn(commonCn, linkCn)}>
+  return 'href' in rest ? (
+    <Link {...rest} className={cn(commonCn, linkCn)}>
       {content}
     </Link>
   ) : (
-    <div {...props} className={commonCn}>
+    <div {...rest} className={commonCn}>
       {content}
     </div>
   );

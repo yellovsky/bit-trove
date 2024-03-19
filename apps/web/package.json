@@ -11,7 +11,9 @@
   "dependencies": {
     "@apollo/client": "^3.9.7",
     "@apollo/experimental-nextjs-app-support": "^0.8.0",
+    "@repo/api-models": "*",
     "@repo/ui": "*",
+    "@repo/utils": "*",
     "classnames": "^2.5.1",
     "effect": "^2.4.7",
     "graphql": "^16.8.1",
@@ -21,7 +23,6 @@
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^14.1.1",
-    "@repo/api-models": "*",
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
     "@types/eslint": "^8.56.5",

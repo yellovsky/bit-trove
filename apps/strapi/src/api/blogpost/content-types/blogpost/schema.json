@@ -37,6 +37,12 @@
       "type": "component",
       "repeatable": false,
       "component": "seo.seo"
+    },
+    "views_count": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0",
+      "min": "0"
     }
   }
 }
