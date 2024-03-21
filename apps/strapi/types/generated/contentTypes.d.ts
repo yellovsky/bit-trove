@@ -388,6 +388,7 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
     singularName: 'category';
     pluralName: 'categories';
     displayName: 'Category';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -424,6 +425,12 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
         };
       }>;
     blog_post: Attribute.Relation<'api::category.category', 'manyToOne', 'api::blogpost.blogpost'>;
+    slug: Attribute.UID<'api::category.category', 'name'> &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

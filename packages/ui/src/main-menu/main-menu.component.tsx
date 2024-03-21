@@ -8,6 +8,7 @@ import { type MenuItemProps, MenuItem } from './menu-item';
 // local modules
 import {
   logo as logoCn,
+  left as leftCn,
   right as rightCn,
   holder as holderCn,
   wrapper as wrapperCn,
@@ -19,25 +20,11 @@ interface MainMenuProps {
   buttons: MenuItemProps[];
 }
 
-const props: MainMenuProps = {
-  navigation: [
-    { name: 'Home', href: '/' },
-    { name: 'Posts', href: '/' },
-    { name: 'Categories', href: '/' },
-    { name: 'Pages', href: '/' },
-  ],
-  buttons: [
-    { name: 'Browse', onClick: () => {} },
-    { icon: '/assets/search.svg', name: 'Search', onClick: () => {} },
-    { icon: '/assets/burger.svg', name: 'Menu', onClick: () => {} },
-  ],
-};
-
-export const MainMenu: FC = () => {
+export const MainMenu: FC<MainMenuProps> = (props) => {
   return (
     <div className={wrapperCn}>
       <nav className={holderCn}>
-        <div className={itemsColumnCn}>
+        <div className={cn(itemsColumnCn, leftCn)}>
           {props.navigation.map((item, index) => (
             <MenuItem key={index} {...item} />
           ))}

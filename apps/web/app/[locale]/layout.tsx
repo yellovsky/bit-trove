@@ -1,9 +1,12 @@
 // global modules
 import cn from 'classnames';
-import { Effect } from 'effect';
+import { Effect, pipe } from 'effect';
 import type { Metadata } from 'next';
+import type { ComponentProps } from 'react';
 import { MainMenu } from '@repo/ui/main-menu';
+import { getTranslations } from 'next-intl/server';
 import { Poppins, Roboto } from 'next/font/google';
+import { ensureApolloError } from '@repo/api-models/apollo';
 
 // local modules
 import { lightTheme as lightThemeCn } from './theme.module.scss';
@@ -12,7 +15,11 @@ import { getStringUrlParam, rscPage } from '~/src/rsc';
 // =============================================================
 //                     F O N T S
 // =============================================================
-const poppins = Poppins({ variable: '--title-font-family', weight: '700', subsets: ['latin'] });
+const poppins = Poppins({
+  variable: '--title-font-family',
+  weight: ['400', '700'],
+  subsets: ['latin'],
+});
 const roboto = Roboto({ variable: '--general-font-family', weight: '400', subsets: ['latin'] });
 
 // =============================================================
@@ -25,13 +32,38 @@ export const metadata: Metadata = {
 
 const getUrlLocale = getStringUrlParam('locale');
 
+const getMainMenuProps = () =>
+  pipe(
+    Effect.tryPromise(async (): Promise<ComponentProps<typeof MainMenu>> => {
+      const t = await getTranslations();
+
+      return {
+        navigation: [
+          { name: t('home_page'), href: '/' },
+          { name: t('blogs_page'), href: '/blog' },
+          { name: t('tutorials_page'), href: '/' },
+          { name: t('tips_and_tricks_page'), href: '/' },
+        ],
+        buttons: [
+          { icon: '/assets/search.svg', name: t('search_button'), onClick: () => {} },
+          { icon: '/assets/burger.svg', name: t('menu'), onClick: () => {} },
+        ],
+      };
+    }),
+    Effect.mapError(ensureApolloError)
+  );
+
 export default rscPage(
-  (props) => Effect.all({ locale: getUrlLocale(props) }),
-  ({ locale, children }) => {
+  (props) =>
+    Effect.all({
+      locale: getUrlLocale(props),
+      menuProps: getMainMenuProps(),
+    }),
+  ({ locale, menuProps, children }) => {
     return (
       <html lang={locale}>
         <body className={cn(lightThemeCn, poppins.variable, roboto.variable)}>
-          <MainMenu />
+          <MainMenu {...menuProps} />
           {children}
         </body>
       </html>

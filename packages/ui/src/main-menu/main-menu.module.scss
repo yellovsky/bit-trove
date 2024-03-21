@@ -15,12 +15,22 @@
     column-gap: 2.4rem;
     border-bottom: 1px solid #e1e1e1;
     grid-template-columns: 1fr min-content 1fr;
+
+    @include si.screen-interval($to: 'md') {
+      grid-template-columns: min-content 1fr;
+    }
   }
 
   .itemsColumn {
     gap: 1rem;
     display: flex;
     align-items: center;
+
+    &.left {
+      @include si.screen-interval($to: 'md') {
+        display: none;
+      }
+    }
 
     &.right {
       justify-content: flex-end;

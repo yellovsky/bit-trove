@@ -12,6 +12,7 @@ import { getStringUrlParam, rscMetadata, rscPage, type RSCPageProps } from '../.
 import { pagePadding as pagePaddingCn } from './page.module.scss';
 import { RichTextBlock } from '@repo/ui/rich-text-block';
 import { TwoColumnsLayout } from '@repo/ui/two-columns-layout';
+import { AsideCategories } from '../../../../components/aside-categories/aside-categories.component';
 // ==========================================================
 //               B L O G   P O S T   Q U E R Y
 // ==========================================================
@@ -92,6 +93,8 @@ export default rscPage(
       name: tag.attributes.name,
     }));
 
+    const extraContent = <AsideCategories categories={blogPost.data.attributes.categories.data} />;
+
     return (
       <>
         <ContentPageHeader
@@ -106,7 +109,7 @@ export default rscPage(
           {blogPost.data.attributes.title}
         </ContentPageHeader>
 
-        <TwoColumnsLayout className={pagePaddingCn} extraContent={'extra'}>
+        <TwoColumnsLayout className={pagePaddingCn} extraContent={extraContent}>
           {blogPost.data.attributes.blocks.map((block) => (
             <RichTextBlock key={block.id} block={block} />
           ))}

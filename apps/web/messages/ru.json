@@ -1,4 +1,9 @@
 {
   "menu": "Меню",
+  "home_page": "Глвная",
+  "blogs_page": "Блог",
+  "tutorials_page": "Туториалы",
+  "tips_and_tricks_page": "Tips & Tricks",
+  "search_button": "Поиск",
   "published on {date}": "Опубликовано {date}"
 }

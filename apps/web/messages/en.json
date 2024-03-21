@@ -1,4 +1,9 @@
 {
   "menu": "Menu",
+  "home_page": "Home",
+  "blogs_page": "Blog",
+  "tutorials_page": "Tutorials",
+  "tips_and_tricks_page": "Tips & Tricks",
+  "search_button": "Search",
   "published on {date}": "Posted On {date, date, short}"
 }

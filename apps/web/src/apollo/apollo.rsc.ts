@@ -8,6 +8,7 @@ import { IMAGE_ENTITY_FRAGMENT } from '@repo/api-models/image';
 import { SEO_FRAGMENT } from '@repo/api-models/seo';
 import { TAG_ENTITY_FRAGMENT } from '@repo/api-models/tag';
 import { RICH_TEXT_BLOCK_FRAGMENT } from '@repo/api-models/block';
+import { FULL_CATEGORY_FRAGMENT, PARTIAL_CATEGORY_FRAGMENT } from '@repo/api-models/category';
 import { Effect, pipe } from 'effect';
 
 import {
@@ -28,6 +29,8 @@ const fragments = createFragmentRegistry(gql`
   ${TAG_ENTITY_FRAGMENT}
   ${BLOG_POST_ENTITY_FRAGMENT}
   ${RICH_TEXT_BLOCK_FRAGMENT}
+  ${FULL_CATEGORY_FRAGMENT}
+  ${PARTIAL_CATEGORY_FRAGMENT}
 `);
 
 export const getRSCClient = registerApolloClient(() => {

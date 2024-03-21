@@ -13,7 +13,9 @@
     "./small-comments-count-badge": "./src/small-badges/comments-count-badge/index.tsx",
     "./rich-text-block": "./src/blocks/rich-text-block/index.ts",
     "./two-columns-layout": "./src/layout/two-columns-layout/index.ts",
-    "./main-menu": "./src/main-menu/index.ts"
+    "./main-menu": "./src/main-menu/index.ts",
+    "./plate-link": "./src/plate-link/index.ts",
+    "./section-title": "./src/section-title/index.ts"
   },
   "scripts": {
     "generate:component": "turbo gen react-component",
