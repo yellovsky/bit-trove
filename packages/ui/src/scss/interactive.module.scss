@@ -12,7 +12,7 @@
 
 @mixin focus-outline-style {
   outline: none;
-  box-shadow: 0 0 0 0.125rem var(--color-accent-hover);
+  box-shadow: 0 0 0 0.0625rem var(--link-color-hover);
 }
 
 @mixin interactive {

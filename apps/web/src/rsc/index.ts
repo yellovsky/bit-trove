@@ -1,12 +1,14 @@
-import { ApolloError, isApolloError } from '@apollo/client'
-import { NOT_FOUND_APOLLO_ERROR } from '@repo/api-models/apollo'
-import { pipe, Effect, flow, Either } from 'effect'
-import type { Metadata } from 'next'
-import { notFound, type ReadonlyURLSearchParams } from 'next/navigation'
+// global modules
+import type { Metadata } from 'next';
+import { ApolloError } from '@apollo/client';
+import type { PropsWithChildren } from 'react';
+import { pipe, Effect, flow, Either } from 'effect';
+import { NOT_FOUND_APOLLO_ERROR } from '@repo/api-models/apollo';
+import { notFound, type ReadonlyURLSearchParams } from 'next/navigation';
 
-export interface RSCPageProps<TParams extends string> {
-  params: Record<TParams, string | string[] | undefined>
-  searchParams: ReadonlyURLSearchParams
+export interface RSCPageProps<TParams extends string> extends PropsWithChildren {
+  params: Record<TParams, string | string[] | undefined>;
+  searchParams: ReadonlyURLSearchParams;
 }
 
 export const getStringUrlParam = <TParams extends string>(param: TParams) =>
@@ -14,7 +16,7 @@ export const getStringUrlParam = <TParams extends string>(param: TParams) =>
     (props: RSCPageProps<TParams>) => props.params[param],
     (value): Effect.Effect<string, ApolloError> =>
       typeof value === 'string' ? Effect.succeed(value) : Effect.fail(NOT_FOUND_APOLLO_ERROR)
-  )
+  );
 
 const acyncRsc =
   <TURlParams extends string, TProps>(
@@ -31,23 +33,23 @@ const acyncRsc =
             : 500
         )
       )
-    )
+    );
 
 export const rscPage =
   <TURlParams extends string, TProps>(
     fetchParams: (props: RSCPageProps<TURlParams>) => Effect.Effect<TProps, ApolloError>,
-    render: (p: TProps) => JSX.Element
+    render: (p: TProps & PropsWithChildren) => JSX.Element | Promise<JSX.Element>
   ) =>
   (props: RSCPageProps<TURlParams>) =>
     Effect.runPromise(acyncRsc(fetchParams)(props)).then(
       Either.match({
         onLeft: (statusCode) => {
-          if (statusCode === 404) notFound()
-          throw new Error()
+          if (statusCode === 404) notFound();
+          throw new Error();
         },
-        onRight: render,
+        onRight: (right) => render({ ...right, children: props.children }),
       })
-    )
+    );
 
 export const rscMetadata =
   <TURlParams extends string, TProps>(
@@ -60,4 +62,4 @@ export const rscMetadata =
         onLeft: () => undefined,
         onRight: handler,
       })
-    )
+    );

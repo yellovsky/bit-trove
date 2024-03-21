@@ -1,4 +1,4 @@
-@use '../../../../../packages/ui/src/scss/screen-interval.module.scss' as si;
+@use '../../../../../../packages/ui/src/scss/screen-interval.module.scss' as si;
 
 .pagePadding {
   @include si.page-padding() using ($padding) {

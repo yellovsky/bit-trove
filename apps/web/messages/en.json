@@ -1,0 +1,4 @@
+{
+  "menu": "Menu",
+  "published on {date}": "Posted On {date, date, short}"
+}

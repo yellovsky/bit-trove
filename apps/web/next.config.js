@@ -1,10 +1,12 @@
 const path = require('path');
+const createNextIntlPlugin = require('next-intl/plugin');
 
-console.log(path.join(__dirname, '../../packages/ui/src/scss'));
+const withNextIntl = createNextIntlPlugin();
+
 /** @type {import('next').NextConfig} */
-module.exports = {
+module.exports = withNextIntl({
   transpilePackages: ['@repo/ui', '@repo/api-models'],
   sassOptions: {
     includePaths: [path.join(__dirname, '../../packages/ui')],
   },
-};
+});

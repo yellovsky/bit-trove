@@ -1,0 +1,43 @@
+@use '../scss/interactive.module.scss' as i;
+@use '../scss/screen-interval.module.scss' as si;
+
+.wrapper {
+  @include si.page-padding using ($padding) {
+    padding-left: $padding;
+    padding-right: $padding;
+  }
+
+  .holder {
+    padding-top: 1.6rem;
+    padding-bottom: 1.6rem;
+
+    display: grid;
+    column-gap: 2.4rem;
+    border-bottom: 1px solid #e1e1e1;
+    grid-template-columns: 1fr min-content 1fr;
+  }
+
+  .itemsColumn {
+    gap: 1rem;
+    display: flex;
+    align-items: center;
+
+    &.right {
+      justify-content: flex-end;
+    }
+  }
+
+  .logo {
+    display: block;
+
+    @include i.interactive using ($state) {
+      @if $state == 'focus' {
+        @include i.focus-outline-style;
+      }
+    }
+
+    img {
+      display: block;
+    }
+  }
+}

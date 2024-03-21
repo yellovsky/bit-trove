@@ -7,8 +7,8 @@ import { shortenItemsCount } from '@repo/utils/shorten-items-count';
 import type { BlogPostEntityFragment } from '@repo/api-models/blog-post';
 
 // local modules
-import { getRSCClient, makeRscQuery } from '../../../src/apollo/apollo.rsc';
-import { getStringUrlParam, rscMetadata, rscPage, type RSCPageProps } from '../../../src/rsc';
+import { getRSCClient, makeRscQuery } from '../../../../src/apollo/apollo.rsc';
+import { getStringUrlParam, rscMetadata, rscPage, type RSCPageProps } from '../../../../src/rsc';
 import { pagePadding as pagePaddingCn } from './page.module.scss';
 import { RichTextBlock } from '@repo/ui/rich-text-block';
 import { TwoColumnsLayout } from '@repo/ui/two-columns-layout';
