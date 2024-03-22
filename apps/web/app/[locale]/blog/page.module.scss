@@ -1,0 +1,16 @@
+@use '../../../../../packages/ui/src/scss/screen-interval.module.scss' as si;
+
+.blogPage {
+  padding-top: var(--page-top-padding);
+
+  @include si.page-padding() using ($padding) {
+    padding-left: $padding;
+    padding-right: $padding;
+  }
+}
+
+.blogList {
+  gap: 2rem;
+  display: flex;
+  flex-direction: column;
+}

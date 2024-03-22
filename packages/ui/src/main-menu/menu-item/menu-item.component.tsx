@@ -1,6 +1,6 @@
 // global modules
-import Link from 'next/link';
 import type { UrlObject } from 'url';
+import { Link } from '@bit-trove/localization/link';
 import type { FC, MouseEventHandler, ReactNode } from 'react';
 
 // local modules

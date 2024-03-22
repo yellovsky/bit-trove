@@ -1,7 +1,7 @@
 // global modules
 import { gql } from '@apollo/client';
+import type { SeoFragment } from '@repo/api-models/seo';
 import type { ImageEntityFragment } from '@repo/api-models/image';
-import type { SeoFragment } from './seo';
 
 // ==================================================
 //           F U L L   F R A G M E N T

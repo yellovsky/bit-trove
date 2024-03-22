@@ -4,23 +4,14 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./shorten-items-count": "./src/shorten-items-count.ts"
+    "./*": "./src/*.ts"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
     "test": "jest"
   },
   "dependencies": {
-    "@repo/api-models": "*"
-  },
-  "devDependencies": {
-    "@repo/eslint-config": "*",
-    "@repo/typescript-config": "*",
-    "@types/eslint": "^8.56.5",
-    "@types/jest": "^29.5.12",
-    "@types/node": "^20.11.24",
-    "eslint": "^8.57.0",
-    "jest": "^29.7.0",
-    "typescript": "^5.3.3"
+    "next": "^14.1.1",
+    "next-intl": "^3.9.5"
   }
 }

@@ -1,0 +1,24 @@
+.blogPostHorizontalPreview {
+  gap: 1rem;
+  display: flex;
+
+  img {
+    width: 100%;
+    display: block;
+    max-width: 13.5rem;
+
+    object-fit: cover;
+    aspect-ratio: 4 / 3;
+    border-radius: 0.3rem;
+
+    background-color: var(--pending-bg-color);
+
+    transition: scale 0.3s;
+  }
+
+  &:hover {
+    img {
+      scale: 1.1;
+    }
+  }
+}

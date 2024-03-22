@@ -1,24 +1,25 @@
 // global modules
 import { Effect, pipe } from 'effect';
+import { apiHost } from '@repo/utils/api-host';
 import { ApolloError, gql } from '@apollo/client';
+import { RichTextBlock } from '@repo/ui/rich-text-block';
+import { TwoColumnsLayout } from '@repo/ui/two-columns-layout';
 import { ContentPageHeader } from '@repo/ui/content-page-header';
 import { NOT_FOUND_APOLLO_ERROR } from '@repo/api-models/apollo';
 import { shortenItemsCount } from '@repo/utils/shorten-items-count';
-import type { BlogPostEntityFragment } from '@repo/api-models/blog-post';
-
+import type { FullBlogPostFragment } from '@repo/api-models/blog-post';
 // local modules
-import { getRSCClient, makeRscQuery } from '../../../../src/apollo/apollo.rsc';
-import { getStringUrlParam, rscMetadata, rscPage, type RSCPageProps } from '../../../../src/rsc';
 import { pagePadding as pagePaddingCn } from './page.module.scss';
-import { RichTextBlock } from '@repo/ui/rich-text-block';
-import { TwoColumnsLayout } from '@repo/ui/two-columns-layout';
-import { AsideCategories } from '../../../../components/aside-categories/aside-categories.component';
+import { getRSCClient, makeRscQuery } from '~/src/apollo/apollo.rsc';
+import { getStringUrlParam, rscMetadata, rscPage, type RSCPageProps } from '~/src/rsc';
+import { AsideCategories } from '~/components/aside-categories/aside-categories.component';
+
 // ==========================================================
 //               B L O G   P O S T   Q U E R Y
 // ==========================================================
 type BlogPostQueryResponse = {
   blogposts: {
-    data: BlogPostEntityFragment[];
+    data: FullBlogPostFragment[];
   };
 };
 
@@ -28,7 +29,7 @@ const BLOG_POST_QUERY = gql`
   query GetBlogPost($slug: String) {
     blogposts(filters: { slug: { eq: $slug } }) {
       data {
-        ...BlogPostEntityFragment
+        ...FullBlogPostFragment
       }
     }
   }
@@ -42,7 +43,7 @@ const INCREMENT_BLOG_POST_VIEWS_COUNT = gql`
 
 const fetchBlogPost = (
   props: RSCPageProps<'slug'>
-): Effect.Effect<{ data: BlogPostEntityFragment }, ApolloError> =>
+): Effect.Effect<{ data: FullBlogPostFragment }, ApolloError> =>
   pipe(
     getStringUrlParam('slug')(props),
     Effect.flatMap((slug) =>
@@ -104,7 +105,7 @@ export default rscPage(
           viewsCount={shortenItemsCount(blogPost.data.attributes.views_count)}
           publishDate={publishDate}
           commentsCount={commentsCount}
-          cover={'http://localhost:1337' + blogPost.data.attributes.cover.data?.attributes.url}
+          cover={apiHost(blogPost.data.attributes.cover.data?.attributes.url)}
         >
           {blogPost.data.attributes.title}
         </ContentPageHeader>

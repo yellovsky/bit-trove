@@ -1,6 +1,9 @@
+// global modules
 import cn from 'classnames';
-import Link, { type LinkProps } from 'next/link';
-import type { ComponentProps, FC, HTMLAttributes, PropsWithChildren, ReactNode } from 'react';
+import { Link } from '@bit-trove/localization/link';
+import type { ComponentProps, FC, HTMLAttributes, ReactNode } from 'react';
+
+// local modules
 import { holder as holderCn, link as linkCn, narrow as narrowCn } from './small-badge.module.scss';
 
 interface CommonSmallBadgeProps {

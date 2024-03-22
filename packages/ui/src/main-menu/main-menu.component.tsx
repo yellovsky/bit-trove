@@ -1,8 +1,8 @@
 // global modules
 import cn from 'classnames';
-import Link from 'next/link';
 import Image from 'next/image';
 import type { FC } from 'react';
+import { Link } from '@bit-trove/localization/link';
 import { type MenuItemProps, MenuItem } from './menu-item';
 
 // local modules
