@@ -1,39 +1,40 @@
 type Strapi = typeof strapi;
 
-module.exports = {
-  register({ strapi }: { strapi: Strapi }) {
-    const extensionService = strapi.plugin('graphql').service('extension');
-    extensionService.use(({ nexus }) => {
-      const sendItemByEmailMutation = nexus.extendType({
-        type: 'Mutation',
+const incrementBlogPostViewsExtension = ({ nexus }) => {
+  const sendItemByEmailMutation = nexus.extendType({
+    type: 'Mutation',
 
-        definition(t) {
-          t.field('incrementBlogPostViews', {
-            type: nexus.nonNull('Boolean'),
-            args: { itemID: nexus.nonNull('ID') },
-            async resolve(parent, args, context) {
-              const { itemID } = args;
+    definition(t) {
+      t.field('incrementBlogPostViews', {
+        type: nexus.nonNull('BlogpostEntity'),
+        args: { itemID: nexus.nonNull('ID') },
+        async resolve(parent, args, context) {
+          const { itemID } = args;
 
-              const founded = await strapi.entityService.findOne('api::blogpost.blogpost', itemID);
+          const founded = await strapi.entityService.findOne('api::blogpost.blogpost', itemID);
 
-              await strapi.entityService.update('api::blogpost.blogpost', itemID, {
-                data: { views_count: (+founded.views_count || 0) + 1 },
-              });
-
-              return true;
-            },
+          return await strapi.entityService.update('api::blogpost.blogpost', itemID, {
+            data: { views_count: (+founded.views_count || 0) + 1 },
           });
         },
       });
-      return {
-        types: [sendItemByEmailMutation],
-        resolversConfig: {
-          'Mutation.incrementBlogPostViews': {
-            auth: false,
-          },
-        },
-      };
-    });
+    },
+  });
+  return {
+    types: [sendItemByEmailMutation],
+    resolversConfig: {
+      'Mutation.incrementBlogPostViews': {
+        auth: false,
+      },
+    },
+  };
+};
+
+module.exports = {
+  register({ strapi }: { strapi: Strapi }) {
+    const extensionService = strapi.plugin('graphql').service('extension');
+
+    extensionService.use(incrementBlogPostViewsExtension);
   },
 
   /**

@@ -9,8 +9,9 @@ import { Poppins, Roboto } from 'next/font/google';
 import { ensureApolloError } from '@repo/api-models/apollo';
 
 // local modules
-import { lightTheme as lightThemeCn } from './theme.module.scss';
+import { ApolloWrapper } from '~/src/apollo/apollo.csr';
 import { getStringUrlParam, rscPage } from '~/src/rsc';
+import { lightTheme as lightThemeCn } from './theme.module.scss';
 
 // =============================================================
 //                     F O N T S
@@ -63,8 +64,10 @@ export default rscPage(
     return (
       <html lang={locale}>
         <body className={cn(lightThemeCn, poppins.variable, roboto.variable)}>
-          <MainMenu {...menuProps} />
-          {children}
+          <ApolloWrapper>
+            <MainMenu {...menuProps} />
+            {children}
+          </ApolloWrapper>
         </body>
       </html>
     );

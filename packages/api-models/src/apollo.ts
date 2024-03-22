@@ -17,6 +17,15 @@ export const NOT_FOUND_APOLLO_ERROR = new ApolloError({
   },
 });
 
+export const makeBadRequestApolloError = (message: string) =>
+  new ApolloError({
+    networkError: {
+      message,
+      name: 'bad_request',
+      statusCode: 400,
+    },
+  });
+
 export const ensureApolloError = (error: Error) =>
   isApolloError(error) ? error : UNKNOWN_APOLLO_ERROR;
 

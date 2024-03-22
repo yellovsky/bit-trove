@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.9.7",
+    "@bit-trove/localization": "*",
     "axios": "^1.6.8",
     "effect": "^2.4.7",
     "graphql": "^16.8.1",

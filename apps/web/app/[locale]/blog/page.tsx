@@ -1,49 +1,28 @@
 // global modules
-import { Effect } from 'effect';
-import { gql } from '@apollo/client';
-import type { PartialBlogPostFragment } from '@repo/api-models/blog-post';
-import { BlogPostHorizontalPreview } from '@repo/ui/blog-post-horizontal-preview';
+import { Effect, flow } from 'effect';
+
+import {
+  PARTIAL_BLOG_POST_LIST_QUERY,
+  type BlogPostListQueryResponse,
+  type BlogPostListVariables,
+} from '@repo/api-models/blog-post';
 
 // local modules
-import { rscPage } from '~/src/rsc';
-import { makeRscQuery } from '~/src/apollo/apollo.rsc';
-import { blogPage as blogPageCn, blogList as blogListCn } from './page.module.scss';
+import { BlogPostContent } from './_page-content';
+import { HydrateQuery } from '~/src/apollo/hydrate-query';
+import { getLocaleUrlParam, rscPage, rscQuery } from '~/src/rsc';
 
-// ==========================================================
-//               B L O G   P O S T   Q U E R Y
-// ==========================================================
-type BlogPostListQueryResponse = {
-  blogposts: {
-    data: PartialBlogPostFragment[];
-  };
-};
-
-type BlogPostListFP = {};
-
-const BLOG_POST_LIST_QUERY = gql`
-  query GetBlogPostList {
-    blogposts {
-      data {
-        ...PartialBlogPostFragment
-      }
-    }
-  }
-`;
-
-const fetchBlogPostList = () =>
-  makeRscQuery<BlogPostListQueryResponse, BlogPostListFP>(BLOG_POST_LIST_QUERY)({});
-
-export default rscPage(
-  () => Effect.all({ blogPosts: fetchBlogPostList() }),
-  ({ blogPosts }) => {
-    return (
-      <div className={blogPageCn}>
-        <div className={blogListCn}>
-          {blogPosts.data.blogposts.data.map((blogpost) => (
-            <BlogPostHorizontalPreview key={blogpost.id} blogpost={blogpost} />
-          ))}
-        </div>
-      </div>
-    );
-  }
+const prefetchBlogPostList = flow(
+  getLocaleUrlParam,
+  Effect.map((locale) => ({ locale, limit: 2, sort: ['createdAt:desc' as const] })),
+  Effect.flatMap(
+    rscQuery<BlogPostListQueryResponse, BlogPostListVariables>(PARTIAL_BLOG_POST_LIST_QUERY)
+  ),
+  Effect.map((update) => ({ updates: { blogpost: update } }))
 );
+
+export default rscPage(prefetchBlogPostList, ({ updates }) => (
+  <HydrateQuery updates={updates}>
+    <BlogPostContent initialVariables={updates.blogpost.variables} />
+  </HydrateQuery>
+));

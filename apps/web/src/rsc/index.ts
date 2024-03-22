@@ -1,10 +1,19 @@
 // global modules
 import type { Metadata } from 'next';
-import { ApolloError } from '@apollo/client';
 import type { PropsWithChildren } from 'react';
 import { pipe, Effect, flow, Either } from 'effect';
-import { NOT_FOUND_APOLLO_ERROR } from '@repo/api-models/apollo';
+import { isSupportedLocale } from '@bit-trove/localization/config';
 import { notFound, type ReadonlyURLSearchParams } from 'next/navigation';
+import { ApolloError, type DocumentNode, type OperationVariables } from '@apollo/client';
+
+import {
+  NOT_FOUND_APOLLO_ERROR,
+  ensureApolloError,
+  makeBadRequestApolloError,
+} from '@repo/api-models/apollo';
+
+// local modules
+import { getRSCClient } from '../apollo/apollo.rsc';
 
 export interface RSCPageProps<TParams extends string> extends PropsWithChildren {
   params: Record<TParams, string | string[] | undefined>;
@@ -18,6 +27,15 @@ export const getStringUrlParam = <TParams extends string>(param: TParams) =>
       typeof value === 'string' ? Effect.succeed(value) : Effect.fail(NOT_FOUND_APOLLO_ERROR)
   );
 
+export const getLocaleUrlParam = flow(
+  getStringUrlParam('locale'),
+  Effect.flatMap((maybeLocale) =>
+    isSupportedLocale(maybeLocale)
+      ? Effect.succeed(maybeLocale)
+      : Effect.fail(makeBadRequestApolloError('Provided locale param is not locale'))
+  )
+);
+
 const acyncRsc =
   <TURlParams extends string, TProps>(
     fetchParams: (props: RSCPageProps<TURlParams>) => Effect.Effect<TProps, ApolloError>
@@ -27,12 +45,22 @@ const acyncRsc =
       fetchParams(props),
       Effect.either,
       Effect.map(
-        Either.mapLeft((apolloError) =>
-          apolloError.networkError && 'statusCode' in apolloError.networkError
+        Either.mapLeft((apolloError) => {
+          console.error(apolloError);
+          return apolloError.networkError && 'statusCode' in apolloError.networkError
             ? apolloError.networkError.statusCode
-            : 500
-        )
+            : 500;
+        })
       )
+    );
+
+export const rscQuery =
+  <T, TVariables extends OperationVariables>(query: DocumentNode) =>
+  (variables: TVariables) =>
+    pipe(
+      Effect.tryPromise(() => getRSCClient().query<T, TVariables>({ query, variables })),
+      Effect.mapError(ensureApolloError),
+      Effect.map(({ data }) => ({ query, variables, data }))
     );
 
 export const rscPage =
@@ -54,7 +82,7 @@ export const rscPage =
 export const rscMetadata =
   <TURlParams extends string, TProps>(
     fetchParams: (props: RSCPageProps<TURlParams>) => Effect.Effect<TProps, ApolloError>,
-    handler: (p: TProps) => Metadata
+    handler: (p: TProps) => Metadata | undefined
   ) =>
   (props: RSCPageProps<TURlParams>) =>
     Effect.runPromise(acyncRsc(fetchParams)(props)).then(
