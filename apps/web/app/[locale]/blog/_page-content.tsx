@@ -1,67 +1,52 @@
 'use client';
 
 // global modules
+import type { FC } from 'react';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { initialPageParam, getNextPageParam } from '@repo/api-models/common';
 import { BlogPostHorizontalPreview } from '@repo/ui/blog-post-horizontal-preview';
-
-import {
-  PARTIAL_BLOG_POST_LIST_QUERY,
-  type BlogPostListVariables,
-  type BlogPostListQueryResponse,
-} from '@repo/api-models/blog-post';
+import { fetchBlogpostSegmentList, type BlogpostSegmentListFP } from '@repo/api-models/blog-post';
 
 // local modules
-import { useState, type FC, useCallback } from 'react';
-import { useQuery } from '@apollo/experimental-nextjs-app-support/ssr';
-import { blogPage as blogPageCn, blogList as blogListCn } from './page.module.scss';
+import { blogList as blogListCn, blogPage as blogPageCn } from './page.module.scss';
+import { LoadMoreWhenVisible } from '../../../components/load-more-when-visible';
 
 interface BlogPostContentProps {
-  initialVariables: BlogPostListVariables;
+  blogPostListFP: BlogpostSegmentListFP;
 }
 
 export const BlogPostContent: FC<BlogPostContentProps> = (props) => {
-  const [variables, setVariables] = useState(props.initialVariables);
-  const { data, fetchMore, refetch } = useQuery<BlogPostListQueryResponse, BlogPostListVariables>(
-    PARTIAL_BLOG_POST_LIST_QUERY,
-    { variables }
-  );
-
-  const loadMore = useCallback(() => {
-    fetchMore({
-      variables: { offset: data?.blogposts.data.length || 0 },
-      updateQuery: (preveResult, { fetchMoreResult }) => ({
-        ...preveResult,
-        blogposts: {
-          ...preveResult.blogposts,
-          data: [...preveResult.blogposts.data, ...fetchMoreResult.blogposts.data],
-        },
-      }),
+  const { data, status, error, isFetching, hasNextPage, isFetchingNextPage, fetchNextPage } =
+    useInfiniteQuery({
+      queryKey: ['blogpost_segment_list', props.blogPostListFP],
+      queryFn: fetchBlogpostSegmentList,
+      initialPageParam,
+      getNextPageParam,
     });
-  }, [data]);
 
+  if (status === 'pending') return <div>loading...</div>;
+  if (status === 'error') return <div>{error.message}</div>;
+
+  const blogpostList = data?.pages.map((page) => page.data).flat();
+  console.log('blogpostList', blogpostList);
   return (
     <div className={blogPageCn}>
       <div className={blogListCn}>
-        {data?.blogposts.data.map((blogpost) => (
-          <BlogPostHorizontalPreview key={blogpost.id} blogpost={blogpost} />
+        {blogpostList.map((blogpost) => (
+          <BlogPostHorizontalPreview
+            key={blogpost.attributes.slug}
+            blogpost={blogpost.attributes}
+          />
         ))}
       </div>
-      <button onClick={loadMore}>fetchMore</button>
-      <button onClick={() => refetch()}>refetch</button>
-      <button
-        onClick={() => setVariables((p) => ({ ...p, offset: data?.blogposts.data.length || 0 }))}
-      >
-        sfp
-      </button>
-      <button
-        onClick={() =>
-          setVariables((p) => ({
-            ...p,
-            sort: [p.sort[0] === 'createdAt:asc' ? 'createdAt:desc' : 'createdAt:asc'],
-          }))
-        }
-      >
-        toggle
-      </button>
+
+      <div>{isFetching && !isFetchingNextPage ? 'Fetching...' : null}</div>
+
+      <LoadMoreWhenVisible
+        hasNextPage={hasNextPage}
+        isFetchingNextPage={isFetchingNextPage}
+        trigger={fetchNextPage}
+      />
     </div>
   );
 };

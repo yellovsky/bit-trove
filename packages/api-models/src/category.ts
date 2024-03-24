@@ -1,70 +1,51 @@
 // global modules
-import { gql } from '@apollo/client';
-import type { SeoFragment } from '@repo/api-models/seo';
-import type { ImageEntityFragment } from '@repo/api-models/image';
+import * as R from 'ramda';
+import type { Populate } from '@repo/api-models/common';
+import { SEO_SEGMENT_POPULATE, type SeoSegment } from '@repo/api-models/seo';
+import { UPLOAD_FILE_POPULATE, type UploadFileResponse } from '@repo/api-models/upload-file';
 
 // ==================================================
-//           F U L L   F R A G M E N T
+//                    C O R E
 // ==================================================
-export type FullCategoryFragment = {
-  id: string;
+interface CategoryCore {
+  name: string;
+  slug: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  description: string | null;
+}
 
-  attributes: {
-    slug: string;
-    name: string;
-    description: string | null;
+// ==================================================
+//              S T A N D A L O N E
+// ==================================================
+export interface CategoryPopulate {
+  seo: SeoSegment | null;
+  cover: UploadFileResponse;
+}
 
-    seo: SeoFragment | null;
-    cover: { data: ImageEntityFragment | null };
-  };
+export interface Category extends CategoryCore, CategoryPopulate {}
+
+export const CATEGORY_POPULATE = {
+  populate: {
+    seo: SEO_SEGMENT_POPULATE,
+    cover: UPLOAD_FILE_POPULATE,
+  } satisfies Populate<keyof CategoryPopulate>,
 };
 
-export const FULL_CATEGORY_FRAGMENT = gql`
-  fragment FullCategoryFragment on CategoryEntity {
-    id
-    attributes {
-      slug
-      name
-      description
-
-      seo {
-        ...SeoFragment
-      }
-
-      cover {
-        data {
-          ...ImageEntityFragment
-        }
-      }
-    }
-  }
-`;
-
 // ==================================================
-//         P A R T I A L   F R A G M E N T
+//               S E G M E N T
 // ==================================================
-export type PatrialCategoryFragment = {
-  id: string;
+const omitted: Array<keyof CategoryPopulate> = ['seo'];
+type CategorySegmentPopulate = Omit<CategoryPopulate, (typeof omitted)[number]>;
+interface CategorySegment extends CategoryCore, CategorySegmentPopulate {}
 
-  attributes: {
-    slug: string;
-    name: string;
-    cover: { data: ImageEntityFragment | null };
-  };
+export const CATEGORY_SEGMENT_POPULATE = {
+  populate: R.omit(omitted, CATEGORY_POPULATE.populate) satisfies Populate<
+    keyof CategorySegmentPopulate
+  >,
 };
 
-export const PARTIAL_CATEGORY_FRAGMENT = gql`
-  fragment PartialCategoryFragment on CategoryEntity {
-    id
-    attributes {
-      slug
-      name
-
-      cover {
-        data {
-          ...ImageEntityFragment
-        }
-      }
-    }
-  }
-`;
+export interface CategorySegmentListResponse {
+  data: CategorySegment[];
+}

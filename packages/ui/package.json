@@ -11,6 +11,7 @@
     "./small-publish-date-badge": "./src/small-badges/publish-date-badge/index.tsx",
     "./small-author-badge": "./src/small-badges/author-badge/index.tsx",
     "./small-comments-count-badge": "./src/small-badges/comments-count-badge/index.tsx",
+    "./small-badges-holder": "./src/small-badges/badges-holder/index.ts",
     "./rich-text-block": "./src/blocks/rich-text-block/index.ts",
     "./two-columns-layout": "./src/layout/two-columns-layout/index.ts",
     "./main-menu": "./src/main-menu/index.ts",

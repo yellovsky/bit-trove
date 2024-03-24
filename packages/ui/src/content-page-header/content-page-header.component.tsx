@@ -5,17 +5,17 @@ import { SmallTagBadge } from '@repo/ui/small-tag-badge';
 import { SmallViewsBadge } from '@repo/ui/small-views-badge';
 import type { FC, PropsWithChildren, ReactNode } from 'react';
 import { SmallAuthorBadge } from '@repo/ui/small-author-badge';
+import { SmallBadgesHolder } from '@repo/ui/small-badges-holder';
 import { PublishDateBadge } from '@repo/ui/small-publish-date-badge';
+import { SmallCommentsCountBadge } from '@repo/ui/small-comments-count-badge';
 
 // local modules
 import {
-  top as topCn,
+  topBadges as topBadgesCn,
   cover as coverCn,
   title as titleCn,
   holder as holderCn,
-  badgesHolder as badgesHolderCn,
 } from './content-page-header.module.scss';
-import { SmallCommentsCountBadge } from '../small-badges/comments-count-badge';
 
 interface ContentPageHeaderProps extends PropsWithChildren {
   publishedBy?: null;
@@ -35,25 +35,25 @@ interface ContentPageHeaderProps extends PropsWithChildren {
 export const ContentPageHeader: FC<ContentPageHeaderProps> = (props) => {
   const topBadges =
     !props.tags?.length && !props.viewsCount ? null : (
-      <div className={cn(badgesHolderCn, topCn)}>
+      <SmallBadgesHolder className={topBadgesCn}>
         {props.tags?.map((tag, index) => (
           <SmallTagBadge key={index} href={tag.href}>
             {tag.name}
           </SmallTagBadge>
         ))}
         {props.viewsCount ? <SmallViewsBadge>{props.viewsCount}</SmallViewsBadge> : null}
-      </div>
+      </SmallBadgesHolder>
     );
 
   const bottomBadges =
     !props.publishDate && !props.author ? null : (
-      <div className={badgesHolderCn}>
+      <SmallBadgesHolder>
         {props.publishDate ? <PublishDateBadge>{props.publishDate}</PublishDateBadge> : null}
         {props.author ? <SmallAuthorBadge {...props.author} /> : null}
         {props.commentsCount ? (
           <SmallCommentsCountBadge>{props.commentsCount}</SmallCommentsCountBadge>
         ) : null}
-      </div>
+      </SmallBadgesHolder>
     );
 
   return (

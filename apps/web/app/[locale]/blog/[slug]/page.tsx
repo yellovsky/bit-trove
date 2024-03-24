@@ -1,50 +1,59 @@
 // global modules
-import { Effect, pipe } from 'effect';
-
-import {
-  FULL_BLOG_POST_QUERY,
-  type FullBlogPostVariables,
-  type FullBlogPostQueryResponse,
-} from '@repo/api-models/blog-post';
+import { notFound } from 'next/navigation';
+import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
+import { fetchBlogpost, type BlogpostFP, type BlogpostResponse } from '@repo/api-models/blog-post';
 
 // local modules
 import { BlogPostPage } from './_page-content';
-import { HydrateQuery } from '~/src/apollo/hydrate-query';
+import { getQueryClient } from '~/src/query-client';
+import { type RSCPageProps, getRSCLocaleParam, getRSCStringParam } from '~/src/rsc';
 
-import {
-  getStringUrlParam,
-  rscPage,
-  rscQuery,
-  type RSCPageProps,
-  getLocaleUrlParam,
-  rscMetadata,
-} from '~/src/rsc';
+type BlogPageProps = RSCPageProps<'locale' | 'slug'>;
 
-const prefetchBlogPost = (props: RSCPageProps<'slug' | 'locale'>) =>
-  pipe(
-    Effect.all({
-      locale: getLocaleUrlParam(props),
-      slug: getStringUrlParam('slug')(props),
-    }),
-    Effect.flatMap(
-      rscQuery<FullBlogPostQueryResponse, FullBlogPostVariables>(FULL_BLOG_POST_QUERY)
-    ),
-    Effect.map((blogpost) => ({ updates: { blogpost } }))
-  );
+const getBlogPostFp = (props: BlogPageProps): BlogpostFP => {
+  const slug = getRSCStringParam(props, 'slug');
+  const locale = getRSCLocaleParam(props);
+
+  if (!slug) notFound();
+
+  return { locale, slug };
+};
+
+const prepareQueryClient = async (props: BlogPageProps): Promise<QueryClient> => {
+  const queryClient = getQueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ['blogpost', getBlogPostFp(props)],
+    queryFn: fetchBlogpost,
+  });
+
+  return queryClient;
+};
 
 // ==========================================================
 //                    M E T A D A T A
 // ==========================================================
-export const generateMetadata = rscMetadata(
-  prefetchBlogPost,
-  ({ updates }) => updates.blogpost.data.blogposts.data[0]?.attributes.seo
-);
+export async function generateMetadata(props: BlogPageProps) {
+  const queryClient = await prepareQueryClient(props);
+  const blogpostResponse = queryClient.getQueryData<BlogpostResponse>([
+    'blogpost',
+    getBlogPostFp(props),
+  ]);
+
+  return blogpostResponse?.data?.attributes.seo;
+}
 
 // ==========================================================
 //                    C O M P O N E N T
 // ==========================================================
-export default rscPage(prefetchBlogPost, ({ updates }) => (
-  <HydrateQuery updates={updates}>
-    <BlogPostPage initialVariables={updates.blogpost.variables} />
-  </HydrateQuery>
-));
+export default async function page(props: BlogPageProps) {
+  const queryClient = await prepareQueryClient(props);
+
+  const dehydratedState = dehydrate(queryClient);
+
+  return (
+    <HydrationBoundary state={dehydratedState}>
+      <BlogPostPage blogpostFP={getBlogPostFp(props)} />
+    </HydrationBoundary>
+  );
+}

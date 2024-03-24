@@ -1,5 +1,3 @@
-type Strapi = typeof strapi;
-
 const incrementBlogPostViewsExtension = ({ nexus }) => {
   const sendItemByEmailMutation = nexus.extendType({
     type: 'Mutation',
@@ -31,11 +29,7 @@ const incrementBlogPostViewsExtension = ({ nexus }) => {
 };
 
 module.exports = {
-  register({ strapi }: { strapi: Strapi }) {
-    const extensionService = strapi.plugin('graphql').service('extension');
-
-    extensionService.use(incrementBlogPostViewsExtension);
-  },
+  register({ strapi }) {},
 
   /**
    * An asynchronous bootstrap function that runs before

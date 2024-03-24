@@ -1,20 +1,20 @@
 // global modules
-import { gql } from '@apollo/client';
+import type { UploadFileResponse } from '@repo/api-models/upload-file';
 
-export type RichTextBlockragment = {
-  __typename: 'ComponentBlocksRichTextBlock';
-  id: string;
-  title: string | undefined;
-  body: string | undefined;
+export interface RichTextBlock {
+  __component: 'blocks.rich-text-block';
+  title: string | null;
+  body: string | null;
+}
+
+export interface ImageBlock {
+  __component: 'blocks.image-block';
+  title: string | null;
+  image: UploadFileResponse | null;
+}
+
+export type Block = RichTextBlock | ImageBlock;
+
+export const POPULATE_BLOCKS = {
+  populate: '*',
 };
-
-export const RICH_TEXT_BLOCK_FRAGMENT = gql`
-  fragment RichTextBlockFragment on ComponentBlocksRichTextBlock {
-    __typename
-    ... on ComponentBlocksRichTextBlock {
-      id
-      title
-      body
-    }
-  }
-`;

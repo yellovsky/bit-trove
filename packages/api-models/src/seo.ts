@@ -1,16 +1,10 @@
-// global modules
-import { gql } from '@apollo/client'
+// ==================================================
+//               S E G M E N T
+// ==================================================
+export type SeoSegment = {
+  title: string;
+  keywords: string;
+  description: string;
+};
 
-export type SeoFragment = {
-  title: string
-  description: string
-  keywords: string
-}
-
-export const SEO_FRAGMENT = gql`
-  fragment SeoFragment on ComponentSeoSeo {
-    title
-    description
-    keywords
-  }
-`
+export const SEO_SEGMENT_POPULATE = '*';

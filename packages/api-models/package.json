@@ -12,16 +12,14 @@
     "lint": "eslint . --max-warnings 0"
   },
   "dependencies": {
-    "@apollo/client": "^3.9.7",
     "@bit-trove/localization": "*",
+    "@repo/utils": "*",
+    "@tanstack/react-query": "^5.28.6",
     "axios": "^1.6.8",
-    "effect": "^2.4.7",
-    "graphql": "^16.8.1",
     "next": "^14.1.1",
     "qs": "^6.12.0"
   },
   "devDependencies": {
-    "@faker-js/faker": "^8.4.1",
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
     "@types/eslint": "^8.56.5",

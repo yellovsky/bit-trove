@@ -1,28 +1,29 @@
 // global modules
-import { Effect, flow } from 'effect';
-
-import {
-  PARTIAL_BLOG_POST_LIST_QUERY,
-  type BlogPostListQueryResponse,
-  type BlogPostListVariables,
-} from '@repo/api-models/blog-post';
+import { initialPageParam } from '@repo/api-models/common';
+import { fetchBlogpostSegmentList } from '@repo/api-models/blog-post';
+import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
 
 // local modules
 import { BlogPostContent } from './_page-content';
-import { HydrateQuery } from '~/src/apollo/hydrate-query';
-import { getLocaleUrlParam, rscPage, rscQuery } from '~/src/rsc';
+import { getRSCLocaleParam, type RSCPageProps } from '~/src/rsc';
 
-const prefetchBlogPostList = flow(
-  getLocaleUrlParam,
-  Effect.map((locale) => ({ locale, limit: 2, sort: ['createdAt:desc' as const] })),
-  Effect.flatMap(
-    rscQuery<BlogPostListQueryResponse, BlogPostListVariables>(PARTIAL_BLOG_POST_LIST_QUERY)
-  ),
-  Effect.map((update) => ({ updates: { blogpost: update } }))
-);
+export default async function BlogPage(props: RSCPageProps<'locale'>) {
+  const locale = getRSCLocaleParam(props);
 
-export default rscPage(prefetchBlogPostList, ({ updates }) => (
-  <HydrateQuery updates={updates}>
-    <BlogPostContent initialVariables={updates.blogpost.variables} />
-  </HydrateQuery>
-));
+  const queryClient = new QueryClient();
+
+  const blogPostListFP = { locale };
+  await queryClient.prefetchInfiniteQuery({
+    queryKey: ['blogpost_segment_list', blogPostListFP],
+    queryFn: fetchBlogpostSegmentList,
+    initialPageParam,
+  });
+
+  const dehydratedState = dehydrate(queryClient);
+
+  return (
+    <HydrationBoundary state={dehydratedState}>
+      <BlogPostContent blogPostListFP={blogPostListFP} />
+    </HydrationBoundary>
+  );
+}

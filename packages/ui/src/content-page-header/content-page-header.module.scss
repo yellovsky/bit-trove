@@ -12,13 +12,8 @@
   color: var(--title-color);
 }
 
-.badgesHolder {
-  gap: 0.25rem;
-  display: flex;
-
-  &.top {
-    margin-bottom: 1rem;
-  }
+.topBadges {
+  margin-bottom: 1rem;
 }
 
 .cover {

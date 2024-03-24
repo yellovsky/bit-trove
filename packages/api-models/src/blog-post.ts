@@ -1,156 +1,149 @@
 // global modules
-import { gql } from '@apollo/client';
-import type { Fragment } from '@repo/api-models/apollo';
-import type { SeoFragment } from '@repo/api-models/seo';
-import type { TagEntityFragment } from '@repo/api-models/tag';
-import type { ImageEntityFragment } from '@repo/api-models/image';
-import type { RichTextBlockragment } from '@repo/api-models/block';
-import type { PatrialCategoryFragment } from '@repo/api-models/category';
+import * as R from 'ramda';
+import type { QueryFunction } from '@tanstack/react-query';
+import { POPULATE_BLOCKS, type Block } from '@repo/api-models/block';
 import type { SupportedLocale } from '@bit-trove/localization/config';
+import { TAG_POPULATE, type TagListResponse } from '@repo/api-models/tag';
+import { SEO_SEGMENT_POPULATE, type SeoSegment } from '@repo/api-models/seo';
+import { UPLOAD_FILE_POPULATE, type UploadFileResponse } from '@repo/api-models/upload-file';
+import { AUTHOR_SEGMENT_POPULATE, type AuthorSegmentResponse } from '@repo/api-models/author';
 
-// ==========================================================
-//              F U L L   F R A G M E N T
-// ==========================================================
-export type FullBlogPostFragment = Fragment<
-  'BlogpostEntity',
-  {
-    title: string;
-    slug: string;
-    seo: SeoFragment;
-    views_count: number;
-    tags: { data: TagEntityFragment[] };
-    cover: { data: ImageEntityFragment | null };
-    blocks: RichTextBlockragment[];
-    categories: { data: PatrialCategoryFragment[] };
-  }
->;
+import {
+  getApiClient,
+  type Populate,
+  initialPageParam,
+  type PaginationParams,
+  type WithPaginationMeta,
+} from '@repo/api-models/common';
 
-export const FULL_BLOG_POST_FRAGMENT = gql`
-  fragment FullBlogPostFragment on BlogpostEntity {
-    id
-    attributes {
-      __typename
+import {
+  CATEGORY_SEGMENT_POPULATE,
+  type CategorySegmentListResponse,
+} from '@repo/api-models/category';
 
-      title
-      slug
-      views_count
-      seo {
-        ...SeoFragment
-      }
-      categories {
-        data {
-          ...PartialCategoryFragment
-        }
-      }
-      cover {
-        data {
-          ...ImageEntityFragment
-        }
-      }
-      tags {
-        data {
-          ...TagEntityFragment
-        }
-      }
-      blocks {
-        ...RichTextBlockFragment
-      }
-    }
-  }
-`;
+// ==================================================
+//               C O N S T A N T S
+// ==================================================
+const DEFAULTBLOG_POST_LIST_SORT = 'createdAt:desc';
 
-// ==========================================================
-//         F U L L   F R A G M E N T   Q U E R Y
-// ==========================================================
-export type FullBlogPostQueryResponse = {
-  blogposts: {
-    data: FullBlogPostFragment[];
-  };
+// ==================================================
+//                    C O R E
+// ==================================================
+interface BlogpostCore {
+  slug: string;
+  title: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  views_count: string | null;
+}
+
+// ==================================================
+//              S T A N D A L O N E
+// ==================================================
+interface BlogpostPopulate {
+  seo: SeoSegment;
+  blocks: Block[];
+  tags: TagListResponse;
+  author: AuthorSegmentResponse;
+  cover: UploadFileResponse;
+  categories: CategorySegmentListResponse;
+}
+
+export interface Blogpost extends BlogpostCore, BlogpostPopulate {}
+
+export const BLOG_POST_POPULATE = {
+  populate: {
+    tags: TAG_POPULATE,
+    blocks: POPULATE_BLOCKS,
+    seo: SEO_SEGMENT_POPULATE,
+    cover: UPLOAD_FILE_POPULATE,
+    author: AUTHOR_SEGMENT_POPULATE,
+    categories: CATEGORY_SEGMENT_POPULATE,
+  } satisfies Populate<keyof BlogpostPopulate>,
 };
 
-export type FullBlogPostVariables = { slug: string };
+interface BlogpostEntity {
+  id: number;
+  attributes: Blogpost;
+}
 
-export const FULL_BLOG_POST_QUERY = gql`
-  query GetBlogPost($slug: String) {
-    blogposts(filters: { slug: { eq: $slug } }) {
-      data {
-        ...FullBlogPostFragment
-      }
-    }
-  }
-`;
+export interface BlogpostListResponse {
+  data: BlogpostEntity[];
+}
 
-// ==========================================================
-//             P A R T I A L   F R A G M E N T
-// ==========================================================
-export type PartialBlogPostFragment = Fragment<
-  'BlogpostEntity',
-  {
-    title: string;
-    slug: string;
-    views_count: number;
-    tags: { data: TagEntityFragment[] };
-    cover: { data: ImageEntityFragment | null };
-    categories: { data: PatrialCategoryFragment[] };
-  }
->;
+export interface BlogpostResponse {
+  data: BlogpostEntity | null;
+}
 
-export const PARTIAL_BLOG_POST_FRAGMENT = gql`
-  fragment PartialBlogPostFragment on BlogpostEntity {
-    id
-    attributes {
-      __typename
-
-      title
-      slug
-      views_count
-      categories {
-        data {
-          ...PartialCategoryFragment
-        }
-      }
-      cover {
-        data {
-          ...ImageEntityFragment
-        }
-      }
-      tags {
-        data {
-          ...TagEntityFragment
-        }
-      }
-    }
-  }
-`;
-
-// ==========================================================
-//   P A R T I A L   F R A G M E N T   L I S T   Q U E R Y
-// ==========================================================
-export type BlogPostListVariables = {
-  sort: Array<'createdAt:desc' | 'createdAt:asc'>;
-  limit?: number;
-  offset?: number;
+export interface BlogpostFP {
   locale: SupportedLocale;
+  slug: string;
+}
+
+export const fetchBlogpost: QueryFunction<BlogpostResponse, ['blogpost', BlogpostFP]> = ({
+  queryKey: [_, { locale, slug }],
+  signal,
+}) =>
+  getApiClient()
+    .get<BlogpostListResponse>('/blogposts', {
+      signal,
+      params: {
+        ...BLOG_POST_POPULATE,
+        sort: DEFAULTBLOG_POST_LIST_SORT,
+        pagination: initialPageParam,
+        locale,
+        filters: { slug: { $eq: slug } },
+      },
+    })
+    .then((response) => response.data)
+    .then((response) => ({ data: response.data.length ? response.data[0] || null : null }));
+
+// ==================================================
+//               S E G M E N T
+// ==================================================
+const omitted = ['seo', 'blocks', 'categories'] as const;
+type BlogpostSegmentPopulate = Omit<BlogpostPopulate, (typeof omitted)[number]>;
+export interface BlogpostSegment extends BlogpostCore, BlogpostSegmentPopulate {}
+
+interface BlogpostSegmentEntity {
+  id: number;
+  attributes: BlogpostSegment;
+}
+
+const BLOG_POST_SEGMENT_POPULATE = {
+  populate: R.omit(omitted, BLOG_POST_POPULATE.populate) satisfies Populate<
+    keyof BlogpostSegmentPopulate
+  >,
 };
 
-export type BlogPostListQueryResponse = {
-  blogposts: {
-    data: PartialBlogPostFragment[];
-  };
-};
+export interface BlogpostSegmentListResponse {
+  data: BlogpostSegmentEntity[];
+}
 
-export const PARTIAL_BLOG_POST_LIST_QUERY = gql`
-  query GetBlogPostList($locale: I18NLocaleCode, $offset: Int, $limit: Int, $sort: [String]) {
-    blogposts(locale: $locale, pagination: { start: $offset, limit: $limit }, sort: $sort) {
-      data {
-        ...PartialBlogPostFragment
-      }
-    }
-  }
-`;
+export interface BlogpostSegmentListFP {
+  locale: SupportedLocale;
+  sort?: 'createdAt:desc' | 'createdAt:asc';
+}
+
+export const fetchBlogpostSegmentList: QueryFunction<
+  BlogpostSegmentListResponse & WithPaginationMeta,
+  ['blogpost_segment_list', BlogpostSegmentListFP],
+  PaginationParams
+> = ({ queryKey, signal, pageParam }) =>
+  getApiClient()
+    .get('/blogposts', {
+      signal,
+      params: {
+        ...BLOG_POST_SEGMENT_POPULATE,
+        sort: DEFAULTBLOG_POST_LIST_SORT,
+        pagination: pageParam,
+        ...queryKey[1],
+      },
+    })
+    .then((response) => response.data);
 
 // ==========================================================
 //                  L I N K
 // ==========================================================
-export const blogPostLink = (blogpost: Fragment<'BlogpostEntity', { slug: string }>): string =>
-  `/blog/${blogpost.attributes.slug}`;
+export const blogPostLink = (blogpost: BlogpostCore): string => `/blog/${blogpost.slug}`;

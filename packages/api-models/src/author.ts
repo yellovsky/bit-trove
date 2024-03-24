@@ -5,40 +5,37 @@ import { UPLOAD_FILE_POPULATE, type UploadFileResponse } from '@repo/api-models/
 // ==================================================
 //                    C O R E
 // ==================================================
-interface TagCore {
-  name: string;
-  slug: string;
+interface AuthorCore {
   createdAt: string;
   updatedAt: string;
   publishedAt: string;
+  display_name: string;
+  last_name: string | null;
+  first_name: string | null;
 }
 
 // ==================================================
 //              S T A N D A L O N E
 // ==================================================
-export interface TagPopulate {
-  image: UploadFileResponse;
+interface AuthorPopulate {
+  avatar: UploadFileResponse;
 }
 
-export interface Tag extends TagCore, TagPopulate {}
+export interface Author extends AuthorCore, AuthorPopulate {}
 
-export const TAG_POPULATE = {
+export const AUTHOR_POPULATE = {
   populate: {
-    image: UPLOAD_FILE_POPULATE,
-  } satisfies Populate<keyof TagPopulate>,
+    avatar: UPLOAD_FILE_POPULATE,
+  } satisfies Populate<keyof AuthorPopulate>,
 };
 
-export interface TagListResponse {
-  data: Tag[];
+export interface AuthorResponse {
+  data: { attributes: Author } | null;
 }
 
 // ==================================================
-//               S E G M E N T
+//                S E G M E N T
 // ==================================================
-type TagSegmentPopulate = TagPopulate;
-export interface TagSegment extends TagCore, TagSegmentPopulate {}
-export const TAG_SEGMENT_POPULATE = TAG_POPULATE;
-
-export interface TagSegmantListResponse {
-  data: TagSegment[];
-}
+export type AuthorSegment = Author;
+export const AUTHOR_SEGMENT_POPULATE = AUTHOR_POPULATE;
+export type AuthorSegmentResponse = AuthorResponse;
