@@ -9,6 +9,7 @@ import { holder as holderCn, link as linkCn, narrow as narrowCn } from './small-
 interface CommonSmallBadgeProps {
   icon?: ReactNode;
   narrow?: boolean;
+  textClassName?: string;
 }
 
 type SmallBadgeLinkProps = ComponentProps<typeof Link> & CommonSmallBadgeProps;
@@ -16,11 +17,11 @@ type SmallBadgeDivProps = HTMLAttributes<HTMLDivElement> & CommonSmallBadgeProps
 
 type SmallBadgeProps = SmallBadgeLinkProps | SmallBadgeDivProps;
 
-export const SmallBadge: FC<SmallBadgeProps> = ({ narrow, icon, ...rest }) => {
+export const SmallBadge: FC<SmallBadgeProps> = ({ narrow, icon, textClassName, ...rest }) => {
   const content = (
     <>
       {icon ? <div>{icon}</div> : null}
-      <div>{rest.children}</div>
+      <div className={textClassName}>{rest.children}</div>
     </>
   );
 

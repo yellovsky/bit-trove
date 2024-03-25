@@ -7,17 +7,17 @@
     "./content-page-header": "./src/content-page-header/index.tsx",
     "./small-badge": "./src/small-badges/small-badge/index.tsx",
     "./small-tag-badge": "./src/small-badges/tag-badge/index.tsx",
-    "./small-views-badge": "./src/small-badges/views-badge/index.tsx",
+    "./small-category-badge": "./src/small-badges/category-badge/index.ts",
+    "./small-views-badge": "./src/small-badges/views-badge/index.ts",
     "./small-publish-date-badge": "./src/small-badges/publish-date-badge/index.tsx",
-    "./small-author-badge": "./src/small-badges/author-badge/index.tsx",
+    "./small-author-badge": "./src/small-badges/author-badge/index.ts",
     "./small-comments-count-badge": "./src/small-badges/comments-count-badge/index.tsx",
     "./small-badges-holder": "./src/small-badges/badges-holder/index.ts",
     "./rich-text-block": "./src/blocks/rich-text-block/index.ts",
     "./two-columns-layout": "./src/layout/two-columns-layout/index.ts",
     "./main-menu": "./src/main-menu/index.ts",
     "./plate-link": "./src/plate-link/index.ts",
-    "./section-title": "./src/section-title/index.ts",
-    "./blog-post-horizontal-preview": "./src/blog-post/blog-post-horizontal-preview/index.ts"
+    "./section-title": "./src/section-title/index.ts"
   },
   "scripts": {
     "generate:component": "turbo gen react-component",

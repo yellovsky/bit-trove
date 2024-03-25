@@ -15,13 +15,13 @@
   }
 
   &.link {
-    @include i.interactive using ($state) {
-      gap: 0.25rem;
-      display: flex;
-      font-size: 0.8rem;
-      align-items: center;
-      color: var(--link-color);
+    gap: 0.25rem;
+    display: flex;
+    font-size: 0.8rem;
+    align-items: center;
+    color: var(--link-color);
 
+    @include i.interactive using ($state) {
       @if $state == 'hover' {
         color: var(--link-color-hover);
       } @else if $state == 'active' {

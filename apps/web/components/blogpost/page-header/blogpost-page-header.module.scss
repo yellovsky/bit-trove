@@ -1,5 +1,5 @@
 .holder {
-  margin-bottom: 2.4rem;
+  margin-bottom: 3rem;
 }
 
 .title {
@@ -14,4 +14,12 @@
 
 .topBadges {
   margin-bottom: 1rem;
+}
+
+.cover {
+  width: 100%;
+  object-fit: cover;
+  margin-bottom: 3rem;
+  aspect-ratio: 27 / 10;
+  object-position: center;
 }

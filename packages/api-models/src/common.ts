@@ -1,6 +1,30 @@
 // global modules
-import axios, { type AxiosInstance } from 'axios';
 import { apiHost } from '@repo/utils/api-host';
+import axios, { type AxiosInstance } from 'axios';
+
+export type IDProperty = { id: number };
+
+export interface APIResponseData<TAttributes extends object> extends IDProperty {
+  attributes: TAttributes;
+}
+
+export interface APIResponseCollectionMetadata {
+  pagination: {
+    page: number;
+    pageSize: number;
+    pageCount: number;
+    total: number;
+  };
+}
+
+export interface APIResponse<TAttributes extends object> {
+  data: APIResponseData<TAttributes> | null;
+}
+
+export interface APIResponseCollection<TAttributes extends object> {
+  data: APIResponseData<TAttributes>[];
+  meta: APIResponseCollectionMetadata;
+}
 
 export type Populate<TKey extends string> = Record<TKey, string | object>;
 
@@ -27,7 +51,7 @@ export const getApiClient = (): AxiosInstance => {
   return client;
 };
 
-export const DEFAULT_PAGE_LIMIT = 1;
+export const DEFAULT_PAGE_LIMIT = 24;
 
 export const initialPageParam = { start: 0, limit: DEFAULT_PAGE_LIMIT };
 

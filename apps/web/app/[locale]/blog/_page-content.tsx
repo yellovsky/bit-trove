@@ -4,12 +4,12 @@
 import type { FC } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { initialPageParam, getNextPageParam } from '@repo/api-models/common';
-import { BlogPostHorizontalPreview } from '@repo/ui/blog-post-horizontal-preview';
 import { fetchBlogpostSegmentList, type BlogpostSegmentListFP } from '@repo/api-models/blog-post';
 
 // local modules
+import { LoadMoreWhenVisible } from '~/components/load-more-when-visible';
 import { blogList as blogListCn, blogPage as blogPageCn } from './page.module.scss';
-import { LoadMoreWhenVisible } from '../../../components/load-more-when-visible';
+import { BlogpostHorizontalPreview } from '~/components/blogpost/horizontal-preview';
 
 interface BlogPostContentProps {
   blogPostListFP: BlogpostSegmentListFP;
@@ -33,9 +33,9 @@ export const BlogPostContent: FC<BlogPostContentProps> = (props) => {
     <div className={blogPageCn}>
       <div className={blogListCn}>
         {blogpostList.map((blogpost) => (
-          <BlogPostHorizontalPreview
+          <BlogpostHorizontalPreview
             key={blogpost.attributes.slug}
-            blogpost={blogpost.attributes}
+            blogpostResponseData={blogpost}
           />
         ))}
       </div>

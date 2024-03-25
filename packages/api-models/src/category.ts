@@ -46,6 +46,16 @@ export const CATEGORY_SEGMENT_POPULATE = {
   >,
 };
 
-export interface CategorySegmentListResponse {
-  data: CategorySegment[];
+export interface CategorySegmentEntity {
+  id: number;
+  attributes: CategorySegment;
 }
+
+export interface CategorySegmentListResponse {
+  data: CategorySegmentEntity[];
+}
+
+// ==========================================================
+//                  L I N K
+// ==========================================================
+export const categoryLink = (category: CategoryCore): string => `/categories/${category.slug}`;

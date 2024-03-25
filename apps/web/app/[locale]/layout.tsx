@@ -2,13 +2,14 @@
 import cn from 'classnames';
 import type { Metadata } from 'next';
 import { MainMenu } from '@repo/ui/main-menu';
-import { getTranslations } from 'next-intl/server';
+import { getMessages, getTranslations } from 'next-intl/server';
 import { Poppins, Roboto } from 'next/font/google';
 
 // local modules
 import { Providers } from './providers';
 import { lightTheme as lightThemeCn } from './theme.module.scss';
 import { getRSCLocaleParam, type RSCLayoutProps } from '~/src/rsc';
+import { getTimeZone, getNow } from 'next-intl/server';
 
 // =============================================================
 //                     F O N T S
@@ -47,12 +48,18 @@ const getMainMenuProps = async () => {
 
 export default async function LocaleLayout(props: RSCLayoutProps<'locale'>) {
   const locale = getRSCLocaleParam(props);
-  const menuProps = await getMainMenuProps();
+
+  const [menuProps, timeZone, now, messages] = await Promise.all([
+    getMainMenuProps(),
+    getTimeZone({ locale }),
+    getNow({ locale }),
+    getMessages({ locale }),
+  ]);
 
   return (
     <html lang={locale}>
       <body className={cn(lightThemeCn, poppins.variable, roboto.variable)}>
-        <Providers>
+        <Providers locale={locale} timeZone={timeZone} now={now} messages={messages}>
           <MainMenu {...menuProps} />
           {props.children}
         </Providers>

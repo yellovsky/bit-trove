@@ -29,8 +29,13 @@ export const AUTHOR_POPULATE = {
   } satisfies Populate<keyof AuthorPopulate>,
 };
 
+export interface AuthorEntity {
+  id: number;
+  attributes: Author;
+}
+
 export interface AuthorResponse {
-  data: { attributes: Author } | null;
+  data: AuthorEntity | null;
 }
 
 // ==================================================
@@ -38,4 +43,5 @@ export interface AuthorResponse {
 // ==================================================
 export type AuthorSegment = Author;
 export const AUTHOR_SEGMENT_POPULATE = AUTHOR_POPULATE;
+export type AuthorSegmentEntity = AuthorEntity;
 export type AuthorSegmentResponse = AuthorResponse;

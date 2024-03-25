@@ -1,35 +1,5 @@
-const incrementBlogPostViewsExtension = ({ nexus }) => {
-  const sendItemByEmailMutation = nexus.extendType({
-    type: 'Mutation',
-
-    definition(t) {
-      t.field('incrementBlogPostViews', {
-        type: nexus.nonNull('BlogpostEntity'),
-        args: { itemID: nexus.nonNull('ID') },
-        async resolve(parent, args, context) {
-          const { itemID } = args;
-
-          const founded = await strapi.entityService.findOne('api::blogpost.blogpost', itemID);
-
-          return await strapi.entityService.update('api::blogpost.blogpost', itemID, {
-            data: { views_count: (+founded.views_count || 0) + 1 },
-          });
-        },
-      });
-    },
-  });
-  return {
-    types: [sendItemByEmailMutation],
-    resolversConfig: {
-      'Mutation.incrementBlogPostViews': {
-        auth: false,
-      },
-    },
-  };
-};
-
 module.exports = {
-  register({ strapi }) {},
+  register(/*{ strapi }*/) {},
 
   /**
    * An asynchronous bootstrap function that runs before

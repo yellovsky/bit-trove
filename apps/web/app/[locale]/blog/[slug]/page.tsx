@@ -15,7 +15,7 @@ const getBlogPostFp = (props: BlogPageProps): BlogpostFP => {
   const locale = getRSCLocaleParam(props);
 
   if (!slug) notFound();
-
+  console.log({ locale, slug });
   return { locale, slug };
 };
 

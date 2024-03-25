@@ -5,5 +5,5 @@
   "tutorials_page": "Туториалы",
   "tips_and_tricks_page": "Tips & Tricks",
   "search_button": "Поиск",
-  "published on {date}": "Опубликовано {date}"
+  "published on {date}": "Опубликовано {date, date, short}"
 }

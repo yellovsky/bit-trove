@@ -1,6 +1,7 @@
 .holder {
-  text-transform: uppercase;
   color: #fff;
+  display: inline-flex;
+  text-transform: uppercase;
   background-color: rgba(0, 0, 0, 0.4);
 
   .eye {
@@ -12,5 +13,13 @@
     mask-position: center;
     mask-repeat: no-repeat;
     mask-image: url('./eye.svg');
+
+    &.hidden {
+      visibility: hidden;
+    }
+  }
+
+  .textClassName {
+    min-width: 1.5rem;
   }
 }

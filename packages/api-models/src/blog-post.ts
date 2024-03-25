@@ -1,5 +1,6 @@
 // global modules
 import * as R from 'ramda';
+import { create } from '@yornaath/batshit';
 import type { QueryFunction } from '@tanstack/react-query';
 import { POPULATE_BLOCKS, type Block } from '@repo/api-models/block';
 import type { SupportedLocale } from '@bit-trove/localization/config';
@@ -14,6 +15,9 @@ import {
   initialPageParam,
   type PaginationParams,
   type WithPaginationMeta,
+  type APIResponseCollection,
+  type APIResponse,
+  type APIResponseData,
 } from '@repo/api-models/common';
 
 import {
@@ -63,18 +67,10 @@ export const BLOG_POST_POPULATE = {
   } satisfies Populate<keyof BlogpostPopulate>,
 };
 
-interface BlogpostEntity {
-  id: number;
-  attributes: Blogpost;
-}
+export type BlogpostResponseData = APIResponseData<Blogpost>;
 
-export interface BlogpostListResponse {
-  data: BlogpostEntity[];
-}
-
-export interface BlogpostResponse {
-  data: BlogpostEntity | null;
-}
+export type BlogpostResponse = APIResponse<Blogpost>;
+export type BlogpostResponseCollection = APIResponseCollection<Blogpost>;
 
 export interface BlogpostFP {
   locale: SupportedLocale;
@@ -86,7 +82,7 @@ export const fetchBlogpost: QueryFunction<BlogpostResponse, ['blogpost', Blogpos
   signal,
 }) =>
   getApiClient()
-    .get<BlogpostListResponse>('/blogposts', {
+    .get<BlogpostResponseCollection>('/blogposts', {
       signal,
       params: {
         ...BLOG_POST_POPULATE,
@@ -106,7 +102,7 @@ const omitted = ['seo', 'blocks', 'categories'] as const;
 type BlogpostSegmentPopulate = Omit<BlogpostPopulate, (typeof omitted)[number]>;
 export interface BlogpostSegment extends BlogpostCore, BlogpostSegmentPopulate {}
 
-interface BlogpostSegmentEntity {
+export interface BlogpostSegmentEntity {
   id: number;
   attributes: BlogpostSegment;
 }
@@ -141,6 +137,42 @@ export const fetchBlogpostSegmentList: QueryFunction<
         ...queryKey[1],
       },
     })
+    .then((response) => response.data);
+
+// ==========================================================
+//          G E T   V I E W S   C O U N T
+// ==========================================================
+export interface ViewsCount {
+  views_count: number;
+}
+type ViewsCountResponse = APIResponse<ViewsCount>;
+type ViewsCountResponseCollection = APIResponseCollection<ViewsCount>;
+
+const blogpostsViews = create({
+  fetcher: (id_in: number[]) =>
+    getApiClient()
+      .get<ViewsCountResponseCollection>('/blogpost-views', {
+        params: { filters: { id: { $in: id_in } } },
+      })
+      .then((response) => response.data),
+
+  resolver: (collectionResponse, id): ViewsCountResponse => {
+    const founded = collectionResponse.data.find((response) => response.id === id);
+    return founded ? { data: founded } : { data: { id, attributes: { views_count: 0 } } };
+  },
+});
+
+export const getBlogpostViews: QueryFunction<
+  ViewsCountResponse,
+  ['blogpost_views_count', number]
+> = ({ queryKey: [_, id] }) => blogpostsViews.fetch(id);
+
+// ==========================================================
+//     I N C R E M E N T   V I E W S   C O U N T
+// ==========================================================
+export const incrementBlogpostViews = (blogpostID: number) =>
+  getApiClient()
+    .post<ViewsCountResponse>('/blogpost-views', { id: blogpostID })
     .then((response) => response.data);
 
 // ==========================================================
