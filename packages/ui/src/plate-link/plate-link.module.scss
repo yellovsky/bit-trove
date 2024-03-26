@@ -1,3 +1,5 @@
+@use '../scss/theme.module.scss' as theme;
+
 $transitionDuration: 0.3s;
 
 .plateLink {
@@ -36,7 +38,7 @@ $transitionDuration: 0.3s;
     color: #fff;
     letter-spacing: 0.2rem;
     text-transform: uppercase;
-    font-family: var(--title-font-family);
+    font-family: theme.$var--title-font-family;
 
     width: 100%;
     height: 100%;

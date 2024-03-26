@@ -2,6 +2,7 @@
 import type { FC } from 'react';
 import Image from 'next/image';
 import { Link } from '@bit-trove/localization/link';
+import { textEllipsis } from '@repo/utils/text-ellipsis';
 import { getUploadFileUrl } from '@repo/api-models/upload-file';
 import { BlogpostViewsCount } from '~/components/blogpost/views-count';
 
@@ -12,9 +13,17 @@ import {
 } from '@repo/api-models/blog-post';
 
 // local modules
+import { SmallAuthorBadge } from '@repo/ui/small-author-badge';
+import { SmallBadgesHolder } from '@repo/ui/small-badges-holder';
+import { PublishDateBadge } from '@repo/ui/small-publish-date-badge';
+
 import {
+  text as textCn,
+  title as titleCn,
+  badges as badgesCn,
   viewsCount as viewsCountCn,
   coverHolder as coverHolderCn,
+  coverRestrictor as coverRestrictorCn,
   blogPostHorizontalPreview as blogPostHorizontalPreviewCn,
 } from './blog-post-horizontal-preview.module.scss';
 
@@ -29,18 +38,35 @@ export const BlogpostHorizontalPreview: FC<BlogpostHorizontalPreviewProps> = ({
     className={blogPostHorizontalPreviewCn}
     href={blogPostLink(blogpostResponseData.attributes)}
   >
-    <div className={coverHolderCn}>
-      {!blogpostResponseData.attributes.cover.data ? null : (
-        <Image
-          unoptimized
-          alt="cover"
-          layout="fill"
-          objectFit="cover"
-          src={getUploadFileUrl(blogpostResponseData.attributes.cover.data.attributes)}
-        />
-      )}
-      <BlogpostViewsCount className={viewsCountCn} id={blogpostResponseData.id} />
+    <div className={coverRestrictorCn}>
+      <div className={coverHolderCn}>
+        {!blogpostResponseData.attributes.cover.data ? null : (
+          <Image
+            unoptimized
+            alt="cover"
+            layout="fill"
+            objectFit="cover"
+            src={getUploadFileUrl(blogpostResponseData.attributes.cover.data.attributes)}
+          />
+        )}
+        <BlogpostViewsCount className={viewsCountCn} id={blogpostResponseData.id} />
+      </div>
     </div>
-    <div>{blogpostResponseData.attributes.title}</div>
+
+    <div>
+      <h5 className={titleCn}>{blogpostResponseData.attributes.title}</h5>
+      <SmallBadgesHolder className={badgesCn}>
+        <PublishDateBadge date={blogpostResponseData.attributes.publishedAt} />
+        {!blogpostResponseData.attributes.author.data ? null : (
+          <SmallAuthorBadge author={blogpostResponseData.attributes.author.data.attributes} />
+        )}
+      </SmallBadgesHolder>
+
+      <div className={textCn}>
+        {blogpostResponseData.attributes.short_description
+          ? textEllipsis(blogpostResponseData.attributes.short_description)
+          : null}
+      </div>
+    </div>
   </Link>
 );

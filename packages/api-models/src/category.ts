@@ -1,8 +1,15 @@
 // global modules
 import * as R from 'ramda';
-import type { Populate } from '@repo/api-models/common';
+import type { QueryFunction } from '@tanstack/react-query';
 import { SEO_SEGMENT_POPULATE, type SeoSegment } from '@repo/api-models/seo';
 import { UPLOAD_FILE_POPULATE, type UploadFileResponse } from '@repo/api-models/upload-file';
+
+import {
+  getApiClient,
+  type APIResponseCollection,
+  type APIResponseData,
+  type Populate,
+} from '@repo/api-models/common';
 
 // ==================================================
 //                    C O R E
@@ -36,9 +43,9 @@ export const CATEGORY_POPULATE = {
 // ==================================================
 //               S E G M E N T
 // ==================================================
-const omitted: Array<keyof CategoryPopulate> = ['seo'];
+const omitted = ['seo'] as const;
 type CategorySegmentPopulate = Omit<CategoryPopulate, (typeof omitted)[number]>;
-interface CategorySegment extends CategoryCore, CategorySegmentPopulate {}
+export interface CategorySegment extends CategoryCore, CategorySegmentPopulate {}
 
 export const CATEGORY_SEGMENT_POPULATE = {
   populate: R.omit(omitted, CATEGORY_POPULATE.populate) satisfies Populate<
@@ -51,11 +58,40 @@ export interface CategorySegmentEntity {
   attributes: CategorySegment;
 }
 
-export interface CategorySegmentListResponse {
-  data: CategorySegmentEntity[];
-}
+export type CatgorySegmentResponseData = APIResponseData<CategorySegment>;
+export type CatgorySegmentResponseCollection = APIResponseCollection<CategorySegment>;
 
 // ==========================================================
-//                  L I N K
+//   Q U I C K   C O L L E C T I O N   C O L L E C T I O N
+// ==========================================================
+export type QuickCategoryCollectionFP = {
+  locale: string;
+};
+
+export type QuickCategoryResponseCollection = CatgorySegmentResponseCollection;
+export type QuickCategoryCollectionQueryKey = [
+  'quick_category_collection',
+  QuickCategoryCollectionFP,
+];
+
+// TODO: await for https://github.com/strapi/strapi/issues/19901 and add SingleType to strappi
+export const fetchQuickCategoryCollection: QueryFunction<
+  QuickCategoryResponseCollection,
+  QuickCategoryCollectionQueryKey
+> = ({ queryKey: [_, { locale }], signal }) =>
+  getApiClient()
+    .get<QuickCategoryResponseCollection>('/categories', {
+      signal,
+      params: {
+        ...CATEGORY_SEGMENT_POPULATE,
+        sort: 'name:asc',
+        pagination: { start: 0, limit: 8 },
+        locale,
+      },
+    })
+    .then((response) => response.data);
+
+// ==========================================================
+//                      L I N K
 // ==========================================================
 export const categoryLink = (category: CategoryCore): string => `/categories/${category.slug}`;

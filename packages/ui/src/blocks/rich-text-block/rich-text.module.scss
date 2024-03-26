@@ -1,7 +1,9 @@
+@use '../../scss/theme.module.scss' as theme;
+
 .holder {
   line-height: 1.6;
   word-wrap: break-word;
-  color: var(--text-color);
+  color: theme.$var-color--text;
   -webkit-font-smoothing: antialiased;
 
   p {

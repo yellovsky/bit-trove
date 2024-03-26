@@ -772,6 +772,12 @@ export interface ApiBlogpostBlogpost extends Schema.CollectionType {
       }>;
     categories: Attribute.Relation<'api::blogpost.blogpost', 'oneToMany', 'api::category.category'>;
     author: Attribute.Relation<'api::blogpost.blogpost', 'manyToOne', 'api::author.author'>;
+    short_description: Attribute.Text &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

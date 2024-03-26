@@ -91,6 +91,14 @@
       "relation": "manyToOne",
       "target": "api::author.author",
       "inversedBy": "blog_posts"
+    },
+    "short_description": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "text"
     }
   }
 }

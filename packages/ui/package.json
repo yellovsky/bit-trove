@@ -17,7 +17,8 @@
     "./two-columns-layout": "./src/layout/two-columns-layout/index.ts",
     "./main-menu": "./src/main-menu/index.ts",
     "./plate-link": "./src/plate-link/index.ts",
-    "./section-title": "./src/section-title/index.ts"
+    "./section-title": "./src/section-title/index.ts",
+    "./simple-square-card": "./src/cards/simple-square-card/index.ts"
   },
   "scripts": {
     "generate:component": "turbo gen react-component",

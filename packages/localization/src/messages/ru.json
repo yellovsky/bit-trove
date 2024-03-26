@@ -5,5 +5,8 @@
   "tutorials_page": "Туториалы",
   "tips_and_tricks_page": "Tips & Tricks",
   "search_button": "Поиск",
-  "published on {date}": "Опубликовано {date, date, short}"
+  "published on {date}": "Опубликовано {date, date, short}",
+  "return to safety": "На главную",
+  "404 error": "Ошибка 404",
+  "do not panic": "Без паники!"
 }

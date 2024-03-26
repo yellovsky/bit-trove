@@ -40,6 +40,7 @@ interface BlogpostCore {
   updatedAt: string;
   publishedAt: string;
   views_count: string | null;
+  short_description: string | null;
 }
 
 // ==================================================

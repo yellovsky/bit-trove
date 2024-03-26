@@ -1,0 +1,70 @@
+@use 'sass:map';
+@use 'sass:string';
+
+// palette
+$var-color--accent: var(--color--accent);
+$var-color--accent-hover: var(--color--accent-hover);
+$var-color--accent-active: var(--color--accent-active);
+$var-color--text: var(--color--text);
+$var-color--text-passive: var(--color--text-passive);
+$var-color--title: var(--color--title);
+$var-color--page-bg: var(--color--page-bg);
+$var-color--pending-bg: var(--color--pending-bg);
+
+$palette-vars: (
+  $var-color--accent,
+  $var-color--accent-hover,
+  $var-color--accent-active,
+  $var-color--text,
+  $var-color--text-passive,
+  $var-color--title,
+  $var-color--page-bg,
+  $var-color--pending-bg
+);
+
+// variables
+$var--page-top-padding: var(--page-top-padding);
+$var--page-bottom-padding: var(--page-bottom-padding);
+$var--general-font-family: var(--general-font-family);
+$var--title-font-family: var(--title-font-family);
+
+$variable-vars: ($var--page-top-padding, $var--page-bottom-padding);
+
+@function get-css-var-name($var) {
+  @return string.slice($var, 7, -2);
+}
+
+@mixin palette($theme) {
+  $palette: map.get($theme, 'palette');
+
+  @each $var in $palette-vars {
+    $css-var-name: get-css-var-name($var);
+    $color: map.get($palette, $css-var-name);
+
+    @if $color == null {
+      @error "Provide #{$css-var-name} palette color";
+    }
+
+    --#{$css-var-name}: #{$color};
+  }
+}
+
+@mixin variables($theme) {
+  $variables: map.get($theme, 'variables');
+
+  @each $var in $variable-vars {
+    $css-var-name: get-css-var-name($var);
+    $value: map.get($variables, $css-var-name);
+
+    @if $value == null {
+      @error "Provide #{$css-var-name} variable value";
+    }
+
+    --#{$css-var-name}: #{$value};
+  }
+}
+
+@mixin theme($theme) {
+  @include palette($theme);
+  @include variables($theme);
+}

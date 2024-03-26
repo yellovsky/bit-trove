@@ -1,16 +1,24 @@
+@use '../../../../../packages/ui/src/scss/theme.module.scss' as theme;
+@use '../../../../../packages/ui/src/scss/interactive.module.scss' as i;
+@use '../../../../../packages/ui/src/scss/screen-interval.module.scss' as si;
+
 .blogPostHorizontalPreview {
-  gap: 1rem;
-  display: flex;
+  display: grid;
+  column-gap: 2rem;
+  grid-template-columns: 13.5rem 1fr;
+
+  .coverRestrictor {
+    width: 100%;
+    max-width: 13.5rem;
+  }
 
   .coverHolder {
-    width: 100%;
     overflow: hidden;
     position: relative;
-    max-width: 13.5rem;
     aspect-ratio: 4 / 3;
     border-radius: 0.3rem;
     transition: scale 0.3s;
-    background-color: var(--pending-bg-color);
+    background-color: theme.$var-color--pending-bg;
   }
 
   &:hover {
@@ -23,5 +31,58 @@
     right: 0.8rem;
     bottom: 1.2rem;
     position: absolute;
+  }
+
+  @include i.interactive using ($state) {
+    @if ($state == 'hover') {
+      .title {
+        color: theme.$var-color--accent-hover;
+      }
+    } @else if ($state == 'active') {
+      .title {
+        color: theme.$var-color--accent-active;
+      }
+    } @else if ($state == 'focus') {
+      @include i.focus-outline-style;
+
+      .title {
+        color: theme.$var-color--accent-hover;
+      }
+    }
+  }
+
+  .title {
+    font-size: 1.375rem;
+    margin-bottom: 0.625rem;
+    color: theme.$var-color--title;
+  }
+
+  .badges {
+    margin-bottom: 1rem;
+  }
+
+  .text {
+    line-height: 1.7;
+    color: theme.$var-color--text;
+  }
+
+  @include si.screen-interval($to: 'md') {
+    margin-bottom: 2rem;
+    grid-template-columns: 1fr;
+
+    .coverRestrictor {
+      max-width: initial;
+      margin-bottom: 1rem;
+    }
+
+    .coverHolder {
+      aspect-ratio: 27 / 10;
+    }
+
+    &:hover {
+      .coverHolder {
+        scale: none;
+      }
+    }
   }
 }

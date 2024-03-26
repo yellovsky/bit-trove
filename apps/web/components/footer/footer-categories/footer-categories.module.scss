@@ -1,0 +1,35 @@
+@use '../../../../../packages/ui/src/scss/theme.module.scss' as theme;
+@use '../../../../../packages/ui/src/scss/screen-interval.module.scss' as si;
+
+.footerCategories {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  border-bottom: 0.0625rem solid #333;
+
+  .categories {
+    gap: 2rem;
+    display: flex;
+    justify-content: center;
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .categoryCard {
+    width: min(20%, 10rem);
+  }
+
+  .title {
+    font-size: 2.75rem;
+    text-align: center;
+    margin-bottom: 0.75rem;
+    color: theme.$var-color--title;
+  }
+
+  .subtitle {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  @include si.screen-interval($to: 'md') {
+    display: none;
+  }
+}

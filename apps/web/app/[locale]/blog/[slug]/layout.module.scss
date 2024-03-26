@@ -1,3 +1,5 @@
+@use '../../../../../../packages/ui/src/scss/theme.module.scss' as theme;
+
 .pageHolder {
-  padding-top: var(--page-top-padding);
+  padding-top: theme.$var--page-top-padding;
 }

@@ -1,7 +1,8 @@
+@use '../../../../../packages/ui/src/scss/theme.module.scss' as theme;
 @use '../../../../../packages/ui/src/scss/screen-interval.module.scss' as si;
 
 .blogPage {
-  padding-top: var(--page-top-padding);
+  padding-top: theme.$var--page-top-padding;
 
   @include si.page-padding() using ($padding) {
     padding-left: $padding;

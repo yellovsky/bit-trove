@@ -2,14 +2,16 @@
 import cn from 'classnames';
 import type { Metadata } from 'next';
 import { MainMenu } from '@repo/ui/main-menu';
-import { getMessages, getTranslations } from 'next-intl/server';
 import { Poppins, Roboto } from 'next/font/google';
+import { getTimeZone, getNow } from 'next-intl/server';
+import { getMessages, getTranslations } from 'next-intl/server';
 
 // local modules
 import { Providers } from './providers';
-import { lightTheme as lightThemeCn } from './theme.module.scss';
+import { Footer } from '~/components/footer';
+import { layout as layoutCn } from './layout.module.scss';
+import { ThemeProvider } from '~/components/theme-provider';
 import { getRSCLocaleParam, type RSCLayoutProps } from '~/src/rsc';
-import { getTimeZone, getNow } from 'next-intl/server';
 
 // =============================================================
 //                     F O N T S
@@ -58,10 +60,15 @@ export default async function LocaleLayout(props: RSCLayoutProps<'locale'>) {
 
   return (
     <html lang={locale}>
-      <body className={cn(lightThemeCn, poppins.variable, roboto.variable)}>
+      <body className={cn(poppins.variable, roboto.variable)}>
         <Providers locale={locale} timeZone={timeZone} now={now} messages={messages}>
-          <MainMenu {...menuProps} />
-          {props.children}
+          <ThemeProvider className={layoutCn}>
+            <MainMenu {...menuProps} />
+            <div>{props.children}</div>
+            <ThemeProvider dark>
+              <Footer locale={locale} />
+            </ThemeProvider>
+          </ThemeProvider>
         </Providers>
       </body>
     </html>

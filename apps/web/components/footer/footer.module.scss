@@ -1,0 +1,54 @@
+@use '../../../../packages/ui/src/scss/theme.module.scss' as theme;
+@use '../../../../packages/ui/src/scss/screen-interval.module.scss' as si;
+
+.pagePadding {
+  @include si.page-padding using ($padding) {
+    padding-left: $padding;
+    padding-right: $padding;
+  }
+}
+
+.categoryStripe {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  border-bottom: 0.0625rem solid #333;
+
+  @include si.screen-interval($to: 'md') {
+    display: none;
+  }
+}
+
+.mainStripe {
+  display: grid;
+  column-gap: 1fr;
+  padding-top: 3rem;
+  padding-bottom: 1.8rem;
+  grid-template-columns: 1fr 1fr 1fr;
+  border-bottom: 0.0625rem solid #333;
+
+  .slogan {
+    margin-bottom: 1rem;
+  }
+
+  .logo {
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .socialMediaPlaceholder {
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 100%;
+    background-color: theme.$var-color--pending-bg;
+  }
+
+  .socialHolder {
+    gap: 0.75rem;
+    display: flex;
+  }
+}
+
+.copyrightHolder {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}

@@ -3,10 +3,12 @@
 // global modules
 import type { FC } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { TwoColumnsLayout } from '@repo/ui/two-columns-layout';
 import { initialPageParam, getNextPageParam } from '@repo/api-models/common';
 import { fetchBlogpostSegmentList, type BlogpostSegmentListFP } from '@repo/api-models/blog-post';
 
 // local modules
+import { Aside } from '~/components/aside';
 import { LoadMoreWhenVisible } from '~/components/load-more-when-visible';
 import { blogList as blogListCn, blogPage as blogPageCn } from './page.module.scss';
 import { BlogpostHorizontalPreview } from '~/components/blogpost/horizontal-preview';
@@ -28,9 +30,8 @@ export const BlogPostContent: FC<BlogPostContentProps> = (props) => {
   if (status === 'error') return <div>{error.message}</div>;
 
   const blogpostList = data?.pages.map((page) => page.data).flat();
-  console.log('blogpostList', blogpostList);
   return (
-    <div className={blogPageCn}>
+    <TwoColumnsLayout className={blogPageCn} extraContent={<Aside />}>
       <div className={blogListCn}>
         {blogpostList.map((blogpost) => (
           <BlogpostHorizontalPreview
@@ -47,6 +48,6 @@ export const BlogPostContent: FC<BlogPostContentProps> = (props) => {
         isFetchingNextPage={isFetchingNextPage}
         trigger={fetchNextPage}
       />
-    </div>
+    </TwoColumnsLayout>
   );
 };

@@ -1,3 +1,5 @@
+@use '../scss/theme.module.scss' as theme;
+
 @mixin focus-visible {
   &:focus-visible {
     @content;
@@ -12,7 +14,7 @@
 
 @mixin focus-outline-style {
   outline: none;
-  box-shadow: 0 0 0 0.0625rem var(--link-color-hover);
+  box-shadow: 0 0 0 0.0625rem theme.$var-color--accent-hover;
 }
 
 @mixin interactive {

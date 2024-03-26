@@ -1,0 +1,13 @@
+@use '../../../../packages/ui/src/scss/theme.module.scss' as theme;
+
+.holder {
+  background-color: theme.$var-color--pending-bg;
+
+  &.square {
+    aspect-ratio: 1 / 1;
+  }
+
+  &.horizontal {
+    aspect-ratio: 728 / 90;
+  }
+}

@@ -1,3 +1,4 @@
+@use '../../scss/theme.module.scss' as theme;
 @use '../../scss/interactive.module.scss' as i;
 
 .holder {
@@ -19,13 +20,16 @@
     display: flex;
     font-size: 0.8rem;
     align-items: center;
-    color: var(--link-color);
+    color: theme.$var-color--accent;
 
     @include i.interactive using ($state) {
       @if $state == 'hover' {
-        color: var(--link-color-hover);
+        color: theme.$var-color--accent-hover;
       } @else if $state == 'active' {
-        color: var(--link-color-active);
+        color: theme.$var-color--accent-active;
+      } @else if $state == 'focus' {
+        @include i.focus-outline-style;
+        color: theme.$var-color--accent-active;
       }
     }
   }
