@@ -1,15 +1,11 @@
 @use '../../../../packages/ui/src/scss/theme.module.scss' as theme;
 @use '../../../../packages/ui/src/scss/interactive.module.scss' as i;
 @use '../../../../packages/ui/src/scss/screen-interval.module.scss' as si;
+@use '../../../../packages/ui/src/scss/paddings.module.scss' as paddings;
 
 .notfoundHolder {
-  padding-top: theme.$var--page-top-padding;
-  padding-bottom: theme.$var--page-bottom-padding;
-
-  @include si.page-padding using ($padding) {
-    padding-left: $padding;
-    padding-right: $padding;
-  }
+  @include paddings.page-padding-vertical;
+  @include paddings.page-padding-horizontal;
 
   .imgHolder {
     display: block;

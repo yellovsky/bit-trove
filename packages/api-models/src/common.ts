@@ -1,5 +1,6 @@
 // global modules
 import { apiHost } from '@repo/utils/api-host';
+import type { QueryFunction } from '@tanstack/react-query';
 import axios, { type AxiosInstance } from 'axios';
 
 export type IDProperty = { id: number };
@@ -60,3 +61,6 @@ export const getNextPageParam = (lastPage: WithPaginationMeta) => {
   const nextParams = { start: start + DEFAULT_PAGE_LIMIT * limit, limit: limit };
   return nextParams.start < total ? nextParams : undefined;
 };
+
+export type QueryKeyOf<TQueryFn> =
+  TQueryFn extends QueryFunction<unknown, infer TKey> ? TKey : never;

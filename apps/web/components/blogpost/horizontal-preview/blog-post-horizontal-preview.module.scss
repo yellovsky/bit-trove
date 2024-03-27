@@ -21,7 +21,7 @@
     background-color: theme.$var-color--pending-bg;
   }
 
-  &:hover {
+  &:not(.pending):hover {
     .coverHolder {
       scale: 1.1;
     }
@@ -52,9 +52,7 @@
   }
 
   .title {
-    font-size: 1.375rem;
     margin-bottom: 0.625rem;
-    color: theme.$var-color--title;
   }
 
   .badges {
@@ -84,5 +82,19 @@
         scale: none;
       }
     }
+  }
+}
+
+.pendingLine {
+  display: block;
+  margin-bottom: 0.4rem;
+  background-color: theme.$var-color--pending-bg;
+
+  &:nth-child(1) {
+    width: 80%;
+  }
+
+  &:nth-child(2) {
+    width: 90%;
   }
 }

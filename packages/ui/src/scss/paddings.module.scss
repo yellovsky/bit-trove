@@ -1,0 +1,14 @@
+@use './theme.module.scss' as theme;
+@use './screen-interval.module.scss' as si;
+
+@mixin page-padding-vertical {
+  padding-top: theme.$var--page-top-padding;
+  padding-bottom: theme.$var--page-bottom-padding;
+}
+
+@mixin page-padding-horizontal {
+  @include si.page-padding using ($padding) {
+    padding-left: $padding;
+    padding-right: $padding;
+  }
+}

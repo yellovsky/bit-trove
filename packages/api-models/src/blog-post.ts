@@ -22,7 +22,7 @@ import {
 
 import {
   CATEGORY_SEGMENT_POPULATE,
-  type CategorySegmentListResponse,
+  type CatgorySegmentResponseCollection,
 } from '@repo/api-models/category';
 
 // ==================================================
@@ -52,7 +52,7 @@ interface BlogpostPopulate {
   tags: TagListResponse;
   author: AuthorSegmentResponse;
   cover: UploadFileResponse;
-  categories: CategorySegmentListResponse;
+  categories: CatgorySegmentResponseCollection;
 }
 
 export interface Blogpost extends BlogpostCore, BlogpostPopulate {}
@@ -78,10 +78,10 @@ export interface BlogpostFP {
   slug: string;
 }
 
-export const fetchBlogpost: QueryFunction<BlogpostResponse, ['blogpost', BlogpostFP]> = ({
-  queryKey: [_, { locale, slug }],
-  signal,
-}) =>
+export const fetchBlogpost = (
+  { locale, slug }: BlogpostFP,
+  signal?: AbortSignal
+): Promise<BlogpostResponse> =>
   getApiClient()
     .get<BlogpostResponseCollection>('/blogposts', {
       signal,
@@ -123,7 +123,7 @@ export interface BlogpostSegmentListFP {
   sort?: 'createdAt:desc' | 'createdAt:asc';
 }
 
-export const fetchBlogpostSegmentList: QueryFunction<
+export const fetchBlogpostSegmentCollection: QueryFunction<
   BlogpostSegmentListResponse & WithPaginationMeta,
   ['blogpost_segment_list', BlogpostSegmentListFP],
   PaginationParams

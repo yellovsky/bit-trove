@@ -18,7 +18,8 @@
     "./main-menu": "./src/main-menu/index.ts",
     "./plate-link": "./src/plate-link/index.ts",
     "./section-title": "./src/section-title/index.ts",
-    "./simple-square-card": "./src/cards/simple-square-card/index.ts"
+    "./simple-square-card": "./src/cards/simple-square-card/index.ts",
+    "./title": "./src/title/index.ts"
   },
   "scripts": {
     "generate:component": "turbo gen react-component",
@@ -37,6 +38,7 @@
     "remark-gfm": "^4.0.0"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
     "@turbo/gen": "^1.12.4",

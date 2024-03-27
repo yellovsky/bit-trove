@@ -4,7 +4,12 @@ import { Link } from '@bit-trove/localization/link';
 import type { ComponentProps, FC, HTMLAttributes, ReactNode } from 'react';
 
 // local modules
-import { holder as holderCn, link as linkCn, narrow as narrowCn } from './small-badge.module.scss';
+import {
+  link as linkCn,
+  holder as holderCn,
+  narrow as narrowCn,
+  pending as pendingCn,
+} from './small-badge.module.scss';
 
 interface CommonSmallBadgeProps {
   icon?: ReactNode;
@@ -37,3 +42,9 @@ export const SmallBadge: FC<SmallBadgeProps> = ({ narrow, icon, textClassName, .
     </div>
   );
 };
+
+export const SmallBadgePending: FC<{ className?: string }> = ({ ...rest }) => (
+  <div {...rest} className={cn(rest.className, pendingCn, holderCn)}>
+    &nbsp;
+  </div>
+);

@@ -22,17 +22,12 @@ export const BlogpostViewsCount: FC<BlogpostViewsCountProps> = ({ className, id,
 
   const { mutate } = useMutation({
     mutationFn: incrementBlogpostViews,
-    onSuccess: (response) => {
-      {
-        console.log('response', response);
-        queryClient.setQueryData(['blogpost_views_count', id], response);
-      }
-    },
+    onSuccess: (response) => queryClient.setQueryData(['blogpost_views_count', id], response),
   });
 
   useEffect(() => {
     if (increment) mutate(id);
   }, [mutate, id, increment]);
-  console.log('data', data);
-  return <SmallViewsBadge className={className} viewsCount={data?.data.attributes.views_count} />;
+
+  return <SmallViewsBadge className={className} viewsCount={data?.data?.attributes.views_count} />;
 };

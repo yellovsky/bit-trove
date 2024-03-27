@@ -11,6 +11,11 @@
   border-radius: 0.5rem;
   padding: 0.25rem 0.75rem;
 
+  &.pending {
+    width: 6rem;
+    background-color: theme.$var-color--pending-bg;
+  }
+
   &.narrow {
     padding: 0.25rem 0;
   }

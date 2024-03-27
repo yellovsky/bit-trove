@@ -1,5 +1,6 @@
 // global modules
 import cn from 'classnames';
+import { Title } from '@repo/ui/title';
 import type { FC, PropsWithChildren, ReactNode } from 'react';
 import { SmallBadgesHolder } from '@repo/ui/small-badges-holder';
 
@@ -29,7 +30,9 @@ export const ContentPageHeader: FC<ContentPageHeaderProps> = (props) => {
   return (
     <div className={cn(props.className, holderCn)}>
       {topBadges}
-      <h1 className={titleCn}>{props.children}</h1>
+      <Title as="h1" className={titleCn}>
+        {props.children}
+      </Title>
       {bottomBadges}
     </div>
   );

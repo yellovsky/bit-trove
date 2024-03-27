@@ -1,5 +1,5 @@
-@use '../../../../../../packages/ui/src/scss/theme.module.scss' as theme;
+@use '../../../../../../packages/ui/src/scss/paddings.module.scss' as paddings;
 
 .pageHolder {
-  padding-top: theme.$var--page-top-padding;
+  @include paddings.page-padding-vertical;
 }

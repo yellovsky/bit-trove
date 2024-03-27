@@ -1,11 +1,9 @@
 @use '../scss/interactive.module.scss' as i;
+@use '../scss/paddings.module.scss' as paddings;
 @use '../scss/screen-interval.module.scss' as si;
 
 .wrapper {
-  @include si.page-padding using ($padding) {
-    padding-left: $padding;
-    padding-right: $padding;
-  }
+  @include paddings.page-padding-horizontal;
 
   .holder {
     padding-top: 1.6rem;

@@ -2,36 +2,48 @@
 
 // global modules
 import type { FC } from 'react';
+import type { QueryKeyOf } from '@repo/api-models/common';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { TwoColumnsLayout } from '@repo/ui/two-columns-layout';
+import { fetchBlogpostSegmentCollection } from '@repo/api-models/blog-post';
 import { initialPageParam, getNextPageParam } from '@repo/api-models/common';
-import { fetchBlogpostSegmentList, type BlogpostSegmentListFP } from '@repo/api-models/blog-post';
 
 // local modules
-import { Aside } from '~/components/aside';
+import { blogList as blogListCn } from './blogpost-list.module.scss';
 import { LoadMoreWhenVisible } from '~/components/load-more-when-visible';
-import { blogList as blogListCn, blogPage as blogPageCn } from './page.module.scss';
-import { BlogpostHorizontalPreview } from '~/components/blogpost/horizontal-preview';
+import {
+  BlogpostHorizontalPreview,
+  BlogpostHorizontalPreviewPending,
+} from '~/components/blogpost/horizontal-preview';
 
-interface BlogPostContentProps {
-  blogPostListFP: BlogpostSegmentListFP;
+interface BlogpostListClientProps {
+  queryKey: QueryKeyOf<typeof fetchBlogpostSegmentCollection>;
 }
 
-export const BlogPostContent: FC<BlogPostContentProps> = (props) => {
+export const BlogpostListClient: FC<BlogpostListClientProps> = ({ queryKey }) => {
   const { data, status, error, isFetching, hasNextPage, isFetchingNextPage, fetchNextPage } =
     useInfiniteQuery({
-      queryKey: ['blogpost_segment_list', props.blogPostListFP],
-      queryFn: fetchBlogpostSegmentList,
+      queryKey,
+      queryFn: fetchBlogpostSegmentCollection,
       initialPageParam,
       getNextPageParam,
     });
 
-  if (status === 'pending') return <div>loading...</div>;
+  if (status === 'pending') {
+    return (
+      <>
+        <BlogpostHorizontalPreviewPending />
+        <BlogpostHorizontalPreviewPending />
+        <BlogpostHorizontalPreviewPending />
+      </>
+    );
+  }
+
   if (status === 'error') return <div>{error.message}</div>;
 
   const blogpostList = data?.pages.map((page) => page.data).flat();
+
   return (
-    <TwoColumnsLayout className={blogPageCn} extraContent={<Aside />}>
+    <>
       <div className={blogListCn}>
         {blogpostList.map((blogpost) => (
           <BlogpostHorizontalPreview
@@ -41,13 +53,13 @@ export const BlogPostContent: FC<BlogPostContentProps> = (props) => {
         ))}
       </div>
 
-      <div>{isFetching && !isFetchingNextPage ? 'Fetching...' : null}</div>
+      <div>{isFetching && !isFetchingNextPage ? <BlogpostHorizontalPreviewPending /> : null}</div>
 
       <LoadMoreWhenVisible
         hasNextPage={hasNextPage}
         isFetchingNextPage={isFetchingNextPage}
         trigger={fetchNextPage}
       />
-    </TwoColumnsLayout>
+    </>
   );
 };

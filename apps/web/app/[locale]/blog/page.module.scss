@@ -1,17 +1,6 @@
-@use '../../../../../packages/ui/src/scss/theme.module.scss' as theme;
-@use '../../../../../packages/ui/src/scss/screen-interval.module.scss' as si;
+@use '../../../../../packages/ui/src/scss/paddings.module.scss' as paddings;
 
 .blogPage {
-  padding-top: theme.$var--page-top-padding;
-
-  @include si.page-padding() using ($padding) {
-    padding-left: $padding;
-    padding-right: $padding;
-  }
-}
-
-.blogList {
-  gap: 2rem;
-  display: flex;
-  flex-direction: column;
+  @include paddings.page-padding-vertical;
+  @include paddings.page-padding-horizontal;
 }

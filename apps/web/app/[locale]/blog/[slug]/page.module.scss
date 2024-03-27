@@ -1,10 +1,11 @@
-@use '../../../../../../packages/ui/src/scss/screen-interval.module.scss' as si;
+@use '../../../../../../packages/ui/src/scss/paddings.module.scss' as paddings;
 
 .pagePadding {
-  @include si.page-padding() using ($padding) {
-    padding-left: $padding;
-    padding-right: $padding;
-  }
+  @include paddings.page-padding-horizontal;
+}
+
+.contentRestictor {
+  overflow: hidden;
 }
 
 .cover {

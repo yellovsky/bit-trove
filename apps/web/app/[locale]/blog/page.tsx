@@ -1,29 +1,18 @@
 // global modules
-import { initialPageParam } from '@repo/api-models/common';
-import { fetchBlogpostSegmentList } from '@repo/api-models/blog-post';
-import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
+import { TwoColumnsLayout } from '@repo/ui/two-columns-layout';
 
 // local modules
-import { BlogPostContent } from './_page-content';
+import { Aside } from '~/components/aside';
+import { BlogpostList } from '~/components/blogpost-list';
+import { blogPage as blogPageCn } from './page.module.scss';
 import { getRSCLocaleParam, type RSCPageProps } from '~/src/rsc';
 
-export default async function BlogPage(props: RSCPageProps<'locale'>) {
+export default function BlogPage(props: RSCPageProps<'locale'>) {
   const locale = getRSCLocaleParam(props);
 
-  const queryClient = new QueryClient();
-
-  const blogPostListFP = { locale };
-  await queryClient.prefetchInfiniteQuery({
-    queryKey: ['blogpost_segment_list', blogPostListFP],
-    queryFn: fetchBlogpostSegmentList,
-    initialPageParam,
-  });
-
-  const dehydratedState = dehydrate(queryClient);
-
   return (
-    <HydrationBoundary state={dehydratedState}>
-      <BlogPostContent blogPostListFP={blogPostListFP} />
-    </HydrationBoundary>
+    <TwoColumnsLayout className={blogPageCn} extraContent={<Aside locale={locale} />}>
+      <BlogpostList locale={locale} />
+    </TwoColumnsLayout>
   );
 }

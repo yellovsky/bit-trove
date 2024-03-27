@@ -1,18 +1,19 @@
 // global modules
-import type { ComponentProps, FC } from 'react';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import Markdown from 'react-markdown';
+import type { ComponentProps, FC } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dracula } from 'react-syntax-highlighter/dist/cjs/styles/prism';
-import { RichTextBlockragment } from '@repo/api-models/block';
+import type { RichTextBlock as RichTextBlockType } from '@repo/api-models/block';
 
 // local modules
 import { holder as holderCn } from './rich-text.module.scss';
 
 interface RichTextProps {
-  block: RichTextBlockragment;
+  block: RichTextBlockType;
 }
+
 const components: ComponentProps<typeof Markdown>['components'] = {
   code: ({ inline, className, children, ...rest }: any) => {
     const match = /language-(\w+)/.exec(className || '');

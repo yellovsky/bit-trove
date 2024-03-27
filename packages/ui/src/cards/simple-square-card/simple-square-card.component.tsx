@@ -22,7 +22,9 @@ interface SimpleSquareCardProps {
 export const SimpleSquareCard: FC<SimpleSquareCardProps> = ({ className, href, cover, name }) => (
   <Link className={cn(cardHolderCn, className)} href={href}>
     <div className={imageHolderCn}>
-      {cover ? <Image alt="cover" unoptimized layout="fill" objectFit="cover" src={cover} /> : null}
+      {cover ? (
+        <Image fill unoptimized style={{ objectFit: 'cover' }} alt="cover" src={cover} />
+      ) : null}
     </div>
     <div className={textHolderCn}>{name}</div>
   </Link>

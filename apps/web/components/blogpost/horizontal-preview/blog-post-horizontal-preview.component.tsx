@@ -1,6 +1,7 @@
 // global modules
-import type { FC } from 'react';
 import Image from 'next/image';
+import type { FC } from 'react';
+import { Title } from '@repo/ui/title';
 import { Link } from '@bit-trove/localization/link';
 import { textEllipsis } from '@repo/utils/text-ellipsis';
 import { getUploadFileUrl } from '@repo/api-models/upload-file';
@@ -54,7 +55,9 @@ export const BlogpostHorizontalPreview: FC<BlogpostHorizontalPreviewProps> = ({
     </div>
 
     <div>
-      <h5 className={titleCn}>{blogpostResponseData.attributes.title}</h5>
+      <Title as="h4" className={titleCn}>
+        {blogpostResponseData.attributes.title}
+      </Title>
       <SmallBadgesHolder className={badgesCn}>
         <PublishDateBadge date={blogpostResponseData.attributes.publishedAt} />
         {!blogpostResponseData.attributes.author.data ? null : (
