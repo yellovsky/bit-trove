@@ -19,7 +19,11 @@
     "./plate-link": "./src/plate-link/index.ts",
     "./section-title": "./src/section-title/index.ts",
     "./simple-square-card": "./src/cards/simple-square-card/index.ts",
-    "./title": "./src/title/index.ts"
+    "./title": "./src/title/index.ts",
+    "./short-thought": "./src/thought/short-thought/index.ts",
+    "./short-thought-holder": "./src/thought/short-thought-holder/index.ts",
+    "./short-thought-year": "./src/thought/short-thought-year/index.ts",
+    "./short-thought-month": "./src/thought/short-thought-month/index.ts"
   },
   "scripts": {
     "generate:component": "turbo gen react-component",
@@ -28,6 +32,7 @@
   "dependencies": {
     "@bit-trove/localization": "*",
     "@repo/api-models": "*",
+    "@szhsin/react-accordion": "^1.2.3",
     "classnames": "^2.5.1",
     "next": "^14.1.1",
     "next-intl": "^3.9.5",

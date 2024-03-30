@@ -1,0 +1,55 @@
+$marker-width: 2rem;
+
+.linedSection {
+  gap: 1rem;
+  display: flex;
+}
+
+.linedColumn {
+  display: grid;
+  grid-template-rows: 0.5rem 2rem 1fr;
+  grid-template-columns: $marker-width;
+
+  &.withMarker {
+    grid-row-gap: 0.125rem;
+  }
+}
+
+.topLine {
+  margin: 0 auto;
+  width: 0.0625rem;
+  background-color: #dadee5;
+}
+
+.markerHolder {
+  position: relative;
+  border-radius: 100%;
+  width: $marker-width;
+  height: $marker-width;
+  background-color: #eff0f2;
+
+  &:before {
+    content: '';
+
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-color: #afadad;
+
+    mask-size: 60%;
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-image: url('./message-icon.svg');
+  }
+}
+
+.bottomLine {
+  margin: 0 auto;
+  width: 0.0625rem;
+  background-color: #dadee5;
+}
+
+.contentColumn {
+  min-width: 0;
+  padding-top: 0.5rem;
+}

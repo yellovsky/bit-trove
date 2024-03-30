@@ -1,4 +1,5 @@
 // global modules
+import { faker } from '@faker-js/faker';
 import type { Populate } from '@repo/api-models/common';
 import { UPLOAD_FILE_POPULATE, type UploadFileResponse } from '@repo/api-models/upload-file';
 
@@ -45,3 +46,18 @@ export type AuthorSegment = Author;
 export const AUTHOR_SEGMENT_POPULATE = AUTHOR_POPULATE;
 export type AuthorSegmentEntity = AuthorEntity;
 export type AuthorSegmentResponse = AuthorResponse;
+
+export const generateFakeAuthorSegment = (): AuthorSegmentResponse => ({
+  data: {
+    id: faker.number.int(),
+    attributes: {
+      avatar: { data: null },
+      createdAt: faker.date.anytime().toUTCString(),
+      display_name: faker.lorem.words(2),
+      first_name: null,
+      last_name: null,
+      publishedAt: faker.date.anytime().toUTCString(),
+      updatedAt: faker.date.anytime().toUTCString(),
+    },
+  },
+});

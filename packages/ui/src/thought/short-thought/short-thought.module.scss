@@ -1,0 +1,48 @@
+@use '../../scss/theme.module.scss' as theme;
+@use '../../scss/interactive.module.scss' as i;
+
+$marker-width: 2.4rem;
+
+.titleCell {
+  border: none;
+  display: block;
+  cursor: pointer;
+  background: none;
+  text-align: left;
+  align-content: center;
+
+  .publishDate {
+    color: theme.$var-color--text-passive;
+  }
+
+  .title {
+    margin-bottom: 0.2rem;
+  }
+
+  @include i.interactive using ($state) {
+    @if $state == 'hover' {
+      .title {
+        color: theme.$var-color--accent-hover;
+      }
+    } @else if $state == 'focus' {
+      @include i.focus-outline-style;
+
+      .title {
+        color: theme.$var-color--accent-hover;
+      }
+    } @else if $state == 'active' {
+      .title {
+        color: theme.$var-color--accent-active;
+      }
+    }
+  }
+}
+
+.panel {
+  margin-top: 1rem;
+  border-radius: 0.2rem;
+  margin-bottom: 0.5rem;
+  padding: 1rem 1.25rem;
+  border: solid 1px #dadee5;
+  box-shadow: 0 1px 2px 1px #dadee582;
+}

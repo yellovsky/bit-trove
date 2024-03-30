@@ -1,0 +1,5 @@
+@use '../../../../../../packages/ui/src/scss/paddings.module.scss' as paddings;
+
+.pageHolder {
+  @include paddings.page-padding-vertical;
+}

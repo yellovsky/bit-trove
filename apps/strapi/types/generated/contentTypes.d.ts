@@ -881,6 +881,61 @@ export interface ApiTagTag extends Schema.CollectionType {
   };
 }
 
+export interface ApiThoughtThought extends Schema.CollectionType {
+  collectionName: 'thoughts';
+  info: {
+    singularName: 'thought';
+    pluralName: 'thoughts';
+    displayName: 'Thought';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    title: Attribute.String &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    seo: Attribute.Component<'seo.seo'> &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    blocks: Attribute.DynamicZone<['blocks.rich-text-block']> &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    author: Attribute.Relation<'api::thought.thought', 'oneToOne', 'api::author.author'>;
+    slug: Attribute.UID<'api::thought.thought', 'title'> &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::thought.thought', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::thought.thought', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    localizations: Attribute.Relation<'api::thought.thought', 'oneToMany', 'api::thought.thought'>;
+    locale: Attribute.String;
+  };
+}
+
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -903,6 +958,7 @@ declare module '@strapi/types' {
       'api::blogpost.blogpost': ApiBlogpostBlogpost;
       'api::category.category': ApiCategoryCategory;
       'api::tag.tag': ApiTagTag;
+      'api::thought.thought': ApiThoughtThought;
     }
   }
 }

@@ -29,8 +29,10 @@ export const createSlugLifecycles = (uid) => {
   };
 
   const modifyBeforeSlug = async ({ params }) => {
-    const id = params.where.id;
-    const dataWithLocale = { ...params.data, id, locale: await getEntityLocale(id, params.data) };
+    const id = params.where?.id;
+    const dataWithLocale = id
+      ? { ...params.data, id, locale: await getEntityLocale(id, params.data) }
+      : params.data;
 
     const baseSlug = await getBaseSlug(dataWithLocale);
     const desiredSlug = addTailLocale(baseSlug, dataWithLocale.locale);
@@ -81,8 +83,8 @@ export const createSlugLifecycles = (uid) => {
     },
 
     beforeFindMany(event) {
-      const locale = event.params.where['$and'].find((part) => 'locale' in part)?.locale;
-      const withSlug = event.params.where['$and'].find((part) => 'slug' in part);
+      const locale = event.params.where['$and']?.find((part) => 'locale' in part)?.locale;
+      const withSlug = event.params.where['$and']?.find((part) => 'slug' in part);
 
       if (locale && withSlug) {
         withSlug.slug['$eq'] = addTailLocale(withSlug.slug['$eq'], locale);

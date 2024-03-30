@@ -43,6 +43,9 @@ $dark-theme: (
 }
 
 .holder {
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+
   color: theme.$var-color--text;
   font-family: theme.$var--general-font-family;
 

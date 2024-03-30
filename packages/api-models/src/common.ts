@@ -9,11 +9,16 @@ export interface APIResponseData<TAttributes extends object> extends IDProperty 
   attributes: TAttributes;
 }
 
+export interface PaginationMeta {
+  limit: number;
+  start: number;
+  total: number;
+}
+
 export interface APIResponseCollectionMetadata {
   pagination: {
-    page: number;
-    pageSize: number;
-    pageCount: number;
+    limit: number;
+    start: number;
     total: number;
   };
 }
@@ -32,12 +37,6 @@ export type Populate<TKey extends string> = Record<TKey, string | object>;
 export interface PaginationParams {
   start: number;
   limit: number;
-}
-
-export interface PaginationMeta {
-  limit: number;
-  start: number;
-  total: number;
 }
 
 export interface WithPaginationMeta {

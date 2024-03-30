@@ -1,0 +1,15 @@
+@use '../../../../../../packages/ui/src/scss/paddings.module.scss' as paddings;
+
+.pagePadding {
+  @include paddings.page-padding-horizontal;
+}
+
+.contentRestictor {
+  overflow: hidden;
+}
+
+.cover {
+  position: relative;
+  aspect-ratio: 27 / 10;
+  margin-bottom: 2.4rem;
+}

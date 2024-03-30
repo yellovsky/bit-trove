@@ -1,0 +1,13 @@
+@use '../../scss/theme.module.scss' as theme;
+
+.year {
+  color: #afadad;
+  font-size: 0.8rem;
+  margin-top: 0.02rem;
+  display: inline-block;
+  padding: 0.25rem 1rem;
+  border-radius: 0.3rem;
+  margin-bottom: 0.02rem;
+  background-color: #dadee5;
+  font-family: theme.$var--title-font-family;
+}

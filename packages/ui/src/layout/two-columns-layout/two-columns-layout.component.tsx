@@ -5,6 +5,7 @@ import type { FC, PropsWithChildren, ReactNode } from 'react';
 // local modules
 import {
   holder as holderCn,
+  content as contentCn,
   extraColumn as extraColumnCn,
   contentRight as contentRightCn,
 } from './two-columns-layout.module.scss';
@@ -18,7 +19,7 @@ interface TwoColumnsLayoutProps extends PropsWithChildren {
 }
 
 export const TwoColumnsLayout: FC<TwoColumnsLayoutProps> = (props) => {
-  const contentColumn = <div className={props.contentCn}>{props.children}</div>;
+  const contentColumn = <div className={cn(props.contentCn, contentCn)}>{props.children}</div>;
   const extraColumn = <div className={cn(extraColumnCn, props.extraCn)}>{props.extraContent}</div>;
 
   return (

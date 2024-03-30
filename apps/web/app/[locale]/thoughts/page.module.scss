@@ -1,0 +1,6 @@
+@use '../../../../../packages/ui/src/scss/paddings.module.scss' as paddings;
+
+.blogPage {
+  @include paddings.page-padding-vertical;
+  @include paddings.page-padding-horizontal;
+}
