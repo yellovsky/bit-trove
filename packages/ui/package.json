@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "exports": {
+    "./no-result": "./src/no-result/index.ts",
     "./content-page-header": "./src/content-page-header/index.tsx",
     "./small-badge": "./src/small-badges/small-badge/index.tsx",
     "./small-tag-badge": "./src/small-badges/tag-badge/index.tsx",
@@ -31,8 +32,8 @@
     "lint": "eslint . --max-warnings 0"
   },
   "dependencies": {
-    "@bit-trove/localization": "*",
     "@bit-trove/api-models": "*",
+    "@bit-trove/localization": "*",
     "@szhsin/react-accordion": "^1.2.3",
     "classnames": "^2.5.1",
     "next": "^14.1.1",
@@ -41,12 +42,13 @@
     "react-markdown": "^9.0.1",
     "react-syntax-highlighter": "^15.5.0",
     "rehype-raw": "^7.0.0",
-    "remark-gfm": "^4.0.0"
+    "remark-gfm": "^4.0.0",
+    "server-only": "^0.0.1"
   },
   "devDependencies": {
-    "@faker-js/faker": "^8.4.1",
     "@bit-trove/eslint-config": "*",
     "@bit-trove/typescript-config": "*",
+    "@faker-js/faker": "^8.4.1",
     "@turbo/gen": "^1.12.4",
     "@types/eslint": "^8.56.5",
     "@types/node": "^20.11.24",

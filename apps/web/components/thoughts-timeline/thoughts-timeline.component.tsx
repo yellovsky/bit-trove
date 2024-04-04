@@ -2,6 +2,7 @@
 
 // global modules
 import { type FC } from 'react';
+import { NoResult } from '@bit-trove/ui/no-result';
 import { ShortThought } from '@bit-trove/ui/short-thought';
 import { ShortThoughtYear } from '@bit-trove/ui/short-thought-year';
 import { ShortThoughtHolder } from '@bit-trove/ui/short-thought-holder';
@@ -83,10 +84,14 @@ interface ThoughtsTimelineClientProps {
   locale: SupportedLocale;
 }
 
-export const ThoughtsTimeline: FC<ThoughtsTimelineClientProps> = ({ locale, tree }) => (
-  <ShortThoughtHolder>
-    {tree.map((yearNode) => (
-      <YearNode locale={locale} node={yearNode} key={yearNode.value} />
-    ))}
-  </ShortThoughtHolder>
-);
+export const ThoughtsTimeline: FC<ThoughtsTimelineClientProps> = ({ locale, tree }) => {
+  if (!tree.length) return <NoResult />;
+
+  return (
+    <ShortThoughtHolder>
+      {tree.map((yearNode) => (
+        <YearNode locale={locale} node={yearNode} key={yearNode.value} />
+      ))}
+    </ShortThoughtHolder>
+  );
+};

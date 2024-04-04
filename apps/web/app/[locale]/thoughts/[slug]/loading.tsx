@@ -1,4 +1,6 @@
 // global modules
+import 'server-only';
+import type { FC } from 'react';
 import { useLocale } from 'next-intl';
 import { TextPending } from '@bit-trove/ui/text';
 import { sanitizeLocale } from '@bit-trove/localization/config';
@@ -7,7 +9,7 @@ import { ContentPageHeaderPending } from '@bit-trove/ui/content-page-header';
 // local modules
 import { PageContent } from '~/components/page-content';
 
-export default function ThoughtPageLoading() {
+const ThoughtPageLoading: FC = () => {
   const locale = useLocale();
 
   return (
@@ -18,4 +20,6 @@ export default function ThoughtPageLoading() {
       </PageContent>
     </>
   );
-}
+};
+
+export default ThoughtPageLoading;

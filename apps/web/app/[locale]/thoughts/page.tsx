@@ -1,51 +1,28 @@
-'use client';
-
 // global modules
+import 'server-only';
+import { Suspense, type FC } from 'react';
 import { Title } from '@bit-trove/ui/title';
-import { useEffect, useState } from 'react';
-import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
-import { getNextPageParam, initialPageParam } from '@bit-trove/api-models/common';
-
-import {
-  fetchThoughtSegmentCollection,
-  type ThoughtSegmentResponseCollection,
-} from '@bit-trove/api-models/thought';
+import { getTranslations } from 'next-intl/server';
 
 // local modules
 import type { RSCPageProps } from '~/src/rsc';
 import { PageContent } from '~/components/page-content';
-import { ThoughtsTimeline } from '~/components/thoughts-timeline';
+import { ThoughtsPageContent, ThoughtsPageContentPending } from './page-content';
 import { thoughtsPage as thoughtsPageCn, title as titleCn } from './page.module.scss';
 
-import {
-  addTreeNodes,
-  type ThoughtTree,
-} from '~/components/thoughts-timeline/thoughts-timeline.tree';
-
-const addPagesToTree = (tree: ThoughtTree, pages?: ThoughtSegmentResponseCollection[]) =>
-  !pages ? tree : pages.reduce((accum, page) => addTreeNodes(accum, page), tree);
-
-export default function ThoughtsPage({ params }: RSCPageProps) {
-  const { locale } = params;
-
-  const { data } = useSuspenseInfiniteQuery({
-    getNextPageParam,
-    initialPageParam,
-    queryKey: ['thought_segment_collection', { locale }],
-    queryFn: fetchThoughtSegmentCollection,
-  });
-
-  const [tree, setTree] = useState<ThoughtTree>(addPagesToTree([], data?.pages));
-
-  useEffect(() => setTree((prev) => addPagesToTree(prev, data?.pages)), [data]);
+const ThoughtsPage: FC<RSCPageProps> = async ({ params }) => {
+  const t = await getTranslations();
 
   return (
-    <PageContent className={thoughtsPageCn} locale={locale}>
+    <PageContent className={thoughtsPageCn} locale={params.locale}>
       <Title as="h1" className={titleCn}>
-        Thoughts
+        {t('thoughts_page')}
       </Title>
-
-      <ThoughtsTimeline tree={tree} locale={locale} />
+      <Suspense fallback={<ThoughtsPageContentPending />}>
+        <ThoughtsPageContent locale={params.locale} />
+      </Suspense>
     </PageContent>
   );
-}
+};
+
+export default ThoughtsPage;

@@ -8,5 +8,7 @@
   "published on {date}": "Опубликовано {date, date, short}",
   "return to safety": "На главную",
   "404 error": "Ошибка 404",
-  "do not panic": "Без паники!"
+  "do not panic": "Без паники!",
+  "thoughts_page": "Заметки",
+  "no_results": "Кажется, здесь ничего нет"
 }

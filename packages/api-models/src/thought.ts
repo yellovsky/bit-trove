@@ -142,7 +142,15 @@ export const fetchThoughtSegmentCollection: QueryFunction<
         ...queryKey[1],
       },
     })
-    .then((response) => response.data);
+    .then((response) => response.data)
+    .then(
+      (response) =>
+        new Promise((resolve) =>
+          setTimeout(() => {
+            resolve(response);
+          }, 2000)
+        )
+    );
 
 export const generateFakeThoughtSegmentResponseCollection =
   (): ThoughtSegmentResponseCollection => {

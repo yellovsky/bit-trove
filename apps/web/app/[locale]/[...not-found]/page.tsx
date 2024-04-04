@@ -1,6 +1,8 @@
 // global modules
+import 'server-only';
+import type { FC } from 'react';
 import { notFound } from 'next/navigation';
 
-export default async function NotFoundPage() {
-  notFound();
-}
+const NotFoundPage: FC = () => notFound();
+
+export default NotFoundPage;

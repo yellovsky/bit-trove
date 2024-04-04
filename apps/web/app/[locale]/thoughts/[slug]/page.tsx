@@ -1,4 +1,6 @@
 // global modules
+import 'server-only';
+import type { FC } from 'react';
 import { notFound } from 'next/navigation';
 import { Link } from '@bit-trove/localization/link';
 import { categoryLink } from '@bit-trove/api-models/category';
@@ -23,17 +25,17 @@ const getThoughtFP = (props: ThoughtPageProps): ThoughtFP => ({
 // ==========================================================
 //                    M E T A D A T A
 // ==========================================================
-export async function generateMetadata(props: ThoughtPageProps) {
+export const generateMetadata = async (props: ThoughtPageProps) => {
   const blogpostResponse = await fetchThought(getThoughtFP(props));
   return (
     blogpostResponse?.data?.attributes.seo ?? { title: blogpostResponse.data?.attributes.title }
   );
-}
+};
 
 // ==========================================================
 //                    C O M P O N E N T
 // ==========================================================
-export default async function ThoughtPage(props: ThoughtPageProps) {
+const ThoughtPage: FC<ThoughtPageProps> = async (props) => {
   const { data } = await fetchThought(getThoughtFP(props));
 
   const thought = data?.attributes;
@@ -78,4 +80,6 @@ export default async function ThoughtPage(props: ThoughtPageProps) {
       </PageContent>
     </>
   );
-}
+};
+
+export default ThoughtPage;

@@ -1,6 +1,5 @@
-'use client';
-
 // global modules
+import 'server-only';
 import cn from 'classnames';
 import { Aside } from '../aside';
 import { type FC, type PropsWithChildren, type ReactNode } from 'react';

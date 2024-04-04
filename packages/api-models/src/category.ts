@@ -1,7 +1,6 @@
 // global modules
 import * as R from 'ramda';
 import { faker } from '@faker-js/faker';
-import type { QueryFunction } from '@tanstack/react-query';
 import { SEO_SEGMENT_POPULATE, type SeoSegment } from '@bit-trove/api-models/seo';
 import {
   UPLOAD_FILE_POPULATE,
@@ -102,13 +101,11 @@ export type QuickCategoryCollectionQueryKey = [
 ];
 
 // TODO: await for https://github.com/strapi/strapi/issues/19901 and add SingleType to strappi
-export const fetchQuickCategoryCollection: QueryFunction<
-  QuickCategoryResponseCollection,
-  QuickCategoryCollectionQueryKey
-> = ({ queryKey: [_, { locale }], signal }) =>
+export const fetchQuickCategoryCollection = ({
+  locale,
+}: QuickCategoryCollectionFP): Promise<QuickCategoryResponseCollection> =>
   getApiClient()
     .get<QuickCategoryResponseCollection>('/categories', {
-      signal,
       params: {
         ...CATEGORY_SEGMENT_POPULATE,
         sort: 'name:asc',

@@ -1,6 +1,12 @@
+// global modules
+import 'server-only';
+import type { FC } from 'react';
+
 // local modules
 import type { RSCLayoutProps } from '~/src/rsc';
 
-export default async function ThoughtsLayout(props: RSCLayoutProps) {
+const ThoughtsLayout: FC<RSCLayoutProps> = (props) => {
   return props.children;
-}
+};
+
+export default ThoughtsLayout;

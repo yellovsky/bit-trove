@@ -8,5 +8,7 @@
   "published on {date}": "Posted On {date, date, short}",
   "return to safety": "Return to safety",
   "404 error": "404 Error",
-  "do not panic": "Don't panic!"
+  "do not panic": "Don't panic!",
+  "thoughts_page": "Thoughts",
+  "no_results": "It seems there's nothing here"
 }
