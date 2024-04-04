@@ -1,6 +1,6 @@
 // global modules
 import cn from 'classnames';
-import { createElement, type FC, type HTMLAttributes, type ReactNode } from 'react';
+import { createElement, type FC, type HTMLAttributes } from 'react';
 
 // local modules
 import {
