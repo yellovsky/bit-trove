@@ -1,7 +1,7 @@
 // global modules
-import { Title } from '@bit-trove/ui/title';
 import { useFormatter } from 'next-intl';
 import type { FC, ReactNode } from 'react';
+import { Title } from '@bit-trove/ui/title';
 
 import {
   useAccordionItem,
@@ -13,11 +13,13 @@ import {
 import { LinedSection } from '../lined-section';
 
 import {
+  arrow as arrowCn,
   panel as panelCn,
   title as titleCn,
   titleCell as titleCellCn,
   publishDate as publishDateCn,
 } from './short-thought.module.scss';
+import { Icon } from '../../icon';
 
 interface ShortThoughtUIProps {
   header: ReactNode;
@@ -49,12 +51,18 @@ export const ShortThought: FC<ShortThoughtUIProps> = (props) => {
   return (
     <LinedSection marker ref={itemRef}>
       <button {...buttonProps} aria-label="toggle trhought" className={titleCellCn}>
-        <Title as="h5" className={titleCn}>
-          {header}
-        </Title>
-        <time className={publishDateCn} dateTime={new Date(publishDate).toUTCString()}>
-          {formattedDate}
-        </time>
+        <div>
+          <Title as="h5" className={titleCn}>
+            {header}
+          </Title>
+          <time className={publishDateCn} dateTime={new Date(publishDate).toUTCString()}>
+            {formattedDate}
+          </time>
+        </div>
+
+        <div className={arrowCn}>
+          <Icon type={status === 'exited' || status == 'exiting' ? 'chevron_down' : 'chevron_up'} />
+        </div>
       </button>
 
       {isMounted && (

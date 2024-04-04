@@ -5,6 +5,7 @@
   "type": "module",
   "exports": {
     "./no-result": "./src/no-result/index.ts",
+    "./icon": "./src/icon/index.ts",
     "./content-page-header": "./src/content-page-header/index.tsx",
     "./small-badge": "./src/small-badges/small-badge/index.tsx",
     "./small-tag-badge": "./src/small-badges/tag-badge/index.tsx",

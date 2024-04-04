@@ -1,0 +1,20 @@
+$icons: (
+  chevronUp: url('./icon.chevron-up.svg'),
+  chevronDown: url('./icon.chevron-down.svg'),
+);
+
+.icon {
+  display: block;
+  aspect-ratio: 1 / 1;
+  background-color: currentColor;
+
+  mask-size: contain;
+  mask-position: center;
+  mask-repeat: no-repeat;
+
+  @each $name, $mask-image in $icons {
+    &.#{$name} {
+      mask-image: $mask-image;
+    }
+  }
+}
