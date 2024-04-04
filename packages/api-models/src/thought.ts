@@ -2,21 +2,21 @@
 import * as R from 'ramda';
 import { faker } from '@faker-js/faker';
 import type { QueryFunction } from '@tanstack/react-query';
-import { POPULATE_BLOCKS, type Block } from '@repo/api-models/block';
+import { POPULATE_BLOCKS, type Block } from '@bit-trove/api-models/block';
 import type { SupportedLocale } from '@bit-trove/localization/config';
-import { SEO_SEGMENT_POPULATE, type SeoSegment } from '@repo/api-models/seo';
+import { SEO_SEGMENT_POPULATE, type SeoSegment } from '@bit-trove/api-models/seo';
 
 import {
   CATEGORY_SEGMENT_POPULATE,
   type CatgorySegmentResponseCollection,
   generateFakeCatgorySegmentResponseCollection,
-} from '@repo/api-models/category';
+} from '@bit-trove/api-models/category';
 
 import {
   AUTHOR_SEGMENT_POPULATE,
   generateFakeAuthorSegment,
   type AuthorSegmentResponse,
-} from '@repo/api-models/author';
+} from '@bit-trove/api-models/author';
 
 import {
   getApiClient,
@@ -26,13 +26,13 @@ import {
   type APIResponseData,
   type PaginationParams,
   type APIResponseCollection,
-} from '@repo/api-models/common';
+} from '@bit-trove/api-models/common';
 
 import {
   TAG_SEGMENT_POPULATE,
   type TagSegmentResponseCollection,
   generateFakeTagSegmentResponseCollection,
-} from '@repo/api-models/tag';
+} from '@bit-trove/api-models/tag';
 
 // ==================================================
 //               C O N S T A N T S

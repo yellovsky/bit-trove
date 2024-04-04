@@ -1,7 +1,7 @@
 // global modules
 import cn from 'classnames';
 import type { Metadata } from 'next';
-import { MainMenu } from '@repo/ui/main-menu';
+import { MainMenu } from '@bit-trove/ui/main-menu';
 import { Poppins, Roboto } from 'next/font/google';
 import { getTimeZone, getNow } from 'next-intl/server';
 import { getMessages, getTranslations } from 'next-intl/server';

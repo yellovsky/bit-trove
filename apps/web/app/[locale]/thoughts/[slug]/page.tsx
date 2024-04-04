@@ -1,12 +1,12 @@
 // global modules
 import { notFound } from 'next/navigation';
 import { Link } from '@bit-trove/localization/link';
-import { categoryLink } from '@repo/api-models/category';
-import { SmallAuthorBadge } from '@repo/ui/small-author-badge';
-import { ContentPageHeader } from '@repo/ui/content-page-header';
-import { SmallCategoryBadge } from '@repo/ui/small-category-badge';
-import { PublishDateBadge } from '@repo/ui/small-publish-date-badge';
-import { fetchThought, type ThoughtFP } from '@repo/api-models/thought';
+import { categoryLink } from '@bit-trove/api-models/category';
+import { SmallAuthorBadge } from '@bit-trove/ui/small-author-badge';
+import { ContentPageHeader } from '@bit-trove/ui/content-page-header';
+import { SmallCategoryBadge } from '@bit-trove/ui/small-category-badge';
+import { PublishDateBadge } from '@bit-trove/ui/small-publish-date-badge';
+import { fetchThought, type ThoughtFP } from '@bit-trove/api-models/thought';
 
 // local modules
 import { Blocks } from '~/components/blocks';

@@ -1,4 +1,4 @@
 module.exports = {
-  displayName: '@repo/utils',
+  displayName: '@bit-trove/utils',
   preset: '../../jest.preset.js',
 };

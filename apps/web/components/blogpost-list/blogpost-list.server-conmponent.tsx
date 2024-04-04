@@ -1,9 +1,9 @@
 // global modules
 import type { FC } from 'react';
-import type { QueryKeyOf } from '@repo/api-models/common';
-import { initialPageParam } from '@repo/api-models/common';
+import type { QueryKeyOf } from '@bit-trove/api-models/common';
+import { initialPageParam } from '@bit-trove/api-models/common';
 import type { SupportedLocale } from '@bit-trove/localization/config';
-import { fetchBlogpostSegmentCollection } from '@repo/api-models/blog-post';
+import { fetchBlogpostSegmentCollection } from '@bit-trove/api-models/blog-post';
 import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
 
 // local modules

@@ -2,10 +2,10 @@
 
 // global modules
 import { type FC } from 'react';
-import { ShortThought } from '@repo/ui/short-thought';
-import { ShortThoughtYear } from '@repo/ui/short-thought-year';
-import { ShortThoughtHolder } from '@repo/ui/short-thought-holder';
-import { ShortThoughtMonth } from '@repo/ui/short-thought-month';
+import { ShortThought } from '@bit-trove/ui/short-thought';
+import { ShortThoughtYear } from '@bit-trove/ui/short-thought-year';
+import { ShortThoughtHolder } from '@bit-trove/ui/short-thought-holder';
+import { ShortThoughtMonth } from '@bit-trove/ui/short-thought-month';
 import type { SupportedLocale } from '@bit-trove/localization/config';
 
 // local modules

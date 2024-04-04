@@ -1,7 +1,7 @@
 // global modules
-import { Title } from '@repo/ui/title';
+import { Title } from '@bit-trove/ui/title';
 import { getTranslations } from 'next-intl/server';
-import { TwoColumnsLayout } from '@repo/ui/two-columns-layout';
+import { TwoColumnsLayout } from '@bit-trove/ui/two-columns-layout';
 
 // local modules
 import { Aside } from '~/components/aside';

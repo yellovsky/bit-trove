@@ -1,15 +1,15 @@
 // global modules
 import type { FC } from 'react';
-import { apiHost } from '@repo/utils/api-host';
-import { PlateLink } from '@repo/ui/plate-link';
-import { SectionTitle } from '@repo/ui/section-title';
-import type { QueryKeyOf } from '@repo/api-models/common';
+import { apiHost } from '@bit-trove/utils/api-host';
+import { PlateLink } from '@bit-trove/ui/plate-link';
+import { SectionTitle } from '@bit-trove/ui/section-title';
+import type { QueryKeyOf } from '@bit-trove/api-models/common';
 import type { SupportedLocale } from '@bit-trove/localization/config';
 
 import {
   fetchQuickCategoryCollection,
   type CatgorySegmentResponseCollection,
-} from '@repo/api-models/category';
+} from '@bit-trove/api-models/category';
 
 // local modules
 import { getQueryClient } from '~/src/query-client';

@@ -1,6 +1,6 @@
 // local modules
 import { useLocale } from 'next-intl';
-import { TitlePending } from '@repo/ui/title';
+import { TitlePending } from '@bit-trove/ui/title';
 import { sanitizeLocale } from '@bit-trove/localization/config';
 
 // locL modules

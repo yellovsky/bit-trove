@@ -8,7 +8,7 @@ const parsedUrl = url.parse(process.env.NEXT_PUBLIC_API_HOST);
 
 /** @type {import('next').NextConfig} */
 module.exports = withNextIntl({
-  transpilePackages: ['@repo/ui', '@repo/api-models'],
+  transpilePackages: ['@bit-trove/ui', '@bit-trove/api-models', '@bit-trove/utils'],
   sassOptions: {
     includePaths: [path.join(__dirname, '../../packages/ui')],
   },

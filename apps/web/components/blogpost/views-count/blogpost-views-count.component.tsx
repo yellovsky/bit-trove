@@ -2,9 +2,9 @@
 
 // global modules
 import { useEffect, type FC } from 'react';
-import { SmallViewsBadge } from '@repo/ui/small-views-badge';
+import { SmallViewsBadge } from '@bit-trove/ui/small-views-badge';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getBlogpostViews, incrementBlogpostViews } from '@repo/api-models/blog-post';
+import { getBlogpostViews, incrementBlogpostViews } from '@bit-trove/api-models/blog-post';
 
 interface BlogpostViewsCountProps {
   id: number;

@@ -2,10 +2,10 @@
 
 // global modules
 import type { FC } from 'react';
-import type { QueryKeyOf } from '@repo/api-models/common';
+import type { QueryKeyOf } from '@bit-trove/api-models/common';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { fetchBlogpostSegmentCollection } from '@repo/api-models/blog-post';
-import { initialPageParam, getNextPageParam } from '@repo/api-models/common';
+import { fetchBlogpostSegmentCollection } from '@bit-trove/api-models/blog-post';
+import { initialPageParam, getNextPageParam } from '@bit-trove/api-models/common';
 
 // local modules
 import { blogList as blogListCn } from './blogpost-list.module.scss';

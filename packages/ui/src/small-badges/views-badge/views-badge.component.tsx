@@ -1,8 +1,8 @@
 // global modules
 import cn from 'classnames';
 import type { FC } from 'react';
-import { SmallBadge } from '@repo/ui/small-badge';
-import { shortenItemsCount } from '@repo/utils/shorten-items-count';
+import { SmallBadge } from '@bit-trove/ui/small-badge';
+import { shortenItemsCount } from '@bit-trove/utils/shorten-items-count';
 
 // local modules
 import {

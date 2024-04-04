@@ -1,12 +1,12 @@
 // global modules
 import { faker } from '@faker-js/faker';
-import type { Populate } from '@repo/api-models/common';
+import type { Populate } from '@bit-trove/api-models/common';
 
 import {
   UPLOAD_FILE_POPULATE,
   type UploadFileResponse,
   generateFakeUploadFileResponse,
-} from '@repo/api-models/upload-file';
+} from '@bit-trove/api-models/upload-file';
 
 // ==================================================
 //                    C O R E

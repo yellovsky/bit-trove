@@ -1,6 +1,6 @@
 // global modules
 import { useMemo, type FC, useTransition } from 'react';
-import { SmallBadge } from '@repo/ui/small-badge';
+import { SmallBadge } from '@bit-trove/ui/small-badge';
 
 // local modules
 import { useFormatter, useTranslations } from 'next-intl';

@@ -5,7 +5,7 @@ import * as R from 'ramda';
 import type {
   ThoughtSegmentResponseData,
   ThoughtSegmentResponseCollection,
-} from '@repo/api-models/thought';
+} from '@bit-trove/api-models/thought';
 
 interface ThoughtTreeNode<TType extends ThoughtTreeNodeType, TChild> {
   type: TType;

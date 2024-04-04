@@ -1,6 +1,6 @@
 // global modules
 import { faker } from '@faker-js/faker';
-import { apiHost } from '@repo/utils/api-host';
+import { apiHost } from '@bit-trove/utils/api-host';
 
 export interface UploadFileFormat {
   mime: string;

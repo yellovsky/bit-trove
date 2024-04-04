@@ -1,5 +1,5 @@
 {
-  "name": "@repo/ui",
+  "name": "@bit-trove/ui",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@bit-trove/localization": "*",
-    "@repo/api-models": "*",
+    "@bit-trove/api-models": "*",
     "@szhsin/react-accordion": "^1.2.3",
     "classnames": "^2.5.1",
     "next": "^14.1.1",
@@ -45,8 +45,8 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
-    "@repo/eslint-config": "*",
-    "@repo/typescript-config": "*",
+    "@bit-trove/eslint-config": "*",
+    "@bit-trove/typescript-config": "*",
     "@turbo/gen": "^1.12.4",
     "@types/eslint": "^8.56.5",
     "@types/node": "^20.11.24",

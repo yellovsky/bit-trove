@@ -1,8 +1,8 @@
 // global modules
 import cn from 'classnames';
-import { Title } from '@repo/ui/title';
+import { Title } from '@bit-trove/ui/title';
 import type { FC, PropsWithChildren, ReactNode } from 'react';
-import { SmallBadgesHolder } from '@repo/ui/small-badges-holder';
+import { SmallBadgesHolder } from '@bit-trove/ui/small-badges-holder';
 
 // local modules
 import { ThemeProvider } from '../theme-provider';

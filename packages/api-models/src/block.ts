@@ -1,5 +1,5 @@
 // global modules
-import type { UploadFileResponse } from '@repo/api-models/upload-file';
+import type { UploadFileResponse } from '@bit-trove/api-models/upload-file';
 
 export interface RichTextBlock {
   __component: 'blocks.rich-text-block';

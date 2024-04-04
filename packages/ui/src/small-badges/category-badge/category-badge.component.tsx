@@ -3,7 +3,7 @@ import cn from 'classnames';
 import Link from 'next/link';
 import type { FC } from 'react';
 import type { UrlObject } from 'url';
-import { SmallBadge } from '@repo/ui/small-badge';
+import { SmallBadge } from '@bit-trove/ui/small-badge';
 
 // local modules
 import {

@@ -5,7 +5,7 @@ import Markdown from 'react-markdown';
 import type { ComponentProps, FC } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dracula } from 'react-syntax-highlighter/dist/cjs/styles/prism';
-import type { RichTextBlock as RichTextBlockType } from '@repo/api-models/block';
+import type { RichTextBlock as RichTextBlockType } from '@bit-trove/api-models/block';
 
 // local modules
 import { holder as holderCn } from './rich-text.module.scss';

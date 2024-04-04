@@ -1,9 +1,9 @@
 // global modules
 import Image from 'next/image';
 import type { FC } from 'react';
-import { SmallBadge } from '@repo/ui/small-badge';
-import type { Author } from '@repo/api-models/author';
-import { getUploadFileUrl } from '@repo/api-models/upload-file';
+import { SmallBadge } from '@bit-trove/ui/small-badge';
+import type { Author } from '@bit-trove/api-models/author';
+import { getUploadFileUrl } from '@bit-trove/api-models/upload-file';
 
 // local modules
 import { holder as holderCn, img as imgCn } from './small-author-badge.module.scss';

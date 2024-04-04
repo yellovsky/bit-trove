@@ -1,8 +1,8 @@
 // global modules
 import cn from 'classnames';
 import type { FC } from 'react';
-import { SimpleSquareCard } from '@repo/ui/simple-square-card';
-import { getUploadFileUrl } from '@repo/api-models/upload-file';
+import { SimpleSquareCard } from '@bit-trove/ui/simple-square-card';
+import { getUploadFileUrl } from '@bit-trove/api-models/upload-file';
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import type { SupportedLocale } from '@bit-trove/localization/config';
 
@@ -12,7 +12,7 @@ import {
   fetchQuickCategoryCollection,
   type QuickCategoryCollectionQueryKey,
   type QuickCategoryResponseCollection,
-} from '@repo/api-models/category';
+} from '@bit-trove/api-models/category';
 
 // local modules
 import { getQueryClient } from '~/src/query-client';

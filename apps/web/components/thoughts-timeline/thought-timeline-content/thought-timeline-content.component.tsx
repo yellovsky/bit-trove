@@ -1,7 +1,7 @@
 // global modules
 import type { FC } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { thoughtQueryFn } from '@repo/api-models/thought';
+import { thoughtQueryFn } from '@bit-trove/api-models/thought';
 import type { SupportedLocale } from '@bit-trove/localization/config';
 
 // local modules

@@ -2,19 +2,19 @@
 import * as R from 'ramda';
 import { faker } from '@faker-js/faker';
 import type { QueryFunction } from '@tanstack/react-query';
-import { SEO_SEGMENT_POPULATE, type SeoSegment } from '@repo/api-models/seo';
+import { SEO_SEGMENT_POPULATE, type SeoSegment } from '@bit-trove/api-models/seo';
 import {
   UPLOAD_FILE_POPULATE,
   type UploadFileResponse,
   generateFakeUploadFileResponse,
-} from '@repo/api-models/upload-file';
+} from '@bit-trove/api-models/upload-file';
 
 import {
   getApiClient,
   type Populate,
   type APIResponseData,
   type APIResponseCollection,
-} from '@repo/api-models/common';
+} from '@bit-trove/api-models/common';
 
 // ==================================================
 //                    C O R E

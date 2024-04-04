@@ -1,7 +1,7 @@
 // global modules
 import type { FC } from 'react';
-import type { Block } from '@repo/api-models/block';
-import { RichTextBlock } from '@repo/ui/rich-text-block';
+import type { Block } from '@bit-trove/api-models/block';
+import { RichTextBlock } from '@bit-trove/ui/rich-text-block';
 
 const renderBlock = (block: Block) => {
   switch (block.__component) {

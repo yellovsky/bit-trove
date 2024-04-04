@@ -1,12 +1,12 @@
 // global modules
 import { faker } from '@faker-js/faker';
 import type { Meta, StoryObj } from '@storybook/react';
-import { SmallViewsBadge } from '@repo/ui/small-views-badge';
-import { SmallAuthorBadge } from '@repo/ui/small-author-badge';
-import { SmallCategoryBadge } from '@repo/ui/small-category-badge';
-import { generateFakeAuthorSegment } from '@repo/api-models/author';
-import { PublishDateBadge } from '@repo/ui/small-publish-date-badge';
-import { generateFakeCatgorySegmentResponseCollection } from '@repo/api-models/category';
+import { SmallViewsBadge } from '@bit-trove/ui/small-views-badge';
+import { SmallAuthorBadge } from '@bit-trove/ui/small-author-badge';
+import { SmallCategoryBadge } from '@bit-trove/ui/small-category-badge';
+import { generateFakeAuthorSegment } from '@bit-trove/api-models/author';
+import { PublishDateBadge } from '@bit-trove/ui/small-publish-date-badge';
+import { generateFakeCatgorySegmentResponseCollection } from '@bit-trove/api-models/category';
 
 // local modules
 import { ContentPageHeader } from './content-page-header.component';

@@ -1,9 +1,9 @@
 // global modules
 import cn from 'classnames';
 import type { FC } from 'react';
-import { TitlePending } from '@repo/ui/title';
-import { SmallBadgePending } from '@repo/ui/small-badge';
-import { SmallBadgesHolder } from '@repo/ui/small-badges-holder';
+import { TitlePending } from '@bit-trove/ui/title';
+import { SmallBadgePending } from '@bit-trove/ui/small-badge';
+import { SmallBadgesHolder } from '@bit-trove/ui/small-badges-holder';
 
 // local modules
 import {

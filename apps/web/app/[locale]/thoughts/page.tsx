@@ -1,15 +1,15 @@
 'use client';
 
 // global modules
-import { Title } from '@repo/ui/title';
+import { Title } from '@bit-trove/ui/title';
 import { useEffect, useState } from 'react';
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
-import { getNextPageParam, initialPageParam } from '@repo/api-models/common';
+import { getNextPageParam, initialPageParam } from '@bit-trove/api-models/common';
 
 import {
   fetchThoughtSegmentCollection,
   type ThoughtSegmentResponseCollection,
-} from '@repo/api-models/thought';
+} from '@bit-trove/api-models/thought';
 
 // local modules
 import type { RSCPageProps } from '~/src/rsc';

@@ -1,5 +1,5 @@
 // global modules
-import { apiHost } from '@repo/utils/api-host';
+import { apiHost } from '@bit-trove/utils/api-host';
 import type { QueryFunction } from '@tanstack/react-query';
 import axios, { type AxiosInstance } from 'axios';
 

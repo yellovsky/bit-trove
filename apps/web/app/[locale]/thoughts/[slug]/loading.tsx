@@ -1,11 +1,11 @@
 // global modules
-import { TextPending } from '@repo/ui/text';
+import { useLocale } from 'next-intl';
+import { TextPending } from '@bit-trove/ui/text';
+import { sanitizeLocale } from '@bit-trove/localization/config';
+import { ContentPageHeaderPending } from '@bit-trove/ui/content-page-header';
 
 // local modules
-import { useLocale } from 'next-intl';
 import { PageContent } from '~/components/page-content';
-import { sanitizeLocale } from '@bit-trove/localization/config';
-import { ContentPageHeaderPending } from '@repo/ui/content-page-header';
 
 export default function ThoughtPageLoading() {
   const locale = useLocale();

@@ -2,28 +2,28 @@
 import * as R from 'ramda';
 import { create } from '@yornaath/batshit';
 import type { QueryFunction } from '@tanstack/react-query';
-import { POPULATE_BLOCKS, type Block } from '@repo/api-models/block';
 import type { SupportedLocale } from '@bit-trove/localization/config';
-import { SEO_SEGMENT_POPULATE, type SeoSegment } from '@repo/api-models/seo';
-import { TAG_POPULATE, type TagResponseCollection } from '@repo/api-models/tag';
-import { UPLOAD_FILE_POPULATE, type UploadFileResponse } from '@repo/api-models/upload-file';
-import { AUTHOR_SEGMENT_POPULATE, type AuthorSegmentResponse } from '@repo/api-models/author';
+import { POPULATE_BLOCKS, type Block } from '@bit-trove/api-models/block';
+import { SEO_SEGMENT_POPULATE, type SeoSegment } from '@bit-trove/api-models/seo';
+import { TAG_POPULATE, type TagResponseCollection } from '@bit-trove/api-models/tag';
+import { UPLOAD_FILE_POPULATE, type UploadFileResponse } from '@bit-trove/api-models/upload-file';
+import { AUTHOR_SEGMENT_POPULATE, type AuthorSegmentResponse } from '@bit-trove/api-models/author';
 
 import {
   getApiClient,
   type Populate,
   initialPageParam,
+  type APIResponse,
+  type APIResponseData,
   type PaginationParams,
   type WithPaginationMeta,
   type APIResponseCollection,
-  type APIResponse,
-  type APIResponseData,
-} from '@repo/api-models/common';
+} from '@bit-trove/api-models/common';
 
 import {
   CATEGORY_SEGMENT_POPULATE,
   type CatgorySegmentResponseCollection,
-} from '@repo/api-models/category';
+} from '@bit-trove/api-models/category';
 
 // ==================================================
 //               C O N S T A N T S

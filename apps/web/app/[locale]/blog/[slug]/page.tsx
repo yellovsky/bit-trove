@@ -2,9 +2,9 @@
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { Link } from '@bit-trove/localization/link';
-import { TwoColumnsLayout } from '@repo/ui/two-columns-layout';
-import { getUploadFileUrl } from '@repo/api-models/upload-file';
-import { fetchBlogpost, type BlogpostFP } from '@repo/api-models/blog-post';
+import { TwoColumnsLayout } from '@bit-trove/ui/two-columns-layout';
+import { getUploadFileUrl } from '@bit-trove/api-models/upload-file';
+import { fetchBlogpost, type BlogpostFP } from '@bit-trove/api-models/blog-post';
 
 // local modules
 import { Aside } from '~/components/aside';

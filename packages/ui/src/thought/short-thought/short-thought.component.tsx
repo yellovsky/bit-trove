@@ -1,5 +1,5 @@
 // global modules
-import { Title } from '@repo/ui/title';
+import { Title } from '@bit-trove/ui/title';
 import { useFormatter } from 'next-intl';
 import type { FC, ReactNode } from 'react';
 

@@ -1,14 +1,14 @@
 // global modules
 import * as R from 'ramda';
 import { faker } from '@faker-js/faker';
-import { UPLOAD_FILE_POPULATE, type UploadFileResponse } from '@repo/api-models/upload-file';
+import { UPLOAD_FILE_POPULATE, type UploadFileResponse } from '@bit-trove/api-models/upload-file';
 
 import type {
   Populate,
   APIResponse,
   APIResponseData,
   APIResponseCollection,
-} from '@repo/api-models/common';
+} from '@bit-trove/api-models/common';
 
 // ==================================================
 //                    C O R E

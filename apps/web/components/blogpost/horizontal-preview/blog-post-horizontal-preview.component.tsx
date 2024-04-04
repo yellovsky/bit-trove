@@ -1,22 +1,22 @@
 // global modules
 import Image from 'next/image';
 import type { FC } from 'react';
-import { Title } from '@repo/ui/title';
+import { Title } from '@bit-trove/ui/title';
 import { Link } from '@bit-trove/localization/link';
-import { textEllipsis } from '@repo/utils/text-ellipsis';
-import { getUploadFileUrl } from '@repo/api-models/upload-file';
+import { textEllipsis } from '@bit-trove/utils/text-ellipsis';
+import { getUploadFileUrl } from '@bit-trove/api-models/upload-file';
 import { BlogpostViewsCount } from '~/components/blogpost/views-count';
 
 import {
   blogPostLink,
   type BlogpostResponseData,
   type BlogpostSegmentEntity,
-} from '@repo/api-models/blog-post';
+} from '@bit-trove/api-models/blog-post';
 
 // local modules
-import { SmallAuthorBadge } from '@repo/ui/small-author-badge';
-import { SmallBadgesHolder } from '@repo/ui/small-badges-holder';
-import { PublishDateBadge } from '@repo/ui/small-publish-date-badge';
+import { SmallAuthorBadge } from '@bit-trove/ui/small-author-badge';
+import { SmallBadgesHolder } from '@bit-trove/ui/small-badges-holder';
+import { PublishDateBadge } from '@bit-trove/ui/small-publish-date-badge';
 
 import {
   text as textCn,
