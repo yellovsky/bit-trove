@@ -12,8 +12,8 @@ import {
 //                    C O R E
 // ==================================================
 interface AuthorCore {
-  createdAt: string;
   updatedAt: string;
+  createdAt: string;
   publishedAt: string;
   display_name: string;
   last_name: string | null;
