@@ -4,8 +4,8 @@ import { create } from '@yornaath/batshit';
 import type { QueryFunction } from '@tanstack/react-query';
 import { POPULATE_BLOCKS, type Block } from '@repo/api-models/block';
 import type { SupportedLocale } from '@bit-trove/localization/config';
-import { TAG_POPULATE, type TagListResponse } from '@repo/api-models/tag';
 import { SEO_SEGMENT_POPULATE, type SeoSegment } from '@repo/api-models/seo';
+import { TAG_POPULATE, type TagResponseCollection } from '@repo/api-models/tag';
 import { UPLOAD_FILE_POPULATE, type UploadFileResponse } from '@repo/api-models/upload-file';
 import { AUTHOR_SEGMENT_POPULATE, type AuthorSegmentResponse } from '@repo/api-models/author';
 
@@ -49,9 +49,9 @@ interface BlogpostCore {
 interface BlogpostPopulate {
   seo: SeoSegment;
   blocks: Block[];
-  tags: TagListResponse;
-  author: AuthorSegmentResponse;
   cover: UploadFileResponse;
+  tags: TagResponseCollection;
+  author: AuthorSegmentResponse;
   categories: CatgorySegmentResponseCollection;
 }
 

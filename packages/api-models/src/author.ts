@@ -1,7 +1,12 @@
 // global modules
 import { faker } from '@faker-js/faker';
 import type { Populate } from '@repo/api-models/common';
-import { UPLOAD_FILE_POPULATE, type UploadFileResponse } from '@repo/api-models/upload-file';
+
+import {
+  UPLOAD_FILE_POPULATE,
+  type UploadFileResponse,
+  generateFakeUploadFileResponse,
+} from '@repo/api-models/upload-file';
 
 // ==================================================
 //                    C O R E
@@ -47,17 +52,18 @@ export const AUTHOR_SEGMENT_POPULATE = AUTHOR_POPULATE;
 export type AuthorSegmentEntity = AuthorEntity;
 export type AuthorSegmentResponse = AuthorResponse;
 
-export const generateFakeAuthorSegment = (): AuthorSegmentResponse => ({
-  data: {
-    id: faker.number.int(),
-    attributes: {
-      avatar: { data: null },
-      createdAt: faker.date.anytime().toUTCString(),
-      display_name: faker.lorem.words(2),
-      first_name: null,
-      last_name: null,
-      publishedAt: faker.date.anytime().toUTCString(),
-      updatedAt: faker.date.anytime().toUTCString(),
+export const generateFakeAuthorSegment = () =>
+  ({
+    data: {
+      id: faker.number.int(),
+      attributes: {
+        last_name: null,
+        first_name: null,
+        display_name: faker.lorem.words(2),
+        createdAt: faker.date.anytime().toUTCString(),
+        updatedAt: faker.date.anytime().toUTCString(),
+        publishedAt: faker.date.anytime().toUTCString(),
+        avatar: generateFakeUploadFileResponse({ height: 100, width: 100 }),
+      },
     },
-  },
-});
+  }) satisfies AuthorSegmentResponse;

@@ -1,10 +1,8 @@
-// global modules
-import type { PropsWithChildren } from 'react';
-
 // local modules
+import type { RSCLayoutProps } from '~/src/rsc';
 import { pageHolder as pageHolderCn } from './layout.module.scss';
 
-export default function ThoughtLayout({ children }: PropsWithChildren): JSX.Element {
+export default function ThoughtLayout({ children }: RSCLayoutProps): JSX.Element {
   return (
     <div className={pageHolderCn}>
       <section>{children}</section>

@@ -1,13 +1,64 @@
 @use '../scss/theme.module.scss' as theme;
+@use '../scss/screen-interval.module.scss' as si;
 
-.holder {
-  margin-bottom: 2.4rem;
-}
+.contentPageHeader {
+  @include si.page-padding using ($padding) {
+    padding-left: $padding;
+    padding-right: $padding;
+  }
 
-.title {
-  margin-bottom: 1rem;
-}
+  z-index: 1;
+  display: flex;
+  position: relative;
+  padding-bottom: 1rem;
+  flex-direction: column;
+  justify-content: flex-end;
 
-.topBadges {
-  margin-bottom: 1rem;
+  &.withBackground {
+    aspect-ratio: 27 / 10;
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: theme.$var-color--pending-bg;
+
+    &:before {
+      content: '';
+
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: -1;
+      height: 100%;
+      background: red;
+      position: absolute;
+
+      background: linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.6) 0%,
+        rgba(0, 0, 0, 0.6) 30%,
+        rgba(0, 0, 0, 0) 100%
+      );
+    }
+  }
+
+  &:not(.withBackground) {
+    margin-bottom: 4rem;
+
+    &:after {
+      content: '';
+
+      display: block;
+      margin-top: 2rem;
+      border-bottom: 1px solid #e1e1e1;
+    }
+  }
+
+  .title {
+    margin-bottom: 1rem;
+  }
+
+  .topBadges {
+    margin-bottom: 1rem;
+  }
 }

@@ -7,6 +7,12 @@ import type { SupportedLocale } from '@bit-trove/localization/config';
 import { SEO_SEGMENT_POPULATE, type SeoSegment } from '@repo/api-models/seo';
 
 import {
+  CATEGORY_SEGMENT_POPULATE,
+  type CatgorySegmentResponseCollection,
+  generateFakeCatgorySegmentResponseCollection,
+} from '@repo/api-models/category';
+
+import {
   AUTHOR_SEGMENT_POPULATE,
   generateFakeAuthorSegment,
   type AuthorSegmentResponse,
@@ -21,6 +27,12 @@ import {
   type PaginationParams,
   type APIResponseCollection,
 } from '@repo/api-models/common';
+
+import {
+  TAG_SEGMENT_POPULATE,
+  type TagSegmentResponseCollection,
+  generateFakeTagSegmentResponseCollection,
+} from '@repo/api-models/tag';
 
 // ==================================================
 //               C O N S T A N T S
@@ -46,6 +58,8 @@ interface ThoughtPopulate {
   seo: SeoSegment;
   blocks: Block[];
   author: AuthorSegmentResponse;
+  tags: TagSegmentResponseCollection;
+  categories: CatgorySegmentResponseCollection;
 }
 
 export interface Thought extends ThoughtCore, ThoughtPopulate {}
@@ -54,7 +68,9 @@ export const THOUGHT_POPULATE = {
   populate: {
     blocks: POPULATE_BLOCKS,
     seo: SEO_SEGMENT_POPULATE,
+    tags: TAG_SEGMENT_POPULATE,
     author: AUTHOR_SEGMENT_POPULATE,
+    categories: CATEGORY_SEGMENT_POPULATE,
   } satisfies Populate<keyof ThoughtPopulate>,
 };
 
@@ -148,9 +164,11 @@ export const generateFakeThoughtSegmentResponseCollection =
             locale: 'en',
             slug: faker.lorem.word(),
             title: faker.lorem.sentence(),
+            tags: generateFakeTagSegmentResponseCollection(),
             createdAt: faker.date.between(between).toUTCString(),
             updatedAt: faker.date.between(between).toUTCString(),
             publishedAt: faker.date.between(between).toUTCString(),
+            categories: generateFakeCatgorySegmentResponseCollection(),
           },
         };
       }, total).sort(

@@ -10,6 +10,9 @@ export type SupportedLocale = (typeof locales)[number];
 export const isSupportedLocale = (maybeLocale: string): maybeLocale is SupportedLocale =>
   locales.some((locale) => locale === maybeLocale);
 
+export const sanitizeLocale = (maybeLocale: string): SupportedLocale =>
+  isSupportedLocale(maybeLocale) ? maybeLocale : defaultLocale;
+
 export const pathnames: Pathnames<typeof locales> = {};
 
 // Use the default: `always`

@@ -1,6 +1,9 @@
 @use '../../../../../packages/ui/src/scss/paddings.module.scss' as paddings;
 
-.blogPage {
+.thoughtsPage {
   @include paddings.page-padding-vertical;
-  @include paddings.page-padding-horizontal;
+
+  .title {
+    margin-bottom: 2rem;
+  }
 }

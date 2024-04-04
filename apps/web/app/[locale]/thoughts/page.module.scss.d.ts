@@ -1,1 +1,2 @@
-export const blogPage: string;
+export const title: string;
+export const thoughtsPage: string;

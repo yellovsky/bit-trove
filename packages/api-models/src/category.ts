@@ -1,14 +1,19 @@
 // global modules
 import * as R from 'ramda';
+import { faker } from '@faker-js/faker';
 import type { QueryFunction } from '@tanstack/react-query';
 import { SEO_SEGMENT_POPULATE, type SeoSegment } from '@repo/api-models/seo';
-import { UPLOAD_FILE_POPULATE, type UploadFileResponse } from '@repo/api-models/upload-file';
+import {
+  UPLOAD_FILE_POPULATE,
+  type UploadFileResponse,
+  generateFakeUploadFileResponse,
+} from '@repo/api-models/upload-file';
 
 import {
   getApiClient,
-  type APIResponseCollection,
-  type APIResponseData,
   type Populate,
+  type APIResponseData,
+  type APIResponseCollection,
 } from '@repo/api-models/common';
 
 // ==================================================
@@ -60,6 +65,28 @@ export interface CategorySegmentEntity {
 
 export type CatgorySegmentResponseData = APIResponseData<CategorySegment>;
 export type CatgorySegmentResponseCollection = APIResponseCollection<CategorySegment>;
+
+export const generateFakeCatgorySegmentResponseData = () =>
+  ({
+    id: faker.number.int(),
+    attributes: {
+      cover: generateFakeUploadFileResponse(),
+      createdAt: faker.date.anytime().toUTCString(),
+      publishedAt: faker.date.anytime().toUTCString(),
+      updatedAt: faker.date.anytime().toUTCString(),
+      description: faker.lorem.paragraph(),
+      name: faker.lorem.word(),
+      slug: faker.lorem.word(),
+    },
+  }) satisfies CatgorySegmentResponseData;
+
+export const generateFakeCatgorySegmentResponseCollection = () => {
+  const total = faker.number.int({ max: 3 });
+  return {
+    data: R.times(generateFakeCatgorySegmentResponseData, total),
+    meta: { pagination: { limit: total, start: 0, total } },
+  } satisfies CatgorySegmentResponseCollection;
+};
 
 // ==========================================================
 //   Q U I C K   C O L L E C T I O N   C O L L E C T I O N

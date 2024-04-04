@@ -9,8 +9,8 @@ import { fetchBlogpost, type BlogpostFP } from '@repo/api-models/blog-post';
 // local modules
 import { Aside } from '~/components/aside';
 import { Blocks } from '~/components/blocks';
+import type { RSCPageProps } from '~/src/rsc';
 import { BlogpostPageHeader } from '~/components/blogpost/page-header';
-import { type RSCPageProps, getRSCLocaleParam, getRSCStringParam } from '~/src/rsc';
 
 import {
   cover as coverCn,
@@ -18,11 +18,11 @@ import {
   contentRestictor as contentRestictorCn,
 } from './page.module.scss';
 
-type BlogPageProps = RSCPageProps<'locale' | 'slug'>;
+type BlogPageProps = RSCPageProps<{ slug: string }>;
 
 const getBlogPostFP = (props: BlogPageProps): BlogpostFP => {
-  const slug = getRSCStringParam(props, 'slug');
-  const locale = getRSCLocaleParam(props);
+  const slug = props.params.slug;
+  const locale = props.params.locale;
   return !slug ? notFound() : { locale, slug };
 };
 
@@ -31,14 +31,15 @@ const getBlogPostFP = (props: BlogPageProps): BlogpostFP => {
 // ==========================================================
 export async function generateMetadata(props: BlogPageProps) {
   const blogpostResponse = await fetchBlogpost(getBlogPostFP(props));
-  return blogpostResponse?.data?.attributes.seo;
+  const metadata = blogpostResponse?.data?.attributes.seo;
+  return metadata ?? notFound();
 }
 
 // ==========================================================
 //                    C O M P O N E N T
 // ==========================================================
 export default async function page(props: BlogPageProps) {
-  const locale = getRSCLocaleParam(props);
+  const locale = props.params.locale;
   const blogpostResponse = await fetchBlogpost(getBlogPostFP(props));
 
   if (!blogpostResponse?.data) notFound();

@@ -5,15 +5,19 @@ import type { FC, PropsWithChildren, ReactNode } from 'react';
 import { SmallBadgesHolder } from '@repo/ui/small-badges-holder';
 
 // local modules
+import { ThemeProvider } from '../theme-provider';
+
 import {
   title as titleCn,
-  holder as holderCn,
   topBadges as topBadgesCn,
+  withBackground as withBackgroundCn,
+  contentPageHeader as contentPageHeaderCn,
 } from './content-page-header.module.scss';
 
 interface ContentPageHeaderProps extends PropsWithChildren {
   className?: string;
 
+  background?: string;
   topBadges?: ReactNode;
   bottomBadges?: ReactNode;
 }
@@ -27,13 +31,24 @@ export const ContentPageHeader: FC<ContentPageHeaderProps> = (props) => {
     <SmallBadgesHolder>{props.bottomBadges}</SmallBadgesHolder>
   );
 
-  return (
-    <div className={cn(props.className, holderCn)}>
+  const content = (
+    <div
+      style={{ backgroundImage: `url("${props.background}")` }}
+      className={cn(props.className, contentPageHeaderCn, props.background && withBackgroundCn)}
+    >
       {topBadges}
       <Title as="h1" className={titleCn}>
         {props.children}
       </Title>
       {bottomBadges}
     </div>
+  );
+
+  return !props.background ? (
+    content
+  ) : (
+    <ThemeProvider dark withoutBackground>
+      {content}
+    </ThemeProvider>
   );
 };

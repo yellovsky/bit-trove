@@ -1,34 +1,92 @@
+'use client';
+
 // global modules
-import type { FC } from 'react';
+import { type FC } from 'react';
+import { ShortThought } from '@repo/ui/short-thought';
+import { ShortThoughtYear } from '@repo/ui/short-thought-year';
+import { ShortThoughtHolder } from '@repo/ui/short-thought-holder';
+import { ShortThoughtMonth } from '@repo/ui/short-thought-month';
 import type { SupportedLocale } from '@bit-trove/localization/config';
-import { fetchThoughtSegmentCollection } from '@repo/api-models/thought';
-import { initialPageParam, type QueryKeyOf } from '@repo/api-models/common';
-import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
 
 // local modules
-import { ThoughtsTimelineClient } from './thoughts-timeline.client-component';
+import { ThoughtTimelineContent } from './thought-timeline-content';
 
-interface ThoughtsTimelineProps {
+import type {
+  ThoughtTree,
+  DateThoughtNode,
+  YearThoughtNode,
+  MonthThoughtNode,
+  TimestampThoughtNode,
+} from './thoughts-timeline.tree';
+
+interface TimestampNodeProps {
+  locale: SupportedLocale;
+  node: TimestampThoughtNode;
+}
+
+const TimestampNode: FC<TimestampNodeProps> = ({ locale, node }) => (
+  <ShortThought
+    key={node.children.id}
+    itemKey={node.children.id}
+    header={node.children.attributes.title}
+    publishDate={node.children.attributes.publishedAt}
+  >
+    {JSON.stringify(node.children.attributes.tags)}
+    <ThoughtTimelineContent locale={locale} slug={node.children.attributes.slug} />
+  </ShortThought>
+);
+
+interface DateNodeProps {
+  locale: SupportedLocale;
+  node: DateThoughtNode;
+}
+
+const DateNode: FC<DateNodeProps> = ({ locale, node }) => (
+  <>
+    {node.children.length > 1 ? `${node.type}: ${node.value}` : null}
+    {node.children.map((timestampNode) => (
+      <TimestampNode key={timestampNode.value} node={timestampNode} locale={locale} />
+    ))}
+  </>
+);
+
+interface MonthNodeProps {
+  node: MonthThoughtNode;
   locale: SupportedLocale;
 }
 
-export const ThoughtsTimeline: FC<ThoughtsTimelineProps> = async ({ locale }) => {
-  const queryClient = new QueryClient();
+const MonthNode: FC<MonthNodeProps> = ({ locale, node }) => (
+  <>
+    <ShortThoughtMonth month={node.value} />
+    {node.children.map((timestampNode) => (
+      <DateNode key={timestampNode.value} node={timestampNode} locale={locale} />
+    ))}
+  </>
+);
 
-  const queryKey: QueryKeyOf<typeof fetchThoughtSegmentCollection> = [
-    'thought_segment_collection',
-    { locale },
-  ];
+interface YearNodeProps {
+  locale: SupportedLocale;
+  node: YearThoughtNode;
+}
 
-  await queryClient.prefetchInfiniteQuery({
-    queryKey,
-    queryFn: fetchThoughtSegmentCollection,
-    initialPageParam,
-  });
+const YearNode: FC<YearNodeProps> = ({ locale, node }) => (
+  <>
+    <ShortThoughtYear year={node.value} />
+    {node.children.map((timestampNode) => (
+      <MonthNode key={timestampNode.value} node={timestampNode} locale={locale} />
+    ))}
+  </>
+);
 
-  return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <ThoughtsTimelineClient queryKey={queryKey} />
-    </HydrationBoundary>
-  );
-};
+interface ThoughtsTimelineClientProps {
+  tree: ThoughtTree;
+  locale: SupportedLocale;
+}
+
+export const ThoughtsTimeline: FC<ThoughtsTimelineClientProps> = ({ locale, tree }) => (
+  <ShortThoughtHolder>
+    {tree.map((yearNode) => (
+      <YearNode locale={locale} node={yearNode} key={yearNode.value} />
+    ))}
+  </ShortThoughtHolder>
+);

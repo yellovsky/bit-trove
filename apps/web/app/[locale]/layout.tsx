@@ -9,9 +9,9 @@ import { getMessages, getTranslations } from 'next-intl/server';
 // local modules
 import { Providers } from './providers';
 import { Footer } from '~/components/footer';
+import type { RSCLayoutProps } from '~/src/rsc';
 import { layout as layoutCn } from './layout.module.scss';
 import { ThemeProvider } from '~/components/theme-provider';
-import { getRSCLocaleParam, type RSCLayoutProps } from '~/src/rsc';
 
 // =============================================================
 //                     F O N T S
@@ -48,8 +48,8 @@ const getMainMenuProps = async () => {
   };
 };
 
-export default async function LocaleLayout(props: RSCLayoutProps<'locale'>) {
-  const locale = getRSCLocaleParam(props);
+export default async function LocaleLayout(props: RSCLayoutProps) {
+  const locale = props.params.locale;
 
   const [menuProps, timeZone, now, messages] = await Promise.all([
     getMainMenuProps(),

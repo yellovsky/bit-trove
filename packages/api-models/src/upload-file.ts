@@ -1,3 +1,5 @@
+// global modules
+import { faker } from '@faker-js/faker';
 import { apiHost } from '@repo/utils/api-host';
 
 export interface UploadFileFormat {
@@ -38,4 +40,25 @@ export const getUploadFileUrl = (
 ): string => {
   const format = formatType ? uploadFile.formats[formatType] : undefined;
   return apiHost(format?.url || uploadFile.url);
+};
+
+export const generateFakeUploadFileResponse = (options?: { height?: number; width?: number }) => {
+  const height = options?.height || faker.number.int({ min: 100, max: 300 });
+  const width = options?.width || faker.number.int({ min: 100, max: 300 });
+
+  return {
+    data: {
+      attributes: {
+        width,
+        height,
+        mime: '',
+        ext: 'jpg',
+        formats: {},
+        previewUrl: '',
+        caption: faker.lorem.sentence(),
+        alternativeText: faker.lorem.sentence(),
+        url: faker.image.urlPicsumPhotos({ width, height }),
+      },
+    },
+  } satisfies UploadFileResponse;
 };

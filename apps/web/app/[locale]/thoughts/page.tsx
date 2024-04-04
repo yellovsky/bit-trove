@@ -1,21 +1,51 @@
+'use client';
+
 // global modules
 import { Title } from '@repo/ui/title';
-import { TwoColumnsLayout } from '@repo/ui/two-columns-layout';
+import { useEffect, useState } from 'react';
+import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
+import { getNextPageParam, initialPageParam } from '@repo/api-models/common';
+
+import {
+  fetchThoughtSegmentCollection,
+  type ThoughtSegmentResponseCollection,
+} from '@repo/api-models/thought';
 
 // local modules
-import { Aside } from '~/components/aside';
-import { blogPage as blogPageCn } from './page.module.scss';
-import { getRSCLocaleParam, type RSCPageProps } from '~/src/rsc';
+import type { RSCPageProps } from '~/src/rsc';
+import { PageContent } from '~/components/page-content';
 import { ThoughtsTimeline } from '~/components/thoughts-timeline';
+import { thoughtsPage as thoughtsPageCn, title as titleCn } from './page.module.scss';
 
-export default async function BlogPage(props: RSCPageProps<'locale'>) {
-  const locale = getRSCLocaleParam(props);
+import {
+  addTreeNodes,
+  type ThoughtTree,
+} from '~/components/thoughts-timeline/thoughts-timeline.tree';
+
+const addPagesToTree = (tree: ThoughtTree, pages?: ThoughtSegmentResponseCollection[]) =>
+  !pages ? tree : pages.reduce((accum, page) => addTreeNodes(accum, page), tree);
+
+export default function ThoughtsPage({ params }: RSCPageProps) {
+  const { locale } = params;
+
+  const { data } = useSuspenseInfiniteQuery({
+    getNextPageParam,
+    initialPageParam,
+    queryKey: ['thought_segment_collection', { locale }],
+    queryFn: fetchThoughtSegmentCollection,
+  });
+
+  const [tree, setTree] = useState<ThoughtTree>(addPagesToTree([], data?.pages));
+
+  useEffect(() => setTree((prev) => addPagesToTree(prev, data?.pages)), [data]);
 
   return (
-    <TwoColumnsLayout className={blogPageCn} extraContent={<Aside locale={locale} />}>
-      <Title as="h1">Thoughts</Title>
+    <PageContent className={thoughtsPageCn} locale={locale}>
+      <Title as="h1" className={titleCn}>
+        Thoughts
+      </Title>
 
-      <ThoughtsTimeline locale={locale} />
-    </TwoColumnsLayout>
+      <ThoughtsTimeline tree={tree} locale={locale} />
+    </PageContent>
   );
 }

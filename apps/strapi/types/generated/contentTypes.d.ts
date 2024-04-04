@@ -865,19 +865,37 @@ export interface ApiTagTag extends Schema.CollectionType {
     singularName: 'tag';
     pluralName: 'tags';
     displayName: 'Tag';
+    description: '';
   };
   options: {
     draftAndPublish: true;
   };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
   attributes: {
-    name: Attribute.String;
+    name: Attribute.String &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     slug: Attribute.UID<'api::tag.tag', 'name'>;
-    image: Attribute.Media;
+    image: Attribute.Media &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<'api::tag.tag', 'oneToOne', 'admin::user'> & Attribute.Private;
     updatedBy: Attribute.Relation<'api::tag.tag', 'oneToOne', 'admin::user'> & Attribute.Private;
+    localizations: Attribute.Relation<'api::tag.tag', 'oneToMany', 'api::tag.tag'>;
+    locale: Attribute.String;
   };
 }
 
@@ -924,6 +942,8 @@ export interface ApiThoughtThought extends Schema.CollectionType {
           localized: true;
         };
       }>;
+    tags: Attribute.Relation<'api::thought.thought', 'oneToMany', 'api::tag.tag'>;
+    categories: Attribute.Relation<'api::thought.thought', 'oneToMany', 'api::category.category'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
