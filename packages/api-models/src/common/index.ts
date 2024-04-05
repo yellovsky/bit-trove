@@ -16,20 +16,20 @@ export interface PaginationMeta {
 }
 
 export interface APIResponseCollectionMetadata {
-  pagination: {
-    limit: number;
-    start: number;
-    total: number;
-  };
+  pagination: PaginationMeta;
 }
 
 export interface APIResponse<TAttributes extends object> {
   data: APIResponseData<TAttributes> | null;
 }
 
-export interface APIResponseCollection<TAttributes extends object> {
-  data: APIResponseData<TAttributes>[];
+export interface WithAPIResponseCollectionMetadata {
   meta: APIResponseCollectionMetadata;
+}
+
+export interface APIResponseCollection<TAttributes extends object>
+  extends WithAPIResponseCollectionMetadata {
+  data: APIResponseData<TAttributes>[];
 }
 
 export type Populate<TKey extends string> = Record<TKey, string | object>;
@@ -37,12 +37,6 @@ export type Populate<TKey extends string> = Record<TKey, string | object>;
 export interface PaginationParams {
   start: number;
   limit: number;
-}
-
-export interface WithPaginationMeta {
-  meta: {
-    pagination: PaginationMeta;
-  };
 }
 
 let client: AxiosInstance | undefined;
@@ -55,7 +49,7 @@ export const DEFAULT_PAGE_LIMIT = 24;
 
 export const initialPageParam = { start: 0, limit: DEFAULT_PAGE_LIMIT };
 
-export const getNextPageParam = (lastPage: WithPaginationMeta) => {
+export const getNextPageParam = (lastPage: WithAPIResponseCollectionMetadata) => {
   const { start, limit, total } = lastPage.meta.pagination;
   const nextParams = { start: start + DEFAULT_PAGE_LIMIT * limit, limit: limit };
   return nextParams.start < total ? nextParams : undefined;

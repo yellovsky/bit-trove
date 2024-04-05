@@ -1,48 +1,17 @@
 // global modules
 import * as R from 'ramda';
 import { faker } from '@faker-js/faker';
-import { UPLOAD_FILE_POPULATE, type UploadFileResponse } from '@bit-trove/api-models/upload-file';
 
 import type {
-  Populate,
   APIResponse,
   APIResponseData,
   APIResponseCollection,
 } from '@bit-trove/api-models/common';
 
-// ==================================================
-//                    C O R E
-// ==================================================
-interface TagCore {
-  name: string;
-  slug: string;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
-}
+// local modules
+import type { TagCore } from './tag.core';
+import { TAG_POPULATE, type Tag, type TagPopulate } from './tag.standalone';
 
-// ==================================================
-//              S T A N D A L O N E
-// ==================================================
-export interface TagPopulate {
-  image: UploadFileResponse;
-}
-
-export interface Tag extends TagCore, TagPopulate {}
-
-export const TAG_POPULATE = {
-  populate: {
-    image: UPLOAD_FILE_POPULATE,
-  } satisfies Populate<keyof TagPopulate>,
-};
-
-export type TagResponseData = APIResponseData<Tag>;
-export type TagResponse = APIResponse<Tag>;
-export type TagResponseCollection = APIResponseCollection<Tag>;
-
-// ==================================================
-//               S E G M E N T
-// ==================================================
 type TagSegmentPopulate = TagPopulate;
 export interface TagSegment extends TagCore, TagSegmentPopulate {}
 export const TAG_SEGMENT_POPULATE = TAG_POPULATE;

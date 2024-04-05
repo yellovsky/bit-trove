@@ -5,7 +5,15 @@
   "license": "MIT",
   "type": "module",
   "exports": {
-    "./*": "./src/*.ts"
+    "./thought": "./src/thought/index.ts",
+    "./author": "./src/author/index.ts",
+    "./upload-file": "./src/upload-file/index.ts",
+    "./category": "./src/category/index.ts",
+    "./seo": "./src/seo/index.ts",
+    "./tag": "./src/tag/index.ts",
+    "./common": "./src/common/index.ts",
+    "./block": "./src/block/index.ts",
+    "./blog-post": "./src/blog-post/index.ts"
   },
   "main": "index.js",
   "scripts": {

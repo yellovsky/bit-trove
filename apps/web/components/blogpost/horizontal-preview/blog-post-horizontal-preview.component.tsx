@@ -10,7 +10,7 @@ import { BlogpostViewsCount } from '~/components/blogpost/views-count';
 import {
   blogPostLink,
   type BlogpostResponseData,
-  type BlogpostSegmentEntity,
+  type BlogpostSegmentResponseData,
 } from '@bit-trove/api-models/blog-post';
 
 // local modules
@@ -29,7 +29,7 @@ import {
 } from './blog-post-horizontal-preview.module.scss';
 
 interface BlogpostHorizontalPreviewProps {
-  blogpostResponseData: BlogpostSegmentEntity | BlogpostResponseData;
+  blogpostResponseData: BlogpostSegmentResponseData | BlogpostResponseData;
 }
 
 export const BlogpostHorizontalPreview: FC<BlogpostHorizontalPreviewProps> = ({

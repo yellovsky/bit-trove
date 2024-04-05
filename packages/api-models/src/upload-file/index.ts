@@ -1,6 +1,7 @@
 // global modules
 import { faker } from '@faker-js/faker';
 import { apiHost } from '@bit-trove/utils/api-host';
+import type { APIResponse, APIResponseData } from '@bit-trove/api-models/common';
 
 export interface UploadFileFormat {
   mime: string;
@@ -9,28 +10,21 @@ export interface UploadFileFormat {
   url: string;
 }
 
-// ==================================================
-//               S E G M E N T
-// ==================================================
 type UploadFileFormatType = 'thumbnail' | 'small' | 'medium' | 'large';
 
 export interface UploadFile {
-  alternativeText: string | null;
-  caption: string | null;
+  ext: string;
+  url: string;
+  mime: string;
   width: number;
   height: number;
-  formats: Partial<Record<UploadFileFormatType, UploadFileFormat>>;
-  ext: string;
-  mime: string;
-  url: string;
+  caption: string | null;
   previewUrl: string | null;
+  alternativeText: string | null;
+  formats: Partial<Record<UploadFileFormatType, UploadFileFormat>>;
 }
-
-export interface UploadFileResponse {
-  data: {
-    attributes: UploadFile;
-  } | null;
-}
+export type UploadFileResponseData = APIResponseData<UploadFile>;
+export type UploadFileResponse = APIResponse<UploadFile>;
 
 export const UPLOAD_FILE_POPULATE = '*';
 
@@ -48,6 +42,7 @@ export const generateFakeUploadFileResponse = (options?: { height?: number; widt
 
   return {
     data: {
+      id: faker.number.int(),
       attributes: {
         width,
         height,
