@@ -6,16 +6,23 @@
     "packages/*"
   ],
   "scripts": {
+    "commit": "cz",
     "build": "turbo build",
     "dev": "turbo dev",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo lint"
   },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
   "devDependencies": {
-    "@commitlint/cli": "^19.2.1",
-    "@commitlint/config-conventional": "^19.1.0",
     "@bit-trove/eslint-config": "*",
     "@bit-trove/typescript-config": "*",
+    "@commitlint/cli": "^19.2.1",
+    "@commitlint/config-conventional": "^19.1.0",
+    "cz-conventional-changelog": "^3.3.0",
     "jest-environment-jsdom": "29.7.0",
     "prettier": "^3.0.1",
     "ts-jest": "29.1.1",
