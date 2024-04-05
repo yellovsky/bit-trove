@@ -1,4 +1,5 @@
-@use '../scss/theme.module.scss' as theme;
+@use '../scss/theme.scss' as theme;
+@use '../scss/variables.scss' as vars;
 
 $light-theme: (
   palette: (
@@ -46,10 +47,10 @@ $dark-theme: (
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 
-  color: theme.$var-color--text;
-  font-family: theme.$var--general-font-family;
+  color: vars.$var-color--text;
+  font-family: vars.$var--general-font-family;
 
   &:not(.withoutBackground) {
-    background-color: theme.$var-color--page-bg;
+    background-color: vars.$var-color--page-bg;
   }
 }

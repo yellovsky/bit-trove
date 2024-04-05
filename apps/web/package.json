@@ -16,6 +16,7 @@
     "@bit-trove/ui": "*",
     "@bit-trove/utils": "*",
     "@tanstack/react-query": "^5.28.6",
+    "@tanstack/react-query-devtools": "^5.28.14",
     "classnames": "^2.5.1",
     "effect": "^2.4.7",
     "next": "^14.1.1",
@@ -25,11 +26,11 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@bit-trove/eslint-config": "*",
     "@bit-trove/localization": "*",
+    "@bit-trove/typescript-config": "*",
     "@chromatic-com/storybook": "^1.2.25",
     "@next/eslint-plugin-next": "^14.1.1",
-    "@bit-trove/eslint-config": "*",
-    "@bit-trove/typescript-config": "*",
     "@storybook/addon-essentials": "^8.0.4",
     "@storybook/addon-interactions": "^8.0.4",
     "@storybook/addon-links": "^8.0.4",

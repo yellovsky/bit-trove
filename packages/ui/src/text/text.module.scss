@@ -1,13 +1,13 @@
 @use 'sass:list';
 @use 'sass:selector';
-@use '../scss/theme.module.scss' as theme;
+@use '../scss/variables.scss' as vars;
 
 $pending-widths: (80%, 90%, 70%, 75%, 85%);
 
 .text {
   line-height: 1.6;
   word-wrap: break-word;
-  color: theme.$var-color--text;
+  color: vars.$var-color--text;
   -webkit-font-smoothing: antialiased;
 
   @at-root #{selector.unify(&, 'p')} {
@@ -16,7 +16,7 @@ $pending-widths: (80%, 90%, 70%, 75%, 85%);
 
   &.pending {
     display: block;
-    background-color: theme.$var-color--pending-bg;
+    background-color: vars.$var-color--pending-bg;
 
     @for $i from 1 to list.length($pending-widths) + 1 {
       &:nth-child(#{$i}n) {

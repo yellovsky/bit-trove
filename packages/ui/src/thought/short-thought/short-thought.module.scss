@@ -1,5 +1,5 @@
-@use '../../scss/theme.module.scss' as theme;
-@use '../../scss/interactive.module.scss' as i;
+@use '../../scss/interactive.scss' as i;
+@use '../../scss/variables.scss' as vars;
 
 $marker-width: 2.4rem;
 
@@ -16,7 +16,7 @@ $marker-width: 2.4rem;
   grid-template-columns: 1fr 2rem;
 
   .publishDate {
-    color: theme.$var-color--text-passive;
+    color: vars.$var-color--text-passive;
   }
 
   .title {
@@ -31,19 +31,19 @@ $marker-width: 2.4rem;
     @if $state == 'hover' {
       .title,
       .arrow {
-        color: theme.$var-color--accent-hover;
+        color: vars.$var-color--accent-hover;
       }
     } @else if $state == 'focus' {
       @include i.focus-outline-style;
 
       .title,
       .arrow {
-        color: theme.$var-color--accent-hover;
+        color: vars.$var-color--accent-hover;
       }
     } @else if $state == 'active' {
       .title,
       .arrow {
-        color: theme.$var-color--accent-active;
+        color: vars.$var-color--accent-active;
       }
     }
   }

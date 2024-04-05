@@ -1,4 +1,4 @@
-@use '../../../../../packages/ui/src/scss/theme.module.scss' as theme;
+@use '@bit-trove/ui/src/scss/variables.scss' as vars;
 
 .holder {
   margin-bottom: 3rem;
@@ -10,8 +10,8 @@
   font-size: 2.5rem;
   line-height: 1.2em;
   margin-bottom: 1rem;
-  color: theme.$var-color--title;
-  font-family: theme.$var--title-font-family;
+  color: vars.$var-color--title;
+  font-family: vars.$var--title-font-family;
 }
 
 .topBadges {

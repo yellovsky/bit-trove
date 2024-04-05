@@ -1,5 +1,5 @@
-@use '../../../../../packages/ui/src/scss/theme.module.scss' as theme;
-@use '../../../../../packages/ui/src/scss/screen-interval.module.scss' as si;
+@use '@bit-trove/ui/src/scss/variables.scss' as vars;
+@use '@bit-trove/ui/src/scss/screen-interval.scss' as si;
 
 .footerCategories {
   padding-top: 3rem;
@@ -21,7 +21,7 @@
     font-size: 2.75rem;
     text-align: center;
     margin-bottom: 0.75rem;
-    color: theme.$var-color--title;
+    color: vars.$var-color--title;
   }
 
   .subtitle {

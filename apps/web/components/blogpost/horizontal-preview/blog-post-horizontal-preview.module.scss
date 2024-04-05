@@ -1,6 +1,6 @@
-@use '../../../../../packages/ui/src/scss/theme.module.scss' as theme;
-@use '../../../../../packages/ui/src/scss/interactive.module.scss' as i;
-@use '../../../../../packages/ui/src/scss/screen-interval.module.scss' as si;
+@use '@bit-trove/ui/src/scss/variables.scss' as vars;
+@use '@bit-trove/ui/src/scss/interactive.scss' as i;
+@use '@bit-trove/ui/src/scss/screen-interval.scss' as si;
 
 .blogPostHorizontalPreview {
   display: grid;
@@ -18,7 +18,7 @@
     aspect-ratio: 4 / 3;
     border-radius: 0.3rem;
     transition: scale 0.3s;
-    background-color: theme.$var-color--pending-bg;
+    background-color: vars.$var-color--pending-bg;
   }
 
   &:not(.pending):hover {
@@ -36,17 +36,17 @@
   @include i.interactive using ($state) {
     @if ($state == 'hover') {
       .title {
-        color: theme.$var-color--accent-hover;
+        color: vars.$var-color--accent-hover;
       }
     } @else if ($state == 'active') {
       .title {
-        color: theme.$var-color--accent-active;
+        color: vars.$var-color--accent-active;
       }
     } @else if ($state == 'focus') {
       @include i.focus-outline-style;
 
       .title {
-        color: theme.$var-color--accent-hover;
+        color: vars.$var-color--accent-hover;
       }
     }
   }
@@ -61,7 +61,7 @@
 
   .text {
     line-height: 1.7;
-    color: theme.$var-color--text;
+    color: vars.$var-color--text;
   }
 
   @include si.screen-interval($to: 'md') {
@@ -88,7 +88,7 @@
 .pendingLine {
   display: block;
   margin-bottom: 0.4rem;
-  background-color: theme.$var-color--pending-bg;
+  background-color: vars.$var-color--pending-bg;
 
   &:nth-child(1) {
     width: 80%;

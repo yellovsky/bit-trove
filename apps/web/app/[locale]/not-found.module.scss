@@ -1,7 +1,7 @@
-@use '../../../../packages/ui/src/scss/theme.module.scss' as theme;
-@use '../../../../packages/ui/src/scss/interactive.module.scss' as i;
-@use '../../../../packages/ui/src/scss/screen-interval.module.scss' as si;
-@use '../../../../packages/ui/src/scss/paddings.module.scss' as paddings;
+@use '@bit-trove/ui/src/scss/interactive.scss' as i;
+@use '@bit-trove/ui/src/scss/variables.scss' as vars;
+@use '@bit-trove/ui/src/scss/paddings.scss' as paddings;
+@use '@bit-trove/ui/src/scss/screen-interval.scss' as si;
 
 .notfoundHolder {
   @include paddings.page-padding-vertical;
@@ -26,28 +26,28 @@
 
     .text404 {
       font-size: 2.5rem;
-      color: theme.$var-color--text-passive;
+      color: vars.$var-color--text-passive;
       font-family: var(--title-font-family);
     }
 
     .text {
-      color: theme.$var-color--text-passive;
+      color: vars.$var-color--text-passive;
     }
 
     .button {
       padding: 0.5rem 2rem;
       border-radius: 0.2rem;
       border: solid 0.0625rem currentColor;
-      color: theme.$var-color--text-passive;
+      color: vars.$var-color--text-passive;
 
       @include i.interactive using ($state) {
         @if $state == 'hover' {
-          color: theme.$var-color--accent-hover;
+          color: vars.$var-color--accent-hover;
         } @else if $state == 'hover' {
           @include i.focus-outline-style;
-          color: theme.$var-color--accent-hover;
+          color: vars.$var-color--accent-hover;
         } @else if $state == 'active' {
-          color: theme.$var-color--accent-active;
+          color: vars.$var-color--accent-active;
         }
       }
     }

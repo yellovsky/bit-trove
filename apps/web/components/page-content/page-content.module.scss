@@ -1,5 +1,5 @@
-@use '../../../../packages/ui/src/scss/screen-interval.module.scss' as si;
-@use '../../../../packages/ui/src/scss/paddings.module.scss' as paddings;
+@use '@bit-trove/ui/src/scss/paddings.scss' as paddings;
+@use '@bit-trove/ui/src/scss/screen-interval.scss' as si;
 
 .pageContent {
   .columns {

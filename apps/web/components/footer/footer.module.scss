@@ -1,6 +1,6 @@
-@use '../../../../packages/ui/src/scss/theme.module.scss' as theme;
-@use '../../../../packages/ui/src/scss/paddings.module.scss' as paddings;
-@use '../../../../packages/ui/src/scss/screen-interval.module.scss' as si;
+@use '@bit-trove/ui/src/scss/variables.scss' as vars;
+@use '@bit-trove/ui/src/scss/paddings.scss' as paddings;
+@use '@bit-trove/ui/src/scss/screen-interval.scss' as si;
 
 .pagePadding {
   @include paddings.page-padding-horizontal;
@@ -37,7 +37,7 @@
     width: 2.6rem;
     height: 2.6rem;
     border-radius: 100%;
-    background-color: theme.$var-color--pending-bg;
+    background-color: vars.$var-color--pending-bg;
   }
 
   .socialHolder {

@@ -1,5 +1,5 @@
-@use '../../scss/theme.module.scss' as theme;
-@use '../../scss/interactive.module.scss' as i;
+@use '../../scss/interactive.scss' as i;
+@use '../../scss/variables.scss' as vars;
 
 .cardHolder {
   display: block;
@@ -9,7 +9,7 @@
   .imageHolder {
     position: relative;
     aspect-ratio: 1 / 1;
-    background-color: theme.$var-color--pending-bg;
+    background-color: vars.$var-color--pending-bg;
   }
 
   .textHolder {
@@ -22,17 +22,17 @@
   @include i.interactive using ($state) {
     @if ($state == 'hover') {
       .textHolder {
-        color: theme.$var-color--accent-hover;
+        color: vars.$var-color--accent-hover;
       }
     } @else if ($state == 'active') {
       .textHolder {
-        color: theme.$var-color--accent-active;
+        color: vars.$var-color--accent-active;
       }
     } @else if ($state == 'focus') {
       @include i.focus-outline-style;
 
       .textHolder {
-        color: theme.$var-color--accent-hover;
+        color: vars.$var-color--accent-hover;
       }
     }
   }

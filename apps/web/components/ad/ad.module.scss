@@ -1,7 +1,7 @@
-@use '../../../../packages/ui/src/scss/theme.module.scss' as theme;
+@use '@bit-trove/ui/src/scss/variables.scss' as vars;
 
 .holder {
-  background-color: theme.$var-color--pending-bg;
+  background-color: vars.$var-color--pending-bg;
 
   &.square {
     aspect-ratio: 1 / 1;

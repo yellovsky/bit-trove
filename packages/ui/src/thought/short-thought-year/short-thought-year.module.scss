@@ -1,4 +1,4 @@
-@use '../../scss/theme.module.scss' as theme;
+@use '../../scss/variables.scss' as vars;
 
 .year {
   color: #afadad;
@@ -9,5 +9,5 @@
   border-radius: 0.3rem;
   margin-bottom: 0.02rem;
   background-color: #dadee5;
-  font-family: theme.$var--title-font-family;
+  font-family: vars.$var--title-font-family;
 }

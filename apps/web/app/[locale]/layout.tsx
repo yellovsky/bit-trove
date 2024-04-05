@@ -1,27 +1,16 @@
 // global modules
-import cn from 'classnames';
 import type { Metadata } from 'next';
 import { MainMenu } from '@bit-trove/ui/main-menu';
-import { Poppins, Roboto } from 'next/font/google';
 import { getTimeZone, getNow } from 'next-intl/server';
+import { ThemeProvider } from '@bit-trove/ui/theme-provider';
 import { getMessages, getTranslations } from 'next-intl/server';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 // local modules
 import { Providers } from './providers';
 import { Footer } from '~/components/footer';
 import type { RSCLayoutProps } from '~/src/rsc';
 import { layout as layoutCn } from './layout.module.scss';
-import { ThemeProvider } from '~/components/theme-provider';
-
-// =============================================================
-//                     F O N T S
-// =============================================================
-const poppins = Poppins({
-  variable: '--title-font-family',
-  weight: ['400', '700'],
-  subsets: ['latin'],
-});
-const roboto = Roboto({ variable: '--general-font-family', weight: '400', subsets: ['latin'] });
 
 // =============================================================
 //                  M E T A D A T A
@@ -60,7 +49,7 @@ export default async function LocaleLayout(props: RSCLayoutProps) {
 
   return (
     <html lang={locale}>
-      <body className={cn(poppins.variable, roboto.variable)}>
+      <body>
         <Providers locale={locale} timeZone={timeZone} now={now} messages={messages}>
           <ThemeProvider className={layoutCn}>
             <MainMenu {...menuProps} />
@@ -69,6 +58,8 @@ export default async function LocaleLayout(props: RSCLayoutProps) {
               <Footer locale={locale} />
             </ThemeProvider>
           </ThemeProvider>
+
+          <ReactQueryDevtools initialIsOpen />
         </Providers>
       </body>
     </html>

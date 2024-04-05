@@ -26,7 +26,8 @@
     "./short-thought-holder": "./src/thought/short-thought-holder/index.ts",
     "./short-thought-year": "./src/thought/short-thought-year/index.ts",
     "./short-thought-month": "./src/thought/short-thought-month/index.ts",
-    "./text": "./src/text/index.ts"
+    "./text": "./src/text/index.ts",
+    "./theme-provider": "./src/theme-provider/index.ts"
   },
   "scripts": {
     "generate:component": "turbo gen react-component",

@@ -1,7 +1,7 @@
-@use '../../scss/theme.module.scss' as theme;
+@use '../../scss/variables.scss' as vars;
 
 .holder {
-  color: theme.$var-color--text-passive;
+  color: vars.$var-color--text-passive;
 }
 
 .icon {

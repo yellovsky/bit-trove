@@ -1,5 +1,5 @@
-@use '../../scss/theme.module.scss' as theme;
-@use '../../scss/interactive.module.scss' as i;
+@use '../../scss/interactive.scss' as i;
+@use '../../scss/variables.scss' as vars;
 
 .menuItem {
   border: none;
@@ -12,16 +12,16 @@
   display: flex;
   align-items: center;
 
-  color: theme.$var-color--title;
+  color: vars.$var-color--title;
 
   @include i.interactive using ($state) {
     @if $state == 'hover' {
-      color: theme.$var-color--accent-hover;
+      color: vars.$var-color--accent-hover;
     } @else if $state == 'focus' {
       @include i.focus-outline-style;
-      color: theme.$var-color--accent-hover;
+      color: vars.$var-color--accent-hover;
     } @else if $state == 'active' {
-      color: theme.$var-color--accent-active;
+      color: vars.$var-color--accent-active;
     }
   }
 

@@ -1,5 +1,5 @@
-@use '../scss/theme.module.scss' as theme;
-@use '../scss/screen-interval.module.scss' as si;
+@use '../scss/variables.scss' as vars;
+@use '../scss/screen-interval.scss' as si;
 
 .contentPageHeader {
   @include si.page-padding using ($padding) {
@@ -20,7 +20,7 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-color: theme.$var-color--pending-bg;
+    background-color: vars.$var-color--pending-bg;
 
     &:before {
       content: '';

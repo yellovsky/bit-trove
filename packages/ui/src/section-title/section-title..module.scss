@@ -1,4 +1,4 @@
-@use '../scss/theme.module.scss' as theme;
+@use '../scss/variables.scss' as vars;
 
 .sectionTitle {
   font-size: 0.75rem;
@@ -7,7 +7,7 @@
   margin-bottom: 1.25rem;
   letter-spacing: 0.125rem;
   text-transform: uppercase;
-  color: theme.$var-color--title;
+  color: vars.$var-color--title;
   border-bottom: solid 1px #e1e1e1;
-  font-family: theme.$var--title-font-family;
+  font-family: vars.$var--title-font-family;
 }

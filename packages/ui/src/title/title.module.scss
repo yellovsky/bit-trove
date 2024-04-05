@@ -1,11 +1,11 @@
-@use '../../../../packages/ui/src/scss/theme.module.scss' as theme;
+@use '@bit-trove/ui/src/scss/variables.scss' as vars;
 
 .title {
   font-weight: 700;
   letter-spacing: 0;
   line-height: 1.2em;
-  color: theme.$var-color--title;
-  font-family: theme.$var--title-font-family;
+  color: vars.$var-color--title;
+  font-family: vars.$var--title-font-family;
 
   &.asH1 {
     font-size: 2.5rem;
@@ -29,6 +29,6 @@
 
   &.pending {
     width: 80%;
-    background-color: theme.$var-color--pending-bg;
+    background-color: vars.$var-color--pending-bg;
   }
 }
