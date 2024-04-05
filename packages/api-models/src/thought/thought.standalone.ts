@@ -23,8 +23,8 @@ import {
 import type { ThoughtCore } from './thought.core';
 
 export interface ThoughtPopulate {
-  seo: SeoSegment;
   blocks: Block[];
+  seo: SeoSegment | null;
   author: AuthorSegmentResponse;
   tags: TagSegmentResponseCollection;
   categories: CatgorySegmentResponseCollection;

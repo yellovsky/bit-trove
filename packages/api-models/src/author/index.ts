@@ -1,3 +1,4 @@
+export { getAuthorName } from './author.helpers';
 export type { AuthorCore } from './author.core';
 export type { Author, AuthorResponse, AuthorResponseData } from './author.standalone';
 

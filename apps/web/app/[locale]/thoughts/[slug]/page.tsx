@@ -8,7 +8,12 @@ import { SmallAuthorBadge } from '@bit-trove/ui/small-author-badge';
 import { ContentPageHeader } from '@bit-trove/ui/content-page-header';
 import { SmallCategoryBadge } from '@bit-trove/ui/small-category-badge';
 import { PublishDateBadge } from '@bit-trove/ui/small-publish-date-badge';
-import { fetchThought, type ThoughtFP } from '@bit-trove/api-models/thought';
+import {
+  fetchThought,
+  getThoughtJsonLd,
+  getThoughtMetadata,
+  type ThoughtFP,
+} from '@bit-trove/api-models/thought';
 
 // local modules
 import { Blocks } from '~/components/blocks';
@@ -26,10 +31,9 @@ const getThoughtFP = (props: ThoughtPageProps): ThoughtFP => ({
 //                    M E T A D A T A
 // ==========================================================
 export const generateMetadata = async (props: ThoughtPageProps) => {
-  const blogpostResponse = await fetchThought(getThoughtFP(props));
-  return (
-    blogpostResponse?.data?.attributes.seo ?? { title: blogpostResponse.data?.attributes.title }
-  );
+  const thoughtResponse = await fetchThought(getThoughtFP(props));
+  const thought = thoughtResponse?.data?.attributes;
+  return thought ? getThoughtMetadata(thought) : undefined;
 };
 
 // ==========================================================
@@ -67,6 +71,11 @@ const ThoughtPage: FC<ThoughtPageProps> = async (props) => {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(getThoughtJsonLd(thought)) }}
+      />
+
       <PageContent header={header} locale={props.params.locale}>
         <Link href="/thoughts/typography-heading-elements">
           /thoughts/typography-heading-elements
