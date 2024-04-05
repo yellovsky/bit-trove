@@ -23,7 +23,7 @@ const meta: Meta<typeof ShortThought> = {
   title: 'Thoughts/ShortThoughtHolder',
   component: ShortThought,
   tags: ['autodocs'],
-  render: (props) => (
+  render: () => (
     <ShortThoughtHolder>
       {randomData.map((data, index) => (
         <ShortThought {...data} key={index} />

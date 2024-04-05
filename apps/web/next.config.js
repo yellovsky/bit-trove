@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const url = require('url');
 const path = require('path');
 const createNextIntlPlugin = require('next-intl/plugin');

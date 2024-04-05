@@ -75,6 +75,8 @@ export const Playground: Story = { args: {} as never };
 export const Pending: Story = {
   args: {} as never,
 
+  // sorry =(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   render: ({ as, ...rest }: any) => (
     <div style={{ width: '30rem' }}>
       <TitlePending {...rest} styledAs="h1" style={{ marginBottom: '2rem' }} />

@@ -4,14 +4,14 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { SmallViewsBadge } from '@bit-trove/ui/small-views-badge';
 import { SmallAuthorBadge } from '@bit-trove/ui/small-author-badge';
 import { SmallCategoryBadge } from '@bit-trove/ui/small-category-badge';
-import { generateFakeAuthorSegment } from '@bit-trove/api-models/author';
+import { generateFakeAuthorSegmentResponse } from '@bit-trove/api-models/author';
 import { PublishDateBadge } from '@bit-trove/ui/small-publish-date-badge';
 import { generateFakeCatgorySegmentResponseCollection } from '@bit-trove/api-models/category';
 
 // local modules
 import { ContentPageHeader } from './content-page-header.component';
 
-const fakeAuthor = generateFakeAuthorSegment().data.attributes;
+const fakeAuthor = generateFakeAuthorSegmentResponse().data.attributes;
 const fakeCategories = generateFakeCatgorySegmentResponseCollection().data;
 
 const meta: Meta<typeof ContentPageHeader> = {

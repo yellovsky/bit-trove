@@ -15,6 +15,8 @@ interface RichTextProps {
 }
 
 const components: ComponentProps<typeof Markdown>['components'] = {
+  // sorry =(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   code: ({ inline, className, children, ...rest }: any) => {
     const match = /language-(\w+)/.exec(className || '');
 
