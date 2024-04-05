@@ -27,7 +27,7 @@ const getMainMenuProps = async () => {
     navigation: [
       { name: t('home_page'), href: '/' },
       { name: t('blogs_page'), href: '/blog' },
-      { name: t('tutorials_page'), href: '/' },
+      { name: t('thoughts_page'), href: '/thoughts' },
       { name: t('tips_and_tricks_page'), href: '/' },
     ],
     buttons: [
