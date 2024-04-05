@@ -1,5 +1,3 @@
-'use client';
-
 // global modules
 import { useRef, type FC, useEffect } from 'react';
 
