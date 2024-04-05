@@ -19,11 +19,6 @@
       "path": "cz-conventional-changelog"
     }
   },
-  "husky": {
-    "hooks": {
-      "pre-push": "yarn test & yarn lint"
-    }
-  },
   "devDependencies": {
     "@bit-trove/eslint-config": "*",
     "@bit-trove/typescript-config": "*",
