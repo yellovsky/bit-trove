@@ -17,6 +17,11 @@
   box-shadow: 0 0 0 0.0625rem vars.$var-color--accent-hover;
 }
 
+@mixin focus-outline-style-inset {
+  outline: none;
+  box-shadow: 0 0 0 0.0625rem vars.$var-color--accent-hover inset;
+}
+
 @mixin interactive {
   @content ('default');
 

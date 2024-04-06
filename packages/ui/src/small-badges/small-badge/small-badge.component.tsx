@@ -5,7 +5,10 @@ import type { ComponentProps, FC, HTMLAttributes, ReactNode } from 'react';
 
 // local modules
 import {
+  big as bigCn,
+  icon as iconCn,
   link as linkCn,
+  small as smallCn,
   holder as holderCn,
   narrow as narrowCn,
   pending as pendingCn,
@@ -14,7 +17,9 @@ import {
 interface CommonSmallBadgeProps {
   icon?: ReactNode;
   narrow?: boolean;
+  noLinkStyle?: boolean;
   textClassName?: string;
+  iconSize?: 'big' | 'small';
 }
 
 type SmallBadgeLinkProps = ComponentProps<typeof Link> & CommonSmallBadgeProps;
@@ -22,10 +27,21 @@ type SmallBadgeDivProps = HTMLAttributes<HTMLDivElement> & CommonSmallBadgeProps
 
 type SmallBadgeProps = SmallBadgeLinkProps | SmallBadgeDivProps;
 
-export const SmallBadge: FC<SmallBadgeProps> = ({ narrow, icon, textClassName, ...rest }) => {
+export const SmallBadge: FC<SmallBadgeProps> = ({
+  icon,
+  narrow,
+  iconSize,
+  noLinkStyle,
+  textClassName,
+  ...rest
+}) => {
   const content = (
     <>
-      {icon ? <div>{icon}</div> : null}
+      {icon ? (
+        <div className={cn(iconCn, iconSize === 'big' && bigCn, iconSize === 'small' && smallCn)}>
+          {icon}
+        </div>
+      ) : null}
       <div className={textClassName}>{rest.children}</div>
     </>
   );
@@ -33,7 +49,7 @@ export const SmallBadge: FC<SmallBadgeProps> = ({ narrow, icon, textClassName, .
   const commonCn = cn(rest.className, holderCn, narrow && narrowCn);
 
   return 'href' in rest ? (
-    <Link {...rest} className={cn(commonCn, linkCn)}>
+    <Link {...rest} className={cn(commonCn, !noLinkStyle && linkCn)}>
       {content}
     </Link>
   ) : (

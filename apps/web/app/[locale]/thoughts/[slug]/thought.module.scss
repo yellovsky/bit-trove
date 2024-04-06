@@ -3,3 +3,7 @@
 .pageHolder {
   @include paddings.page-padding-vertical;
 }
+
+.blocksHolder {
+  margin-bottom: 2rem;
+}

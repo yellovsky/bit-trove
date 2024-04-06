@@ -1,4 +1,5 @@
 export type { TagCore } from './tag.core';
+export { filterByTagLink } from './tag.helpers';
 
 export type {
   TagSegment,

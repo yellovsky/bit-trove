@@ -59,7 +59,7 @@ export default async function LocaleLayout(props: RSCLayoutProps) {
             </ThemeProvider>
           </ThemeProvider>
 
-          <ReactQueryDevtools initialIsOpen />
+          <ReactQueryDevtools initialIsOpen={false} />
         </Providers>
       </body>
     </html>

@@ -19,6 +19,11 @@ import {
 import { Blocks } from '~/components/blocks';
 import type { RSCPageProps } from '~/src/rsc';
 import { PageContent } from '~/components/page-content';
+import { SmallBadgesHolder } from '@bit-trove/ui/small-badges-holder';
+import { SmallTagBadge } from '@bit-trove/ui/small-tag-badge';
+import { filterByTagLink } from '@bit-trove/api-models/tag';
+
+import { blocksHolder as blocksHolderCn } from './thought.module.scss';
 
 type ThoughtPageProps = RSCPageProps<{ slug: string }>;
 
@@ -85,7 +90,17 @@ const ThoughtPage: FC<ThoughtPageProps> = async (props) => {
           /thoughts/recursive-typings-tree-structure
         </Link>
 
-        <Blocks blocks={thought.blocks} />
+        <div className={blocksHolderCn}>
+          <Blocks blocks={thought.blocks} />
+        </div>
+
+        <SmallBadgesHolder>
+          {thought.tags.data.map(({ id, attributes: tag }) => (
+            <SmallTagBadge key={id} href={filterByTagLink(tag)}>
+              {tag.name}
+            </SmallTagBadge>
+          ))}
+        </SmallBadgesHolder>
       </PageContent>
     </>
   );

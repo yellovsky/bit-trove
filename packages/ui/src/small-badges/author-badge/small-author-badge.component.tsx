@@ -1,5 +1,4 @@
 // global modules
-import Image from 'next/image';
 import type { FC } from 'react';
 import { SmallBadge } from '@bit-trove/ui/small-badge';
 import type { Author } from '@bit-trove/api-models/author';
@@ -17,12 +16,11 @@ export const SmallAuthorBadge: FC<SmallAuthorBadgeProps> = ({ author }) => (
     className={holderCn}
     icon={
       author.avatar.data ? (
-        <Image
-          alt="avatar"
+        <div
           className={imgCn}
-          src={getUploadFileUrl(author.avatar.data.attributes, 'thumbnail')}
-          width={20}
-          height={20}
+          style={{
+            backgroundImage: `url("${getUploadFileUrl(author.avatar.data.attributes, 'thumbnail')}")`,
+          }}
         />
       ) : null
     }

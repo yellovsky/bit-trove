@@ -1,9 +1,15 @@
 @use '../../scss/interactive.scss' as i;
 
 .img {
+  aspect-ratio: 1 / 1;
+
   display: block;
   border-radius: 100%;
   border-style: solid;
   border-width: 0.0625rem;
   border-color: currentColor;
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
