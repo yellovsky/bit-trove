@@ -1,2 +1,2 @@
 export const pageHolder: string;
-export const blocksHolder: string;
+export const marginbottom2rem: string;

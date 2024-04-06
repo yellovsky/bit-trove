@@ -20,14 +20,16 @@ interface PageContentProps extends PropsWithChildren {
 }
 
 export const PageContent: FC<PageContentProps> = ({ locale, className, header, children }) => (
-  <div className={cn(className, pageContentCn)}>
-    {header ? <div>{header}</div> : null}
+  <>
+    <div className={cn(className, pageContentCn)}>
+      {header ? <div>{header}</div> : null}
 
-    <div className={columnsCn}>
-      <div className={contentCn}>{children}</div>
-      <div className={extraColumnCn}>
-        <Aside locale={locale} />
+      <div className={columnsCn}>
+        <div className={contentCn}>{children}</div>
+        <div className={extraColumnCn}>
+          <Aside locale={locale} />
+        </div>
       </div>
     </div>
-  </div>
+  </>
 );

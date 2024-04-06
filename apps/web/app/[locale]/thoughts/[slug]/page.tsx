@@ -3,11 +3,15 @@ import 'server-only';
 import type { FC } from 'react';
 import { notFound } from 'next/navigation';
 import { Link } from '@bit-trove/localization/link';
+import { filterByTagLink } from '@bit-trove/api-models/tag';
 import { categoryLink } from '@bit-trove/api-models/category';
+import { SmallTagBadge } from '@bit-trove/ui/small-tag-badge';
 import { SmallAuthorBadge } from '@bit-trove/ui/small-author-badge';
 import { ContentPageHeader } from '@bit-trove/ui/content-page-header';
+import { SmallBadgesHolder } from '@bit-trove/ui/small-badges-holder';
 import { SmallCategoryBadge } from '@bit-trove/ui/small-category-badge';
 import { PublishDateBadge } from '@bit-trove/ui/small-publish-date-badge';
+
 import {
   fetchThought,
   getThoughtJsonLd,
@@ -16,14 +20,11 @@ import {
 } from '@bit-trove/api-models/thought';
 
 // local modules
+import { Ad } from '~/components/ad';
 import { Blocks } from '~/components/blocks';
 import type { RSCPageProps } from '~/src/rsc';
 import { PageContent } from '~/components/page-content';
-import { SmallBadgesHolder } from '@bit-trove/ui/small-badges-holder';
-import { SmallTagBadge } from '@bit-trove/ui/small-tag-badge';
-import { filterByTagLink } from '@bit-trove/api-models/tag';
-
-import { blocksHolder as blocksHolderCn } from './thought.module.scss';
+import { marginbottom2rem as marginbottom2remCn } from './thought.module.scss';
 
 type ThoughtPageProps = RSCPageProps<{ slug: string }>;
 
@@ -90,17 +91,19 @@ const ThoughtPage: FC<ThoughtPageProps> = async (props) => {
           /thoughts/recursive-typings-tree-structure
         </Link>
 
-        <div className={blocksHolderCn}>
+        <div className={marginbottom2remCn}>
           <Blocks blocks={thought.blocks} />
         </div>
 
-        <SmallBadgesHolder>
+        <SmallBadgesHolder className={marginbottom2remCn}>
           {thought.tags.data.map(({ id, attributes: tag }) => (
             <SmallTagBadge key={id} href={filterByTagLink(tag)}>
               {tag.name}
             </SmallTagBadge>
           ))}
         </SmallBadgesHolder>
+
+        <Ad layout="horizontal" />
       </PageContent>
     </>
   );
