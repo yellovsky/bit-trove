@@ -5,7 +5,7 @@ import { NextIntlClientProvider } from 'next-intl';
 
 // local modules
 import '../app/globals.scss';
-import { ThemeProvider } from '../components/theme-provider';
+import { ThemeProvider } from '@bit-trove/ui/theme-provider';
 
 const DARK_BG_COLOR = '#000';
 const LIGHT_BG_COLOR = '#ffffff';

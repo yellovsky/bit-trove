@@ -1,6 +1,6 @@
+import path, { join, dirname } from 'path';
 import type { StorybookConfig } from '@storybook/nextjs';
-
-import { join, dirname } from 'path';
+import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 
 /**
  * This function is used to resolve the absolute path of a package.
@@ -65,11 +65,18 @@ const config: StorybookConfig = {
   ],
   framework: {
     name: getAbsolutePath('@storybook/nextjs'),
-    options: {},
+    options: {
+      nextConfigPath: path.join(__dirname, '../next.config.js'),
+    },
   },
   docs: {
     autodocs: 'tag',
   },
   staticDirs: ['../public'],
+  webpackFinal: async (config: any) => {
+    config.resolve.plugins = [new TsconfigPathsPlugin()];
+    return config;
+  },
 };
+
 export default config;

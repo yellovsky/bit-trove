@@ -12,6 +12,14 @@
     },
     "jsx": "preserve"
   },
-  "include": ["next-env.d.ts", "next.config.js", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "next.config.js",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".storybook/*.ts",
+    ".storybook/*.tsx"
+  ],
   "exclude": ["node_modules"]
 }
