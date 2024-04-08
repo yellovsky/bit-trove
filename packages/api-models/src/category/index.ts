@@ -18,5 +18,7 @@ export {
 
 export type {
   QuickCategoryCollectionFP,
-  QuickCategoryResponseCollection,
+  QuickCategoryCollection,
+  QuickCategoryCollectionData,
+  QuickCategoryResponse,
 } from './category.quick-category';

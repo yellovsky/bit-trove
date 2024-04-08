@@ -1,0 +1,24 @@
+{
+  "kind": "singleType",
+  "collectionName": "quick_categories",
+  "info": {
+    "singularName": "quick-category",
+    "pluralName": "quick-categories",
+    "displayName": "Quick Category"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "categories": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::category.category"
+    }
+  }
+}

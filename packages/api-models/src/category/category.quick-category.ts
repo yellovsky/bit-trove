@@ -1,5 +1,5 @@
 // global modules
-import { getApiClient } from '@bit-trove/api-models/common';
+import { type APIResponse, type APIResponseData, getApiClient } from '@bit-trove/api-models/common';
 
 // local modules
 import {
@@ -11,19 +11,25 @@ export type QuickCategoryCollectionFP = {
   locale: string;
 };
 
-export type QuickCategoryResponseCollection = CatgorySegmentResponseCollection;
+export interface QuickCategoryCollection {
+  locale: string;
+  categories: CatgorySegmentResponseCollection;
+}
 
-// TODO: await for https://github.com/strapi/strapi/issues/19901 and add SingleType to strappi
+export type QuickCategoryCollectionData = APIResponseData<QuickCategoryCollection>;
+export type QuickCategoryResponse = APIResponse<QuickCategoryCollection>;
+
+const QUICK_CATEGORY_POPULATE = {
+  populate: {
+    categories: CATEGORY_SEGMENT_POPULATE,
+  },
+};
+
 export const fetchQuickCategoryCollection = ({
   locale,
-}: QuickCategoryCollectionFP): Promise<QuickCategoryResponseCollection> =>
+}: QuickCategoryCollectionFP): Promise<QuickCategoryResponse> =>
   getApiClient()
-    .get<QuickCategoryResponseCollection>('/categories', {
-      params: {
-        ...CATEGORY_SEGMENT_POPULATE,
-        locale,
-        pagination: { limit: 8, start: 0 },
-        sort: 'name:asc',
-      },
+    .get<QuickCategoryResponse>('/quick-category', {
+      params: { ...QUICK_CATEGORY_POPULATE, locale },
     })
     .then((response) => response.data);

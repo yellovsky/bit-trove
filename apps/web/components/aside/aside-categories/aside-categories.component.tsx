@@ -16,12 +16,13 @@ interface AsideCategoriesProps {
 
 export const AsideCategories: FC<AsideCategoriesProps> = async ({ locale }) => {
   const { data } = await fetchQuickCategoryCollection({ locale });
+  const categories = data?.attributes.categories.data;
 
-  return !data?.length ? null : (
+  return !categories?.length ? null : (
     <div>
       <SectionTitle>Categories</SectionTitle>
       <div className={linksCn}>
-        {data.map((category) => (
+        {categories.map((category) => (
           <PlateLink
             href={`/${locale}/categories/${category.attributes.slug}`}
             image={apiHost(category.attributes.cover.data?.attributes.url)}

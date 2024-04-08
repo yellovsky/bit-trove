@@ -8,7 +8,7 @@ import type { SupportedLocale } from '@bit-trove/localization/config';
 
 import {
   categoryLink,
-  type CategorySegment,
+  type CategorySegmentEntity,
   fetchQuickCategoryCollection,
 } from '@bit-trove/api-models/category';
 
@@ -31,15 +31,19 @@ interface FooterCategoriesProps {
 export const FooterCategories: FC<FooterCategoriesProps> = async ({ locale, className }) => {
   const { data } = await fetchQuickCategoryCollection({ locale });
 
-  const categories = data.map((data) => data.attributes);
+  const categories = data?.attributes.categories.data;
 
-  const renderCard = (category: CategorySegment) => (
+  const renderCard = (category: CategorySegmentEntity) => (
     <SimpleSquareCard
       className={categoryCardCn}
-      cover={category.cover.data ? getUploadFileUrl(category.cover.data.attributes) : undefined}
-      href={categoryLink(category)}
-      key={category.slug}
-      name={category.name}
+      cover={
+        category.attributes.cover.data
+          ? getUploadFileUrl(category.attributes.cover.data.attributes)
+          : undefined
+      }
+      href={categoryLink(category.attributes)}
+      key={category.attributes.slug}
+      name={category.attributes.name}
     />
   );
 
