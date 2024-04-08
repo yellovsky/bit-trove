@@ -2,10 +2,10 @@
 import { UPLOAD_FILE_POPULATE, type UploadFileResponse } from '@bit-trove/api-models/upload-file';
 
 import type {
-  Populate,
   APIResponse,
-  APIResponseData,
   APIResponseCollection,
+  APIResponseData,
+  Populate,
 } from '@bit-trove/api-models/common';
 
 // local modules

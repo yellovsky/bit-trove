@@ -1,8 +1,8 @@
 // global modules
 import type { FC } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { thoughtQueryFn } from '@bit-trove/api-models/thought';
 import type { SupportedLocale } from '@bit-trove/localization/config';
+import { thoughtQueryFn } from '@bit-trove/api-models/thought';
+import { useQuery } from '@tanstack/react-query';
 
 // local modules
 import { Blocks } from '../../blocks';
@@ -15,8 +15,8 @@ interface ThoughtTimelineContentProps {
 
 export const ThoughtTimelineContent: FC<ThoughtTimelineContentProps> = ({ slug, locale }) => {
   const { data, status } = useQuery({
-    queryKey: ['thought', { locale, slug }],
     queryFn: thoughtQueryFn,
+    queryKey: ['thought', { locale, slug }],
   });
 
   if (status === 'error') return <div>error</div>;

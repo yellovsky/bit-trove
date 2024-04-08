@@ -5,8 +5,8 @@ import type { FC } from 'react';
 // local modules
 import {
   cardHolder as cardHolderCn,
-  textHolder as textHolderCn,
   imageHolder as imageHolderCn,
+  textHolder as textHolderCn,
 } from './simple-square-card.module.scss';
 
 export const SimpleSquareCardPending: FC<{ className?: string }> = ({ className }) => (

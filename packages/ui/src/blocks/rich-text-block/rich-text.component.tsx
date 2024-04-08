@@ -1,12 +1,12 @@
 // global modules
-import remarkGfm from 'remark-gfm';
-import rehypeRaw from 'rehype-raw';
-import Markdown from 'react-markdown';
-import type { ComponentProps, FC } from 'react';
 import { addOpacityToColor } from '@bit-trove/utils/set-color-alpha';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dracula } from 'react-syntax-highlighter/dist/cjs/styles/prism';
+import Markdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
+import remarkGfm from 'remark-gfm';
 import type { RichTextBlock as RichTextBlockType } from '@bit-trove/api-models/block';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import type { ComponentProps, FC } from 'react';
 
 // local modules
 import { holder as holderCn } from './rich-text.module.scss';
@@ -38,7 +38,7 @@ const components: ComponentProps<typeof Markdown>['components'] = {
     );
 
     const codeBlock = (
-      <SyntaxHighlighter style={dracula} PreTag="div" language={match[1]} {...rest}>
+      <SyntaxHighlighter {...rest} language={match[1]} PreTag="div" style={dracula}>
         {String(children).replace(/\n$/, '')}
       </SyntaxHighlighter>
     );
@@ -48,8 +48,8 @@ const components: ComponentProps<typeof Markdown>['components'] = {
     const preStyle = dracula['pre[class*="language-"]'] || {};
 
     const panelStyle = {
-      color: preStyle.color,
       borderRadius: preStyle.borderRadius,
+      color: preStyle.color,
 
       background:
         typeof preStyle.background !== 'string'
@@ -58,16 +58,15 @@ const components: ComponentProps<typeof Markdown>['components'] = {
     };
 
     const titleStyle = {
-      paddingTop: preStyle.padding,
       paddingLeft: preStyle.padding,
       paddingright: preStyle.padding,
+      paddingTop: preStyle.padding,
     };
 
-    console.log('dracula', dracula);
     return (
       <div style={panelStyle}>
         <div style={titleStyle}>{attrsHash.file}</div>
-        <SyntaxHighlighter style={dracula} PreTag="div" language={match[1]} {...rest}>
+        <SyntaxHighlighter {...rest} language={match[1]} PreTag="div" style={dracula}>
           {String(children).replace(/\n$/, '')}
         </SyntaxHighlighter>
       </div>
@@ -78,7 +77,7 @@ const components: ComponentProps<typeof Markdown>['components'] = {
 export const RichTextBlock: FC<RichTextProps> = ({ block }) => {
   return (
     <section className={holderCn}>
-      <Markdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]} components={components}>
+      <Markdown components={components} rehypePlugins={[rehypeRaw]} remarkPlugins={[remarkGfm]}>
         {block.body}
       </Markdown>
     </section>

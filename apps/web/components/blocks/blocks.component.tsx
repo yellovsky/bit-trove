@@ -1,12 +1,12 @@
 // global modules
-import type { FC } from 'react';
 import type { Block } from '@bit-trove/api-models/block';
+import type { FC } from 'react';
 import { RichTextBlock } from '@bit-trove/ui/rich-text-block';
 
 const renderBlock = (block: Block) => {
   switch (block.__component) {
     case 'blocks.rich-text-block':
-      return <RichTextBlock key={block.id} block={block} />;
+      return <RichTextBlock block={block} key={block.id} />;
     default:
       return null;
   }

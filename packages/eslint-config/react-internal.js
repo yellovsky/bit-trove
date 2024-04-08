@@ -18,6 +18,7 @@ module.exports = {
     'eslint:recommended',
     'prettier',
     'eslint-config-turbo',
+    'plugin:react/jsx-runtime',
     'plugin:@typescript-eslint/recommended',
   ],
   plugins: ['only-warn', '@typescript-eslint'],
@@ -44,7 +45,6 @@ module.exports = {
   overrides: [
     // Force ESLint to detect .tsx files
     { files: ['*.js?(x)', '*.ts?(x)'] },
-
     {
       files: ['*.test.ts', '*.test.tsx'],
       env: {
@@ -53,6 +53,25 @@ module.exports = {
     },
   ],
   rules: {
+    'no-console': ['error', { allow: ['warn', 'error'] }],
+    'react/jsx-boolean-value': ['error'],
+    'react/jsx-sort-props': ['error', { ignoreCase: true, shorthandFirst: true }],
+    'sort-keys': [
+      'error',
+      'asc',
+      { caseSensitive: false, minKeys: 2, natural: true, allowLineSeparatedGroups: true },
+    ],
+    'default-case': 'error',
+    'sort-imports': [
+      'error',
+      {
+        ignoreCase: true,
+        ignoreDeclarationSort: false,
+        ignoreMemberSort: false,
+        memberSyntaxSortOrder: ['none', 'all', 'single', 'multiple'],
+        allowSeparatedGroups: true,
+      },
+    ],
     '@typescript-eslint/no-unused-vars': [
       'error',
       {

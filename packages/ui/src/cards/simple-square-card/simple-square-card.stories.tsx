@@ -6,11 +6,13 @@ import { SimpleSquareCard } from './simple-square-card.component';
 import { SimpleSquareCardPending } from './simple-square-card.pending';
 
 const meta: Meta<typeof SimpleSquareCard> = {
-  title: 'Cards/SimpleSquareCard',
   component: SimpleSquareCard,
+  title: 'Cards/SimpleSquareCard',
+
   decorators: [(Story) => <div style={{ width: '12rem' }}>{Story()}</div>],
   parameters: { layout: 'centered' },
   tags: ['autodocs'],
+
   argTypes: {
     cover: {
       control: { type: 'text' },
@@ -18,17 +20,17 @@ const meta: Meta<typeof SimpleSquareCard> = {
       table: { category: 'Component props', type: { summary: 'string' } },
       type: { name: 'string' },
     },
-    name: {
-      control: { type: 'text' },
-      description: 'Card name text',
-      table: { category: 'Component props', type: { summary: 'string' } },
-      type: { name: 'other', value: 'ReactNode' },
-    },
     href: {
       control: false,
       description: 'Card link',
       table: { category: 'Component props', type: { summary: 'string | UrlObject' } },
       type: { name: 'other', value: 'string | UrlObject' },
+    },
+    name: {
+      control: { type: 'text' },
+      description: 'Card name text',
+      table: { category: 'Component props', type: { summary: 'string' } },
+      type: { name: 'other', value: 'ReactNode' },
     },
   },
 

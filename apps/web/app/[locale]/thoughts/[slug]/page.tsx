@@ -1,16 +1,16 @@
 // global modules
 import 'server-only';
-import type { FC } from 'react';
-import { notFound } from 'next/navigation';
-import { Link } from '@bit-trove/localization/link';
-import { filterByTagLink } from '@bit-trove/api-models/tag';
 import { categoryLink } from '@bit-trove/api-models/category';
-import { SmallTagBadge } from '@bit-trove/ui/small-tag-badge';
-import { SmallAuthorBadge } from '@bit-trove/ui/small-author-badge';
 import { ContentPageHeader } from '@bit-trove/ui/content-page-header';
+import type { FC } from 'react';
+import { filterByTagLink } from '@bit-trove/api-models/tag';
+import { Link } from '@bit-trove/localization/link';
+import { notFound } from 'next/navigation';
+import { PublishDateBadge } from '@bit-trove/ui/small-publish-date-badge';
+import { SmallAuthorBadge } from '@bit-trove/ui/small-author-badge';
 import { SmallBadgesHolder } from '@bit-trove/ui/small-badges-holder';
 import { SmallCategoryBadge } from '@bit-trove/ui/small-category-badge';
-import { PublishDateBadge } from '@bit-trove/ui/small-publish-date-badge';
+import { SmallTagBadge } from '@bit-trove/ui/small-tag-badge';
 
 import {
   fetchThought,
@@ -22,15 +22,15 @@ import {
 // local modules
 import { Ad } from '~/components/ad';
 import { Blocks } from '~/components/blocks';
-import type { RSCPageProps } from '~/src/rsc';
-import { PageContent } from '~/components/page-content';
 import { marginbottom2rem as marginbottom2remCn } from './thought.module.scss';
+import { PageContent } from '~/components/page-content';
+import type { RSCPageProps } from '~/src/rsc';
 
 type ThoughtPageProps = RSCPageProps<{ slug: string }>;
 
 const getThoughtFP = (props: ThoughtPageProps): ThoughtFP => ({
-  slug: props.params.slug,
   locale: props.params.locale,
+  slug: props.params.slug,
 });
 
 // ==========================================================
@@ -55,7 +55,7 @@ const ThoughtPage: FC<ThoughtPageProps> = async (props) => {
   const topBadges = !thought.categories.data.length ? null : (
     <>
       {thought.categories.data.map(({ id, attributes: category }) => (
-        <SmallCategoryBadge key={id} href={categoryLink(category)}>
+        <SmallCategoryBadge href={categoryLink(category)} key={id}>
           {category.name}
         </SmallCategoryBadge>
       ))}
@@ -78,8 +78,8 @@ const ThoughtPage: FC<ThoughtPageProps> = async (props) => {
   return (
     <>
       <script
-        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(getThoughtJsonLd(thought)) }}
+        type="application/ld+json"
       />
 
       <PageContent header={header} locale={props.params.locale}>
@@ -97,7 +97,7 @@ const ThoughtPage: FC<ThoughtPageProps> = async (props) => {
 
         <SmallBadgesHolder className={marginbottom2remCn}>
           {thought.tags.data.map(({ id, attributes: tag }) => (
-            <SmallTagBadge key={id} href={filterByTagLink(tag)}>
+            <SmallTagBadge href={filterByTagLink(tag)} key={id}>
               {tag.name}
             </SmallTagBadge>
           ))}

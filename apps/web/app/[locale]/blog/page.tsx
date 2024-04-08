@@ -1,13 +1,13 @@
 // global modules
-import { Title } from '@bit-trove/ui/title';
 import { getTranslations } from 'next-intl/server';
+import { Title } from '@bit-trove/ui/title';
 import { TwoColumnsLayout } from '@bit-trove/ui/two-columns-layout';
 
 // local modules
 import { Aside } from '~/components/aside';
-import type { RSCPageProps } from '~/src/rsc';
-import { BlogpostList } from '~/components/blogpost-list';
 import { blogPage as blogPageCn } from './page.module.scss';
+import { BlogpostList } from '~/components/blogpost-list';
+import type { RSCPageProps } from '~/src/rsc';
 
 export default async function BlogPage(props: RSCPageProps) {
   const t = await getTranslations();

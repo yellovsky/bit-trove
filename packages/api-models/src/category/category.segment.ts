@@ -4,9 +4,9 @@ import { faker } from '@faker-js/faker';
 import { generateFakeUploadFileResponse } from '@bit-trove/api-models/upload-file';
 
 import type {
-  Populate,
-  APIResponseData,
   APIResponseCollection,
+  APIResponseData,
+  Populate,
 } from '@bit-trove/api-models/common';
 
 // local modules
@@ -34,14 +34,15 @@ export type CatgorySegmentResponseCollection = APIResponseCollection<CategorySeg
 export const generateFakeCatgorySegmentResponseData = () =>
   ({
     id: faker.number.int(),
+
     attributes: {
-      name: faker.lorem.word(),
-      slug: faker.lorem.word(),
-      description: faker.lorem.paragraph(),
       cover: generateFakeUploadFileResponse(),
       createdAt: faker.date.anytime().toUTCString(),
-      updatedAt: faker.date.anytime().toUTCString(),
+      description: faker.lorem.paragraph(),
+      name: faker.lorem.word(),
       publishedAt: faker.date.anytime().toUTCString(),
+      slug: faker.lorem.word(),
+      updatedAt: faker.date.anytime().toUTCString(),
     },
   }) satisfies CatgorySegmentResponseData;
 

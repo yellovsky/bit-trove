@@ -4,11 +4,11 @@ import type { QueryFunction } from '@tanstack/react-query';
 import type { SupportedLocale } from '@bit-trove/localization/config';
 
 import {
-  getApiClient,
-  type Populate,
-  type APIResponseData,
-  type PaginationParams,
   type APIResponseCollection,
+  type APIResponseData,
+  getApiClient,
+  type PaginationParams,
+  type Populate,
 } from '@bit-trove/api-models/common';
 
 // local modules
@@ -43,12 +43,12 @@ export const fetchBlogpostSegmentCollection: QueryFunction<
 > = ({ queryKey, signal, pageParam }) =>
   getApiClient()
     .get('/blogposts', {
-      signal,
       params: {
         ...BLOG_POST_SEGMENT_POPULATE,
-        sort: DEFAULTBLOG_POST_LIST_SORT,
         pagination: pageParam,
+        sort: DEFAULTBLOG_POST_LIST_SORT,
         ...queryKey[1],
       },
+      signal,
     })
     .then((response) => response.data);

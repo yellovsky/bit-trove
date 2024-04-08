@@ -1,17 +1,17 @@
 // global modules
 import cn from 'classnames';
+import { SmallBadgesHolder } from '@bit-trove/ui/small-badges-holder';
 import { Title } from '@bit-trove/ui/title';
 import type { FC, PropsWithChildren, ReactNode } from 'react';
-import { SmallBadgesHolder } from '@bit-trove/ui/small-badges-holder';
 
 // local modules
 import { ThemeProvider } from '../theme-provider';
 
 import {
+  contentPageHeader as contentPageHeaderCn,
   title as titleCn,
   topBadges as topBadgesCn,
   withBackground as withBackgroundCn,
-  contentPageHeader as contentPageHeaderCn,
 } from './content-page-header.module.scss';
 
 interface ContentPageHeaderProps extends PropsWithChildren {
@@ -33,8 +33,8 @@ export const ContentPageHeader: FC<ContentPageHeaderProps> = (props) => {
 
   const content = (
     <div
-      style={{ backgroundImage: `url("${props.background}")` }}
       className={cn(props.className, contentPageHeaderCn, props.background && withBackgroundCn)}
+      style={{ backgroundImage: `url("${props.background}")` }}
     >
       {topBadges}
       <Title as="h1" className={titleCn}>

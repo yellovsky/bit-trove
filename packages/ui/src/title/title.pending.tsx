@@ -4,7 +4,7 @@ import type { FC, HTMLAttributes } from 'react';
 
 // local modules
 import { classNamesLookup, type TitleStyledAs } from './title.component';
-import { title as titleCn, pending as pendingCn } from './title.module.scss';
+import { pending as pendingCn, title as titleCn } from './title.module.scss';
 
 interface TitlePendingProps extends HTMLAttributes<HTMLDivElement> {
   styledAs: TitleStyledAs;

@@ -1,18 +1,18 @@
 // global modules
 import * as R from 'ramda';
 import { faker } from '@faker-js/faker';
+import { generateFakeAuthorSegmentResponse } from '@bit-trove/api-models/author';
+import { generateFakeCatgorySegmentResponseCollection } from '@bit-trove/api-models/category';
+import { generateFakeTagSegmentResponseCollection } from '@bit-trove/api-models/tag';
 import type { QueryFunction } from '@tanstack/react-query';
 import type { SupportedLocale } from '@bit-trove/localization/config';
-import { generateFakeAuthorSegmentResponse } from '@bit-trove/api-models/author';
-import { generateFakeTagSegmentResponseCollection } from '@bit-trove/api-models/tag';
-import { generateFakeCatgorySegmentResponseCollection } from '@bit-trove/api-models/category';
 
 import {
-  getApiClient,
-  type Populate,
-  type APIResponseData,
-  type PaginationParams,
   type APIResponseCollection,
+  type APIResponseData,
+  getApiClient,
+  type PaginationParams,
+  type Populate,
 } from '@bit-trove/api-models/common';
 
 // local modules
@@ -47,13 +47,13 @@ export const fetchThoughtSegmentCollection: QueryFunction<
 > = ({ queryKey, signal, pageParam }) =>
   getApiClient()
     .get('/thoughts', {
-      signal,
       params: {
         ...THOUGHT_SEGMENT_POPULATE,
         pagination: pageParam,
         sort: DEFAULT_THOUGHT_COLLECTION_SORT,
         ...queryKey[1],
       },
+      signal,
     })
     .then((response) => response.data)
     .then(
@@ -67,7 +67,7 @@ export const fetchThoughtSegmentCollection: QueryFunction<
 
 export const generateFakeThoughtSegmentResponseCollection =
   (): ThoughtSegmentResponseCollection => {
-    const total = faker.number.int({ min: 20, max: 40 });
+    const total = faker.number.int({ max: 40, min: 20 });
     const author = generateFakeAuthorSegmentResponse();
     const getPrecision = (delta: number) => Math.round(delta / 8);
 
@@ -80,16 +80,17 @@ export const generateFakeThoughtSegmentResponseCollection =
 
         return {
           id,
+
           attributes: {
             author,
-            locale: 'en',
-            slug: faker.lorem.word(),
-            title: faker.lorem.sentence(),
-            tags: generateFakeTagSegmentResponseCollection(),
-            createdAt: faker.date.between(between).toUTCString(),
-            updatedAt: faker.date.between(between).toUTCString(),
-            publishedAt: faker.date.between(between).toUTCString(),
             categories: generateFakeCatgorySegmentResponseCollection(),
+            createdAt: faker.date.between(between).toUTCString(),
+            locale: 'en',
+            publishedAt: faker.date.between(between).toUTCString(),
+            slug: faker.lorem.word(),
+            tags: generateFakeTagSegmentResponseCollection(),
+            title: faker.lorem.sentence(),
+            updatedAt: faker.date.between(between).toUTCString(),
           },
         };
       }, total).sort(

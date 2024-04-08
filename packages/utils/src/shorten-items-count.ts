@@ -1,6 +1,5 @@
-export const shortenItemsCount = (count: number): string => 
-Intl.NumberFormat('en-US', {
-  notation: "compact",
-  maximumFractionDigits: 1
-}).format(count);
- 
+export const shortenItemsCount = (count: number): string =>
+  Intl.NumberFormat('en-US', {
+    maximumFractionDigits: 1,
+    notation: 'compact',
+  }).format(count);

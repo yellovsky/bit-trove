@@ -5,8 +5,8 @@ import type { FC } from 'react';
 // local modules
 import {
   holder as holderCn,
-  square as squareCn,
   horizontal as horizontalCn,
+  square as squareCn,
 } from './ad.module.scss';
 
 interface AdProps {

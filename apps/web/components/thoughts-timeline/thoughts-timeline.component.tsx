@@ -4,20 +4,20 @@
 import { type FC } from 'react';
 import { NoResult } from '@bit-trove/ui/no-result';
 import { ShortThought } from '@bit-trove/ui/short-thought';
-import { ShortThoughtYear } from '@bit-trove/ui/short-thought-year';
 import { ShortThoughtHolder } from '@bit-trove/ui/short-thought-holder';
 import { ShortThoughtMonth } from '@bit-trove/ui/short-thought-month';
+import { ShortThoughtYear } from '@bit-trove/ui/short-thought-year';
 import type { SupportedLocale } from '@bit-trove/localization/config';
 
 // local modules
 import { ThoughtTimelineContent } from './thought-timeline-content';
 
 import type {
-  ThoughtTree,
   DateThoughtNode,
-  YearThoughtNode,
   MonthThoughtNode,
+  ThoughtTree,
   TimestampThoughtNode,
+  YearThoughtNode,
 } from './thoughts-timeline.tree';
 
 interface TimestampNodeProps {
@@ -27,9 +27,9 @@ interface TimestampNodeProps {
 
 const TimestampNode: FC<TimestampNodeProps> = ({ locale, node }) => (
   <ShortThought
-    key={node.children.id}
-    itemKey={node.children.id}
     header={node.children.attributes.title}
+    itemKey={node.children.id}
+    key={node.children.id}
     publishDate={node.children.attributes.publishedAt}
   >
     {JSON.stringify(node.children.attributes.tags)}
@@ -46,7 +46,7 @@ const DateNode: FC<DateNodeProps> = ({ locale, node }) => (
   <>
     {node.children.length > 1 ? `${node.type}: ${node.value}` : null}
     {node.children.map((timestampNode) => (
-      <TimestampNode key={timestampNode.value} node={timestampNode} locale={locale} />
+      <TimestampNode key={timestampNode.value} locale={locale} node={timestampNode} />
     ))}
   </>
 );
@@ -60,7 +60,7 @@ const MonthNode: FC<MonthNodeProps> = ({ locale, node }) => (
   <>
     <ShortThoughtMonth month={node.value} />
     {node.children.map((timestampNode) => (
-      <DateNode key={timestampNode.value} node={timestampNode} locale={locale} />
+      <DateNode key={timestampNode.value} locale={locale} node={timestampNode} />
     ))}
   </>
 );
@@ -74,7 +74,7 @@ const YearNode: FC<YearNodeProps> = ({ locale, node }) => (
   <>
     <ShortThoughtYear year={node.value} />
     {node.children.map((timestampNode) => (
-      <MonthNode key={timestampNode.value} node={timestampNode} locale={locale} />
+      <MonthNode key={timestampNode.value} locale={locale} node={timestampNode} />
     ))}
   </>
 );
@@ -90,7 +90,7 @@ export const ThoughtsTimeline: FC<ThoughtsTimelineClientProps> = ({ locale, tree
   return (
     <ShortThoughtHolder>
       {tree.map((yearNode) => (
-        <YearNode locale={locale} node={yearNode} key={yearNode.value} />
+        <YearNode key={yearNode.value} locale={locale} node={yearNode} />
       ))}
     </ShortThoughtHolder>
   );

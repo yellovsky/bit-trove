@@ -1,11 +1,11 @@
 // global modules
-import type { FC } from 'react';
-import { categoryLink } from '@bit-trove/api-models/category';
-import { SmallAuthorBadge } from '@bit-trove/ui/small-author-badge';
-import { ContentPageHeader } from '@bit-trove/ui/content-page-header';
-import { SmallCategoryBadge } from '@bit-trove/ui/small-category-badge';
-import { PublishDateBadge } from '@bit-trove/ui/small-publish-date-badge';
 import type { BlogpostResponseData } from '@bit-trove/api-models/blog-post';
+import { categoryLink } from '@bit-trove/api-models/category';
+import { ContentPageHeader } from '@bit-trove/ui/content-page-header';
+import type { FC } from 'react';
+import { PublishDateBadge } from '@bit-trove/ui/small-publish-date-badge';
+import { SmallAuthorBadge } from '@bit-trove/ui/small-author-badge';
+import { SmallCategoryBadge } from '@bit-trove/ui/small-category-badge';
 
 // local modules
 import { BlogpostViewsCount } from '../views-count';

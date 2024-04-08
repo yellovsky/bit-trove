@@ -3,8 +3,8 @@ import { faker } from '@faker-js/faker';
 import { generateFakeUploadFileResponse } from '@bit-trove/api-models/upload-file';
 
 import {
-  AUTHOR_POPULATE,
   type Author,
+  AUTHOR_POPULATE,
   type AuthorResponse,
   type AuthorResponseData,
 } from './author.standalone';
@@ -16,16 +16,16 @@ export type AuthorSegmentResponse = AuthorResponse;
 
 export const generateFakeAuthorSegment = () =>
   ({
-    last_name: null,
-    first_name: null,
-    display_name: faker.lorem.words(2),
-    createdAt: faker.date.anytime().toUTCString(),
-    updatedAt: faker.date.anytime().toUTCString(),
-    publishedAt: faker.date.anytime().toUTCString(),
     avatar: generateFakeUploadFileResponse({ height: 100, width: 100 }),
+    createdAt: faker.date.anytime().toUTCString(),
+    display_name: faker.lorem.words(2),
+    first_name: null,
+    last_name: null,
+    publishedAt: faker.date.anytime().toUTCString(),
+    updatedAt: faker.date.anytime().toUTCString(),
   }) satisfies AuthorSegment;
 
 export const generateFakeAuthorSegmentResponse = () =>
   ({
-    data: { id: faker.number.int(), attributes: generateFakeAuthorSegment() },
+    data: { attributes: generateFakeAuthorSegment(), id: faker.number.int() },
   }) satisfies AuthorSegmentResponse;

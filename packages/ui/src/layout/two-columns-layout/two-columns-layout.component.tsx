@@ -4,10 +4,10 @@ import type { FC, PropsWithChildren, ReactNode } from 'react';
 
 // local modules
 import {
-  holder as holderCn,
   content as contentCn,
-  extraColumn as extraColumnCn,
   contentRight as contentRightCn,
+  extraColumn as extraColumnCn,
+  holder as holderCn,
 } from './two-columns-layout.module.scss';
 
 interface TwoColumnsLayoutProps extends PropsWithChildren {

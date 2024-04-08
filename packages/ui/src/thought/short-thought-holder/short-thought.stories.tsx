@@ -20,9 +20,11 @@ const randomData = R.times(
 ).sort((a, b) => a.publishDate.getTime() - b.publishDate.getTime());
 
 const meta: Meta<typeof ShortThought> = {
-  title: 'Thoughts/ShortThoughtHolder',
   component: ShortThought,
+  title: 'Thoughts/ShortThoughtHolder',
+
   tags: ['autodocs'],
+
   render: () => (
     <ShortThoughtHolder>
       {randomData.map((data, index) => (
@@ -30,19 +32,20 @@ const meta: Meta<typeof ShortThought> = {
       ))}
     </ShortThoughtHolder>
   ),
+
   argTypes: {
     header: {
       control: { type: 'text' },
       description: 'Thought title',
       table: { category: 'Component props', type: { summary: 'ReactNode' } },
-      type: { required: true, name: 'other', value: 'ReactNode' },
+      type: { name: 'other', required: true, value: 'ReactNode' },
     },
 
     children: {
       control: { type: 'text' },
       description: 'Thought content',
       table: { category: 'Component props', type: { summary: 'ReactNode' } },
-      type: { required: true, name: 'other', value: 'ReactNode' },
+      type: { name: 'other', required: true, value: 'ReactNode' },
     },
 
     initialEntered: {
@@ -63,7 +66,7 @@ const meta: Meta<typeof ShortThought> = {
       control: { type: 'date' },
       description: 'Thought publish date',
       table: { category: 'Component props', type: { summary: 'string | number | Date' } },
-      type: { required: true, name: 'other', value: 'string | number | Date' },
+      type: { name: 'other', required: true, value: 'string | number | Date' },
     },
   },
 

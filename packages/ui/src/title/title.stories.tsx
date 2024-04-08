@@ -7,10 +7,12 @@ import { Title } from './title.component';
 import { TitlePending } from './title.pending';
 
 const meta: Meta<typeof Title> = {
-  title: 'Title',
   component: Title,
+  title: 'Title',
+
   parameters: { layout: 'centered' },
   tags: ['autodocs'],
+
   render: ({ as, ...rest }) => (
     <>
       <Title {...rest} as="h1" style={{ marginBottom: '2rem' }}>
@@ -30,6 +32,7 @@ const meta: Meta<typeof Title> = {
       </Title>
     </>
   ),
+
   argTypes: {
     as: {
       control: false,
@@ -39,7 +42,7 @@ const meta: Meta<typeof Title> = {
         category: 'Component props',
         type: { summary: "'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'div'" },
       },
-      type: { required: true, name: 'other', value: "'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'div'" },
+      type: { name: 'other', required: true, value: "'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'div'" },
     },
     children: {
       control: { type: 'text' },
@@ -79,10 +82,10 @@ export const Pending: Story = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   render: ({ as, ...rest }: any) => (
     <div style={{ width: '30rem' }}>
-      <TitlePending {...rest} styledAs="h1" style={{ marginBottom: '2rem' }} />
-      <TitlePending {...rest} styledAs="h2" style={{ marginBottom: '2rem' }} />
-      <TitlePending {...rest} styledAs="h3" style={{ marginBottom: '2rem' }} />
-      <TitlePending {...rest} styledAs="h4" style={{ marginBottom: '2rem' }} />
+      <TitlePending {...rest} style={{ marginBottom: '2rem' }} styledAs="h1" />
+      <TitlePending {...rest} style={{ marginBottom: '2rem' }} styledAs="h2" />
+      <TitlePending {...rest} style={{ marginBottom: '2rem' }} styledAs="h3" />
+      <TitlePending {...rest} style={{ marginBottom: '2rem' }} styledAs="h4" />
       <TitlePending {...rest} styledAs="h5" />
     </div>
   ),

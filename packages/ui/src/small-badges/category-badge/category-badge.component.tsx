@@ -1,8 +1,8 @@
 // global modules
 import cn from 'classnames';
 import type { FC } from 'react';
-import type { UrlObject } from 'url';
 import { SmallBadge } from '@bit-trove/ui/small-badge';
+import type { UrlObject } from 'url';
 
 // local modules
 import {

@@ -47,11 +47,11 @@ export const getApiClient = (): AxiosInstance => {
 
 export const DEFAULT_PAGE_LIMIT = 24;
 
-export const initialPageParam = { start: 0, limit: DEFAULT_PAGE_LIMIT };
+export const initialPageParam = { limit: DEFAULT_PAGE_LIMIT, start: 0 };
 
 export const getNextPageParam = (lastPage: WithAPIResponseCollectionMetadata) => {
   const { start, limit, total } = lastPage.meta.pagination;
-  const nextParams = { start: start + DEFAULT_PAGE_LIMIT * limit, limit: limit };
+  const nextParams = { limit, start: start + DEFAULT_PAGE_LIMIT * limit };
   return nextParams.start < total ? nextParams : undefined;
 };
 

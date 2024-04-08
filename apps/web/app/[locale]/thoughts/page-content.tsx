@@ -1,9 +1,9 @@
 'use client';
 
 // global modules
-import { useEffect, useState, type FC } from 'react';
-import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import type { SupportedLocale } from '@bit-trove/localization/config';
+import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
+import { type FC, useEffect, useState } from 'react';
 import { getNextPageParam, initialPageParam } from '@bit-trove/api-models/common';
 
 import {
@@ -38,7 +38,7 @@ export const ThoughtsPageContent: FC<ThoughtsPageContentProps> = ({ locale }) =>
 
   useEffect(() => setTree((prev) => addPagesToTree(prev, data?.pages)), [data]);
 
-  return <ThoughtsTimeline tree={tree} locale={locale} />;
+  return <ThoughtsTimeline locale={locale} tree={tree} />;
 };
 
 export const ThoughtsPageContentPending: FC = () => <ThoughtsTimelinePending />;

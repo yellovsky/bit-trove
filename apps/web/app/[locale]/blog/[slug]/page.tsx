@@ -1,21 +1,21 @@
 // global modules
-import Image from 'next/image';
-import { notFound } from 'next/navigation';
-import { Link } from '@bit-trove/localization/link';
-import { TwoColumnsLayout } from '@bit-trove/ui/two-columns-layout';
 import { getUploadFileUrl } from '@bit-trove/api-models/upload-file';
-import { fetchBlogpost, type BlogpostFP } from '@bit-trove/api-models/blog-post';
+import Image from 'next/image';
+import { Link } from '@bit-trove/localization/link';
+import { notFound } from 'next/navigation';
+import { TwoColumnsLayout } from '@bit-trove/ui/two-columns-layout';
+import { type BlogpostFP, fetchBlogpost } from '@bit-trove/api-models/blog-post';
 
 // local modules
 import { Aside } from '~/components/aside';
 import { Blocks } from '~/components/blocks';
-import type { RSCPageProps } from '~/src/rsc';
 import { BlogpostPageHeader } from '~/components/blogpost/page-header';
+import type { RSCPageProps } from '~/src/rsc';
 
 import {
+  contentRestictor as contentRestictorCn,
   cover as coverCn,
   pagePadding as pagePaddingCn,
-  contentRestictor as contentRestictorCn,
 } from './page.module.scss';
 
 type BlogPageProps = RSCPageProps<{ slug: string }>;
@@ -62,8 +62,8 @@ export default async function page(props: BlogPageProps) {
             fill
             unoptimized
             alt="cover"
-            style={{ objectFit: 'cover' }}
             src={getUploadFileUrl(blogpost.cover.data.attributes)}
+            style={{ objectFit: 'cover' }}
           />
         </div>
       )}

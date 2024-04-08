@@ -1,31 +1,28 @@
 // global modules
 import * as R from 'ramda';
-import type { Meta, StoryObj } from '@storybook/react';
 import { faker } from '@faker-js/faker';
+import type { Meta, StoryObj } from '@storybook/react';
+
 // local modules
-import { HorizontalCard, HorizontalCardPending } from './horizontal-card.component';
-import { generateFakeUploadFileResponse } from '@bit-trove/api-models/upload-file';
-import { generateFakeTagSegment } from '@bit-trove/api-models/tag';
 import { generateFakeAuthorSegment } from '@bit-trove/api-models/author';
+import { generateFakeTagSegment } from '@bit-trove/api-models/tag';
+import { generateFakeUploadFileResponse } from '@bit-trove/api-models/upload-file';
+import { HorizontalCard, HorizontalCardPending } from './horizontal-card.component';
 
 const meta: Meta<typeof HorizontalCard> = {
-  title: 'Cards/HorizontalCard',
   component: HorizontalCard,
+  title: 'Cards/HorizontalCard',
+
   decorators: [(Story) => <div style={{ width: '50rem' }}>{Story()}</div>],
   parameters: { layout: 'centered' },
   tags: ['autodocs'],
+
   argTypes: {
-    img: {
+    author: {
       control: false,
-      description: 'Card image',
-      table: { category: 'Component props', type: { summary: 'UploadFile' } },
-      type: { name: 'other', value: 'UploadFile' },
-    },
-    title: {
-      control: { type: 'text' },
-      description: 'Card title',
-      table: { category: 'Component props', type: { summary: 'ReactNode' } },
-      type: { name: 'other', value: 'ReactNode' },
+      description: 'Card author info',
+      table: { category: 'Component props', type: { summary: 'AuthorSegment' } },
+      type: { name: 'other', value: 'AuthorSegment' },
     },
     description: {
       control: { type: 'text' },
@@ -33,17 +30,17 @@ const meta: Meta<typeof HorizontalCard> = {
       table: { category: 'Component props', type: { summary: 'ReactNode' } },
       type: { name: 'other', value: 'ReactNode' },
     },
-    author: {
+    href: {
       control: false,
-      description: 'Card author info',
-      table: { category: 'Component props', type: { summary: 'AuthorSegment' } },
-      type: { name: 'other', value: 'AuthorSegment' },
+      description: 'Card link',
+      table: { category: 'Component props', type: { summary: 'string | UrlObject' } },
+      type: { name: 'other', value: 'string | UrlObject' },
     },
-    tags: {
+    img: {
       control: false,
-      description: 'Card tags list',
-      table: { category: 'Component props', type: { summary: 'TagSegment[]' } },
-      type: { name: 'other', value: 'TagSegment[]' },
+      description: 'Card image',
+      table: { category: 'Component props', type: { summary: 'UploadFile' } },
+      type: { name: 'other', value: 'UploadFile' },
     },
     publishedAt: {
       control: false,
@@ -51,22 +48,28 @@ const meta: Meta<typeof HorizontalCard> = {
       table: { category: 'Component props', type: { summary: 'string | number | Date' } },
       type: { name: 'other', value: 'string | number | Date' },
     },
-    href: {
+    tags: {
       control: false,
-      description: 'Card link',
-      table: { category: 'Component props', type: { summary: 'string | UrlObject' } },
-      type: { name: 'other', value: 'string | UrlObject' },
+      description: 'Card tags list',
+      table: { category: 'Component props', type: { summary: 'TagSegment[]' } },
+      type: { name: 'other', value: 'TagSegment[]' },
+    },
+    title: {
+      control: { type: 'text' },
+      description: 'Card title',
+      table: { category: 'Component props', type: { summary: 'ReactNode' } },
+      type: { name: 'other', value: 'ReactNode' },
     },
   },
 
   args: {
-    href: '#',
-    title: faker.lorem.sentence(),
-    description: faker.lorem.paragraph(),
     author: generateFakeAuthorSegment(),
-    tags: R.times(generateFakeTagSegment, 2),
-    publishedAt: faker.date.anytime().toUTCString(),
+    description: faker.lorem.paragraph(),
+    href: '#',
     img: generateFakeUploadFileResponse().data.attributes,
+    publishedAt: faker.date.anytime().toUTCString(),
+    tags: R.times(generateFakeTagSegment, 2),
+    title: faker.lorem.sentence(),
   },
 };
 

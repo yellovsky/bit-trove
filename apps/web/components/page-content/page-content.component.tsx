@@ -1,16 +1,16 @@
 // global modules
 import 'server-only';
 import cn from 'classnames';
-import { Aside } from '../aside';
-import { type FC, type PropsWithChildren, type ReactNode } from 'react';
 import type { SupportedLocale } from '@bit-trove/localization/config';
+import { type FC, type PropsWithChildren, type ReactNode } from 'react';
 
 // local modules
+import { Aside } from '../aside';
 import {
   columns as columnsCn,
   content as contentCn,
-  pageContent as pageContentCn,
   extraColumn as extraColumnCn,
+  pageContent as pageContentCn,
 } from './page-content.module.scss';
 
 interface PageContentProps extends PropsWithChildren {

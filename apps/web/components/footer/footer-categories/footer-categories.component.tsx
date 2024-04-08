@@ -2,8 +2,8 @@
 import 'server-only';
 import cn from 'classnames';
 import type { FC } from 'react';
-import { SimpleSquareCard } from '@bit-trove/ui/simple-square-card';
 import { getUploadFileUrl } from '@bit-trove/api-models/upload-file';
+import { SimpleSquareCard } from '@bit-trove/ui/simple-square-card';
 import type { SupportedLocale } from '@bit-trove/localization/config';
 
 import {
@@ -14,11 +14,11 @@ import {
 
 // local modules
 import {
-  title as titleCn,
-  subtitle as subtitleCn,
   categories as categoriesCn,
   categoryCard as categoryCardCn,
   footerCategories as footerCategoriesCn,
+  subtitle as subtitleCn,
+  title as titleCn,
 } from './footer-categories.module.scss';
 
 const CARDS_LIMIT = 6;
@@ -35,10 +35,10 @@ export const FooterCategories: FC<FooterCategoriesProps> = async ({ locale, clas
 
   const renderCard = (category: CategorySegment) => (
     <SimpleSquareCard
-      key={category.slug}
       className={categoryCardCn}
       cover={category.cover.data ? getUploadFileUrl(category.cover.data.attributes) : undefined}
       href={categoryLink(category)}
+      key={category.slug}
       name={category.name}
     />
   );

@@ -1,12 +1,13 @@
 // global modules
+import { Icon } from '@bit-trove/ui/icon';
+import { Title } from '@bit-trove/ui/title';
 import { useFormatter } from 'next-intl';
 import type { FC, ReactNode } from 'react';
-import { Title } from '@bit-trove/ui/title';
 
 import {
   useAccordionItem,
-  useHeightTransition,
   useAccordionItemEffect,
+  useHeightTransition,
 } from '@szhsin/react-accordion';
 
 // local modules
@@ -15,11 +16,10 @@ import { LinedSection } from '../lined-section';
 import {
   arrow as arrowCn,
   panel as panelCn,
-  title as titleCn,
-  titleCell as titleCellCn,
   publishDate as publishDateCn,
+  titleCell as titleCellCn,
+  title as titleCn,
 } from './short-thought.module.scss';
-import { Icon } from '../../icon';
 
 interface ShortThoughtUIProps {
   header: ReactNode;
@@ -34,13 +34,13 @@ export const ShortThought: FC<ShortThoughtUIProps> = (props) => {
 
   const format = useFormatter();
   const formattedDate = format.dateTime(new Date(publishDate), {
-    month: 'short',
     day: 'numeric',
     hour: 'numeric',
     minute: 'numeric',
+    month: 'short',
   });
 
-  const accordeonEffectParams = { itemKey, initialEntered };
+  const accordeonEffectParams = { initialEntered, itemKey };
   const { itemRef, state, toggle } = useAccordionItemEffect<HTMLDivElement>(accordeonEffectParams);
 
   const { buttonProps, panelProps } = useAccordionItem({ state, toggle });
@@ -73,12 +73,7 @@ export const ShortThought: FC<ShortThoughtUIProps> = (props) => {
           }}
         >
           <div className={panelCn} ref={panelRef} {...panelProps}>
-            {status !== 'exited'
-              ? (() => {
-                  console.log('#render status', status);
-                  return children;
-                })()
-              : null}
+            {status !== 'exited' ? children : null}
           </div>
         </div>
       )}

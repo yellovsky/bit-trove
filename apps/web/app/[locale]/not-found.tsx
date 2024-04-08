@@ -1,16 +1,16 @@
 // global modules
-import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
+import Image from 'next/image';
 import { Link } from '@bit-trove/localization/link';
 
 // local modules
 import {
-  text as textCn,
   button as buttonCn,
-  text404 as text404Cn,
   imgHolder as imgHolderCn,
-  textHolder as textHolderCn,
   notfoundHolder as notfoundHolderCn,
+  text404 as text404Cn,
+  text as textCn,
+  textHolder as textHolderCn,
 } from './not-found.module.scss';
 
 export default async function NotFound() {
@@ -19,7 +19,7 @@ export default async function NotFound() {
   return (
     <div className={notfoundHolderCn}>
       <div className={imgHolderCn}>
-        <Image aria-hidden alt="astrinaut" src="/assets/astronaut.svg" width={200} height={200} />
+        <Image aria-hidden alt="astrinaut" height={200} src="/assets/astronaut.svg" width={200} />
       </div>
 
       <div className={textHolderCn}>

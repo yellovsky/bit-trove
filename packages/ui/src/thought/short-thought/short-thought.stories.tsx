@@ -7,27 +7,29 @@ import { ShortThought } from './short-thought.component';
 import { ShortThoughtHolder } from '../short-thought-holder';
 
 const meta: Meta<typeof ShortThought> = {
-  title: 'Thoughts/ShortThought',
   component: ShortThought,
   tags: ['autodocs'],
+  title: 'Thoughts/ShortThought',
+
   render: (props) => (
     <ShortThoughtHolder>
       <ShortThought {...props} />
     </ShortThoughtHolder>
   ),
+
   argTypes: {
     header: {
       control: { type: 'text' },
       description: 'Thought title',
       table: { category: 'Component props', type: { summary: 'ReactNode' } },
-      type: { required: true, name: 'other', value: 'ReactNode' },
+      type: { name: 'other', required: true, value: 'ReactNode' },
     },
 
     children: {
       control: { type: 'text' },
       description: 'Thought content',
       table: { category: 'Component props', type: { summary: 'ReactNode' } },
-      type: { required: true, name: 'other', value: 'ReactNode' },
+      type: { name: 'other', required: true, value: 'ReactNode' },
     },
 
     initialEntered: {
@@ -48,7 +50,7 @@ const meta: Meta<typeof ShortThought> = {
       control: { type: 'date' },
       description: 'Thought publish date',
       table: { category: 'Component props', type: { summary: 'string | number | Date' } },
-      type: { required: true, name: 'other', value: 'string | number | Date' },
+      type: { name: 'other', required: true, value: 'string | number | Date' },
     },
   },
 

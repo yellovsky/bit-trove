@@ -13,8 +13,8 @@ export const getQueryClient = () => {
     queryClient = new QueryClient({
       defaultOptions: {
         queries: {
-          staleTime: STALE_TIME,
           gcTime: typeof window === 'undefined' ? SERVER_GC_TIME : CLIENT_GC_TIME,
+          staleTime: STALE_TIME,
         },
       },
     });

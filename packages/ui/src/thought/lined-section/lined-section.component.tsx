@@ -4,13 +4,13 @@ import { forwardRef, type PropsWithChildren } from 'react';
 
 // local modules
 import {
-  topLine as topLineCn,
   bottomLine as bottomLineCn,
-  withMarker as withMarkerCn,
+  contentColumn as contentColumnCn,
   linedColumn as linedColumnCn,
   linedSection as linedSectionCn,
   markerHolder as markerHolderCn,
-  contentColumn as contentColumnCn,
+  topLine as topLineCn,
+  withMarker as withMarkerCn,
 } from './lined-section.module.scss';
 
 interface LinedSectionProps extends PropsWithChildren {

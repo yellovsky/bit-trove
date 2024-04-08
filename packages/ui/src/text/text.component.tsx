@@ -4,7 +4,7 @@ import cn from 'classnames';
 import { createElement, type FC, type HTMLAttributes } from 'react';
 
 // local modules
-import { text as textCn, pending as pendingCn, passive as passiveCn } from './text.module.scss';
+import { passive as passiveCn, pending as pendingCn, text as textCn } from './text.module.scss';
 
 interface TextProps extends HTMLAttributes<HTMLElement> {
   as?: 'span' | 'p';
@@ -29,7 +29,7 @@ export const TextPending: FC<TextPendingProps> = ({ lines, ...rest }) =>
   ) : (
     R.times(
       (key) => (
-        <p {...rest} key={key} className={cn(textCn, pendingCn)}>
+        <p {...rest} className={cn(textCn, pendingCn)} key={key}>
           &nbsp;
         </p>
       ),

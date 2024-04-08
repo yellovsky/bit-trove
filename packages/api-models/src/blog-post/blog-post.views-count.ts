@@ -3,9 +3,9 @@ import { create } from '@yornaath/batshit';
 import type { QueryFunction } from '@tanstack/react-query';
 
 import {
-  getApiClient,
   type APIResponse,
   type APIResponseCollection,
+  getApiClient,
 } from '@bit-trove/api-models/common';
 
 export interface ViewsCount {
@@ -25,7 +25,7 @@ const blogpostsViews = create({
 
   resolver: (collectionResponse, id): ViewsCountResponse => {
     const founded = collectionResponse.data.find((response) => response.id === id);
-    return founded ? { data: founded } : { data: { id, attributes: { views_count: 0 } } };
+    return founded ? { data: founded } : { data: { attributes: { views_count: 0 }, id } };
   },
 });
 

@@ -8,14 +8,14 @@ import type { SupportedLocale } from '@bit-trove/localization/config';
 import { FooterCategories } from './footer-categories';
 
 import {
-  logo as logoCn,
-  socialHolder as socialHolderCn,
-  mainStripe as mainStripeCn,
-  slogan as sloganCn,
-  pagePadding as pagePaddingCn,
-  copyrightHolder as copyrightHolderCn,
-  socialMediaPlaceholder as socialMediaPlaceholderCn,
   categoryStripe as categoryStripeCn,
+  copyrightHolder as copyrightHolderCn,
+  logo as logoCn,
+  mainStripe as mainStripeCn,
+  pagePadding as pagePaddingCn,
+  slogan as sloganCn,
+  socialHolder as socialHolderCn,
+  socialMediaPlaceholder as socialMediaPlaceholderCn,
 } from './footer.module.scss';
 
 interface FooterProps {

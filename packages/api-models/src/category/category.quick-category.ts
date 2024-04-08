@@ -21,9 +21,9 @@ export const fetchQuickCategoryCollection = ({
     .get<QuickCategoryResponseCollection>('/categories', {
       params: {
         ...CATEGORY_SEGMENT_POPULATE,
-        sort: 'name:asc',
-        pagination: { start: 0, limit: 8 },
         locale,
+        pagination: { limit: 8, start: 0 },
+        sort: 'name:asc',
       },
     })
     .then((response) => response.data);

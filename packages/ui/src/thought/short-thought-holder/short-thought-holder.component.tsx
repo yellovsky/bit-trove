@@ -1,14 +1,14 @@
 // global modules
-import type { FC, PropsWithChildren } from 'react';
 import { AccordionProvider, useAccordion, useAccordionProvider } from '@szhsin/react-accordion';
+import type { FC, PropsWithChildren } from 'react';
 
 interface ShortThoughtHolderUiProps extends PropsWithChildren {}
 
 export const ShortThoughtHolder: FC<ShortThoughtHolderUiProps> = ({ children }) => {
   const { accordionProps } = useAccordion();
   const providerValue = useAccordionProvider({
-    transition: true,
     allowMultiple: true,
+    transition: true,
     transitionTimeout: 250,
   });
 

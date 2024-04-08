@@ -6,12 +6,12 @@ import type { ComponentProps, FC, HTMLAttributes, ReactNode } from 'react';
 // local modules
 import {
   big as bigCn,
+  holder as holderCn,
   icon as iconCn,
   link as linkCn,
-  small as smallCn,
-  holder as holderCn,
   narrow as narrowCn,
   pending as pendingCn,
+  small as smallCn,
 } from './small-badge.module.scss';
 
 interface CommonSmallBadgeProps {

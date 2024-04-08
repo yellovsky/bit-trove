@@ -1,10 +1,10 @@
 // global modules
 import type { SupportedLocale } from '@bit-trove/localization/config';
-import { POPULATE_BLOCKS, type Block } from '@bit-trove/api-models/block';
+import { AUTHOR_SEGMENT_POPULATE, type AuthorSegmentResponse } from '@bit-trove/api-models/author';
+import { type Block, POPULATE_BLOCKS } from '@bit-trove/api-models/block';
 import { SEO_SEGMENT_POPULATE, type SeoSegment } from '@bit-trove/api-models/seo';
 import { TAG_SEGMENT_POPULATE, type TagResponseCollection } from '@bit-trove/api-models/tag';
 import { UPLOAD_FILE_POPULATE, type UploadFileResponse } from '@bit-trove/api-models/upload-file';
-import { AUTHOR_SEGMENT_POPULATE, type AuthorSegmentResponse } from '@bit-trove/api-models/author';
 
 import {
   CATEGORY_SEGMENT_POPULATE,
@@ -12,12 +12,12 @@ import {
 } from '@bit-trove/api-models/category';
 
 import {
-  getApiClient,
-  type Populate,
-  initialPageParam,
   type APIResponse,
-  type APIResponseData,
   type APIResponseCollection,
+  type APIResponseData,
+  getApiClient,
+  initialPageParam,
+  type Populate,
 } from '@bit-trove/api-models/common';
 
 // local modules
@@ -36,12 +36,12 @@ export interface Blogpost extends BlogpostCore, BlogpostPopulate {}
 
 export const BLOG_POST_POPULATE = {
   populate: {
+    author: AUTHOR_SEGMENT_POPULATE,
     blocks: POPULATE_BLOCKS,
+    categories: CATEGORY_SEGMENT_POPULATE,
+    cover: UPLOAD_FILE_POPULATE,
     seo: SEO_SEGMENT_POPULATE,
     tags: TAG_SEGMENT_POPULATE,
-    cover: UPLOAD_FILE_POPULATE,
-    author: AUTHOR_SEGMENT_POPULATE,
-    categories: CATEGORY_SEGMENT_POPULATE,
   } satisfies Populate<keyof BlogpostPopulate>,
 };
 
@@ -60,13 +60,13 @@ export const fetchBlogpost = (
 ): Promise<BlogpostResponse> =>
   getApiClient()
     .get<BlogpostResponseCollection>('/blogposts', {
-      signal,
       params: {
         ...BLOG_POST_POPULATE,
-        pagination: initialPageParam,
-        locale,
         filters: { slug: { $eq: slug } },
+        locale,
+        pagination: initialPageParam,
       },
+      signal,
     })
     .then((response) => response.data)
     .then((response) => ({ data: response.data.length ? response.data[0] || null : null }));

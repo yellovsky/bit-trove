@@ -4,8 +4,8 @@ import type { FC, PropsWithChildren } from 'react';
 
 // local modules
 import {
-  holder as holderCn,
   darkTheme as darkThemeCn,
+  holder as holderCn,
   lightTheme as lightThemeCn,
   withoutBackground as withoutBackgroundCn,
 } from './theme-provider.module.scss';

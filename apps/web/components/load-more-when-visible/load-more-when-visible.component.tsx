@@ -1,5 +1,5 @@
 // global modules
-import { useRef, type FC, useEffect } from 'react';
+import { type FC, useEffect, useRef } from 'react';
 
 interface LoadMoreWhenVisibleProps {
   trigger: () => void;

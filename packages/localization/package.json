@@ -8,7 +8,7 @@
     "./*": "./src/*.ts"
   },
   "scripts": {
-    "lint": "eslint . --max-warnings 0 & tsc --noEmit --incremental"
+    "lint": "eslint . --max-warnings 0 && tsc --noEmit --incremental"
   },
   "dependencies": {
     "next-intl": "^3.9.5",

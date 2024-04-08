@@ -15,7 +15,7 @@ export interface Category extends CategoryCore, CategoryPopulate {}
 
 export const CATEGORY_POPULATE = {
   populate: {
-    seo: SEO_SEGMENT_POPULATE,
     cover: UPLOAD_FILE_POPULATE,
+    seo: SEO_SEGMENT_POPULATE,
   } satisfies Populate<keyof CategoryPopulate>,
 };

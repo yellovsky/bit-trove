@@ -1,18 +1,18 @@
 // global modules
 import cn from 'classnames';
-import Image from 'next/image';
 import type { FC } from 'react';
+import Image from 'next/image';
 import { Link } from '@bit-trove/localization/link';
-import { type MenuItemProps, MenuItem } from './menu-item';
+import { MenuItem, type MenuItemProps } from './menu-item';
 
 // local modules
 import {
-  logo as logoCn,
-  left as leftCn,
-  right as rightCn,
   holder as holderCn,
-  wrapper as wrapperCn,
   itemsColumn as itemsColumnCn,
+  left as leftCn,
+  logo as logoCn,
+  right as rightCn,
+  wrapper as wrapperCn,
 } from './main-menu.module.scss';
 
 interface MainMenuProps {

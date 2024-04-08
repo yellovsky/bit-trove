@@ -3,8 +3,8 @@ import 'server-only';
 import type { FC } from 'react';
 
 // local modules
-import type { RSCLayoutProps } from '~/src/rsc';
 import { pageHolder as pageHolderCn } from './thought.module.scss';
+import type { RSCLayoutProps } from '~/src/rsc';
 
 const ThoughtLayout: FC<RSCLayoutProps> = ({ children }: RSCLayoutProps) => (
   <div className={pageHolderCn}>

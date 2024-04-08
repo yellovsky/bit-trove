@@ -1,12 +1,12 @@
 // global modules
 import { faker } from '@faker-js/faker';
-import type { Meta, StoryObj } from '@storybook/react';
-import { SmallViewsBadge } from '@bit-trove/ui/small-views-badge';
+import { generateFakeAuthorSegmentResponse } from '@bit-trove/api-models/author';
+import { generateFakeCatgorySegmentResponseCollection } from '@bit-trove/api-models/category';
+import { PublishDateBadge } from '@bit-trove/ui/small-publish-date-badge';
 import { SmallAuthorBadge } from '@bit-trove/ui/small-author-badge';
 import { SmallCategoryBadge } from '@bit-trove/ui/small-category-badge';
-import { generateFakeAuthorSegmentResponse } from '@bit-trove/api-models/author';
-import { PublishDateBadge } from '@bit-trove/ui/small-publish-date-badge';
-import { generateFakeCatgorySegmentResponseCollection } from '@bit-trove/api-models/category';
+import { SmallViewsBadge } from '@bit-trove/ui/small-views-badge';
+import type { Meta, StoryObj } from '@storybook/react';
 
 // local modules
 import { ContentPageHeader } from './content-page-header.component';
@@ -15,12 +15,12 @@ const fakeAuthor = generateFakeAuthorSegmentResponse().data.attributes;
 const fakeCategories = generateFakeCatgorySegmentResponseCollection().data;
 
 const meta: Meta<typeof ContentPageHeader> = {
-  title: 'ContentPage/Header',
   component: ContentPageHeader,
+  title: 'ContentPage/Header',
 
-  tags: ['autodocs'],
-  parameters: { layout: 'centered' },
   decorators: [(Story) => <div style={{ width: 1000 }}>{Story()}</div>],
+  parameters: { layout: 'centered' },
+  tags: ['autodocs'],
 
   render: (props) => (
     <ContentPageHeader
@@ -46,48 +46,49 @@ const meta: Meta<typeof ContentPageHeader> = {
       }
     />
   ),
+
   argTypes: {
     background: {
-      type: { name: 'string' },
       control: { type: 'text' },
       description: 'Background image url',
       table: { category: 'Component props', type: { summary: 'string' } },
+      type: { name: 'string' },
     },
 
     bottomBadges: {
       control: { type: 'boolean' },
       description: 'Bottom badges',
-      type: { name: 'other', value: 'ReactNode' },
       table: { category: 'Component props', type: { summary: 'ReactNode' } },
+      type: { name: 'other', value: 'ReactNode' },
     },
 
     topBadges: {
       control: { type: 'boolean' },
       description: 'Top badges',
-      type: { name: 'other', value: 'ReactNode' },
       table: { category: 'Component props', type: { summary: 'ReactNode' } },
+      type: { name: 'other', value: 'ReactNode' },
     },
 
     children: {
       control: { type: 'text' },
       description: 'Title content',
-      type: { name: 'other', value: 'ReactNode' },
       table: { category: 'Component props', type: { summary: 'string' } },
+      type: { name: 'other', value: 'ReactNode' },
     },
 
     className: {
       control: false,
-      type: { name: 'string' },
       description: 'Class name',
       table: { category: 'Component props', type: { summary: 'string' } },
+      type: { name: 'string' },
     },
   },
 
   args: {
-    topBadges: true,
+    background: faker.image.urlPicsumPhotos({ height: 100, width: 270 }),
     bottomBadges: true,
     children: faker.lorem.sentence(),
-    background: faker.image.urlPicsumPhotos({ width: 270, height: 100 }),
+    topBadges: true,
   },
 };
 

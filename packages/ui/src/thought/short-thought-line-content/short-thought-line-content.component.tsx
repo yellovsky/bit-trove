@@ -4,10 +4,10 @@ import type { FC, PropsWithChildren } from 'react';
 
 // local modules
 import {
-  top as topCn,
-  line as lineCn,
   bottom as bottomCn,
+  line as lineCn,
   linedHolder as linedHolderCn,
+  top as topCn,
 } from './short-thought-line-content.module.scss';
 
 interface ShortThoughtLineContentProps extends PropsWithChildren {

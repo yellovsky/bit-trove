@@ -3,8 +3,8 @@ import * as R from 'ramda';
 
 // local modules
 import type {
-  ThoughtSegmentResponseData,
   ThoughtSegmentResponseCollection,
+  ThoughtSegmentResponseData,
 } from '@bit-trove/api-models/thought';
 
 interface ThoughtTreeNode<TType extends ThoughtTreeNodeType, TChild> {
@@ -60,6 +60,8 @@ const getValue = (type: ThoughtTreeNodeType, responseData: ThoughtSegmentRespons
       return new Date(responseData.attributes.publishedAt).getDate();
     case 'timestamp':
       return new Date(responseData.attributes.publishedAt).getTime();
+    default:
+      return 0;
   }
 };
 
@@ -71,7 +73,7 @@ const addMissingThoughtTreeNode =
   (nodes: TNode[]): TNode[] => {
     const value = getValue(type, responseData);
     return !nodes.find((node) => node.value === value)
-      ? [...nodes, { type, value, children: [] as TNode['children'] } as TNode]
+      ? [...nodes, { children: [] as TNode['children'], type, value } as TNode]
       : nodes;
   };
 
@@ -86,8 +88,9 @@ const addNode =
         node.value !== value
           ? node
           : ({
-              value,
               type,
+              value,
+
               children:
                 node.type === 'timestamp'
                   ? responseData

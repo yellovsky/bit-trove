@@ -1,12 +1,12 @@
 // global modules
 import cn from 'classnames';
-import { Roboto, Voces } from 'next/font/google';
 import type { CSSProperties, FC, PropsWithChildren } from 'react';
+import { Roboto, Voces } from 'next/font/google';
 
 // local modules
 import {
-  holder as holderCn,
   darkTheme as darkThemeCn,
+  holder as holderCn,
   lightTheme as lightThemeCn,
   withoutBackground as withoutBackgroundCn,
 } from './theme-provider.module.scss';
@@ -15,11 +15,11 @@ import {
 //                     F O N T S
 // =============================================================
 const poppins = Voces({
+  subsets: ['latin'],
   variable: '--title-font-family',
   weight: ['400'],
-  subsets: ['latin'],
 });
-const roboto = Roboto({ variable: '--general-font-family', weight: '400', subsets: ['latin'] });
+const roboto = Roboto({ subsets: ['latin'], variable: '--general-font-family', weight: '400' });
 
 interface ThemeProviderProps extends PropsWithChildren {
   dark?: boolean;
@@ -30,7 +30,6 @@ interface ThemeProviderProps extends PropsWithChildren {
 
 export const ThemeProvider: FC<ThemeProviderProps> = (props) => (
   <div
-    style={props.style}
     className={cn(
       holderCn,
       props.className,
@@ -39,6 +38,7 @@ export const ThemeProvider: FC<ThemeProviderProps> = (props) => (
       props.dark ? darkThemeCn : lightThemeCn,
       props.withoutBackground && withoutBackgroundCn
     )}
+    style={props.style}
   >
     {props.children}
   </div>

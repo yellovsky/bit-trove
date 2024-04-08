@@ -1,32 +1,32 @@
 'use client';
 
 // global modules
+import { apiHost } from '@bit-trove/utils/api-host';
+import type { AuthorSegment } from '@bit-trove/api-models/author';
 import cn from 'classnames';
 import Image from 'next/image';
-import type { UrlObject } from 'url';
-import { Title } from '@bit-trove/ui/title';
 import { Link } from '@bit-trove/localization/link';
-import { apiHost } from '@bit-trove/utils/api-host';
-import { SmallTagBadge } from '@bit-trove/ui/small-tag-badge';
-import { useRouter } from '@bit-trove/localization/navigation';
-import type { AuthorSegment } from '@bit-trove/api-models/author';
+import { PublishDateBadge } from '@bit-trove/ui/small-publish-date-badge';
 import { SmallAuthorBadge } from '@bit-trove/ui/small-author-badge';
 import { SmallBadgesHolder } from '@bit-trove/ui/small-badges-holder';
-import { PublishDateBadge } from '@bit-trove/ui/small-publish-date-badge';
+import { SmallTagBadge } from '@bit-trove/ui/small-tag-badge';
+import { Title } from '@bit-trove/ui/title';
+import type { UrlObject } from 'url';
+import { useRouter } from '@bit-trove/localization/navigation';
+import { type FC, type MouseEventHandler, type ReactNode, useCallback } from 'react';
 import { filterByTagLink, type TagSegment } from '@bit-trove/api-models/tag';
 import { imgLoader, type UploadFile } from '@bit-trove/api-models/upload-file';
-import { useCallback, type FC, type MouseEventHandler, type ReactNode } from 'react';
 
 // local modules
 import {
-  img as imgCn,
-  title as titleCn,
-  pending as pendingCn,
   content as contentCn,
-  imgHolder as imgHolderCn,
-  withoutImg as withoutImgCn,
   description as descriptionCn,
   horizontalCard as horizontalCardCn,
+  img as imgCn,
+  imgHolder as imgHolderCn,
+  pending as pendingCn,
+  title as titleCn,
+  withoutImg as withoutImgCn,
 } from './horizontal-card.module.scss';
 
 interface HorizontalCardProps {
@@ -59,10 +59,10 @@ export const HorizontalCard: FC<HorizontalCardProps> = (props) => {
           {!props.img ? null : (
             <Image
               fill
-              className={imgCn}
-              src={apiHost(props.img.url)}
-              loader={imgLoader(props.img)}
               alt={props.img.alternativeText || 'card image'}
+              className={imgCn}
+              loader={imgLoader(props.img)}
+              src={apiHost(props.img.url)}
             />
           )}
         </div>

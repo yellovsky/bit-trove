@@ -1,6 +1,6 @@
 // global modules
-import { notFound } from 'next/navigation';
 import { getRequestConfig } from 'next-intl/server';
+import { notFound } from 'next/navigation';
 
 // local modules
 import { locales } from './config';

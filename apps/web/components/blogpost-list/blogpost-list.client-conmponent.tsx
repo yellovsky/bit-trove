@@ -2,11 +2,11 @@
 
 // global modules
 import type { FC } from 'react';
-import { useInfiniteQuery } from '@tanstack/react-query';
 import type { QueryKeyOf } from '@bit-trove/api-models/common';
-import { initialPageParam, getNextPageParam } from '@bit-trove/api-models/common';
-import { HorizontalCard, HorizontalCardPending } from '@bit-trove/ui/horizontal-card';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { blogPostLink, fetchBlogpostSegmentCollection } from '@bit-trove/api-models/blog-post';
+import { getNextPageParam, initialPageParam } from '@bit-trove/api-models/common';
+import { HorizontalCard, HorizontalCardPending } from '@bit-trove/ui/horizontal-card';
 
 // local modules
 import { blogList as blogListCn } from './blogpost-list.module.scss';
@@ -19,10 +19,10 @@ interface BlogpostListClientProps {
 export const BlogpostListClient: FC<BlogpostListClientProps> = ({ queryKey }) => {
   const { data, status, error, isFetching, hasNextPage, isFetchingNextPage, fetchNextPage } =
     useInfiniteQuery({
-      queryKey,
-      queryFn: fetchBlogpostSegmentCollection,
-      initialPageParam,
       getNextPageParam,
+      initialPageParam,
+      queryFn: fetchBlogpostSegmentCollection,
+      queryKey,
     });
 
   if (status === 'pending') {
@@ -44,14 +44,14 @@ export const BlogpostListClient: FC<BlogpostListClientProps> = ({ queryKey }) =>
       <div className={blogListCn}>
         {blogpostList.map((blogpost, index) => (
           <HorizontalCard
-            key={index}
+            author={blogpost.attributes.author.data?.attributes}
             description={blogpost.attributes.short_description}
             href={blogPostLink(blogpost.attributes)}
-            title={blogpost.attributes.title}
-            author={blogpost.attributes.author.data?.attributes}
+            img={blogpost.attributes.cover.data?.attributes}
+            key={index}
             publishedAt={blogpost.attributes.publishedAt}
             tags={blogpost.attributes.tags.data.map((t) => t.attributes)}
-            img={blogpost.attributes.cover.data?.attributes}
+            title={blogpost.attributes.title}
           />
         ))}
       </div>

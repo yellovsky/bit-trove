@@ -1,15 +1,15 @@
 // global modules
 import cn from 'classnames';
 import Image from 'next/image';
+import { Link } from '@bit-trove/localization/link';
 import type { UrlObject } from 'url';
 import type { FC, ReactNode } from 'react';
-import { Link } from '@bit-trove/localization/link';
 
 // local modules
 import {
   cardHolder as cardHolderCn,
-  textHolder as textHolderCn,
   imageHolder as imageHolderCn,
+  textHolder as textHolderCn,
 } from './simple-square-card.module.scss';
 
 interface SimpleSquareCardProps {
@@ -23,7 +23,7 @@ export const SimpleSquareCard: FC<SimpleSquareCardProps> = ({ className, href, c
   <Link className={cn(cardHolderCn, className)} href={href}>
     <div className={imageHolderCn}>
       {cover ? (
-        <Image fill unoptimized style={{ objectFit: 'cover' }} alt="cover" src={cover} />
+        <Image fill unoptimized alt="cover" src={cover} style={{ objectFit: 'cover' }} />
       ) : null}
     </div>
     <div className={textHolderCn}>{name}</div>

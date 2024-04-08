@@ -1,10 +1,10 @@
 'use client';
 
 // global modules
-import { useEffect, type FC } from 'react';
 import { SmallViewsBadge } from '@bit-trove/ui/small-views-badge';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { type FC, useEffect } from 'react';
 import { getBlogpostViews, incrementBlogpostViews } from '@bit-trove/api-models/blog-post';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 interface BlogpostViewsCountProps {
   id: number;
@@ -16,8 +16,8 @@ export const BlogpostViewsCount: FC<BlogpostViewsCountProps> = ({ className, id,
   const queryClient = useQueryClient();
 
   const { data } = useQuery({
-    queryKey: ['blogpost_views_count', id],
     queryFn: getBlogpostViews,
+    queryKey: ['blogpost_views_count', id],
   });
 
   const { mutate } = useMutation({

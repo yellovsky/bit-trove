@@ -2,16 +2,16 @@
 import { createLocalizedPathnamesNavigation } from 'next-intl/navigation';
 
 // local modules
-import { locales, pathnames, localePrefix } from './config';
+import { localePrefix, locales, pathnames } from './config';
 
 type Navigation = ReturnType<
   typeof createLocalizedPathnamesNavigation<typeof locales, typeof pathnames>
 >;
 
 const navigation = createLocalizedPathnamesNavigation<typeof locales, typeof pathnames>({
+  localePrefix,
   locales,
   pathnames,
-  localePrefix,
 });
 
 export const redirect: Navigation['redirect'] = navigation.redirect;

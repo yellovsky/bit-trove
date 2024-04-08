@@ -1,16 +1,16 @@
 // global modules
 import cn from 'classnames';
 import type { FC } from 'react';
-import { TitlePending } from '@bit-trove/ui/title';
 import { SmallBadgePending } from '@bit-trove/ui/small-badge';
 import { SmallBadgesHolder } from '@bit-trove/ui/small-badges-holder';
+import { TitlePending } from '@bit-trove/ui/title';
 
 // local modules
 import {
+  contentPageHeader as contentPageHeaderCn,
   title as titleCn,
   topBadges as topBadgesCn,
   withBackground as withBackgroundCn,
-  contentPageHeader as contentPageHeaderCn,
 } from './content-page-header.module.scss';
 
 interface ContentPageHeaderProps {
@@ -28,7 +28,7 @@ export const ContentPageHeaderPending: FC<ContentPageHeaderProps> = (props) => (
       <SmallBadgePending />
     </SmallBadgesHolder>
 
-    <TitlePending styledAs="h1" className={titleCn} />
+    <TitlePending className={titleCn} styledAs="h1" />
 
     <SmallBadgesHolder>
       <SmallBadgePending />

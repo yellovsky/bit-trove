@@ -1,10 +1,10 @@
 // global modules
-import type { UrlObject } from 'url';
 import { Link } from '@bit-trove/localization/link';
+import type { UrlObject } from 'url';
 import type { FC, MouseEventHandler, ReactNode } from 'react';
 
 // local modules
-import { menuItem as menuItemCn, icon as iconCn } from './menu-item.module.scss';
+import { icon as iconCn, menuItem as menuItemCn } from './menu-item.module.scss';
 
 interface BaseMenuItemProps {
   name: ReactNode;
