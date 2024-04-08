@@ -10,6 +10,10 @@ $pending-widths: (80%, 90%, 70%, 75%, 85%);
   color: vars.$var-color--text;
   -webkit-font-smoothing: antialiased;
 
+  &.passive {
+    color: vars.$var-color--text-passive;
+  }
+
   @at-root #{selector.unify(&, 'p')} {
     margin-bottom: 1rem;
   }

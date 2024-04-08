@@ -1,6 +1,6 @@
 // global modules
 import cn from 'classnames';
-import type { FC } from 'react';
+import type { FC, MouseEventHandler } from 'react';
 import type { UrlObject } from 'url';
 import { SmallBadge } from '@bit-trove/ui/small-badge';
 
@@ -23,20 +23,17 @@ const getTypeCh = (text: string): string => {
 };
 
 interface SmallTagBadgeProps {
-  href: string | UrlObject;
   children: string;
+  href?: string | UrlObject;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
-export const SmallTagBadge: FC<SmallTagBadgeProps> = ({ children, href }) => {
-  return (
-    <SmallBadge
-      noLinkStyle
-      href={href}
-      iconSize="small"
-      icon={<Icon type="tag" />}
-      className={cn(holderCn, getTypeCh(children))}
-    >
-      {children}
-    </SmallBadge>
-  );
-};
+export const SmallTagBadge: FC<SmallTagBadgeProps> = (props) => (
+  <SmallBadge
+    {...props}
+    noLinkStyle
+    iconSize="small"
+    icon={<Icon type="tag" />}
+    className={cn(holderCn, getTypeCh(props.children))}
+  />
+);

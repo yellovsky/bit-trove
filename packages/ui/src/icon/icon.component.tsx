@@ -25,5 +25,5 @@ interface IconProps {
 }
 
 export const Icon: FC<IconProps> = ({ type }) => (
-  <div aria-role="icon" className={cn(iconCn, ICON_TYPE_HASH[type])} />
+  <div className={cn(iconCn, ICON_TYPE_HASH[type])} />
 );

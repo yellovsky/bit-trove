@@ -2,18 +2,15 @@
 
 // global modules
 import type { FC } from 'react';
-import type { QueryKeyOf } from '@bit-trove/api-models/common';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { fetchBlogpostSegmentCollection } from '@bit-trove/api-models/blog-post';
+import type { QueryKeyOf } from '@bit-trove/api-models/common';
 import { initialPageParam, getNextPageParam } from '@bit-trove/api-models/common';
+import { HorizontalCard, HorizontalCardPending } from '@bit-trove/ui/horizontal-card';
+import { blogPostLink, fetchBlogpostSegmentCollection } from '@bit-trove/api-models/blog-post';
 
 // local modules
 import { blogList as blogListCn } from './blogpost-list.module.scss';
 import { LoadMoreWhenVisible } from '~/components/load-more-when-visible';
-import {
-  BlogpostHorizontalPreview,
-  BlogpostHorizontalPreviewPending,
-} from '~/components/blogpost/horizontal-preview';
 
 interface BlogpostListClientProps {
   queryKey: QueryKeyOf<typeof fetchBlogpostSegmentCollection>;
@@ -31,9 +28,9 @@ export const BlogpostListClient: FC<BlogpostListClientProps> = ({ queryKey }) =>
   if (status === 'pending') {
     return (
       <>
-        <BlogpostHorizontalPreviewPending />
-        <BlogpostHorizontalPreviewPending />
-        <BlogpostHorizontalPreviewPending />
+        <HorizontalCardPending />
+        <HorizontalCardPending />
+        <HorizontalCardPending />
       </>
     );
   }
@@ -45,15 +42,21 @@ export const BlogpostListClient: FC<BlogpostListClientProps> = ({ queryKey }) =>
   return (
     <>
       <div className={blogListCn}>
-        {blogpostList.map((blogpost) => (
-          <BlogpostHorizontalPreview
-            key={blogpost.attributes.slug}
-            blogpostResponseData={blogpost}
+        {blogpostList.map((blogpost, index) => (
+          <HorizontalCard
+            key={index}
+            description={blogpost.attributes.short_description}
+            href={blogPostLink(blogpost.attributes)}
+            title={blogpost.attributes.title}
+            author={blogpost.attributes.author.data?.attributes}
+            publishedAt={blogpost.attributes.publishedAt}
+            tags={blogpost.attributes.tags.data.map((t) => t.attributes)}
+            img={blogpost.attributes.cover.data?.attributes}
           />
         ))}
       </div>
 
-      <div>{isFetching && !isFetchingNextPage ? <BlogpostHorizontalPreviewPending /> : null}</div>
+      <div>{isFetching && !isFetchingNextPage ? <HorizontalCardPending /> : null}</div>
 
       <LoadMoreWhenVisible
         hasNextPage={hasNextPage}

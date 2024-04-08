@@ -1,5 +1,6 @@
 // global modules
 import { faker } from '@faker-js/faker';
+import type { ImageLoader } from 'next/image';
 import { apiHost } from '@bit-trove/utils/api-host';
 import type { APIResponse, APIResponseData } from '@bit-trove/api-models/common';
 
@@ -36,9 +37,20 @@ export const getUploadFileUrl = (
   return apiHost(format?.url || uploadFile.url);
 };
 
+export const getUploadFileUrlByWidth = (uploadFile: UploadFile, width: number): string => {
+  return (
+    Object.values(uploadFile.formats)
+      .sort((a, b) => a.width - b.width)
+      .find((format) => {
+        console.log('format.width >= width', format.width, width);
+        return format.width >= width;
+      })?.url || uploadFile.url
+  );
+};
+
 export const generateFakeUploadFileResponse = (options?: { height?: number; width?: number }) => {
-  const height = options?.height || faker.number.int({ min: 100, max: 300 });
-  const width = options?.width || faker.number.int({ min: 100, max: 300 });
+  const height = options?.height || 954;
+  const width = options?.width || 1440;
 
   return {
     data: {
@@ -48,7 +60,32 @@ export const generateFakeUploadFileResponse = (options?: { height?: number; widt
         height,
         mime: '',
         ext: 'jpg',
-        formats: {},
+        formats: {
+          thumbnail: {
+            mime: 'image/jpeg',
+            width: 236,
+            height: 156,
+            url: faker.image.urlPicsumPhotos({ width: 236, height: 156 }),
+          },
+          medium: {
+            mime: 'image/jpeg',
+            width: 750,
+            height: 497,
+            url: faker.image.urlPicsumPhotos({ width: 750, height: 497 }),
+          },
+          small: {
+            mime: 'image/jpeg',
+            width: 500,
+            height: 331,
+            url: faker.image.urlPicsumPhotos({ width: 500, height: 331 }),
+          },
+          large: {
+            mime: 'image/jpeg',
+            width: 1000,
+            height: 663,
+            url: faker.image.urlPicsumPhotos({ width: 1000, height: 663 }),
+          },
+        },
         previewUrl: '',
         caption: faker.lorem.sentence(),
         alternativeText: faker.lorem.sentence(),
@@ -57,3 +94,8 @@ export const generateFakeUploadFileResponse = (options?: { height?: number; widt
     },
   } satisfies UploadFileResponse;
 };
+
+export const imgLoader =
+  (uploadFile: UploadFile | undefined): ImageLoader =>
+  ({ src, width }) =>
+    !uploadFile ? src : apiHost(getUploadFileUrlByWidth(uploadFile, width));

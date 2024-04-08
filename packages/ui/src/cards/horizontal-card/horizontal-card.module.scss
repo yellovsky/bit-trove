@@ -1,0 +1,65 @@
+@use '@bit-trove/ui/src/scss/typography.scss' as t;
+@use '@bit-trove/ui/src/scss/interactive.scss' as i;
+@use '../../scss/variables.scss' as vars;
+
+.horizontalCard {
+  display: grid;
+  overflow: hidden;
+  column-gap: 1rem;
+  border-radius: 0.3rem;
+  grid-template-columns: 15rem 1fr;
+  border: solid 0.0625rem #eaeaea;
+
+  box-shadow: 0 0.25rem 1.25rem -0.75rem rgba(0, 0, 0, 0.66);
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+
+  @include i.interactive using ($state) {
+    @if $state == 'hover' {
+      box-shadow: 0 2rem 2rem -2rem rgba(0, 0, 0, 0.18);
+      transform: translate(0px, -0.25rem);
+    }
+  }
+
+  &.withoutImg {
+    display: block;
+
+    .content {
+      padding-left: 1.25rem;
+    }
+  }
+
+  .imgHolder {
+    position: relative;
+    background-color: vars.$var-color--pending-bg;
+  }
+
+  .img {
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .content {
+    padding-top: 1.25rem;
+    padding-right: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .description {
+    @include t.line-clamp(4);
+
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .title {
+    margin-bottom: 0.5rem;
+  }
+}
+
+.pending {
+  height: 16rem;
+  border-radius: 0.3rem;
+  background-color: vars.$var-color--pending-bg;
+}

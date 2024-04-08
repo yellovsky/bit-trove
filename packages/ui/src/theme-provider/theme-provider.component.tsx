@@ -1,7 +1,7 @@
 // global modules
 import cn from 'classnames';
+import { Roboto, Voces } from 'next/font/google';
 import type { CSSProperties, FC, PropsWithChildren } from 'react';
-import { Poppins, Roboto } from 'next/font/google';
 
 // local modules
 import {
@@ -14,9 +14,9 @@ import {
 // =============================================================
 //                     F O N T S
 // =============================================================
-const poppins = Poppins({
+const poppins = Voces({
   variable: '--title-font-family',
-  weight: ['400', '700'],
+  weight: ['400'],
   subsets: ['latin'],
 });
 const roboto = Roboto({ variable: '--general-font-family', weight: '400', subsets: ['latin'] });

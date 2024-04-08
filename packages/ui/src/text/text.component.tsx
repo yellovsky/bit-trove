@@ -4,14 +4,18 @@ import cn from 'classnames';
 import { createElement, type FC, type HTMLAttributes } from 'react';
 
 // local modules
-import { text as textCn, pending as pendingCn } from './text.module.scss';
+import { text as textCn, pending as pendingCn, passive as passiveCn } from './text.module.scss';
 
 interface TextProps extends HTMLAttributes<HTMLElement> {
   as?: 'span' | 'p';
+  passive?: boolean;
 }
 
-export const Text: FC<TextProps> = ({ as, ...rest }) =>
-  createElement(as || 'span', { ...rest, className: cn(rest.className, textCn) });
+export const Text: FC<TextProps> = ({ as, passive, ...rest }) =>
+  createElement(as || 'span', {
+    ...rest,
+    className: cn(rest.className, textCn, passive && passiveCn),
+  });
 
 interface TextPendingProps extends HTMLAttributes<HTMLElement> {
   lines?: number;

@@ -23,9 +23,10 @@ interface CommonSmallBadgeProps {
 }
 
 type SmallBadgeLinkProps = ComponentProps<typeof Link> & CommonSmallBadgeProps;
-type SmallBadgeDivProps = HTMLAttributes<HTMLDivElement> & CommonSmallBadgeProps;
+type SmallBadgeButtonProps = HTMLAttributes<HTMLButtonElement> & CommonSmallBadgeProps;
+type SmallBadgeDivProps = Omit<HTMLAttributes<HTMLDivElement>, 'onClick'> & CommonSmallBadgeProps;
 
-type SmallBadgeProps = SmallBadgeLinkProps | SmallBadgeDivProps;
+type SmallBadgeProps = SmallBadgeLinkProps | SmallBadgeButtonProps | SmallBadgeDivProps;
 
 export const SmallBadge: FC<SmallBadgeProps> = ({
   icon,
@@ -52,8 +53,12 @@ export const SmallBadge: FC<SmallBadgeProps> = ({
     <Link {...rest} className={cn(commonCn, !noLinkStyle && linkCn)}>
       {content}
     </Link>
+  ) : 'onClick' in rest ? (
+    <button {...rest} className={cn(commonCn, !noLinkStyle && linkCn)}>
+      {content}
+    </button>
   ) : (
-    <div {...rest} className={commonCn}>
+    <div {...(rest as Omit<HTMLAttributes<HTMLDivElement>, 'onClick'>)} className={commonCn}>
       {content}
     </div>
   );

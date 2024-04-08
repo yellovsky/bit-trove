@@ -4,11 +4,9 @@
 @use '../../scss/variables.scss' as vars;
 
 .holder {
-  // letter-spacing: 0.0625rem;
-  // text-transform: uppercase;
-  border: solid 0.0125rem currentColor;
-
+  cursor: pointer;
   color: vars.$var-color--text;
+  border: solid 0.0125rem currentColor;
 
   @include i.interactive using ($state) {
     @if $state == 'hover' {
