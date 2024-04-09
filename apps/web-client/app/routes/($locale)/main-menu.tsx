@@ -1,8 +1,8 @@
-import type { TFunction } from 'i18next';
-import { useMemo, useState, type FC } from 'react';
-import { useTranslation } from 'react-i18next';
-
+// global modules
 import { MainMenu as MainMenuUi } from '@bit-trove/ui/main-menu';
+import type { TFunction } from 'i18next';
+import { useTranslation } from 'react-i18next';
+import { type FC, useMemo } from 'react';
 
 const getMainMenuProps = (t: TFunction) => {
   return {
@@ -21,11 +21,9 @@ const getMainMenuProps = (t: TFunction) => {
 };
 
 export const MainMenu: FC = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const mainMenuProps = useMemo(() => getMainMenuProps(t), [t]);
-  console.log('mainMenuProps', i18n.language, mainMenuProps);
-  //   return <div>{JSON.stringify(mainMenuProps)}</div>;
-  console.log('MainMenuUi', MainMenuUi);
+
   return <MainMenuUi {...mainMenuProps} />;
 };

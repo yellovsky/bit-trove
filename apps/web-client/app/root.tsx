@@ -1,7 +1,9 @@
 // global modules
 import type { LoaderFunction } from '@remix-run/node';
 import { QueryClientProvider } from '@tanstack/react-query';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { ChakraProvider, ColorModeScript, extendTheme } from '@chakra-ui/react';
 
 import {
   json,
@@ -14,10 +16,8 @@ import {
 } from '@remix-run/react';
 
 // local modules
-import i18next from './i18next.server';
-import { useState } from 'react';
 import { getQueryClient } from './query-client';
-import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+import i18next from './i18next.server';
 
 type LoaderData = {
   locale: string;
@@ -31,8 +31,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 export const handle = {
   i18n: 'common',
 };
-
-import { ColorModeScript } from '@chakra-ui/react';
 
 const theme = extendTheme({
   initialColorMode: 'dark',
