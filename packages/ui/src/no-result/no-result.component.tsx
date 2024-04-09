@@ -7,11 +7,11 @@ import { useTranslations } from 'next-intl';
 import { noResult as noResultCn } from './no-result.module.scss';
 
 export const NoResult: FC = () => {
-  const t = useTranslations();
+  // const t = useTranslations();
 
   return (
     <Title as="div" className={noResultCn} styledAs="h2">
-      {t('no_results')}
+      t('no_results')
     </Title>
   );
 };

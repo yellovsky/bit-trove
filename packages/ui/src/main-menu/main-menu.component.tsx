@@ -30,9 +30,9 @@ export const MainMenu: FC<MainMenuProps> = (props) => {
           ))}
         </div>
         <div>
-          <Link className={logoCn} href="/">
-            <Image alt="logo" height={75} src="/assets/logo.svg" width={97} />
-          </Link>
+          <div className={logoCn} href="/">
+            <img alt="logo" height={75} src="/assets/logo.svg" width={97} />
+          </div>
         </div>
         <div className={cn(itemsColumnCn, rightCn)}>
           {props.buttons.map((item, index) => (

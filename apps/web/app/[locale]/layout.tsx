@@ -9,6 +9,7 @@ import { getNow, getTimeZone } from 'next-intl/server';
 // local modules
 import { Footer } from '~/components/footer';
 import { layout as layoutCn } from './layout.module.scss';
+import { PopupWatcher } from '~/components/popup-watcher';
 import { Providers } from './providers';
 import type { RSCLayoutProps } from '~/src/rsc';
 
@@ -54,7 +55,10 @@ export default async function LocaleLayout(props: RSCLayoutProps) {
         <Providers locale={locale} messages={messages} now={now} timeZone={timeZone}>
           <ThemeProvider className={layoutCn}>
             <MainMenu {...menuProps} />
-            <div>{props.children}</div>
+            <main>
+              {props.children}
+              <PopupWatcher locale={locale} />
+            </main>
             <ThemeProvider dark>
               <Footer locale={locale} />
             </ThemeProvider>

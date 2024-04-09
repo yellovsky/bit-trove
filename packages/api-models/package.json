@@ -22,6 +22,7 @@
   "dependencies": {
     "@bit-trove/localization": "*",
     "@bit-trove/utils": "*",
+    "@remix-run/node": "2.8.1",
     "@tanstack/react-query": "^5.28.6",
     "@yornaath/batshit": "^0.9.0",
     "axios": "^1.6.8",
