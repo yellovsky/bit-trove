@@ -12,12 +12,7 @@ import { SmallBadgesHolder } from '@bit-trove/ui/small-badges-holder';
 import { SmallCategoryBadge } from '@bit-trove/ui/small-category-badge';
 import { SmallTagBadge } from '@bit-trove/ui/small-tag-badge';
 
-import {
-  fetchThought,
-  getThoughtJsonLd,
-  getThoughtMetadata,
-  type ThoughtFP,
-} from '@bit-trove/api-models/thought';
+import { fetchThought, getThoughtMetadata, type ThoughtFP } from '@bit-trove/api-models/thought';
 
 // local modules
 import { Ad } from '~/components/ad';

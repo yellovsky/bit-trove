@@ -1,4 +1,4 @@
-export { thoughtLink, getThoughtJsonLd, getThoughtMetadata } from './thought.helpers';
+export { thoughtLink, getThoughtMetadata } from './thought.helpers';
 export { fetchThought, thoughtQueryFn } from './thought.standalone';
 
 export type {

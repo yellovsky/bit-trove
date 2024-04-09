@@ -1,38 +1,15 @@
 // global modules
+import type { MetaDescriptor } from '@remix-run/node';
 import { BlogPosting, Person, WithContext } from 'schema-dts';
 
 // local modules
 import { getAuthorName } from '../author';
-import type { Metadata } from 'next';
 import type { Thought } from './thought.standalone';
 import type { ThoughtCore } from './thought.core';
 
 export const thoughtLink = (thought: ThoughtCore): string => `/thoughts/${thought.slug}`;
 
-export const getThoughtMetadata = (thought: Thought): Metadata => {
-  const authorName = getAuthorName(thought.author.data?.attributes);
-
-  return {
-    authors: [{ name: authorName }],
-    creator: authorName,
-    description: thought.seo?.description,
-    keywords: thought.seo?.keywords,
-    title: thought.seo?.title || thought.title,
-
-    openGraph: {
-      authors: authorName,
-      description: thought.seo?.description,
-      locale: thought.locale,
-      publishedTime: thought.publishedAt,
-      tags: thought.tags.data.map((tag) => tag.attributes.name),
-      title: thought.seo?.title || thought.title,
-      type: 'article',
-      url: thoughtLink(thought),
-    },
-  };
-};
-
-export const getThoughtJsonLd = (thought: Thought): WithContext<BlogPosting> => ({
+const getThoughtJsonLd = (thought: Thought): WithContext<BlogPosting> => ({
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
 
@@ -50,3 +27,29 @@ export const getThoughtJsonLd = (thought: Thought): WithContext<BlogPosting> => 
   name: thought.seo?.title,
   url: thoughtLink(thought),
 });
+
+export const getThoughtMetadata = (thought: Thought): MetaDescriptor[] => {
+  const authorName = getAuthorName(thought.author.data?.attributes);
+
+  const metaTags: MetaDescriptor[] = [
+    { content: authorName, name: 'author' },
+    { content: thought.seo?.description, name: 'description' },
+    { content: thought.seo?.keywords, name: 'keywords' },
+
+    /** OG tags */
+    { content: thought.seo?.title || thought.title, property: 'og:title' },
+    { content: thought.seo?.description, property: 'og:description' },
+    { content: thoughtLink(thought), property: 'og:url' },
+    { content: 'article', property: 'og:type' },
+    { content: thought.locale, property: 'og:locale' },
+    { content: thought.publishedAt, property: 'article:published_time' },
+    { content: thought.updatedAt, property: 'article:modified_time' },
+    { content: authorName, property: 'article:author' },
+  ].filter((metaDescriptor) => metaDescriptor.content);
+
+  return [
+    ...metaTags,
+    { title: thought.seo?.title || thought.title },
+    { 'script:ld+json': getThoughtJsonLd(thought) },
+  ];
+};

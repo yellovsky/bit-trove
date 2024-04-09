@@ -1,6 +1,7 @@
 'use client';
 
 // global modules
+import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { type AbstractIntlMessages, NextIntlClientProvider } from 'next-intl';
 import type { FC, PropsWithChildren } from 'react';
@@ -18,6 +19,8 @@ interface ProvidersProps extends PropsWithChildren {
 
 export const Providers: FC<ProvidersProps> = ({ locale, children, now, messages, timeZone }) => (
   <NextIntlClientProvider locale={locale} messages={messages} now={now} timeZone={timeZone}>
-    <QueryClientProvider client={getQueryClient()}>{children}</QueryClientProvider>
+    <QueryClientProvider client={getQueryClient()}>
+      <ChakraProvider>{children}</ChakraProvider>
+    </QueryClientProvider>
   </NextIntlClientProvider>
 );

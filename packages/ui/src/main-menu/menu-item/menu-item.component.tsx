@@ -23,10 +23,10 @@ export type MenuItemProps = LinkMenuItemProps | ButtonMenuItemProps;
 
 export const MenuItem: FC<MenuItemProps> = ({ name, icon, ...rest }) => {
   return 'href' in rest ? (
-    <Link className={menuItemCn} href={rest.href}>
+    <a className={menuItemCn} href={rest.href}>
       {icon ? <div className={iconCn} style={{ maskImage: `url("${icon}")` }} /> : null}
       <span>{name}</span>
-    </Link>
+    </a>
   ) : (
     <button className={menuItemCn}>
       {icon ? <div className={iconCn} style={{ maskImage: `url("${icon}")` }} /> : null}

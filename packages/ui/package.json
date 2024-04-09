@@ -4,6 +4,8 @@
   "private": true,
   "type": "module",
   "exports": {
+    "./modal": "./src/modal/index.ts",
+    "./feedback-form": "./src/feedback-form/index.ts",
     "./no-result": "./src/no-result/index.ts",
     "./icon": "./src/icon/index.ts",
     "./content-page-header": "./src/content-page-header/index.tsx",

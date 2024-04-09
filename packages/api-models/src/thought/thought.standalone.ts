@@ -1,6 +1,5 @@
 // global modules
 import type { QueryFunction } from '@tanstack/react-query';
-import type { SupportedLocale } from '@bit-trove/localization/config';
 import { AUTHOR_SEGMENT_POPULATE, type AuthorSegmentResponse } from '@bit-trove/api-models/author';
 import { type Block, POPULATE_BLOCKS } from '@bit-trove/api-models/block';
 import { SEO_SEGMENT_POPULATE, type SeoSegment } from '@bit-trove/api-models/seo';
@@ -48,7 +47,7 @@ export type ThoughtResponseCollection = APIResponseCollection<Thought>;
 
 export interface ThoughtFP {
   slug: string;
-  locale: SupportedLocale;
+  locale: string;
 }
 
 export const fetchThought = (fp: ThoughtFP, signal?: AbortSignal): Promise<ThoughtResponse> =>
