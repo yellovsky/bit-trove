@@ -1,11 +1,25 @@
 // global modules
+import { categoryLink } from '@bit-trove/api-models/category';
+import { ContentPageHeader } from '@bit-trove/ui/content-page-header';
 import type { FC } from 'react';
+import { filterByTagLink } from '@bit-trove/api-models/tag';
+import { Link } from '@bit-trove/ui/link';
+import { PublishDateBadge } from '@bit-trove/ui/small-publish-date-badge';
 import { QueryKeyOf } from '@bit-trove/api-models/common';
+import { SmallAuthorBadge } from '@bit-trove/ui/small-author-badge';
+import { SmallBadgesHolder } from '@bit-trove/ui/small-badges-holder';
+import { SmallCategoryBadge } from '@bit-trove/ui/small-category-badge';
+import { SmallTagBadge } from '@bit-trove/ui/small-tag-badge';
 import { dehydrate, DehydratedState, hydrate } from '@tanstack/query-core';
 import { getThoughtMetadata, thoughtQueryFn } from '@bit-trove/api-models/thought';
 import { HydrationBoundary, QueryClient, useQuery } from '@tanstack/react-query';
 import type { LoaderFunction, MetaFunction } from '@remix-run/node';
 import { type Params, useLoaderData, useParams } from '@remix-run/react';
+
+// local modules
+import { Ad } from '~/components/ad';
+import { Blocks } from '~/components/blocks';
+import { PageContent } from '~/components/page-content';
 
 type ThoughtPageParams = 'locale' | 'slug';
 
@@ -49,14 +63,54 @@ const Temporary: FC = () => {
     queryKey: getThoughtQueryKey(params),
   });
 
+  const thought = data?.data?.attributes;
+
+  if (!thought) return <div>nf</div>;
+
+  const topBadges = !thought.categories.data.length ? null : (
+    <>
+      {thought.categories.data.map(({ id, attributes: category }) => (
+        <SmallCategoryBadge href={categoryLink(category)} key={id}>
+          {category.name}
+        </SmallCategoryBadge>
+      ))}
+    </>
+  );
+  const bottomBadges = (
+    <>
+      <PublishDateBadge date={thought.publishedAt} />
+      {thought.author.data && <SmallAuthorBadge author={thought.author.data.attributes} />}
+    </>
+  );
+
+  const header = (
+    <ContentPageHeader bottomBadges={bottomBadges} topBadges={topBadges}>
+      {thought.title}
+    </ContentPageHeader>
+  );
+
   return (
-    <div>
-      status: ${status}
+    <PageContent header={header}>
+      <Link to="/thoughts/typography-heading-elements">/thoughts/typography-heading-elements</Link>
       <br />
-      data: {JSON.stringify(data)}
-      <br />
-      error: {JSON.stringify(error)}
-    </div>
+      <Link to="/thoughts/recursive-typings-tree-structure">
+        /thoughts/recursive-typings-tree-structure
+      </Link>
+
+      <div className={'marginbottom2remCn'}>
+        <Blocks blocks={thought.blocks} />
+      </div>
+
+      <SmallBadgesHolder className={'marginbottom2remCn'}>
+        {thought.tags.data.map(({ id, attributes: tag }) => (
+          <SmallTagBadge href={filterByTagLink(tag)} key={id}>
+            {tag.name}
+          </SmallTagBadge>
+        ))}
+      </SmallBadgesHolder>
+
+      <Ad layout="horizontal" />
+    </PageContent>
   );
 };
 

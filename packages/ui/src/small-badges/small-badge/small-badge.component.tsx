@@ -1,6 +1,6 @@
 // global modules
 import cn from 'classnames';
-import { Link } from '@bit-trove/localization/link';
+import { Link } from '@bit-trove/ui/link';
 import type { ComponentProps, FC, HTMLAttributes, ReactNode } from 'react';
 
 // local modules
@@ -49,8 +49,8 @@ export const SmallBadge: FC<SmallBadgeProps> = ({
 
   const commonCn = cn(rest.className, holderCn, narrow && narrowCn);
 
-  return 'href' in rest ? (
-    <Link {...rest} className={cn(commonCn, !noLinkStyle && linkCn)}>
+  return 'to' in rest ? (
+    <Link {...rest} plain className={cn(commonCn, !noLinkStyle && linkCn)}>
       {content}
     </Link>
   ) : 'onClick' in rest ? (

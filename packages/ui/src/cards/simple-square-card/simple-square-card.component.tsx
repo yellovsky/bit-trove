@@ -1,31 +1,37 @@
 // global modules
-import cn from 'classnames';
-import Image from 'next/image';
-import { Link } from '@bit-trove/localization/link';
-import type { UrlObject } from 'url';
-import type { FC, ReactNode } from 'react';
+import { Link } from '@bit-trove/ui/link';
+import { AspectRatio, Card, CardFooter, Image, Skeleton } from '@chakra-ui/react';
+import type { ComponentProps, FC, ReactNode } from 'react';
 
 // local modules
 import {
+  cardFooter as cardFooterCn,
   cardHolder as cardHolderCn,
-  imageHolder as imageHolderCn,
-  textHolder as textHolderCn,
+  img as imgCn,
 } from './simple-square-card.module.scss';
 
 interface SimpleSquareCardProps {
   name: ReactNode;
-  className?: string;
-  href: string | UrlObject;
+  to: ComponentProps<typeof Link>['to'];
   cover: string | undefined;
 }
 
-export const SimpleSquareCard: FC<SimpleSquareCardProps> = ({ className, href, cover, name }) => (
-  <Link className={cn(cardHolderCn, className)} href={href}>
-    <div className={imageHolderCn}>
-      {cover ? (
-        <Image fill unoptimized alt="cover" src={cover} style={{ objectFit: 'cover' }} />
-      ) : null}
-    </div>
-    <div className={textHolderCn}>{name}</div>
-  </Link>
+export const SimpleSquareCard: FC<SimpleSquareCardProps> = ({ to, cover, name }) => (
+  <Card plain as={Link} borderRadius="lg" className={cardHolderCn} overflow="hidden" to={to}>
+    <AspectRatio overflow="hidden" ratio={1 / 1}>
+      <Image alt="Category cover" className={imgCn} src={cover} />
+    </AspectRatio>
+    <CardFooter className={cardFooterCn}>{name}</CardFooter>
+  </Card>
+);
+
+export const SimpleSquareCardPending: FC = () => (
+  <Skeleton borderRadius="lg" overflow="hidden">
+    <Card>
+      <AspectRatio overflow="hidden" ratio={1 / 1}>
+        <div />
+      </AspectRatio>
+      <CardFooter className={cardFooterCn}> &nbsp;</CardFooter>
+    </Card>
+  </Skeleton>
 );

@@ -20,6 +20,7 @@ import {
   subtitle as subtitleCn,
   title as titleCn,
 } from './footer-categories.module.scss';
+import { SimpleGrid } from '@chakra-ui/react';
 
 const CARDS_LIMIT = 6;
 
@@ -51,6 +52,7 @@ export const FooterCategories: FC<FooterCategoriesProps> = async ({ locale, clas
     <section className={cn(className, footerCategoriesCn)}>
       <h3 className={titleCn}>Browse</h3>
       <div className={subtitleCn}>Discover all the latest posts you're interested in</div>
+      <SimpleGrid>{categories.slice(0, CARDS_LIMIT).map(renderCard)}</SimpleGrid>
       <div className={categoriesCn}>{categories.slice(0, CARDS_LIMIT).map(renderCard)}</div>
     </section>
   );

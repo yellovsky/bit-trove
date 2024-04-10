@@ -7,10 +7,10 @@ import { type FC, useMemo } from 'react';
 const getMainMenuProps = (t: TFunction) => {
   return {
     navigation: [
-      { href: '/', name: t('home_page') },
-      { href: '/blog', name: t('blogs_page') },
-      { href: '/thoughts', name: t('thoughts_page') },
-      { href: '/', name: t('tips_and_tricks_page') },
+      { name: t('home_page'), to: '/' },
+      { name: t('blogs_page'), to: '/blog' },
+      { name: t('thoughts_page'), to: '/thoughts' },
+      { name: t('tips_and_tricks_page'), to: '/' },
     ],
 
     buttons: [

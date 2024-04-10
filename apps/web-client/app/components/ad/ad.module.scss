@@ -1,0 +1,13 @@
+@use '@bit-trove/ui/src/scss/variables.scss' as vars;
+
+.holder {
+  background-color: vars.$var-color--pending-bg;
+
+  &.square {
+    aspect-ratio: 1 / 1;
+  }
+
+  &.horizontal {
+    aspect-ratio: 728 / 90;
+  }
+}

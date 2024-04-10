@@ -36,16 +36,22 @@ const THOUGHT_SEGMENT_POPULATE = {
 export type ThoughtSegmentResponseCollection = APIResponseCollection<ThoughtSegment>;
 
 export interface ThoughtSegmentCollectionFP {
-  locale: SupportedLocale;
+  locale: string;
   sort?: 'createdAt:desc' | 'createdAt:asc';
 }
 
+export type ThoughtSegmentCollectionQueryKey = [
+  'thought_segment_collection',
+  ThoughtSegmentCollectionFP,
+];
+
 export const fetchThoughtSegmentCollection: QueryFunction<
   ThoughtSegmentResponseCollection,
-  ['thought_segment_collection', ThoughtSegmentCollectionFP],
+  ThoughtSegmentCollectionQueryKey,
   PaginationParams
-> = ({ queryKey, signal, pageParam }) =>
-  getApiClient()
+> = ({ queryKey, signal, pageParam }) => {
+  console.log('fetchThoughtSegmentCollection', getApiClient());
+  return getApiClient()
     .get('/thoughts', {
       params: {
         ...THOUGHT_SEGMENT_POPULATE,
@@ -55,15 +61,15 @@ export const fetchThoughtSegmentCollection: QueryFunction<
       },
       signal,
     })
-    .then((response) => response.data)
-    .then(
-      (response) =>
-        new Promise((resolve) =>
-          setTimeout(() => {
-            resolve(response);
-          }, 2000)
-        )
-    );
+    .then((response) => {
+      console.log('response.data', response.data);
+      return response.data;
+    })
+    .catch((e) => {
+      console.log('e', e);
+      throw e;
+    });
+};
 
 export const generateFakeThoughtSegmentResponseCollection =
   (): ThoughtSegmentResponseCollection => {

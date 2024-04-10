@@ -5,6 +5,9 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChakraProvider, ColorModeScript, extendTheme } from '@chakra-ui/react';
 
+import '@fontsource/roboto';
+import '@fontsource-variable/montserrat';
+
 import {
   json,
   Links,
@@ -21,11 +24,18 @@ import i18next from './i18next.server';
 
 type LoaderData = {
   locale: string;
+  env: {
+    NEXT_PUBLIC_API_HOST: string;
+  };
 };
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   const locale = params.locale || (await i18next.getLocale(request));
-  return json<LoaderData>({ locale });
+
+  const { NEXT_PUBLIC_API_HOST } = process.env;
+  if (!NEXT_PUBLIC_API_HOST) throw new Response('Internal Server Error', { status: 500 });
+
+  return json<LoaderData>({ env: { NEXT_PUBLIC_API_HOST }, locale });
 };
 
 export const handle = {
@@ -36,22 +46,27 @@ const theme = extendTheme({
   initialColorMode: 'dark',
   useSystemColorMode: false,
 
+  fonts: {
+    body: `'Roboto', sans-serif`,
+    heading: `'Montserrat Variable', sans-serif`,
+  },
+
   colors: {
     primary: {
-      50: '#e9faed',
-      100: '#c5edce',
-      200: '#a0e1ac',
-      300: '#7ad488',
-      400: '#54c862',
-      500: '#3bae44',
-      600: '#2d8832',
-      700: '#206121',
-      800: '#123a12',
-      900: '#021403',
+      50: '#defbfe',
+      100: '#beedee',
+      200: '#9cdfe0',
+      300: '#77d0d2',
+      400: '#54c3c5',
+      500: '#3aa9ab',
+      600: '#298485',
+      700: '#185f60',
+      800: '#04393a',
+      900: '#001616',
     },
   },
 });
-
+console.log('theme', theme);
 export function Layout({ children }: { children: React.ReactNode }) {
   const data = useLoaderData() as LoaderData;
   const { i18n } = useTranslation();
@@ -68,12 +83,19 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body>
         <ChakraProvider theme={theme}>
           <QueryClientProvider client={queryClient}>
-            <ColorModeScript initialColorMode={theme.initialColorMode} />
+            {/* <ColorModeScript initialColorMode={theme.initialColorMode} /> */}
 
             {children}
           </QueryClientProvider>
         </ChakraProvider>
         <ScrollRestoration />
+
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.ENV = ${JSON.stringify(data.env)}`,
+          }}
+        />
+
         <Scripts />
       </body>
     </html>

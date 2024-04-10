@@ -1,1 +1,1 @@
-export { PlateLink } from './plate-link.component';
+export { PlateLink, PlateLinkPending } from './plate-link.component';
