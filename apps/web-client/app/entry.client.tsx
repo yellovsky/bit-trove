@@ -14,7 +14,7 @@ import { startTransition, StrictMode } from 'react';
 import i18n from './i18n';
 
 async function hydrate() {
-  const emotionCache = createEmotionCache({ key: 'scss' });
+  const emotionCache = createEmotionCache({ key: 'css' });
 
   // eslint-disable-next-line import/no-named-as-default-member
   await i18next

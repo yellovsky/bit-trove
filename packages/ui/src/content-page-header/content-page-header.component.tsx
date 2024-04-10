@@ -1,16 +1,11 @@
 // global modules
 import cn from 'classnames';
-import { SmallBadgesHolder } from '@bit-trove/ui/small-badges-holder';
-import { Title } from '@bit-trove/ui/title';
+import { DarkMode, Heading, HStack } from '@chakra-ui/react';
 import type { FC, PropsWithChildren, ReactNode } from 'react';
 
 // local modules
-import { ThemeProvider } from '../theme-provider';
-
 import {
   contentPageHeader as contentPageHeaderCn,
-  title as titleCn,
-  topBadges as topBadgesCn,
   withBackground as withBackgroundCn,
 } from './content-page-header.module.scss';
 
@@ -23,13 +18,8 @@ interface ContentPageHeaderProps extends PropsWithChildren {
 }
 
 export const ContentPageHeader: FC<ContentPageHeaderProps> = (props) => {
-  const topBadges = !props.topBadges ? null : (
-    <SmallBadgesHolder className={topBadgesCn}>{props.topBadges}</SmallBadgesHolder>
-  );
-
-  const bottomBadges = !props.bottomBadges ? null : (
-    <SmallBadgesHolder>{props.bottomBadges}</SmallBadgesHolder>
-  );
+  const topBadges = !props.topBadges ? null : <HStack>{props.topBadges}</HStack>;
+  const bottomBadges = !props.bottomBadges ? null : <HStack>{props.bottomBadges}</HStack>;
 
   const content = (
     <div
@@ -37,18 +27,12 @@ export const ContentPageHeader: FC<ContentPageHeaderProps> = (props) => {
       style={{ backgroundImage: `url("${props.background}")` }}
     >
       {topBadges}
-      <Title as="h1" className={titleCn}>
+      <Heading as="h1" mb="1rem">
         {props.children}
-      </Title>
+      </Heading>
       {bottomBadges}
     </div>
   );
 
-  return !props.background ? (
-    content
-  ) : (
-    <ThemeProvider dark withoutBackground>
-      {content}
-    </ThemeProvider>
-  );
+  return !props.background ? content : <DarkMode>{content}</DarkMode>;
 };

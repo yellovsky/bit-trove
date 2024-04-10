@@ -1,7 +1,6 @@
 // global modules
-import { Link } from '@bit-trove/localization/link';
-import type { UrlObject } from 'url';
-import type { FC, MouseEventHandler, ReactNode } from 'react';
+import { Link } from '@bit-trove/ui/link';
+import type { ComponentProps, FC, MouseEventHandler, ReactNode } from 'react';
 
 // local modules
 import { icon as iconCn, menuItem as menuItemCn } from './menu-item.module.scss';
@@ -12,7 +11,7 @@ interface BaseMenuItemProps {
 }
 
 interface LinkMenuItemProps extends BaseMenuItemProps {
-  href: string | UrlObject;
+  to: ComponentProps<typeof Link>['to'];
 }
 
 interface ButtonMenuItemProps extends BaseMenuItemProps {
@@ -22,11 +21,11 @@ interface ButtonMenuItemProps extends BaseMenuItemProps {
 export type MenuItemProps = LinkMenuItemProps | ButtonMenuItemProps;
 
 export const MenuItem: FC<MenuItemProps> = ({ name, icon, ...rest }) => {
-  return 'href' in rest ? (
-    <a className={menuItemCn} href={rest.href}>
+  return 'to' in rest ? (
+    <Link className={menuItemCn} to={rest.to}>
       {icon ? <div className={iconCn} style={{ maskImage: `url("${icon}")` }} /> : null}
       <span>{name}</span>
-    </a>
+    </Link>
   ) : (
     <button className={menuItemCn}>
       {icon ? <div className={iconCn} style={{ maskImage: `url("${icon}")` }} /> : null}

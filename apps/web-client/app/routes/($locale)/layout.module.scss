@@ -1,0 +1,58 @@
+@use '@bit-trove/ui/src/scss/variables.scss' as vars;
+@use '@bit-trove/ui/src/scss/paddings.scss' as paddings;
+@use '@bit-trove/ui/src/scss/screen-interval.scss' as si;
+
+.layout {
+  display: grid;
+  min-height: 100vh;
+  grid-template-rows: auto 1fr auto;
+}
+
+.pagePadding {
+  @include paddings.page-padding-horizontal;
+}
+
+.categoryStripe {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  border-bottom: 0.0625rem solid #333;
+
+  //   @include si.screen-interval($to: 'md') {
+  //     display: none;
+  //   }
+}
+
+.mainStripe {
+  display: grid;
+  column-gap: 1fr;
+  padding-top: 3rem;
+  padding-bottom: 1.8rem;
+  grid-template-columns: 1fr 1fr 1fr;
+  border-bottom: 0.0625rem solid #333;
+
+  .slogan {
+    margin-bottom: 1rem;
+  }
+
+  .logo {
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .socialMediaPlaceholder {
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 100%;
+    background-color: vars.$var-color--pending-bg;
+  }
+
+  .socialHolder {
+    gap: 0.75rem;
+    display: flex;
+  }
+}
+
+.copyrightHolder {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}

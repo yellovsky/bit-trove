@@ -1,8 +1,7 @@
 // global modules
 import cn from 'classnames';
 import type { FC } from 'react';
-import Image from 'next/image';
-import { Link } from '@bit-trove/localization/link';
+import { Link } from '@bit-trove/ui/link';
 import { MenuItem, type MenuItemProps } from './menu-item';
 
 // local modules
@@ -30,9 +29,9 @@ export const MainMenu: FC<MainMenuProps> = (props) => {
           ))}
         </div>
         <div>
-          <div className={logoCn} href="/">
+          <Link className={logoCn} to="/">
             <img alt="logo" height={75} src="/assets/logo.svg" width={97} />
-          </div>
+          </Link>
         </div>
         <div className={cn(itemsColumnCn, rightCn)}>
           {props.buttons.map((item, index) => (

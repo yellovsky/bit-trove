@@ -13,6 +13,7 @@ export type {
   ThoughtSegment,
   ThoughtSegmentCollectionFP,
   ThoughtSegmentResponseData,
+  ThoughtSegmentCollectionQueryKey,
   ThoughtSegmentResponseCollection,
 } from './thought.segment';
 

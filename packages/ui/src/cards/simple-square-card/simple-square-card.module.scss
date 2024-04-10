@@ -1,38 +1,41 @@
 @use '../../scss/interactive.scss' as i;
-@use '../../scss/variables.scss' as vars;
+
+@mixin scaled-img {
+  .img {
+    scale: 1.2;
+  }
+}
 
 .cardHolder {
-  display: block;
-  overflow: hidden;
-  border-radius: 0.4rem;
-
-  .imageHolder {
-    position: relative;
-    aspect-ratio: 1 / 1;
-    background-color: vars.$var-color--pending-bg;
+  .cardFooter {
+    justify-content: center;
+    color: var(--chakra-colors-white);
+    background-color: var(--chakra-colors-gray-600);
   }
 
-  .textHolder {
-    text-align: center;
-    padding: 0.75rem 1.8rem;
-    background-color: #333333;
-    color: #999;
+  .img {
+    transition: scale 0.3s;
   }
 
   @include i.interactive using ($state) {
     @if ($state == 'hover') {
-      .textHolder {
-        color: vars.$var-color--accent-hover;
+      @include scaled-img;
+
+      .cardFooter {
+        color: var(--chakra-colors-primary-400);
       }
     } @else if ($state == 'active') {
-      .textHolder {
-        color: vars.$var-color--accent-active;
+      @include scaled-img;
+
+      .cardFooter {
+        color: var(--chakra-colors-primary-600);
       }
     } @else if ($state == 'focus') {
+      @include scaled-img;
       @include i.focus-outline-style;
 
-      .textHolder {
-        color: vars.$var-color--accent-hover;
+      .cardFooter {
+        color: var(--chakra-colors-primary-400);
       }
     }
   }

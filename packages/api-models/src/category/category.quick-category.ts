@@ -1,4 +1,5 @@
 // global modules
+import type { QueryFunction } from '@tanstack/react-query';
 import { type APIResponse, type APIResponseData, getApiClient } from '@bit-trove/api-models/common';
 
 // local modules
@@ -25,11 +26,20 @@ const QUICK_CATEGORY_POPULATE = {
   },
 };
 
-export const fetchQuickCategoryCollection = ({
-  locale,
-}: QuickCategoryCollectionFP): Promise<QuickCategoryResponse> =>
+export const fetchQuickCategoryCollection = (
+  { locale }: QuickCategoryCollectionFP,
+  signal?: AbortSignal
+): Promise<QuickCategoryResponse> =>
   getApiClient()
     .get<QuickCategoryResponse>('/quick-category', {
       params: { ...QUICK_CATEGORY_POPULATE, locale },
+      signal,
     })
     .then((response) => response.data);
+
+export type QuickCategoryCollectionQueryKey = ['quick_category', QuickCategoryCollectionFP];
+
+export const quickCategoryCollectionQueryFn: QueryFunction<
+  QuickCategoryResponse,
+  QuickCategoryCollectionQueryKey
+> = ({ queryKey, signal }) => fetchQuickCategoryCollection(queryKey[1], signal);
