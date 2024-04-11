@@ -13,6 +13,7 @@ import {
   pending as pendingCn,
   small as smallCn,
 } from './small-badge.module.scss';
+import { Skeleton, Tag } from '@chakra-ui/react';
 
 interface CommonSmallBadgeProps {
   icon?: ReactNode;
@@ -65,7 +66,7 @@ export const SmallBadge: FC<SmallBadgeProps> = ({
 };
 
 export const SmallBadgePending: FC<{ className?: string }> = ({ ...rest }) => (
-  <div {...rest} className={cn(rest.className, pendingCn, holderCn)}>
-    &nbsp;
-  </div>
+  <Skeleton borderRadius="md">
+    <Tag size="md" w="5rem" />
+  </Skeleton>
 );

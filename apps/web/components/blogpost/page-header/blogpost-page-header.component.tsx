@@ -20,7 +20,7 @@ export const BlogpostPageHeader: FC<BlogpostPageHeaderProps> = ({ blogpostRespon
   const topBadges = (
     <>
       {blogpost.categories.data.map(({ attributes: category }) => (
-        <SmallCategoryBadge href={categoryLink(category)}>{category.name}</SmallCategoryBadge>
+        <SmallCategoryBadge to={categoryLink(category)}>{category.name}</SmallCategoryBadge>
       ))}
 
       <BlogpostViewsCount increment id={id} />

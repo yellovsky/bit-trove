@@ -1,6 +1,6 @@
 // global modules
 import cn from 'classnames';
-import type { FC } from 'react';
+import type { ComponentProps, FC } from 'react';
 import { SmallBadge } from '@bit-trove/ui/small-badge';
 import type { UrlObject } from 'url';
 
@@ -14,6 +14,8 @@ import {
   type5 as type5Cn,
   type6 as type6Cn,
 } from './category-badge.module.scss';
+import { Tag } from '@chakra-ui/react';
+import { Link } from '../../link';
 
 const typeCn = [type1Cn, type2Cn, type3Cn, type4Cn, type5Cn, type6Cn] as const;
 const getTypeCh = (text: string): string => {
@@ -22,14 +24,25 @@ const getTypeCh = (text: string): string => {
 };
 
 interface SmallCategoryBadgeProps {
-  href: string | UrlObject;
+  to: ComponentProps<typeof Link>['to'];
   children: string;
 }
 
-export const SmallCategoryBadge: FC<SmallCategoryBadgeProps> = ({ children, href }) => {
+export const SmallCategoryBadge: FC<SmallCategoryBadgeProps> = ({ children, to }) => {
   return (
-    <SmallBadge className={cn(holderCn, getTypeCh(children))} href={href}>
+    <Tag
+      plain
+      className={cn(holderCn, getTypeCh(children))}
+      size="md"
+      as={Link}
+      to={to}
+      boxShadow="none"
+      variant="outline"
+      colorScheme="gray"
+    >
+      {/* <SmallBadge className={cn(holderCn, getTypeCh(children))} href={href}> */}
       {children}
-    </SmallBadge>
+      {/* </SmallBadge> */}
+    </Tag>
   );
 };

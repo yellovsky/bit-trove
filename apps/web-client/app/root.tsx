@@ -71,7 +71,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const data = useLoaderData() as LoaderData;
   const { i18n } = useTranslation();
   const [queryClient] = useState(() => getQueryClient());
-
   return (
     <html dir={i18n.dir()} lang={data.locale}>
       <head>
@@ -85,7 +84,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <QueryClientProvider client={queryClient}>
             {/* <ColorModeScript initialColorMode={theme.initialColorMode} /> */}
 
-            {children}
+            <div>{children}</div>
           </QueryClientProvider>
         </ChakraProvider>
         <ScrollRestoration />

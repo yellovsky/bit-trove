@@ -1,0 +1,42 @@
+@mixin skeleton-animation($duration) {
+  $name: skeleton;
+
+  @keyframes #{$name} {
+    @content;
+  }
+
+  animation-name: $name;
+  animation-duration: $duration;
+  animation-direction: alternate;
+  animation-iteration-count: infinite;
+}
+
+.skeleton {
+  $start-color: var(--th-cmp-skeleton-start-color);
+  $end-color: var(--th-cmp-skeleton-end-color);
+
+  opacity: 0.7;
+
+  cursor: default;
+  color: transparent;
+  user-select: none;
+  pointer-events: none;
+  background: $start-color;
+  border-color: $end-color;
+  background-clip: padding-box;
+
+  * {
+    visibility: hidden;
+  }
+
+  @include skeleton-animation(0.8s) {
+    0% {
+      background: $start-color;
+      border-color: $start-color;
+    }
+    100% {
+      background: $end-color;
+      border-color: $end-color;
+    }
+  }
+}

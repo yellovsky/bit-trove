@@ -3,6 +3,7 @@ import { installGlobals } from '@remix-run/node';
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import path from 'path';
+
 installGlobals();
 
 export default defineConfig({
