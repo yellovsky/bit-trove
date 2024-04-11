@@ -1,6 +1,6 @@
 // global modules
 import { getUploadFileUrl } from '@bit-trove/api-models/upload-file';
-import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { Box, Flex, Heading, Skeleton, Text } from '@chakra-ui/react';
 import type { FC, PropsWithChildren, ReactNode } from 'react';
@@ -66,21 +66,18 @@ export const FooterCategoriesPending: FC = () => (
 );
 
 export const FooterCategories: FC = () => {
-  const { t: footerT, i18n, ready } = useTranslation('footer', { useSuspense: true });
+  const { t: footerT, i18n, ready } = useTranslation('footer', { useSuspense: false });
 
-  const { data, status } = useSuspenseQuery({
+  const { data, status } = useQuery({
     queryFn: quickCategoryCollectionQueryFn,
     queryKey: ['quick_category', { locale: i18n.language }],
   });
 
   const categories = data?.data?.attributes.categories.data.slice(0, CARDS_LIMIT);
   if (status === 'pending' || !ready) return <FooterCategoriesPending />;
-  if (status === 'error' || !categories || !categories?.length) {
-    console.log('return null');
-    return null;
-  }
+  if (status === 'error' || !categories || !categories?.length) return null;
 
-  const renderCard = ({ attributes: category }: CategorySegmentEntity, id) => (
+  const renderCard = ({ id, attributes: category }: CategorySegmentEntity) => (
     <Box key={id} w="12rem">
       <SimpleSquareCard
         cover={category.cover.data ? getUploadFileUrl(category.cover.data.attributes) : undefined}

@@ -42,7 +42,6 @@
   "dependencies": {
     "@bit-trove/api-models": "*",
     "@bit-trove/localization": "*",
-    "@bit-trove/theme": "*",
     "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "^2.8.2",
     "@szhsin/react-accordion": "^1.2.3",

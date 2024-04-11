@@ -6,8 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import type { FC, PropsWithChildren, ReactNode } from 'react';
 import { PlateLink, PlateLinkPending } from '@bit-trove/ui/plate-link';
-import { Stack } from '@chakra-ui/react';
-import { Skeleton } from '@bit-trove/ui/skeleton';
+import { Skeleton, Stack } from '@chakra-ui/react';
 
 const AsideCategoriesLayout: FC<PropsWithChildren<{ title: ReactNode }>> = ({
   title,
@@ -22,6 +21,7 @@ const AsideCategoriesLayout: FC<PropsWithChildren<{ title: ReactNode }>> = ({
 export const AsideCategories: FC = () => {
   const { t } = useTranslation();
   const locale = useTranslation().i18n.language;
+
   const { data, status } = useQuery({
     queryFn: quickCategoryCollectionQueryFn,
     queryKey: ['quick_category', { locale }],
@@ -33,7 +33,7 @@ export const AsideCategories: FC = () => {
     return (
       <AsideCategoriesLayout
         title={
-          <Skeleton br="sm">
+          <Skeleton borderRadius="sm">
             <SectionTitle>{t('quick_categories_title')}</SectionTitle>
           </Skeleton>
         }

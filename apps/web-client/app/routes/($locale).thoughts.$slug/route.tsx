@@ -58,7 +58,7 @@ export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
 const Temporary: FC = () => {
   const params = useParams<ThoughtPageParams>();
 
-  const { data, status, error } = useQuery({
+  const { data } = useQuery({
     queryFn: thoughtQueryFn,
     queryKey: getThoughtQueryKey(params),
   });
@@ -70,7 +70,7 @@ const Temporary: FC = () => {
   const topBadges = !thought.categories.data.length ? null : (
     <>
       {thought.categories.data.map(({ id, attributes: category }) => (
-        <SmallCategoryBadge to={categoryLink(category)} key={id}>
+        <SmallCategoryBadge key={id} to={categoryLink(category)}>
           {category.name}
         </SmallCategoryBadge>
       ))}

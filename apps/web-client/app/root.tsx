@@ -1,12 +1,7 @@
 // global modules
-import type { LoaderFunction } from '@remix-run/node';
-import { QueryClientProvider } from '@tanstack/react-query';
-import { useState } from 'react';
+import { ChakraProvider } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import { ChakraProvider, ColorModeScript, extendTheme } from '@chakra-ui/react';
-
-import '@fontsource/roboto';
-import '@fontsource-variable/montserrat';
+import type { LinksFunction, LoaderFunction } from '@remix-run/node';
 
 import {
   json,
@@ -19,8 +14,9 @@ import {
 } from '@remix-run/react';
 
 // local modules
-import { getQueryClient } from './query-client';
 import i18next from './i18next.server';
+import { QueryClientProvider } from './query-client-provider';
+import { fontLinks, theme } from './theme';
 
 type LoaderData = {
   locale: string;
@@ -42,58 +38,31 @@ export const handle = {
   i18n: 'common',
 };
 
-const theme = extendTheme({
-  initialColorMode: 'dark',
-  useSystemColorMode: false,
+export const links: LinksFunction = () => {
+  return [...fontLinks];
+};
 
-  fonts: {
-    body: `'Roboto', sans-serif`,
-    heading: `'Montserrat Variable', sans-serif`,
-  },
-
-  colors: {
-    primary: {
-      50: '#defbfe',
-      100: '#beedee',
-      200: '#9cdfe0',
-      300: '#77d0d2',
-      400: '#54c3c5',
-      500: '#3aa9ab',
-      600: '#298485',
-      700: '#185f60',
-      800: '#04393a',
-      900: '#001616',
-    },
-  },
-});
-console.log('theme', theme);
 export function Layout({ children }: { children: React.ReactNode }) {
   const data = useLoaderData() as LoaderData;
   const { i18n } = useTranslation();
-  const [queryClient] = useState(() => getQueryClient());
+
   return (
     <html dir={i18n.dir()} lang={data.locale}>
       <head>
         <meta charSet="utf-8" />
         <meta content="width=device-width, initial-scale=1" name="viewport" />
+
         <Meta />
         <Links />
       </head>
+
       <body>
         <ChakraProvider theme={theme}>
-          <QueryClientProvider client={queryClient}>
-            {/* <ColorModeScript initialColorMode={theme.initialColorMode} /> */}
-
-            <div>{children}</div>
-          </QueryClientProvider>
+          <QueryClientProvider>{children}</QueryClientProvider>
         </ChakraProvider>
         <ScrollRestoration />
 
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.ENV = ${JSON.stringify(data.env)}`,
-          }}
-        />
+        <script dangerouslySetInnerHTML={{ __html: `window.ENV = ${JSON.stringify(data.env)}` }} />
 
         <Scripts />
       </body>
