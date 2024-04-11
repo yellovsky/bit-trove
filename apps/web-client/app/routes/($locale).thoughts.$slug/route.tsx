@@ -103,7 +103,7 @@ const Temporary: FC = () => {
 
       <SmallBadgesHolder className={'marginbottom2remCn'}>
         {thought.tags.data.map(({ id, attributes: tag }) => (
-          <SmallTagBadge href={filterByTagLink(tag)} key={id}>
+          <SmallTagBadge to={filterByTagLink(tag)} key={id}>
             {tag.name}
           </SmallTagBadge>
         ))}

@@ -23,6 +23,41 @@ export const theme = extendTheme({
     heading: `'Montserrat', sans-serif`,
   },
 
+  components: {
+    Tag: {
+      variants: {
+        link: {
+          color: 'red',
+          _hover: {
+            color: 'green',
+          },
+          _focusVisible: {
+            color: 'yellow',
+          },
+        },
+      },
+    },
+
+    Link: {
+      variants: {
+        standalone: {
+          color: 'red',
+          _hover: {
+            color: 'green',
+          },
+          _focusVisible: {
+            color: 'yellow',
+          },
+        },
+      },
+
+      defaultProps: {
+        size: 'md',
+        variant: 'standalone',
+      },
+    },
+  },
+
   colors: {
     primary: {
       50: '#defbfe',

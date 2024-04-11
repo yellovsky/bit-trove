@@ -32,8 +32,7 @@
     "./text": "./src/text/index.ts",
     "./theme-provider": "./src/theme-provider/index.ts",
     "./horizontal-card": "./src/cards/horizontal-card/index.ts",
-    "./skeleton": "./src/skeleton/index.ts",
-    "./with-border-radius": "./src/with-border-radius/index.ts"
+    "./tag-link": "./src/tag-link/index.ts"
   },
   "scripts": {
     "generate:component": "turbo gen react-component",

@@ -4,18 +4,18 @@
 @use '../../scss/variables.scss' as vars;
 
 .holder {
-  cursor: pointer;
-  color: vars.$var-color--text;
-  border: solid 0.0125rem currentColor;
+  // cursor: pointer;
+  // color: vars.$var-color--text;
+  // border: solid 0.0125rem currentColor;
 
-  @include i.interactive using ($state) {
-    @if $state == 'hover' {
-      color: vars.$var-color--accent-hover;
-    } @else if $state == 'focus' {
-      @include i.focus-outline-style-inset;
-      color: vars.$var-color--accent-hover;
-    } @else if $state == 'active' {
-      color: vars.$var-color--accent-active;
-    }
-  }
+  // @include i.interactive using ($state) {
+  //   @if $state == 'hover' {
+  //     color: vars.$var-color--accent-hover;
+  //   } @else if $state == 'focus' {
+  //     @include i.focus-outline-style-inset;
+  //     color: vars.$var-color--accent-hover;
+  //   } @else if $state == 'active' {
+  //     color: vars.$var-color--accent-active;
+  //   }
+  // }
 }
