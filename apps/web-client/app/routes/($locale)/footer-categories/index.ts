@@ -1,1 +1,1 @@
-export { FooterCategories } from './footer-categories.component';
+export { FooterCategories, FooterCategoriesPending } from './footer-categories.component';

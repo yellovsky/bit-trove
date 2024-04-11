@@ -1,0 +1,6 @@
+@use '@bit-trove/ui/src/scss/theme.scss' as theme;
+@use '@bit-trove/ui/src/scss/theme.light.scss' as theme-light;
+
+.tmp {
+  @include theme.theme(theme-light.$theme);
+}

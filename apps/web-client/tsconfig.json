@@ -27,6 +27,7 @@
     "baseUrl": ".",
     "paths": {
       "~/*": ["./app/*"],
+      "@bit-trove/theme/*": ["../../packages/theme/*"],
       "@bit-trove/ui/src/*": ["../../packages/ui/src/*"]
     },
 

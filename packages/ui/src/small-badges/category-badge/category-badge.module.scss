@@ -45,9 +45,6 @@ $colors-schemas: (
     $schema: nth($colors-schemas, $i);
 
     &.type#{$i} {
-      letter-spacing: 0.0625rem;
-      text-transform: uppercase;
-
       color: map.get($schema, 'color');
       background-color: map.get($schema, 'bg-color');
 

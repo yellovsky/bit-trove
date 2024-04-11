@@ -70,7 +70,7 @@ const Temporary: FC = () => {
   const topBadges = !thought.categories.data.length ? null : (
     <>
       {thought.categories.data.map(({ id, attributes: category }) => (
-        <SmallCategoryBadge href={categoryLink(category)} key={id}>
+        <SmallCategoryBadge to={categoryLink(category)} key={id}>
           {category.name}
         </SmallCategoryBadge>
       ))}

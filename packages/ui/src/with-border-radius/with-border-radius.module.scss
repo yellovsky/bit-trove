@@ -1,0 +1,21 @@
+@use 'sass:selector';
+
+$radiuses: (
+  'none': 0,
+  'sm': 0.125rem,
+  'base': 0.25rem,
+  'md': 0.375rem,
+  'lg': 0.5rem,
+  'xl': 0.75rem,
+  'twoxl': 1rem,
+  'threexl': 1.5rem,
+  'full': 9999px,
+);
+
+.borderRadius {
+  @each $type, $value in $radiuses {
+    @at-root #{selector.unify(&, '.#{$type}')} {
+      border-radius: $value;
+    }
+  }
+}

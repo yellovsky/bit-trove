@@ -1,57 +1,61 @@
-@use 'sass:map';
-@use 'sass:string';
+// @use 'sass:map';
+// @use 'sass:string';
+// @use './variables.scss' as vars;
+// @use './theme.light.scss' as theme-light;
+@use './theme/theme.get-css-vars.scss' as get-css-vars;
 
-@use './variables.scss' as vars;
-// palette
-$palette-vars: (
-  vars.$var-color--accent,
-  vars.$var-color--accent-hover,
-  vars.$var-color--accent-active,
-  vars.$var-color--text,
-  vars.$var-color--text-passive,
-  vars.$var-color--title,
-  vars.$var-color--page-bg,
-  vars.$var-color--pending-bg
-);
+// // palette
+// $palette-vars: (
+//   vars.$var-color--accent,
+//   vars.$var-color--accent-hover,
+//   vars.$var-color--accent-active,
+//   vars.$var-color--text,
+//   vars.$var-color--text-passive,
+//   vars.$var-color--title,
+//   vars.$var-color--page-bg,
+//   vars.$var-color--pending-bg
+// );
 
-// variables
-$variable-vars: (vars.$var--page-top-padding, vars.$var--page-bottom-padding);
+// // variables
+// $variable-vars: (vars.$var--page-top-padding, vars.$var--page-bottom-padding);
 
-@function get-css-var-name($var) {
-  @return string.slice($var, 7, -2);
-}
+// @function get-css-var-name($var) {
+//   @return string.slice($var, 7, -2);
+// }
 
-@mixin palette($theme) {
-  $palette: map.get($theme, 'palette');
+// @mixin palette($theme) {
+//   $palette: map.get($theme, 'palette');
 
-  @each $var in $palette-vars {
-    $css-var-name: get-css-var-name($var);
-    $color: map.get($palette, $css-var-name);
+//   @each $var in $palette-vars {
+//     $css-var-name: get-css-var-name($var);
+//     $color: map.get($palette, $css-var-name);
 
-    @if $color == null {
-      @error "Provide #{$css-var-name} palette color";
-    }
+//     @if $color == null {
+//       @error "Provide #{$css-var-name} palette color";
+//     }
 
-    --#{$css-var-name}: #{$color};
-  }
-}
+//     --#{$css-var-name}: #{$color};
+//   }
+// }
 
-@mixin variables($theme) {
-  $variables: map.get($theme, 'variables');
+// @mixin variables($theme) {
+//   $variables: map.get($theme, 'variables');
 
-  @each $var in $variable-vars {
-    $css-var-name: get-css-var-name($var);
-    $value: map.get($variables, $css-var-name);
+//   @each $var in $variable-vars {
+//     $css-var-name: get-css-var-name($var);
+//     $value: map.get($variables, $css-var-name);
 
-    @if $value == null {
-      @error "Provide #{$css-var-name} variable value";
-    }
+//     @if $value == null {
+//       @error "Provide #{$css-var-name} variable value";
+//     }
 
-    --#{$css-var-name}: #{$value};
-  }
-}
+//     --#{$css-var-name}: #{$value};
+//   }
+// }
 
 @mixin theme($theme) {
-  @include palette($theme);
-  @include variables($theme);
+  // @include palette($theme);
+  // @include variables($theme);
+
+  @include get-css-vars.get-css-vars($theme: $theme);
 }

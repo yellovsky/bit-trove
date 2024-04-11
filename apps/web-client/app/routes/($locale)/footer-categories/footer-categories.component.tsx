@@ -1,6 +1,6 @@
 // global modules
 import { getUploadFileUrl } from '@bit-trove/api-models/upload-file';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { Box, Flex, Heading, Skeleton, Text } from '@chakra-ui/react';
 import type { FC, PropsWithChildren, ReactNode } from 'react';
@@ -48,7 +48,7 @@ const FooterCategoriesLayout: FC<
   </Box>
 );
 
-const FooterCategoriesPending: FC = () => (
+export const FooterCategoriesPending: FC = () => (
   <FooterCategoriesLayout pending>
     <Box w="12rem">
       <SimpleSquareCardPending />
@@ -66,19 +66,21 @@ const FooterCategoriesPending: FC = () => (
 );
 
 export const FooterCategories: FC = () => {
-  const { t: footerT, i18n } = useTranslation('footer');
+  const { t: footerT, i18n, ready } = useTranslation('footer', { useSuspense: true });
 
-  const { data, status } = useQuery({
+  const { data, status } = useSuspenseQuery({
     queryFn: quickCategoryCollectionQueryFn,
     queryKey: ['quick_category', { locale: i18n.language }],
   });
 
   const categories = data?.data?.attributes.categories.data.slice(0, CARDS_LIMIT);
+  if (status === 'pending' || !ready) return <FooterCategoriesPending />;
+  if (status === 'error' || !categories || !categories?.length) {
+    console.log('return null');
+    return null;
+  }
 
-  if (status === 'pending') return <FooterCategoriesPending />;
-  if (status === 'error' || !categories || !categories?.length) return null;
-
-  const renderCard = ({ id, attributes: category }: CategorySegmentEntity) => (
+  const renderCard = ({ attributes: category }: CategorySegmentEntity, id) => (
     <Box key={id} w="12rem">
       <SimpleSquareCard
         cover={category.cover.data ? getUploadFileUrl(category.cover.data.attributes) : undefined}
@@ -89,8 +91,10 @@ export const FooterCategories: FC = () => {
   );
 
   return (
-    <FooterCategoriesLayout subtitle={footerT('browse_subtitle')} title={footerT('browse_title')}>
-      {categories.map(renderCard)}
-    </FooterCategoriesLayout>
+    <>
+      <FooterCategoriesLayout subtitle={footerT('browse_subtitle')} title={footerT('browse_title')}>
+        {categories.map(renderCard)}
+      </FooterCategoriesLayout>
+    </>
   );
 };

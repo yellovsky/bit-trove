@@ -6,7 +6,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import type { FC, PropsWithChildren, ReactNode } from 'react';
 import { PlateLink, PlateLinkPending } from '@bit-trove/ui/plate-link';
-import { Skeleton, Stack } from '@chakra-ui/react';
+import { Stack } from '@chakra-ui/react';
+import { Skeleton } from '@bit-trove/ui/skeleton';
 
 const AsideCategoriesLayout: FC<PropsWithChildren<{ title: ReactNode }>> = ({
   title,
@@ -32,7 +33,7 @@ export const AsideCategories: FC = () => {
     return (
       <AsideCategoriesLayout
         title={
-          <Skeleton>
+          <Skeleton br="sm">
             <SectionTitle>{t('quick_categories_title')}</SectionTitle>
           </Skeleton>
         }

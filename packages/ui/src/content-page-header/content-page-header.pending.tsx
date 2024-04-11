@@ -2,37 +2,43 @@
 import cn from 'classnames';
 import type { FC } from 'react';
 import { SmallBadgePending } from '@bit-trove/ui/small-badge';
-import { SmallBadgesHolder } from '@bit-trove/ui/small-badges-holder';
-import { TitlePending } from '@bit-trove/ui/title';
+import { Box, Divider, Heading, HStack, Skeleton } from '@chakra-ui/react';
 
 // local modules
 import {
   contentPageHeader as contentPageHeaderCn,
-  title as titleCn,
-  topBadges as topBadgesCn,
+  pagePadding as pagePaddingCn,
   withBackground as withBackgroundCn,
 } from './content-page-header.module.scss';
 
 interface ContentPageHeaderProps {
   className?: string;
-
   withBackground?: boolean;
 }
 
 export const ContentPageHeaderPending: FC<ContentPageHeaderProps> = (props) => (
-  <div
-    className={cn(props.className, contentPageHeaderCn, props.withBackground && withBackgroundCn)}
-  >
-    <SmallBadgesHolder className={topBadgesCn}>
-      <SmallBadgePending />
-      <SmallBadgePending />
-    </SmallBadgesHolder>
+  <>
+    <Box
+      className={cn(props.className, contentPageHeaderCn, props.withBackground && withBackgroundCn)}
+      mb={props.withBackground ? '2rem' : '3rem'}
+      mt="3rem"
+    >
+      <HStack mb="1rem">
+        <SmallBadgePending />
+        <SmallBadgePending />
+      </HStack>
 
-    <TitlePending className={titleCn} styledAs="h1" />
+      <Skeleton mb="1rem">
+        <Heading as="h1">&nbsp;</Heading>
+      </Skeleton>
 
-    <SmallBadgesHolder>
-      <SmallBadgePending />
-      <SmallBadgePending />
-    </SmallBadgesHolder>
-  </div>
+      <HStack>
+        <SmallBadgePending />
+        <SmallBadgePending />
+      </HStack>
+    </Box>
+    <Box className={pagePaddingCn}>
+      {props.withBackground ? null : <Divider borderColor="gray.400" mb="3rem" />}
+    </Box>
+  </>
 );
