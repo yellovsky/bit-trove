@@ -1,7 +1,4 @@
-@use '@bit-trove/theme/theme-style.scss' as t;
-@use '@bit-trove/ui/src/scss/theme.light.scss' as theme-light;
 @use '@bit-trove/ui/src/scss/paddings.scss' as paddings;
-@use '@bit-trove/ui/src/scss/theme.dark.scss' as theme-dark;
 
 .layout {
   display: grid;
@@ -11,14 +8,4 @@
 
 .pagePadding {
   @include paddings.page-padding-horizontal;
-}
-
-.tmp {
-  // [data-theme='light'] & {
-  @include t.theme-style(theme-light.$theme);
-  // }
-
-  [data-theme='dark'] & {
-    @include t.theme-style(theme-dark.$theme);
-  }
 }

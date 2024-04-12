@@ -1,13 +1,8 @@
 // global modules
-import type { LinksFunction, LoaderFunction } from '@remix-run/node';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ChakraProvider, ColorModeScript, extendTheme } from '@chakra-ui/react';
-
-import '@fontsource/roboto';
-import '@fontsource-variable/montserrat';
-import './root.scss';
+import type { LinksFunction, LoaderFunction } from '@remix-run/node';
 
 import {
   json,
@@ -20,22 +15,42 @@ import {
 } from '@remix-run/react';
 
 // local modules
+import colorSchemasCss from './color-schemas.scss?url';
+import rootCss from './root.scss?url';
+
+import { getColorModeSession } from './utils/color-mode/color-mode.server';
 import { getQueryClient } from './query-client';
 import i18next from './i18next.server';
 
-type LoaderData = {
-  locale: string;
-  env: {
-    NEXT_PUBLIC_API_HOST: string;
-  };
-};
+import {
+  type ColorMode,
+  ColorModeProvider,
+  NonFlashOfWrongThemeEls,
+  useColorMode,
+} from './utils/color-mode';
 
 export const links: LinksFunction = () => [
   {
     href: 'https://yarnpkg.com/en/package/normalize.css',
     rel: 'stylesheet',
   },
+  {
+    href: rootCss,
+    rel: 'stylesheet',
+  },
+  {
+    href: colorSchemasCss,
+    rel: 'stylesheet',
+  },
 ];
+
+type LoaderData = {
+  locale: string;
+  colorMode: ColorMode | null;
+  env: {
+    NEXT_PUBLIC_API_HOST: string;
+  };
+};
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   const locale = params.locale || (await i18next.getLocale(request));
@@ -43,63 +58,49 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const { NEXT_PUBLIC_API_HOST } = process.env;
   if (!NEXT_PUBLIC_API_HOST) throw new Response('Internal Server Error', { status: 500 });
 
-  return json<LoaderData>({ env: { NEXT_PUBLIC_API_HOST }, locale });
+  const colorModeSession = await getColorModeSession(request);
+
+  return json<LoaderData>({
+    colorMode: colorModeSession.getColorMode(),
+    env: { NEXT_PUBLIC_API_HOST },
+    locale,
+  });
 };
 
 export const handle = {
   i18n: 'common',
 };
 
-const theme = extendTheme({
-  initialColorMode: 'dark',
-  useSystemColorMode: false,
-
-  fonts: {
-    body: `'Roboto', sans-serif`,
-    heading: `'Montserrat Variable', sans-serif`,
-  },
-
-  colors: {
-    primary: {
-      50: '#defbfe',
-      100: '#beedee',
-      200: '#9cdfe0',
-      300: '#77d0d2',
-      400: '#54c3c5',
-      500: '#3aa9ab',
-      600: '#298485',
-      700: '#185f60',
-      800: '#04393a',
-      900: '#001616',
-    },
-  },
-});
-console.log('theme', theme);
-export function Layout({ children }: { children: React.ReactNode }) {
-  const data = useLoaderData() as LoaderData;
+function App(props: { children: React.ReactNode } & LoaderData) {
   const { i18n } = useTranslation();
-  const [queryClient] = useState(() => getQueryClient());
+  const [colorMode, setColorMode] = useColorMode();
+
   return (
-    <html dir={i18n.dir()} lang={data.locale}>
+    <html data-color-mode={colorMode} dir={i18n.dir()} lang={props.locale}>
       <head>
         <meta charSet="utf-8" />
         <meta content="width=device-width, initial-scale=1" name="viewport" />
+
+        <NonFlashOfWrongThemeEls ssrColorMode={Boolean(props.colorMode)} />
         <Meta />
         <Links />
       </head>
       <body>
-        <ChakraProvider theme={theme}>
-          <QueryClientProvider client={queryClient}>
-            {/* <ColorModeScript initialColorMode={theme.initialColorMode} /> */}
-
-            <div>{children}</div>
-          </QueryClientProvider>
-        </ChakraProvider>
+        <div>
+          <button
+            onClick={() => {
+              setColorMode(colorMode === 'dark' ? 'light' : 'dark');
+            }}
+          >
+            mode: {colorMode}
+          </button>
+          {props.children}
+        </div>
         <ScrollRestoration />
 
         <script
           dangerouslySetInnerHTML={{
-            __html: `window.ENV = ${JSON.stringify(data.env)}`,
+            __html: `window.ENV = ${JSON.stringify(props.env)}`,
           }}
         />
 
@@ -109,6 +110,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function App() {
-  return <Outlet />;
+export default function AppWithProviders() {
+  const data = useLoaderData() as LoaderData;
+  const [queryClient] = useState(() => getQueryClient());
+
+  return (
+    <ColorModeProvider specifiedColorMode={data.colorMode}>
+      <QueryClientProvider client={queryClient}>
+        <App {...data}>
+          <Outlet />
+        </App>
+      </QueryClientProvider>
+    </ColorModeProvider>
+  );
 }

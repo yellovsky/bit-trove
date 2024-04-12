@@ -9,9 +9,9 @@ import { pagePadding as pagePaddingCn } from './layout.module.scss';
 export const Footer: FC = () => (
   <Box as="footer" bg="black" className={pagePaddingCn} color="gray.400">
     <Box>
-      <Suspense fallback={<FooterCategoriesPending />}>
+      {/* <Suspense fallback={<FooterCategoriesPending />}>
         <FooterCategories />
-      </Suspense>
+      </Suspense> */}
     </Box>
 
     <Divider borderColor="gray.600" />
