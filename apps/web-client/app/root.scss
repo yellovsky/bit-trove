@@ -1,0 +1,33 @@
+@use '@bit-trove/theme/colors-schema.scss' as cs;
+
+.color-schema-primary {
+  @include cs.schema-colors('primary');
+}
+
+.color-schema-yellow {
+  @include cs.schema-colors('yellow');
+}
+
+.color-schema-gray {
+  @include cs.schema-colors('gray');
+}
+
+.color-schema-red {
+  @include cs.schema-colors('red');
+}
+
+.color-schema-green {
+  @include cs.schema-colors('green');
+}
+
+.color-schema-orange {
+  @include cs.schema-colors('orange');
+}
+
+.color-schema-black-alpha {
+  @include cs.schema-colors('black-alpha');
+}
+
+.color-schema-white-alpha {
+  @include cs.schema-colors('white-alpha');
+}

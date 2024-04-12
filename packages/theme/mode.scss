@@ -1,0 +1,10 @@
+@mixin dark-mode {
+  [data-theme='dark'] :host:not([data-theme]) &,
+  [data-theme='dark'] :root:not([data-theme]) &,
+  [data-theme='dark'] [data-theme]:not([data-theme]) &,
+  :host[data-theme='dark'] &,
+  :root[data-theme='dark'] &,
+  [data-theme][data-theme='dark'] & {
+    @content;
+  }
+}

@@ -5,8 +5,8 @@
 
   @each $part in $list {
     @if $result == null {
-      $result:  $part;
-    }@else {
+      $result: $part;
+    } @else {
       $result: '#{$result}-#{$part}';
     }
   }

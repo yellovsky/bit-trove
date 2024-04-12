@@ -33,7 +33,9 @@
     "./theme-provider": "./src/theme-provider/index.ts",
     "./horizontal-card": "./src/cards/horizontal-card/index.ts",
     "./skeleton": "./src/skeleton/index.ts",
-    "./with-border-radius": "./src/with-border-radius/index.ts"
+    "./with-border-radius": "./src/with-border-radius/index.ts",
+    "./button": "./src/button/index.ts",
+    "./color-schema": "./src/color-schema/index.ts"
   },
   "scripts": {
     "generate:component": "turbo gen react-component",

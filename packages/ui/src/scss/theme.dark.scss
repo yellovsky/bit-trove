@@ -23,6 +23,6 @@ $theme: (
   'colors': $colors,
 
   'cmp': (
-    'skeleton': skeleton.get-light-cmp($colors),
+    'skeleton': skeleton.get-dark-cmp($colors),
   ),
 );
