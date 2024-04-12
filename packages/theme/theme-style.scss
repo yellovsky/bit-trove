@@ -1,16 +1,11 @@
 @use 'sass:map';
 
 @use './get-css-vars.scss' as gcv;
-@use './cmp.skeleton.scss' as skeleton;
 
 @function check-theme($theme) {
-  $dummy: skeleton.check-cmp($theme);
-
   @return null;
 }
 
 @mixin theme-style($theme) {
   $dummy: check-theme($theme);
-
-  @include gcv.get-css-vars($theme: $theme);
 }

@@ -1,10 +1,10 @@
 @mixin dark-mode {
-  [data-theme='dark'] :host:not([data-theme]) &,
-  [data-theme='dark'] :root:not([data-theme]) &,
-  [data-theme='dark'] [data-theme]:not([data-theme]) &,
-  :host[data-theme='dark'] &,
-  :root[data-theme='dark'] &,
-  [data-theme][data-theme='dark'] & {
+  [data-color-mode='dark'] :host:not([data-color-mode]) &,
+  [data-color-mode='dark'] :root:not([data-color-mode]) &,
+  [data-color-mode='dark'] [data-color-mode]:not([data-color-mode]) &,
+  :host[data-color-mode='dark'] &,
+  :root[data-color-mode='dark'] &,
+  [data-color-mode][data-color-mode='dark'] & {
     @content;
   }
 }

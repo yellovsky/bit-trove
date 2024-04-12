@@ -1,5 +1,7 @@
 @use 'sass:selector';
 
+@use '@bit-trove/theme/mode.scss' as m;
+
 @mixin skeleton-animation($duration) {
   $name: skeleton;
 
@@ -13,30 +15,14 @@
   animation-iteration-count: infinite;
 }
 
-@mixin dark-mode {
-  [data-theme='dark'] :host:not([data-theme]) &,
-  [data-theme='dark'] :root:not([data-theme]) &,
-  [data-theme='dark'] [data-theme]:not([data-theme]) &,
-  :host[data-theme='dark'] &,
-  :root[data-theme='dark'] &,
-  [data-theme][data-theme='dark'] & {
-    @content;
-  }
-}
-
-@mixin skeleton-vars {
-  --th-skeleton-start-color: red; //  var$start-color: var(--th-cmp-skeleton-start-color);
-  --th-skeleton-end-color: blue; //  var$start-color: var(--th-cmp-skeleton-start-color);
-
-  @include dark-mode {
-    --th-skeleton-start-color: orange; //  var$start-color: var(--th-cmp-skeleton-start-color);
-    --th-skeleton-end-color: green; //  var$start-color: var(--th-cmp-skeleton-start-color);
-  }
-}
-
 .skeleton {
-  $start-color: var(--th-cmp-skeleton-start-color);
-  $end-color: var(--th-cmp-skeleton-end-color);
+  --skeleton-start-color: var(--th-colors-gray-100);
+  --skeleton-end-color: var(--th-colors-gray-400);
+
+  @include m.dark-mode {
+    --skeleton-start-color: var(--th-colors-gray-800);
+    --skeleton-end-color: var(--th-colors-gray-600);
+  }
 
   opacity: 0.7;
 
@@ -44,8 +30,8 @@
   color: transparent;
   user-select: none;
   pointer-events: none;
-  background: $start-color;
-  border-color: $start-color;
+  background: var(--skeleton-start-color);
+  border-color: var(--skeleton-start-color);
   background-clip: padding-box;
 
   * {
@@ -54,12 +40,12 @@
 
   @include skeleton-animation(0.8s) {
     0% {
-      background: $start-color;
-      border-color: $start-color;
+      background: var(--skeleton-start-color);
+      border-color: var(--skeleton-start-color);
     }
     100% {
-      background: $end-color;
-      border-color: $end-color;
+      background: var(--skeleton-end-color);
+      border-color: var(--skeleton-end-color);
     }
   }
 }
