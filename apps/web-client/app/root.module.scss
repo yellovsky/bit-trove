@@ -1,6 +1,17 @@
 @use '@bit-trove/ui/src/scss/theme.scss' as theme;
 @use '@bit-trove/ui/src/scss/theme.light.scss' as theme-light;
+@use '@bit-trove/ui/src/scss/theme.dark.scss' as theme-dark;
 
 .tmp {
-  @include theme.theme(theme-light.$theme);
+  [data-theme='light'] & {
+    @include theme.theme(theme-light.$theme);
+  }
+
+  [data-theme='dark'] & {
+    @include theme.theme(theme-dark.$theme);
+  }
+}
+
+.rrrrrrr {
+  color: red;
 }

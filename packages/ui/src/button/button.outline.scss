@@ -1,0 +1,41 @@
+@use 'sass:map';
+
+@use '@bit-trove/ui/src/scss/interactive.scss' as i;
+
+@mixin button-outline-light-style {
+  color: var(--th-colors-schema-600);
+  border-color: currentColor;
+
+  @include i.interactive using ($state) {
+    @if ($state == 'hover') {
+      background-color: var(--th-colors-schema-50);
+    } @else if ($state == 'focus') {
+      @include i.focus-outline-style;
+
+      background-color: var(--th-colors-schema-50);
+    } @else if ($state == 'active') {
+      background-color: var(--th-colors-schema-100);
+    } @else if ($state == 'disabled') {
+      border-color: var(--th-colors-gray-400);
+    }
+  }
+}
+
+@mixin button-outline-dark-style {
+  color: var(--th-colors-gray-100);
+  border-color: var(--th-colors-schema-400);
+
+  @include i.interactive using ($state) {
+    @if ($state == 'hover') {
+      border-color: var(--th-colors-schema-300);
+    } @else if ($state == 'focus') {
+      @include i.focus-outline-style;
+
+      border-color: var(--th-colors-schema-300);
+    } @else if ($state == 'active') {
+      border-color: var(--th-colors-schema-500);
+    } @else if ($state == 'disabled') {
+      border-color: var(--th-colors-gray-400);
+    }
+  }
+}

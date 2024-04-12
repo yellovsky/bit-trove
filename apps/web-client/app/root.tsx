@@ -1,5 +1,5 @@
 // global modules
-import type { LoaderFunction } from '@remix-run/node';
+import type { LinksFunction, LoaderFunction } from '@remix-run/node';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -7,6 +7,7 @@ import { ChakraProvider, ColorModeScript, extendTheme } from '@chakra-ui/react';
 
 import '@fontsource/roboto';
 import '@fontsource-variable/montserrat';
+import './root.scss';
 
 import {
   json,
@@ -28,6 +29,13 @@ type LoaderData = {
     NEXT_PUBLIC_API_HOST: string;
   };
 };
+
+export const links: LinksFunction = () => [
+  {
+    href: 'https://yarnpkg.com/en/package/normalize.css',
+    rel: 'stylesheet',
+  },
+];
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   const locale = params.locale || (await i18next.getLocale(request));

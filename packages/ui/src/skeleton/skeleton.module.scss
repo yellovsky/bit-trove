@@ -1,3 +1,5 @@
+@use 'sass:selector';
+
 @mixin skeleton-animation($duration) {
   $name: skeleton;
 
@@ -11,6 +13,27 @@
   animation-iteration-count: infinite;
 }
 
+@mixin dark-mode {
+  [data-theme='dark'] :host:not([data-theme]) &,
+  [data-theme='dark'] :root:not([data-theme]) &,
+  [data-theme='dark'] [data-theme]:not([data-theme]) &,
+  :host[data-theme='dark'] &,
+  :root[data-theme='dark'] &,
+  [data-theme][data-theme='dark'] & {
+    @content;
+  }
+}
+
+@mixin skeleton-vars {
+  --th-skeleton-start-color: red; //  var$start-color: var(--th-cmp-skeleton-start-color);
+  --th-skeleton-end-color: blue; //  var$start-color: var(--th-cmp-skeleton-start-color);
+
+  @include dark-mode {
+    --th-skeleton-start-color: orange; //  var$start-color: var(--th-cmp-skeleton-start-color);
+    --th-skeleton-end-color: green; //  var$start-color: var(--th-cmp-skeleton-start-color);
+  }
+}
+
 .skeleton {
   $start-color: var(--th-cmp-skeleton-start-color);
   $end-color: var(--th-cmp-skeleton-end-color);
@@ -22,7 +45,7 @@
   user-select: none;
   pointer-events: none;
   background: $start-color;
-  border-color: $end-color;
+  border-color: $start-color;
   background-clip: padding-box;
 
   * {
