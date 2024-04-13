@@ -33,13 +33,15 @@
     "./theme-provider": "./src/theme-provider/index.ts",
     "./horizontal-card": "./src/cards/horizontal-card/index.ts",
     "./skeleton": "./src/skeleton/index.ts",
-    "./with-border-radius": "./src/with-border-radius/index.ts",
-    "./with-spacing": "./src/with-spacing/index.ts",
+    "./apply-border-radius": "./src/apply-border-radius/index.ts",
+    "./apply-spacing": "./src/apply-spacing/index.ts",
+    "./apply-classname": "./src/apply-classname/index.ts",
     "./button": "./src/button/index.ts",
     "./color-schema": "./src/color-schema/index.ts",
     "./aspect-ratio": "./src/aspect-ratio/index.ts",
     "./heading": "./src/heading/index.ts",
-    "./divider": "./src/divider/index.ts"
+    "./divider": "./src/divider/index.ts",
+    "./image": "./src/image/index.ts"
   },
   "scripts": {
     "generate:component": "turbo gen react-component",

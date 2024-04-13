@@ -1,4 +1,5 @@
 .aspectRatio {
+  overflow: hidden;
   position: relative;
 
   & > *:not(.stretcher) {

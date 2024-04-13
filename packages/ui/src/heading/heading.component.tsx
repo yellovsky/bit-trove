@@ -1,8 +1,8 @@
 // global modules
 import cn from 'classnames';
 import type { MayHaveColorSchema } from '@bit-trove/ui/color-schema';
+import { applySpacing, type SpacingProps } from '@bit-trove/ui/apply-spacing';
 import { createElement, type FC, type HTMLAttributes } from 'react';
-import { withSpacing } from '@bit-trove/ui/with-spacing';
 
 // local modules
 import {
@@ -31,14 +31,19 @@ const headingSizeCnLookup: Record<HeadingSize, string> = {
   xs: xsCn,
 };
 
-interface HeadingProps extends MayHaveColorSchema, HTMLAttributes<HTMLHeadingElement> {
+interface HeadingProps
+  extends SpacingProps,
+    MayHaveColorSchema,
+    HTMLAttributes<HTMLHeadingElement> {
   size: HeadingSize;
   as: HeadingAs;
 }
 
-export const Heading = withSpacing(({ as, size, className, ...rest }: HeadingProps) =>
-  createElement(as, {
+export const Heading: FC<HeadingProps> = (props) => {
+  const { as, size, className, ...rest } = applySpacing(props);
+
+  return createElement(as, {
     ...rest,
     className: cn(className, headingCn, headingSizeCnLookup[size]),
-  })
-);
+  });
+};

@@ -1,8 +1,9 @@
 // global modules
 import cn from 'classnames';
 import type { FC } from 'react';
+import { Skeleton } from '@bit-trove/ui/skeleton';
 import { SmallBadgePending } from '@bit-trove/ui/small-badge';
-import { Box, Divider, Heading, HStack, Skeleton } from '@chakra-ui/react';
+import { Box, Divider, Heading, HStack } from '@chakra-ui/react';
 
 // local modules
 import {

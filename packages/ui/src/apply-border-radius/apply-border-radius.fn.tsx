@@ -1,6 +1,6 @@
 // global modules
+import type { ApplyClassname } from '@bit-trove/ui/apply-classname';
 import cn from 'classnames';
-import type { FC } from 'react';
 
 // local modules
 import {
@@ -14,7 +14,7 @@ import {
   threexl as threexlCn,
   twoxl as twoxlCn,
   xl as xlCn,
-} from './with-border-radius.module.scss';
+} from './apply-border-radius.module.scss';
 
 type BorderRadiusType = 'none' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'full';
 
@@ -35,32 +35,15 @@ export interface BorderRadiusProps {
   br?: BorderRadiusType;
 }
 
-export const useBorderRadiusCn = <TProps extends BorderRadiusProps>({
+export const applyBorderRadius: ApplyClassname<BorderRadiusProps> = ({
   borderRadius,
   br,
   ...rest
-}: TProps) => {
+}) => {
   const radius = br || borderRadius;
 
   return {
+    ...rest,
     className: radius === undefined ? undefined : cn(borderRadiusCn, borderRadiusLookup[radius]),
-    rest,
   };
 };
-
-export const withBorderRadius =
-  <TProps extends { className?: string }>(Component: FC<TProps>): FC<TProps & BorderRadiusProps> =>
-  ({ borderRadius, br, ...rest }: TProps & BorderRadiusProps) => {
-    const radius = br || borderRadius;
-
-    return (
-      <Component
-        {...(rest as TProps)}
-        className={
-          radius === undefined
-            ? rest.className
-            : cn(rest.className, borderRadiusCn, borderRadiusLookup[radius])
-        }
-      />
-    );
-  };
