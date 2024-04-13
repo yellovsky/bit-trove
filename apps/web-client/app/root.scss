@@ -1,6 +1,6 @@
 @use '@bit-trove/theme/colors-schema.scss' as cs;
 
-@import '@bit-trove/ui/src/with-spacing/with-spacing.scss';
+@import '@bit-trove/ui/src/apply-spacing/apply-spacing.scss';
 
 :root {
   --th-heading-font-family: 'Montserrat Variable', sans-serif;

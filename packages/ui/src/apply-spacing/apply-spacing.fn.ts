@@ -1,6 +1,6 @@
 // global modules
+import type { ApplyClassname } from '@bit-trove/ui/apply-classname';
 import cn from 'classnames';
-import type { FC } from 'react';
 
 type SpacingValue =
   | '0.125rem'
@@ -83,20 +83,18 @@ const separateSpacingProps = <TProps extends SpacingProps>({
   spacingProps: { marginBottom, marginTop, mb, mt, paddingBottom, paddingTop, pb, pt },
 });
 
-export const withSpacing =
-  <TProps extends { className?: string }>(Component: FC<TProps>): FC<TProps & SpacingProps> =>
-  (props: TProps & SpacingProps) => {
-    const { rest, spacingProps } = separateSpacingProps(props);
-    const cName = cn(
-      rest.className,
-      'sp',
-      'sp-emphase',
+export const applySpacing: ApplyClassname<SpacingProps> = (props) => {
+  const { rest, spacingProps } = separateSpacingProps(props);
+  const cName = cn(
+    rest.className,
+    'sp',
+    'sp-emphase',
 
-      getLookupValue('mb', spacingProps.mb || spacingProps.marginBottom),
-      getLookupValue('mt', spacingProps.mt || spacingProps.marginTop),
-      getLookupValue('pb', spacingProps.pb || spacingProps.paddingBottom),
-      getLookupValue('pt', spacingProps.pt || spacingProps.paddingTop)
-    );
+    getLookupValue('mb', spacingProps.mb || spacingProps.marginBottom),
+    getLookupValue('mt', spacingProps.mt || spacingProps.marginTop),
+    getLookupValue('pb', spacingProps.pb || spacingProps.paddingBottom),
+    getLookupValue('pt', spacingProps.pt || spacingProps.paddingTop)
+  );
 
-    return <Component {...(rest as TProps)} className={cName} />;
-  };
+  return { ...rest, className: cName };
+};

@@ -1,7 +1,7 @@
 @use 'sass:map';
 
 @use '@bit-trove/theme/mode.scss' as m;
-@use '@bit-trove/ui/src/with-border-radius/with-border-radius.module.scss' as br;
+@use '@bit-trove/ui/src/apply-border-radius/apply-border-radius.module.scss' as br;
 
 @use './button.filled.scss' as filled;
 @use './button.outline.scss' as outline;

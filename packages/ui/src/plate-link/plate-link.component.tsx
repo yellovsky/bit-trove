@@ -1,6 +1,9 @@
 // global modules
+import { AspectRatio } from '@bit-trove/ui/aspect-ratio';
+import { Image } from '@bit-trove/ui/image';
 import { Link } from '@bit-trove/ui/link';
-import { AspectRatio, Image, Skeleton, Text } from '@chakra-ui/react';
+import { Skeleton } from '@bit-trove/ui/skeleton';
+import { Text } from '@bit-trove/ui/text';
 import type { ComponentProps, FC } from 'react';
 
 // local modules
@@ -10,8 +13,10 @@ interface PlateLinkProps extends ComponentProps<typeof Link> {
   image?: string;
 }
 
+export const PlateLinkPending: FC = () => <Skeleton borderRadius="sm" ratio={27 / 10} />;
+
 export const PlateLink: FC<PlateLinkProps> = ({ image, ...rest }) => (
-  <AspectRatio borderRadius="sm" overflow="hidden" ratio={27 / 10}>
+  <AspectRatio borderRadius="sm" ratio={27 / 10}>
     <Link {...rest} plain className={plateLinkCn}>
       <Image className={imgCn} src={image} />
       <Text className={textCn} color="white">
@@ -20,5 +25,3 @@ export const PlateLink: FC<PlateLinkProps> = ({ image, ...rest }) => (
     </Link>
   </AspectRatio>
 );
-
-export const PlateLinkPending: FC = () => <Skeleton aspectRatio={27 / 10} borderRadius="sm" />;
