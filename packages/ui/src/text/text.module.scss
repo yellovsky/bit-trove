@@ -1,31 +1,82 @@
 @use 'sass:list';
 @use 'sass:selector';
 @use '../scss/variables.scss' as vars;
-
-$pending-widths: (80%, 90%, 70%, 75%, 85%);
+@use '../scss/font-sizes.scss' as font-size;
 
 .text {
-  line-height: 1.6;
-  word-wrap: break-word;
-  color: vars.$var-color--text;
-  -webkit-font-smoothing: antialiased;
-
-  &.passive {
-    color: vars.$var-color--text-passive;
+  &.sizeSixXl {
+    font-size: font-size.$six-xl;
   }
 
-  @at-root #{selector.unify(&, 'p')} {
-    margin-bottom: 1rem;
+  &.sizeFiveXl {
+    font-size: font-size.$five-xl;
   }
 
-  &.pending {
-    display: block;
-    background-color: vars.$var-color--pending-bg;
+  &.sizeFourXl {
+    font-size: font-size.$four-xl;
+  }
 
-    @for $i from 1 to list.length($pending-widths) + 1 {
-      &:nth-child(#{$i}n) {
-        width: list.nth($pending-widths, $i);
-      }
-    }
+  &.sizeThreeXl {
+    font-size: font-size.$three-xl;
+  }
+
+  &.sizeTwoXl {
+    font-size: font-size.$two-xl;
+  }
+
+  &.sizeXl {
+    font-size: font-size.$xl;
+  }
+
+  &.sizeLg {
+    font-size: font-size.$lg;
+  }
+
+  &.sizeMd {
+    font-size: font-size.$md;
+  }
+
+  &.sizeSm {
+    font-size: font-size.$sm;
+  }
+
+  &.sizeXs {
+    font-size: font-size.$xs;
+  }
+
+  &.asSup {
+    top: -0.5em;
+  }
+
+  &.asSub {
+    bottom: -0.25em;
   }
 }
+
+// $pending-widths: (80%, 90%, 70%, 75%, 85%);
+
+// .text {
+//   line-height: 1.6;
+//   word-wrap: break-word;
+//   color: vars.$var-color--text;
+//   -webkit-font-smoothing: antialiased;
+
+//   &.passive {
+//     color: vars.$var-color--text-passive;
+//   }
+
+//   @at-root #{selector.unify(&, 'p')} {
+//     margin-bottom: 1rem;
+//   }
+
+//   &.pending {
+//     display: block;
+//     background-color: vars.$var-color--pending-bg;
+
+//     @for $i from 1 to list.length($pending-widths) + 1 {
+//       &:nth-child(#{$i}n) {
+//         width: list.nth($pending-widths, $i);
+//       }
+//     }
+//   }
+// }

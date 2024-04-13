@@ -35,17 +35,32 @@ export interface BorderRadiusProps {
   br?: BorderRadiusType;
 }
 
+export const useBorderRadiusCn = <TProps extends BorderRadiusProps>({
+  borderRadius,
+  br,
+  ...rest
+}: TProps) => {
+  const radius = br || borderRadius;
+
+  return {
+    className: radius === undefined ? undefined : cn(borderRadiusCn, borderRadiusLookup[radius]),
+    rest,
+  };
+};
+
 export const withBorderRadius =
   <TProps extends { className?: string }>(Component: FC<TProps>): FC<TProps & BorderRadiusProps> =>
   ({ borderRadius, br, ...rest }: TProps & BorderRadiusProps) => {
     const radius = br || borderRadius;
 
-    return radius === undefined ? (
-      <Component {...(rest as TProps)} />
-    ) : (
+    return (
       <Component
         {...(rest as TProps)}
-        className={cn(rest.className, borderRadiusCn, borderRadiusLookup[radius])}
+        className={
+          radius === undefined
+            ? rest.className
+            : cn(rest.className, borderRadiusCn, borderRadiusLookup[radius])
+        }
       />
     );
   };

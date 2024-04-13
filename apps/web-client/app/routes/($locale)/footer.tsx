@@ -1,6 +1,7 @@
 // global modules
 import { Suspense, type FC } from 'react';
-import { Box, Divider, SimpleGrid } from '@chakra-ui/react';
+import { Box, SimpleGrid } from '@chakra-ui/react';
+import { Divider } from '@bit-trove/ui/divider';
 
 // local modules
 import { FooterCategories, FooterCategoriesPending } from './footer-categories';
@@ -14,7 +15,7 @@ export const Footer: FC = () => (
       </Suspense> */}
     </Box>
 
-    <Divider borderColor="gray.600" />
+    <Divider />
 
     <SimpleGrid columns={{ lg: 3, sm: 1 }} spacing="2rem">
       <Box>Find your trove</Box>
@@ -22,7 +23,7 @@ export const Footer: FC = () => (
       <Box>newsletter</Box>
     </SimpleGrid>
 
-    <Divider borderColor="gray.600" />
+    <Divider />
     <Box>copyrigt</Box>
   </Box>
 );
