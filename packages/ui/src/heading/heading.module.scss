@@ -1,0 +1,70 @@
+@use '../scss/font-sizes.scss' as font-sizes;
+@use '../scss/breakpoints.scss' as breakpoints;
+
+.heading {
+  font-weight: bold;
+  font-family: var(--th-heading-font-family);
+
+  .fourXl {
+    line-height: 1;
+    font-size: font-sizes.$six-xl;
+
+    @include breakpoints.min-interval(breakpoints.$md) {
+      font-size: font-sizes.$seven-xl;
+    }
+  }
+
+  .threeXl {
+    line-height: 1;
+    font-size: font-sizes.$five-xl;
+
+    @include breakpoints.min-interval(breakpoints.$md) {
+      font-size: font-sizes.$six-xl;
+    }
+  }
+
+  .twoXl {
+    line-height: 1.2;
+    font-size: font-sizes.$four-xl;
+
+    @include breakpoints.min-interval(breakpoints.$md) {
+      line-height: 1;
+      font-size: font-sizes.$five-xl;
+    }
+  }
+
+  .xl {
+    line-height: 1.33;
+    font-size: font-sizes.$three-xl;
+
+    @include breakpoints.min-interval(breakpoints.$md) {
+      line-height: 1.2;
+      font-size: font-sizes.$four-xl;
+    }
+  }
+
+  .lg {
+    line-height: 1.33;
+    font-size: font-sizes.$two-xl;
+
+    @include breakpoints.min-interval(breakpoints.$md) {
+      line-height: 1.2;
+      font-size: font-sizes.$three-xl;
+    }
+  }
+
+  .md {
+    line-height: 1.2;
+    font-size: font-sizes.$xl;
+  }
+
+  .sm {
+    line-height: 1.2;
+    font-size: font-sizes.$md;
+  }
+
+  .xs {
+    line-height: 1.2;
+    font-size: font-sizes.$sm;
+  }
+}

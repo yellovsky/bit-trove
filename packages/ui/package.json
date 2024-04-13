@@ -34,8 +34,12 @@
     "./horizontal-card": "./src/cards/horizontal-card/index.ts",
     "./skeleton": "./src/skeleton/index.ts",
     "./with-border-radius": "./src/with-border-radius/index.ts",
+    "./with-spacing": "./src/with-spacing/index.ts",
     "./button": "./src/button/index.ts",
-    "./color-schema": "./src/color-schema/index.ts"
+    "./color-schema": "./src/color-schema/index.ts",
+    "./aspect-ratio": "./src/aspect-ratio/index.ts",
+    "./heading": "./src/heading/index.ts",
+    "./divider": "./src/divider/index.ts"
   },
   "scripts": {
     "generate:component": "turbo gen react-component",

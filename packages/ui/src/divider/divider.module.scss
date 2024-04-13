@@ -1,0 +1,14 @@
+@use '../../../theme/mode.scss' as mode;
+
+.divider {
+  opacity: 0.6;
+  border-width: 0px 0px 1px;
+  border-image: initial;
+  border-style: solid;
+
+  border-color: var(--th-colors-gray-200);
+
+  @include mode.dark-mode {
+    border-color: var(--th-colors-gray-300);
+  }
+}

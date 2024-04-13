@@ -1,7 +1,8 @@
 // global modules
 import cn from 'classnames';
-import { Box, DarkMode, Divider, Heading, HStack } from '@chakra-ui/react';
+import { Box, DarkMode, Divider, HStack } from '@chakra-ui/react';
 import type { FC, PropsWithChildren, ReactNode } from 'react';
+import { Heading } from '@bit-trove/ui/heading';
 
 // local modules
 import {

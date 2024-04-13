@@ -2,7 +2,7 @@
 import { QueryClientProvider } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { LinksFunction, LoaderFunction } from '@remix-run/node';
+import type { LinkDescriptor, LinksFunction, LoaderFunction } from '@remix-run/node';
 
 import {
   json,
@@ -16,7 +16,13 @@ import {
 
 // local modules
 import colorSchemasCss from './color-schemas.scss?url';
+import normalizeCss from 'normalize.css?url';
 import rootCss from './root.scss?url';
+
+import robotoLatinCss from '@fontsource/roboto/latin.css?url';
+import robotoCyrillicCss from '@fontsource/roboto/cyrillic.css?url';
+import montserratCss from '@fontsource-variable/montserrat/index.css?url';
+import robotoMonoScss from '@fontsource-variable/roboto-mono/index.css?url';
 
 import { getColorModeSession } from './utils/color-mode/color-mode.server';
 import { getQueryClient } from './query-client';
@@ -29,20 +35,18 @@ import {
   useColorMode,
 } from './utils/color-mode';
 
-export const links: LinksFunction = () => [
-  {
-    href: 'https://yarnpkg.com/en/package/normalize.css',
-    rel: 'stylesheet',
-  },
-  {
-    href: rootCss,
-    rel: 'stylesheet',
-  },
-  {
-    href: colorSchemasCss,
-    rel: 'stylesheet',
-  },
-];
+const cssAssets: LinkDescriptor[] = [
+  rootCss,
+  colorSchemasCss,
+  robotoLatinCss,
+  robotoCyrillicCss,
+  robotoMonoScss,
+  montserratCss,
+]
+  .map((href) => href.split('?')[0])
+  .map((href) => ({ href, rel: 'stylesheet' }));
+
+export const links: LinksFunction = () => [...cssAssets];
 
 type LoaderData = {
   locale: string;

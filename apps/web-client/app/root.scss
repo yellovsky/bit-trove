@@ -1,5 +1,13 @@
 @use '@bit-trove/theme/colors-schema.scss' as cs;
 
+@import '@bit-trove/ui/src/with-spacing/with-spacing.scss';
+
+:root {
+  --th-heading-font-family: 'Montserrat Variable', sans-serif;
+  --th-body-font-family: 'Roboto', sans-serif;
+  --th-monospace-font-family: 'Roboto Mono Variable', monospace;
+}
+
 .color-schema-primary {
   @include cs.schema-colors('primary');
 }
@@ -30,4 +38,31 @@
 
 .color-schema-white-alpha {
   @include cs.schema-colors('white-alpha');
+}
+
+body {
+  font-family: var(--th-body-font-family);
+}
+
+:where(h1, h2, h3, h4, h5, h6) {
+  margin: 0;
+  font-family: var(--th-heading-font-family);
+}
+
+:where(sub, sup) {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+:where(kbd, code) {
+  font-family: var(--th-monospace-font-family);
+}
+
+:where(*, *::before, *::after) {
+  border-width: 0;
+  border-style: solid;
+  box-sizing: border-box;
+  word-wrap: break-word;
 }
