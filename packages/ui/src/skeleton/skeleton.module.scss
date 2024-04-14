@@ -1,6 +1,6 @@
 @use 'sass:selector';
 
-@use '@bit-trove/theme/mode.scss' as m;
+@use '@repo/ui/src/scss/mode.scss' as mode;
 
 @mixin skeleton-animation($duration) {
   $name: skeleton;
@@ -19,7 +19,7 @@
   --skeleton-start-color: var(--th-colors-gray-100);
   --skeleton-end-color: var(--th-colors-gray-400);
 
-  @include m.dark-mode {
+  @include mode.dark {
     --skeleton-start-color: var(--th-colors-gray-800);
     --skeleton-end-color: var(--th-colors-gray-600);
   }
