@@ -1,5 +1,5 @@
 // global modules
-import cn from 'classnames';
+import clsx from 'clsx';
 import type { FC, PropsWithChildren, ReactNode } from 'react';
 
 // local modules
@@ -18,7 +18,7 @@ interface PageContentProps extends PropsWithChildren {
 
 export const PageContent: FC<PageContentProps> = ({ className, header, children }) => (
   <>
-    <div className={cn(className, pageContentCn)}>
+    <div className={clsx(className, pageContentCn)}>
       {header ? <div>{header}</div> : null}
 
       <div className={columnsCn}>

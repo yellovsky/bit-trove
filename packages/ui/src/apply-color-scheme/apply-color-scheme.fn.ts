@@ -1,6 +1,6 @@
 // global modules
 import type { ApplyClassname } from '@bit-trove/ui/apply-classname';
-import cn from 'classnames';
+import clsx from 'clsx';
 
 export type ColorSchemeType =
   | 'primary'
@@ -22,6 +22,6 @@ export const applyColorScheme: ApplyClassname<ColorSchemeProps> = (defaults) => 
 
   return {
     ...rest,
-    className: cn(rest.className, colorScheme ? `color-scheme-${colorScheme}` : undefined),
+    className: clsx(rest.className, colorScheme ? `color-scheme-${colorScheme}` : undefined),
   };
 };

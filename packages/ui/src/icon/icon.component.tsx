@@ -1,5 +1,5 @@
 // global modules
-import cn from 'classnames';
+import clsx from 'clsx';
 import type { FC } from 'react';
 
 // local modules
@@ -25,5 +25,5 @@ interface IconProps {
 }
 
 export const Icon: FC<IconProps> = ({ type }) => (
-  <div className={cn(iconCn, ICON_TYPE_HASH[type])} />
+  <div className={clsx(iconCn, ICON_TYPE_HASH[type])} />
 );

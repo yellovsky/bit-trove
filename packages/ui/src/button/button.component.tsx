@@ -1,6 +1,6 @@
 // global modules
 import * as R from 'ramda';
-import cn from 'classnames';
+import clsx from 'clsx';
 import { applyBorderRadius, BorderRadiusProps } from '@bit-trove/ui/apply-border-radius';
 import { applyColorScheme, type ColorSchemeProps } from '@bit-trove/ui/apply-color-scheme';
 import type { FC, HTMLAttributes } from 'react';
@@ -26,6 +26,6 @@ export const Button: FC<ButtonProps> = (props) => {
   const { variant, colorScheme, className, size = 'md', ...rest } = applyButtonCn(props);
 
   return (
-    <button className={cn(className, styles.button, styles[variant], styles[size])} {...rest} />
+    <button className={clsx(className, styles.button, styles[variant], styles[size])} {...rest} />
   );
 };

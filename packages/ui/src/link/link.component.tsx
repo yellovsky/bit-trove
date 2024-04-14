@@ -1,5 +1,5 @@
 // global modules
-import cn from 'classnames';
+import clsx from 'clsx';
 import { Link as RemixLink } from '@remix-run/react';
 import { useTranslation } from 'react-i18next';
 import { applyColorScheme, type ColorSchemeProps } from '@bit-trove/ui/apply-color-scheme';
@@ -35,7 +35,7 @@ export const Link: FC<LinkProps> = (props) => {
         : to;
   }, [to, i18n.language]);
 
-  const cName = cn(
+  const cName = clsx(
     rest.className,
     variant !== 'plain' && linkCn,
     variant === 'standalone' && standaloneCn,

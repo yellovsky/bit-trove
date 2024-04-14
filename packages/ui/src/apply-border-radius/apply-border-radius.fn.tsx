@@ -1,6 +1,6 @@
 // global modules
 import type { ApplyClassname } from '@bit-trove/ui/apply-classname';
-import cn from 'classnames';
+import clsx from 'clsx';
 
 // local modules
 import {
@@ -42,7 +42,7 @@ export const applyBorderRadius: ApplyClassname<BorderRadiusProps> = (defaults) =
 
   return {
     ...rest,
-    className: cn(
+    className: clsx(
       rest.className,
       radius !== undefined && borderRadiusCn,
       radius !== undefined && borderRadiusLookup[radius]

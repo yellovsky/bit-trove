@@ -1,5 +1,5 @@
 // global modules
-import cn from 'classnames';
+import clsx from 'clsx';
 import { applySpacing, type SpacingProps } from '@bit-trove/ui/apply-spacing';
 import type { FC, HTMLAttributes } from 'react';
 
@@ -31,7 +31,7 @@ export const Stack: FC<StackProps> = (props) => {
   return (
     <div
       {...rest}
-      className={cn(
+      className={clsx(
         className,
         stackCn,
         orientation === 'horizontal' && horizontalCn,

@@ -1,6 +1,6 @@
 // global modules
 import * as R from 'ramda';
-import cn from 'classnames';
+import clsx from 'clsx';
 import { applyBorderRadius, type BorderRadiusProps } from '@bit-trove/ui/apply-border-radius';
 import { applySpacing, type SpacingProps } from '@bit-trove/ui/apply-spacing';
 import type { FC, PropsWithChildren } from 'react';
@@ -17,5 +17,7 @@ const applyCn = R.compose(applyBorderRadius<AspectRatioProps>(), applySpacing<As
 
 export const AspectRatio: FC<AspectRatioProps> = (props) => {
   const { ratio, className, ...rest } = applyCn(props);
-  return <div {...rest} className={cn(className, aspectRatioCn)} style={{ aspectRatio: ratio }} />;
+  return (
+    <div {...rest} className={clsx(className, aspectRatioCn)} style={{ aspectRatio: ratio }} />
+  );
 };

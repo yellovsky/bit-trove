@@ -1,6 +1,5 @@
 // global modules
-import * as R from 'ramda';
-import cn from 'classnames';
+import clsx from 'clsx';
 import { createElement, type FC, type HTMLAttributes } from 'react';
 
 // local modules
@@ -47,7 +46,7 @@ interface TextProps extends HTMLAttributes<HTMLElement> {
 export const Text: FC<TextProps> = ({ as = 'span', fontSize = 'md', ...rest }) =>
   createElement(as, {
     ...rest,
-    className: cn(
+    className: clsx(
       rest.className,
       styles.text,
       as === 'sup' ? styles.asSup : as === 'sub' ? styles.asSub : textSizeLookup[fontSize]

@@ -1,5 +1,5 @@
 // global modules
-import cn from 'classnames';
+import clsx from 'clsx';
 import type { FC } from 'react';
 import { Link } from '@bit-trove/ui/link';
 import { MenuItem, type MenuItemProps } from './menu-item';
@@ -23,7 +23,7 @@ export const MainMenu: FC<MainMenuProps> = (props) => {
   return (
     <div className={wrapperCn}>
       <nav className={holderCn}>
-        <div className={cn(itemsColumnCn, leftCn)}>
+        <div className={clsx(itemsColumnCn, leftCn)}>
           {props.navigation.map((item, index) => (
             <MenuItem key={index} {...item} />
           ))}
@@ -33,7 +33,7 @@ export const MainMenu: FC<MainMenuProps> = (props) => {
             <img alt="logo" height={75} src="/assets/logo.svg" width={97} />
           </Link>
         </div>
-        <div className={cn(itemsColumnCn, rightCn)}>
+        <div className={clsx(itemsColumnCn, rightCn)}>
           {props.buttons.map((item, index) => (
             <MenuItem key={index} {...item} />
           ))}

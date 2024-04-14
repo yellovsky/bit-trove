@@ -1,5 +1,5 @@
 // global modules
-import cn from 'classnames';
+import clsx from 'clsx';
 import { applySpacing, type SpacingProps } from '@bit-trove/ui/apply-spacing';
 import { createElement, type FC, type HTMLAttributes } from 'react';
 
@@ -40,6 +40,6 @@ export const Heading: FC<HeadingProps> = (props) => {
 
   return createElement(as, {
     ...rest,
-    className: cn(className, headingCn, headingSizeCnLookup[size]),
+    className: clsx(className, headingCn, headingSizeCnLookup[size]),
   });
 };

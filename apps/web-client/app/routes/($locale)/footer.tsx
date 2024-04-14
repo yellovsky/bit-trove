@@ -1,5 +1,5 @@
 // global modules
-import cn from 'classnames';
+import clsx from 'clsx';
 import { Divider } from '@bit-trove/ui/divider';
 import { ThemeProvider } from '@bit-trove/ui/theme-provider';
 import { type FC, Suspense } from 'react';
@@ -10,7 +10,7 @@ import { footer as footerCn, pagePadding as pagePaddingCn } from './layout.modul
 
 export const Footer: FC = () => (
   <ThemeProvider colorMode="dark">
-    <footer className={cn(pagePaddingCn, footerCn)} color="gray.400">
+    <footer className={clsx(pagePaddingCn, footerCn)} color="gray.400">
       <div>
         <Suspense fallback={<FooterCategoriesPending />}>
           <FooterCategories />

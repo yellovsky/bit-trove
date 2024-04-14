@@ -9,3 +9,5 @@ export const sizeLg: string;
 export const sizeMd: string;
 export const sizeSm: string;
 export const sizeXs: string;
+export const asSup: string;
+export const asSub: string;
