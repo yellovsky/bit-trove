@@ -1,1 +1,1 @@
-export { AsideCategories } from './aside-categories.component';
+export { AsideCategories, AsideCategoriesPending } from './aside-categories.component';
