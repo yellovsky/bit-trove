@@ -1,8 +1,8 @@
 // global modules
 import type { FC } from 'react';
-import { Icon } from '@bit-trove/ui/icon';
+import { Icon } from '@repo/ui/icon';
 import type { To } from 'history';
-import { Tag, TagLabel, TagLeftIcon, TagPending } from '@bit-trove/ui/tag';
+import { Tag, TagLabel, TagLeftIcon, TagPending } from '@repo/ui/tag';
 
 interface TagBadgeProps {
   name: string;

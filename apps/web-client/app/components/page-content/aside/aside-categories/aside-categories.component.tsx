@@ -1,13 +1,13 @@
 // global modules
 import { apiHost } from '@bit-trove/utils/api-host';
 import { quickCategoryCollectionQueryFn } from '@bit-trove/api-models/category';
-import { SectionTitle } from '@bit-trove/ui/section-title';
-import { Skeleton } from '@bit-trove/ui/skeleton';
-import { Stack } from '@bit-trove/ui/stack';
+import { SectionTitle } from '@repo/ui/section-title';
+import { Skeleton } from '@repo/ui/skeleton';
+import { Stack } from '@repo/ui/stack';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import type { FC, PropsWithChildren, ReactNode } from 'react';
-import { PlateLink, PlateLinkPending } from '@bit-trove/ui/plate-link';
+import { PlateLink, PlateLinkPending } from '@repo/ui/plate-link';
 
 const AsideCategoriesLayout: FC<PropsWithChildren<{ title: ReactNode }>> = ({
   title,

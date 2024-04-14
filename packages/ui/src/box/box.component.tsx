@@ -1,5 +1,5 @@
 // global modules
-import { applySpacing, type SpacingProps } from '@bit-trove/ui/apply-spacing';
+import { applySpacing, type SpacingProps } from '@repo/ui/apply-spacing';
 import { createElement, type FC, type HTMLAttributes } from 'react';
 
 interface BoxProps extends HTMLAttributes<HTMLDivElement>, SpacingProps {

@@ -1,6 +1,6 @@
 @use 'sass:map';
 
-@use '@bit-trove/ui/src/scss/interactive.scss' as i;
+@use '@repo/ui/src/scss/interactive.scss' as i;
 
 @mixin button-outline-light-style {
   color: var(--th-colors-scheme-600);

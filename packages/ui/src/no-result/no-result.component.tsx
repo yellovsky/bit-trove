@@ -1,7 +1,6 @@
 // global modules
 import type { FC } from 'react';
-import { Title } from '@bit-trove/ui/title';
-import { useTranslations } from 'next-intl';
+import { Title } from '@repo/ui/title';
 
 // local modules
 import { noResult as noResultCn } from './no-result.module.scss';

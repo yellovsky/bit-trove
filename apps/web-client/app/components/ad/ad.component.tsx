@@ -1,7 +1,7 @@
 // global modules
-import { AspectRatio } from '@bit-trove/ui/aspect-ratio';
+import { AspectRatio } from '@repo/ui/aspect-ratio';
 import type { FC } from 'react';
-import { Skeleton } from '@bit-trove/ui/skeleton';
+import { Skeleton } from '@repo/ui/skeleton';
 
 interface AdProps {
   layout: 'horizontal' | 'square';

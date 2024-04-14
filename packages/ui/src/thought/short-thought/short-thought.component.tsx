@@ -1,6 +1,6 @@
 // global modules
-import { Icon } from '@bit-trove/ui/icon';
-import { Title } from '@bit-trove/ui/title';
+import { Icon } from '@repo/ui/icon';
+import { Title } from '@repo/ui/title';
 import { useFormatter } from 'next-intl';
 import type { FC, ReactNode } from 'react';
 

@@ -1,6 +1,6 @@
 // global modules
 import type { FC } from 'react';
-import { Link } from '@bit-trove/ui/link';
+import { Link } from '@repo/ui/link';
 import type { QueryKeyOf } from '@bit-trove/api-models/common';
 import { useQuery } from '@tanstack/react-query';
 import { fetchThoughtSegmentCollection, thoughtLink } from '@bit-trove/api-models/thought';

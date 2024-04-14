@@ -1,8 +1,8 @@
 // global modules
 import * as R from 'ramda';
 import clsx from 'clsx';
-import { applyBorderRadius, BorderRadiusProps } from '@bit-trove/ui/apply-border-radius';
-import { applyColorScheme, type ColorSchemeProps } from '@bit-trove/ui/apply-color-scheme';
+import { applyBorderRadius, BorderRadiusProps } from '@repo/ui/apply-border-radius';
+import { applyColorScheme, type ColorSchemeProps } from '@repo/ui/apply-color-scheme';
 import type { FC, HTMLAttributes } from 'react';
 
 // local modules

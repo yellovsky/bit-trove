@@ -1,11 +1,11 @@
 // global modules
 import * as R from 'ramda';
 import clsx from 'clsx';
-import { Link } from '@bit-trove/ui/link';
-import { Skeleton } from '@bit-trove/ui/skeleton';
+import { Link } from '@repo/ui/link';
+import { Skeleton } from '@repo/ui/skeleton';
 import type { To } from 'history';
-import { applyBorderRadius, type BorderRadiusProps } from '@bit-trove/ui/apply-border-radius';
-import { applyColorScheme, type ColorSchemeProps } from '@bit-trove/ui/apply-color-scheme';
+import { applyBorderRadius, type BorderRadiusProps } from '@repo/ui/apply-border-radius';
+import { applyColorScheme, type ColorSchemeProps } from '@repo/ui/apply-color-scheme';
 import type { FC, PropsWithChildren } from 'react';
 
 // local modules

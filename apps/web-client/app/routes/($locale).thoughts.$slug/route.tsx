@@ -2,10 +2,10 @@
 import { categoryLink } from '@bit-trove/api-models/category';
 import type { FC } from 'react';
 import { filterByTagLink } from '@bit-trove/api-models/tag';
-import { Link } from '@bit-trove/ui/link';
+import { Link } from '@repo/ui/link';
 import { QueryKeyOf } from '@bit-trove/api-models/common';
-// import { SmallCategoryBadge } from '@bit-trove/ui/small-category-badge';
-import { Stack } from '@bit-trove/ui/stack';
+// import { SmallCategoryBadge } from '@repo/ui/small-category-badge';
+import { Stack } from '@repo/ui/stack';
 import { dehydrate, DehydratedState, hydrate } from '@tanstack/query-core';
 import { getThoughtMetadata, thoughtQueryFn } from '@bit-trove/api-models/thought';
 import { HydrationBoundary, QueryClient, useQuery } from '@tanstack/react-query';

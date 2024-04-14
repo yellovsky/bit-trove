@@ -1,12 +1,12 @@
 // global modules
 import clsx from 'clsx';
 import type { FC } from 'react';
-import { Skeleton } from '@bit-trove/ui/skeleton';
-// import { SmallBadgePending } from '@bit-trove/ui/small-badge';
-import { Box } from '@bit-trove/ui/box';
-import { Divider } from '@bit-trove/ui/divider';
-import { Heading } from '@bit-trove/ui/heading';
-import { Stack } from '@bit-trove/ui/stack';
+import { Skeleton } from '@repo/ui/skeleton';
+// import { SmallBadgePending } from '@repo/ui/small-badge';
+import { Box } from '@repo/ui/box';
+import { Divider } from '@repo/ui/divider';
+import { Heading } from '@repo/ui/heading';
+import { Stack } from '@repo/ui/stack';
 
 // local modules
 import {

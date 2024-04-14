@@ -1,10 +1,10 @@
 // global modules
-import { Box } from '@bit-trove/ui/box';
+import { Box } from '@repo/ui/box';
 import clsx from 'clsx';
-import { Divider } from '@bit-trove/ui/divider';
-import { Heading } from '@bit-trove/ui/heading';
-import { Stack } from '@bit-trove/ui/stack';
-import { ThemeProvider } from '@bit-trove/ui/theme-provider';
+import { Divider } from '@repo/ui/divider';
+import { Heading } from '@repo/ui/heading';
+import { Stack } from '@repo/ui/stack';
+import { ThemeProvider } from '@repo/ui/theme-provider';
 import type { FC, PropsWithChildren, ReactNode } from 'react';
 
 // local modules

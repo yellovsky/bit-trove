@@ -1,7 +1,7 @@
 // global modules
 import clsx from 'clsx';
-import { Divider } from '@bit-trove/ui/divider';
-import { ThemeProvider } from '@bit-trove/ui/theme-provider';
+import { Divider } from '@repo/ui/divider';
+import { ThemeProvider } from '@repo/ui/theme-provider';
 import { type FC, Suspense } from 'react';
 
 // local modules

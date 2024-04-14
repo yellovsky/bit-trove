@@ -1,7 +1,7 @@
 // global modules
 import clsx from 'clsx';
 import type { FC } from 'react';
-import { Link } from '@bit-trove/ui/link';
+import { Link } from '@repo/ui/link';
 import { MenuItem, type MenuItemProps } from './menu-item';
 
 // local modules

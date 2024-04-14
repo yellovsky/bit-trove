@@ -1,5 +1,5 @@
 @use '../scss/interactive.scss' as i;
-@use '@bit-trove/ui/src/apply-border-radius/apply-border-radius.module.scss' as br;
+@use '@repo/ui/src/apply-border-radius/apply-border-radius.module.scss' as br;
 
 @mixin scaled-img {
   .img {

@@ -1,10 +1,10 @@
 // global modules
-import { AspectRatio } from '@bit-trove/ui/aspect-ratio';
-import { Image } from '@bit-trove/ui/image';
-import { Link } from '@bit-trove/ui/link';
-import { Skeleton } from '@bit-trove/ui/skeleton';
-import { Text } from '@bit-trove/ui/text';
-import { ThemeProvider } from '@bit-trove/ui/theme-provider';
+import { AspectRatio } from '@repo/ui/aspect-ratio';
+import { Image } from '@repo/ui/image';
+import { Link } from '@repo/ui/link';
+import { Skeleton } from '@repo/ui/skeleton';
+import { Text } from '@repo/ui/text';
+import { ThemeProvider } from '@repo/ui/theme-provider';
 import type { ComponentProps, FC } from 'react';
 
 // local modules

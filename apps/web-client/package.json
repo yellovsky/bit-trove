@@ -16,7 +16,6 @@
   "dependencies": {
     "@bit-trove/api-models": "*",
     "@bit-trove/theme": "*",
-    "@bit-trove/ui": "*",
     "@bit-trove/utils": "*",
     "@emotion/react": "^11",
     "@emotion/server": "^11",
@@ -27,6 +26,7 @@
     "@remix-run/node": "^2.8.1",
     "@remix-run/react": "^2.8.1",
     "@remix-run/serve": "^2.8.1",
+    "@repo/ui": "*",
     "@tanstack/react-query": "^5.28.6",
     "@tanstack/react-query-devtools": "^5.28.14",
     "clsx": "^2.1.0",
