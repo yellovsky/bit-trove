@@ -44,6 +44,10 @@ export const applyBorderRadius: ApplyClassname<BorderRadiusProps> = ({
 
   return {
     ...rest,
-    className: radius === undefined ? undefined : cn(borderRadiusCn, borderRadiusLookup[radius]),
+    className: cn(
+      rest.className,
+      radius !== undefined && borderRadiusCn,
+      radius !== undefined && borderRadiusLookup[radius]
+    ),
   };
 };

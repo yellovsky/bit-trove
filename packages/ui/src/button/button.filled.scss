@@ -1,21 +1,21 @@
 @use 'sass:map';
 
 @use '@bit-trove/ui/src/scss/interactive.scss' as i;
-@use '@bit-trove/theme/colors-schema.scss' as cs;
+@use '@bit-trove/ui/src/apply-color-scheme/apply-color-scheme.scss' as cs;
 
 @mixin button-filled-light-gray-style {
   color: var(--th-colors-gray-800);
-  background-color: var(--th-colors-schema-100);
+  background-color: var(--th-colors-scheme-100);
 
   @include i.interactive using ($state) {
     @if ($state == 'hover') {
-      background-color: var(--th-colors-schema-200);
+      background-color: var(--th-colors-scheme-200);
     } @else if ($state == 'focus') {
       @include i.focus-outline-style;
 
-      background-color: var(--th-colors-schema-20);
+      background-color: var(--th-colors-scheme-20);
     } @else if ($state == 'active') {
-      background-color: var(--th-colors-schema-300);
+      background-color: var(--th-colors-scheme-300);
     } @else if ($state == 'disabled') {
       background-color: var(--th-colors-gray-400);
     }
@@ -24,23 +24,23 @@
 
 @mixin button-filled-light-style {
   color: var(--th-colors-gray-100);
-  background-color: var(--th-colors-schema-500);
+  background-color: var(--th-colors-scheme-500);
 
   @include i.interactive using ($state) {
     @if ($state == 'hover') {
-      background-color: var(--th-colors-schema-600);
+      background-color: var(--th-colors-scheme-600);
     } @else if ($state == 'focus') {
       @include i.focus-outline-style;
 
-      background-color: var(--th-colors-schema-600);
+      background-color: var(--th-colors-scheme-600);
     } @else if ($state == 'active') {
-      background-color: var(--th-colors-schema-700);
+      background-color: var(--th-colors-scheme-700);
     } @else if ($state == 'disabled') {
       background-color: var(--th-colors-gray-400);
     }
   }
 
-  @include cs.when-color-schema('gray') {
+  @include cs.when-color-scheme('gray') {
     @include button-filled-light-gray-style;
   }
 }
@@ -71,28 +71,28 @@
 
 @mixin button-filled-dark-style {
   color: var(--th-colors-gray-700);
-  border-color: var(--th-colors-schema-200);
-  background-color: var(--th-colors-schema-200);
+  border-color: var(--th-colors-scheme-200);
+  background-color: var(--th-colors-scheme-200);
 
   @include i.interactive using ($state) {
     @if ($state == 'hover') {
-      border-color: var(--th-colors-schema-300);
-      background-color: var(--th-colors-schema-300);
+      border-color: var(--th-colors-scheme-300);
+      background-color: var(--th-colors-scheme-300);
     } @else if ($state == 'focus') {
       @include i.focus-outline-style;
 
-      border-color: var(--th-colors-schema-300);
-      background-color: var(--th-colors-schema-300);
+      border-color: var(--th-colors-scheme-300);
+      background-color: var(--th-colors-scheme-300);
     } @else if ($state == 'active') {
-      border-color: var(--th-colors-schema-400);
-      background-color: var(--th-colors-schema-400);
+      border-color: var(--th-colors-scheme-400);
+      background-color: var(--th-colors-scheme-400);
     } @else if ($state == 'disabled') {
       border-color: var(--th-colors-gray-400);
       background-color: var(--th-colors-gray-400);
     }
   }
 
-  @include cs.when-color-schema('gray') {
+  @include cs.when-color-scheme('gray') {
     @include button-filled-dark-gray-style;
   }
 }

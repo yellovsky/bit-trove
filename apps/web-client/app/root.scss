@@ -1,43 +1,11 @@
-@use '@bit-trove/theme/colors-schema.scss' as cs;
-
+@import './color-schemes.scss';
 @import '@bit-trove/ui/src/apply-spacing/apply-spacing.scss';
+@import '@bit-trove/ui/src/apply-color-scheme/apply-color-scheme.scss';
 
 :root {
   --th-heading-font-family: 'Montserrat Variable', sans-serif;
   --th-body-font-family: 'Roboto', sans-serif;
   --th-monospace-font-family: 'Roboto Mono Variable', monospace;
-}
-
-.color-schema-primary {
-  @include cs.schema-colors('primary');
-}
-
-.color-schema-yellow {
-  @include cs.schema-colors('yellow');
-}
-
-.color-schema-gray {
-  @include cs.schema-colors('gray');
-}
-
-.color-schema-red {
-  @include cs.schema-colors('red');
-}
-
-.color-schema-green {
-  @include cs.schema-colors('green');
-}
-
-.color-schema-orange {
-  @include cs.schema-colors('orange');
-}
-
-.color-schema-black-alpha {
-  @include cs.schema-colors('black-alpha');
-}
-
-.color-schema-white-alpha {
-  @include cs.schema-colors('white-alpha');
 }
 
 body {
