@@ -2,12 +2,18 @@
 
 [data-color-mode='dark'] {
   --th-text-color: white;
-  --th-page-bg-color: var(--th-colors-gray-900);
+  --th-page-bg-color: var(--th-colors-gray-800);
+  --th-border-color: var(--th-colors-white-alpha-300);
+
+  --th-base-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 
 [data-color-mode='light'] {
   --th-text-color: var(--th-colors-gray-900);
   --th-page-bg-color: white;
+  --th-border-color: var(--th-colors-gray-200);
+
+  --th-base-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 
 [data-color-mode] {

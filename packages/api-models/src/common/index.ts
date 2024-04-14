@@ -41,9 +41,6 @@ export interface PaginationParams {
 
 let client: AxiosInstance | undefined;
 export const getApiClient = (): AxiosInstance => {
-  // console.log('window', window);
-  console.log('getApiClient', getApiClient);
-  console.log("apiHost('/api')", apiHost('/api'));
   if (!client) client = axios.create({ baseURL: apiHost('/api') });
   return client;
 };

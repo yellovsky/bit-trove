@@ -30,10 +30,7 @@ const headingSizeCnLookup: Record<HeadingSize, string> = {
   xs: xsCn,
 };
 
-interface HeadingProps
-  extends SpacingProps,
-    // MayHaveColorSchema,
-    HTMLAttributes<HTMLHeadingElement> {
+interface HeadingProps extends SpacingProps, HTMLAttributes<HTMLHeadingElement> {
   size: HeadingSize;
   as: HeadingAs;
 }

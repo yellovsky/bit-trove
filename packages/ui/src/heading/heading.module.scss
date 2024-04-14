@@ -5,7 +5,7 @@
   font-weight: bold;
   font-family: var(--th-heading-font-family);
 
-  .fourXl {
+  &.fourXl {
     line-height: 1;
     font-size: font-sizes.$six-xl;
 
@@ -14,7 +14,7 @@
     }
   }
 
-  .threeXl {
+  &.threeXl {
     line-height: 1;
     font-size: font-sizes.$five-xl;
 
@@ -23,7 +23,7 @@
     }
   }
 
-  .twoXl {
+  &.twoXl {
     line-height: 1.2;
     font-size: font-sizes.$four-xl;
 
@@ -33,7 +33,7 @@
     }
   }
 
-  .xl {
+  &.xl {
     line-height: 1.33;
     font-size: font-sizes.$three-xl;
 
@@ -43,7 +43,7 @@
     }
   }
 
-  .lg {
+  &.lg {
     line-height: 1.33;
     font-size: font-sizes.$two-xl;
 
@@ -53,17 +53,17 @@
     }
   }
 
-  .md {
+  &.md {
     line-height: 1.2;
     font-size: font-sizes.$xl;
   }
 
-  .sm {
+  &.sm {
     line-height: 1.2;
     font-size: font-sizes.$md;
   }
 
-  .xs {
+  &.xs {
     line-height: 1.2;
     font-size: font-sizes.$sm;
   }

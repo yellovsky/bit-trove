@@ -1,4 +1,5 @@
-@use '../../scss/interactive.scss' as i;
+@use '../scss/interactive.scss' as i;
+@use '@bit-trove/ui/src/apply-border-radius/apply-border-radius.module.scss' as br;
 
 @mixin scaled-img {
   .img {
@@ -7,10 +8,21 @@
 }
 
 .cardHolder {
+  @include br.border-radius-style('md');
+
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  flex-direction: column;
+  box-shadow: var(--th-base-shadow);
+  max-width: var(--chakra-sizes-sm);
+  background-color: var(--th-colors-gray-600);
+
   .cardFooter {
+    display: flex;
+    padding: 1.25rem;
     justify-content: center;
-    color: var(--chakra-colors-white);
-    background-color: var(--chakra-colors-gray-600);
+    color: var(--th-colors-gray-50);
   }
 
   .img {

@@ -52,5 +52,7 @@
 }
 
 .skeleton {
-  @include skeleton-style;
+  &:not(.isLoaded) {
+    @include skeleton-style;
+  }
 }

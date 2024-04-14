@@ -1,3 +1,4 @@
+@use 'sass:map';
 @use 'sass:selector';
 
 $radiuses: (
@@ -11,6 +12,14 @@ $radiuses: (
   'threexl': 1.5rem,
   'full': 9999px,
 );
+
+@mixin border-radius-style($type) {
+  @if map.has-key($radiuses, $type) {
+    border-radius: map.get($radiuses, $type);
+  } @else {
+    @error 'Border radius type must be one of #{map.keys($radiuses)}';
+  }
+}
 
 .borderRadius {
   @each $type, $value in $radiuses {

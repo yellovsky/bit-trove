@@ -8,3 +8,21 @@
 .cardHolder {
   width: 12rem;
 }
+
+.titleHolder {
+  text-align: center;
+
+  &.pending {
+    margin: 0 auto;
+    max-width: 20rem;
+  }
+}
+
+.subtitleHolder {
+  text-align: center;
+
+  &.pending {
+    margin: 0 auto;
+    max-width: 30rem;
+  }
+}
