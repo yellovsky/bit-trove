@@ -1,4 +1,4 @@
-@use '../../../theme/mode.scss' as mode;
+@use '@repo/ui/src/scss/mode.scss' as mode;
 
 .divider {
   opacity: 0.6;
@@ -8,7 +8,7 @@
 
   border-color: var(--th-colors-gray-200);
 
-  @include mode.dark-mode {
+  @include mode.dark {
     border-color: var(--th-colors-gray-300);
   }
 }

@@ -9,7 +9,6 @@ installGlobals();
 export default defineConfig({
   resolve: {
     alias: {
-      '@bit-trove/theme': path.join(__dirname, '../../packages/theme'),
       '@repo/ui/src': path.join(__dirname, '../../packages/ui/src'),
     },
   },

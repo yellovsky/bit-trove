@@ -1,6 +1,6 @@
 @use 'sass:map';
 
-@use '@bit-trove/theme/mode.scss' as m;
+@use '@repo/ui/src/scss/mode.scss' as mode;
 @use '@repo/ui/src/apply-border-radius/apply-border-radius.module.scss' as br;
 
 @use './button.filled.scss' as filled;
@@ -24,7 +24,7 @@
     @include outline.button-outline-light-style;
   }
 
-  @include m.dark-mode {
+  @include mode.dark {
     &.filled {
       @include filled.button-filled-dark-style;
     }

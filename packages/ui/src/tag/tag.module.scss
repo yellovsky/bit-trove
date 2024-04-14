@@ -1,6 +1,6 @@
-@use '@bit-trove/theme/mode.scss' as m;
-@use '../scss/font-sizes.scss' as font-size;
-@use '../scss/interactive.scss' as i;
+@use '@repo/ui/src/scss/mode.scss' as mode;
+@use '@repo/ui/src/scss/font-sizes.scss' as font-size;
+@use '@repo/ui/src/scss/interactive.scss' as i;
 
 @mixin filled-tag-colors {
   --tag-bg: var(--th-colors-scheme-100);
@@ -11,7 +11,7 @@
   --tag-color: var(--th-colors-scheme-500);
   --tag-shadow: inset 0 0 0px 1px var(--th-colors-scheme-400);
 
-  @include m.dark-mode {
+  @include mode.dark {
     --tag-shadow: inset 0 0 0px 1px var(--th-colors-scheme-600);
   }
 

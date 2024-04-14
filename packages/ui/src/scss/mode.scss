@@ -1,4 +1,4 @@
-@mixin light-mode {
+@mixin light {
   [data-color-mode='light'] :host:not([data-color-mode]) &,
   [data-color-mode='light'] :root:not([data-color-mode]) &,
   [data-color-mode='light'] [data-color-mode]:not([data-color-mode]) &,
@@ -9,7 +9,7 @@
   }
 }
 
-@mixin dark-mode {
+@mixin dark {
   [data-color-mode='dark'] :host:not([data-color-mode]) &,
   [data-color-mode='dark'] :root:not([data-color-mode]) &,
   [data-color-mode='dark'] [data-color-mode]:not([data-color-mode]) &,
