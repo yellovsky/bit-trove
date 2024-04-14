@@ -1,5 +1,5 @@
 // global modules
-import cn from 'classnames';
+import clsx from 'clsx';
 import type { FC, PropsWithChildren, ReactNode } from 'react';
 
 // local modules
@@ -19,11 +19,13 @@ interface TwoColumnsLayoutProps extends PropsWithChildren {
 }
 
 export const TwoColumnsLayout: FC<TwoColumnsLayoutProps> = (props) => {
-  const contentColumn = <div className={cn(props.contentCn, contentCn)}>{props.children}</div>;
-  const extraColumn = <div className={cn(extraColumnCn, props.extraCn)}>{props.extraContent}</div>;
+  const contentColumn = <div className={clsx(props.contentCn, contentCn)}>{props.children}</div>;
+  const extraColumn = (
+    <div className={clsx(extraColumnCn, props.extraCn)}>{props.extraContent}</div>
+  );
 
   return (
-    <div className={cn(props.className, holderCn, props.contentRight && contentRightCn)}>
+    <div className={clsx(props.className, holderCn, props.contentRight && contentRightCn)}>
       {props.contentRight ? (
         <>
           {extraColumn}

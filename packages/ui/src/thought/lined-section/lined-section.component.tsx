@@ -1,5 +1,5 @@
 // global modules
-import cn from 'classnames';
+import clsx from 'clsx';
 import { forwardRef, type PropsWithChildren } from 'react';
 
 // local modules
@@ -20,7 +20,7 @@ interface LinedSectionProps extends PropsWithChildren {
 export const LinedSection = forwardRef<HTMLDivElement, LinedSectionProps>(
   ({ marker, children }, ref) => (
     <div className={linedSectionCn} ref={ref}>
-      <div className={cn(linedColumnCn, marker && withMarkerCn)}>
+      <div className={clsx(linedColumnCn, marker && withMarkerCn)}>
         <div className={topLineCn} />
         {marker ? <div className={markerHolderCn} /> : null}
         <div className={bottomLineCn} />

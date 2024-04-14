@@ -1,5 +1,5 @@
 // global modules
-import cn from 'classnames';
+import clsx from 'clsx';
 import type { FC } from 'react';
 import { Skeleton } from '@bit-trove/ui/skeleton';
 // import { SmallBadgePending } from '@bit-trove/ui/small-badge';
@@ -23,7 +23,11 @@ interface ContentPageHeaderProps {
 export const ContentPageHeaderPending: FC<ContentPageHeaderProps> = (props) => (
   <>
     <Box
-      className={cn(props.className, contentPageHeaderCn, props.withBackground && withBackgroundCn)}
+      className={clsx(
+        props.className,
+        contentPageHeaderCn,
+        props.withBackground && withBackgroundCn
+      )}
       mb={props.withBackground ? '2rem' : '3rem'}
       mt="3rem"
     >

@@ -3,7 +3,7 @@
 // global modules
 import { apiHost } from '@bit-trove/utils/api-host';
 import type { AuthorSegment } from '@bit-trove/api-models/author';
-import cn from 'classnames';
+import clsx from 'clsx';
 import Image from 'next/image';
 import { Link } from '@bit-trove/localization/link';
 // import { PublishDateBadge } from '@bit-trove/ui/small-publish-date-badge';
@@ -53,7 +53,7 @@ export const HorizontalCard: FC<HorizontalCardProps> = (props) => {
     []
   );
   return (
-    <Link className={cn(horizontalCardCn, props.withoutImg && withoutImgCn)} href={props.href}>
+    <Link className={clsx(horizontalCardCn, props.withoutImg && withoutImgCn)} href={props.href}>
       {props.withoutImg ? null : (
         <div className={imgHolderCn}>
           {!props.img ? null : (

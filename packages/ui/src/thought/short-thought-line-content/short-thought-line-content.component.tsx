@@ -1,5 +1,5 @@
 // global modules
-import cn from 'classnames';
+import clsx from 'clsx';
 import type { FC, PropsWithChildren } from 'react';
 
 // local modules
@@ -16,7 +16,7 @@ interface ShortThoughtLineContentProps extends PropsWithChildren {
 
 export const ShortThoughtLineContent: FC<ShortThoughtLineContentProps> = (props) => (
   <div
-    className={cn(
+    className={clsx(
       linedHolderCn,
       props.position === 'top' && topCn,
       props.position === 'bottom' && bottomCn

@@ -1,6 +1,6 @@
 // global modules
 import { Box } from '@bit-trove/ui/box';
-import cn from 'classnames';
+import clsx from 'clsx';
 import { Divider } from '@bit-trove/ui/divider';
 import { Heading } from '@bit-trove/ui/heading';
 import { Stack } from '@bit-trove/ui/stack';
@@ -35,7 +35,7 @@ export const ContentPageHeader: FC<ContentPageHeaderProps> = (props) => {
   const content = (
     <>
       <Box
-        className={cn(props.className, contentPageHeaderCn, props.background && withBackgroundCn)}
+        className={clsx(props.className, contentPageHeaderCn, props.background && withBackgroundCn)}
         mb={props.background ? '2rem' : '3rem'}
         mt="3rem"
         style={{ backgroundImage: `url("${props.background}")` }}

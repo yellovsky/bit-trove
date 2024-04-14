@@ -1,6 +1,6 @@
 // global modules
 import { Box } from '@bit-trove/ui/box';
-import cn from 'classnames';
+import clsx from 'clsx';
 import { getUploadFileUrl } from '@bit-trove/api-models/upload-file';
 import { Heading } from '@bit-trove/ui/heading';
 import { Skeleton } from '@bit-trove/ui/skeleton';
@@ -36,7 +36,7 @@ const FooterCategoriesLayout: FC<
 > = (props) => (
   <Box as="section" pb="3rem" pt="3rem">
     <Skeleton
-      className={cn(titleHolderCn, props.pending && pendingCn)}
+      className={clsx(titleHolderCn, props.pending && pendingCn)}
       isLoaded={!props.pending}
       mb="0.5rem"
     >
@@ -46,7 +46,7 @@ const FooterCategoriesLayout: FC<
     </Skeleton>
 
     <Skeleton
-      className={cn(subtitleHolderCn, props.pending && pendingCn)}
+      className={clsx(subtitleHolderCn, props.pending && pendingCn)}
       isLoaded={!props.pending}
       mb="1.5rem"
     >

@@ -1,6 +1,6 @@
 // global modules
 import type { ApplyClassname } from '@bit-trove/ui/apply-classname';
-import cn from 'classnames';
+import clsx from 'clsx';
 
 type SpacingValue =
   | '0.125rem'
@@ -66,7 +66,7 @@ const getLookupValue = (
   spacingCnToken: SpacingCnToken,
   need: SpacingValue | undefined
 ): string | undefined =>
-  !need ? undefined : cn(spacingTypeCnLookup[spacingCnToken], spacingCnLookup[need]);
+  !need ? undefined : clsx(spacingTypeCnLookup[spacingCnToken], spacingCnLookup[need]);
 
 const separateSpacingProps = <TProps extends SpacingProps>({
   mb,
@@ -86,7 +86,7 @@ const separateSpacingProps = <TProps extends SpacingProps>({
 export const applySpacing: ApplyClassname<SpacingProps> = (defaults) => (props) => {
   const propsWithDefaults = { ...defaults, ...props };
   const { rest, spacingProps } = separateSpacingProps(propsWithDefaults);
-  const cName = cn(
+  const cName = clsx(
     rest.className,
     'sp',
     'sp-emphase',

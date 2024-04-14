@@ -1,6 +1,6 @@
 // global modules
 import * as R from 'ramda';
-import cn from 'classnames';
+import clsx from 'clsx';
 import { Link } from '@bit-trove/ui/link';
 import { Skeleton } from '@bit-trove/ui/skeleton';
 import type { To } from 'history';
@@ -42,7 +42,7 @@ const applyTagCn = R.compose(
 export const Tag: FC<TagProps> = (props) => {
   const { className, variant, to, size = 'md', ...rest } = applyTagCn(props);
 
-  const cName = cn(
+  const cName = clsx(
     className,
     tagCn,
     size === 'sm' && smCn,
@@ -75,7 +75,7 @@ type TagPendingProps = Pick<TagProps, 'size' | 'className' | 'borderRadius'>;
 export const TagPending: FC<TagPendingProps> = (props) => {
   const { className, size = 'md' } = applyBorderRadius<TagPendingProps>({ br: 'md' })(props);
 
-  const cName = cn(
+  const cName = clsx(
     className,
     tagCn,
     pendingCn,
