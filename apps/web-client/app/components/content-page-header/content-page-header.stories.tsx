@@ -2,10 +2,10 @@
 import { faker } from '@faker-js/faker';
 import { generateFakeAuthorSegmentResponse } from '@bit-trove/api-models/author';
 import { generateFakeCatgorySegmentResponseCollection } from '@bit-trove/api-models/category';
-import { PublishDateBadge } from '@bit-trove/ui/small-publish-date-badge';
-import { SmallAuthorBadge } from '@bit-trove/ui/small-author-badge';
-import { SmallCategoryBadge } from '@bit-trove/ui/small-category-badge';
-import { SmallViewsBadge } from '@bit-trove/ui/small-views-badge';
+// import { PublishDateBadge } from '@bit-trove/ui/small-publish-date-badge';
+// import { SmallAuthorBadge } from '@bit-trove/ui/small-author-badge';
+// import { SmallCategoryBadge } from '@bit-trove/ui/small-category-badge';
+// import { SmallViewsBadge } from '@bit-trove/ui/small-views-badge';
 import type { Meta, StoryObj } from '@storybook/react';
 
 // local modules
@@ -29,8 +29,8 @@ const meta: Meta<typeof ContentPageHeader> = {
       bottomBadges={
         !props.bottomBadges ? undefined : (
           <>
-            <PublishDateBadge date={faker.date.anytime()} />
-            <SmallAuthorBadge author={fakeAuthor} />
+            {/* <PublishDateBadge date={faker.date.anytime()} /> */}
+            {/* <SmallAuthorBadge author={fakeAuthor} /> */}
           </>
         )
       }

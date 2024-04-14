@@ -9,3 +9,7 @@
 .pagePadding {
   @include paddings.page-padding-horizontal;
 }
+
+.footer {
+  background-color: var(--th-colors-gray-900);
+}

@@ -2,8 +2,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 // local modules
-import { SimpleSquareCard } from './simple-square-card.component';
-import { SimpleSquareCardPending } from './simple-square-card.pending';
+import { SimpleSquareCard, SimpleSquareCardPending } from './simple-square-card.component';
 
 const meta: Meta<typeof SimpleSquareCard> = {
   component: SimpleSquareCard,
@@ -20,24 +19,24 @@ const meta: Meta<typeof SimpleSquareCard> = {
       table: { category: 'Component props', type: { summary: 'string' } },
       type: { name: 'string' },
     },
-    href: {
-      control: false,
-      description: 'Card link',
-      table: { category: 'Component props', type: { summary: 'string | UrlObject' } },
-      type: { name: 'other', value: 'string | UrlObject' },
-    },
     name: {
       control: { type: 'text' },
       description: 'Card name text',
       table: { category: 'Component props', type: { summary: 'string' } },
       type: { name: 'other', value: 'ReactNode' },
     },
+    to: {
+      control: false,
+      description: 'Card link',
+      table: { category: 'Component props', type: { summary: 'string | UrlObject' } },
+      type: { name: 'other', value: 'string | UrlObject' },
+    },
   },
 
   args: {
     cover: 'https://picsum.photos/200/200',
-    href: '#',
     name: 'name',
+    to: '#',
   },
 };
 

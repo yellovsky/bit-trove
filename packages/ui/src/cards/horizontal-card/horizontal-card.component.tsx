@@ -6,11 +6,11 @@ import type { AuthorSegment } from '@bit-trove/api-models/author';
 import cn from 'classnames';
 import Image from 'next/image';
 import { Link } from '@bit-trove/localization/link';
-import { PublishDateBadge } from '@bit-trove/ui/small-publish-date-badge';
-import { SmallAuthorBadge } from '@bit-trove/ui/small-author-badge';
-import { SmallBadgesHolder } from '@bit-trove/ui/small-badges-holder';
-import { SmallTagBadge } from '@bit-trove/ui/small-tag-badge';
-import { Title } from '@bit-trove/ui/title';
+// import { PublishDateBadge } from '@bit-trove/ui/small-publish-date-badge';
+// import { SmallAuthorBadge } from '@bit-trove/ui/small-author-badge';
+// import { SmallBadgesHolder } from '@bit-trove/ui/small-badges-holder';
+// import { SmallTagBadge } from '@bit-trove/ui/small-tag-badge';
+// import { Title } from '@bit-trove/ui/title';
 import type { UrlObject } from 'url';
 import { useRouter } from '@bit-trove/localization/navigation';
 import { type FC, type MouseEventHandler, type ReactNode, useCallback } from 'react';
@@ -69,24 +69,24 @@ export const HorizontalCard: FC<HorizontalCardProps> = (props) => {
       )}
 
       <div className={contentCn}>
-        <Title as="h4" className={titleCn}>
+        {/* <Title as="h4" className={titleCn}>
           {props.title}
-        </Title>
+        </Title> */}
 
-        <SmallBadgesHolder>
+        {/* <SmallBadgesHolder>
           {!props.publishedAt ? null : <PublishDateBadge date={props.publishedAt} />}
           {!props.author ? null : <SmallAuthorBadge author={props.author} />}
-        </SmallBadgesHolder>
+        </SmallBadgesHolder> */}
 
         <div className={descriptionCn}>{props.description}</div>
 
-        <SmallBadgesHolder>
+        {/* <SmallBadgesHolder>
           {props.tags?.map((tag, index) => (
             <SmallTagBadge key={index} onClick={handleTagClick(tag)}>
               {tag.name}
             </SmallTagBadge>
           ))}
-        </SmallBadgesHolder>
+        </SmallBadgesHolder> */}
       </div>
     </Link>
   );

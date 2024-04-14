@@ -1,10 +1,8 @@
 // global modules
-import { Link } from '@bit-trove/ui/link';
-import { Card, CardFooter } from '@bit-trove/ui/card';
-import { Image } from '@bit-trove/ui/image';
 import { AspectRatio } from '@bit-trove/ui/aspect-ratio';
+import { Image } from '@bit-trove/ui/image';
+import { Link } from '@bit-trove/ui/link';
 import { Skeleton } from '@bit-trove/ui/skeleton';
-
 import type { ComponentProps, FC, ReactNode } from 'react';
 
 // local modules
@@ -21,21 +19,21 @@ interface SimpleSquareCardProps {
 }
 
 export const SimpleSquareCard: FC<SimpleSquareCardProps> = ({ to, cover, name }) => (
-  <Card plain as={Link} borderRadius="lg" className={cardHolderCn} overflow="hidden" to={to}>
-    <AspectRatio overflow="hidden" ratio={1 / 1}>
+  <Link className={cardHolderCn} to={to} variant="plain">
+    <AspectRatio ratio={1 / 1}>
       <Image alt="Category cover" className={imgCn} src={cover} />
     </AspectRatio>
-    <CardFooter className={cardFooterCn}>{name}</CardFooter>
-  </Card>
+    <div className={cardFooterCn}>{name}</div>
+  </Link>
 );
 
 export const SimpleSquareCardPending: FC = () => (
-  <Skeleton borderRadius="lg" overflow="hidden">
-    <Card>
-      <AspectRatio overflow="hidden" ratio={1 / 1}>
+  <Skeleton borderRadius="lg">
+    <div className={cardHolderCn}>
+      <AspectRatio ratio={1 / 1}>
         <div />
       </AspectRatio>
-      <CardFooter className={cardFooterCn}> &nbsp;</CardFooter>
-    </Card>
+      <div className={cardFooterCn}>&nbsp;</div>
+    </div>
   </Skeleton>
 );

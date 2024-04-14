@@ -1,22 +1,29 @@
 // global modules
+import { Box } from '@bit-trove/ui/box';
+import cn from 'classnames';
 import { getUploadFileUrl } from '@bit-trove/api-models/upload-file';
+import { Heading } from '@bit-trove/ui/heading';
+import { Skeleton } from '@bit-trove/ui/skeleton';
+import { Text } from '@bit-trove/ui/text';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { Box } from '@bit-trove/ui/box';
-import { Skeleton } from '@bit-trove/ui/skeleton';
-import { Heading } from '@bit-trove/ui/heading';
-import { Text } from '@bit-trove/ui/text';
 import type { FC, PropsWithChildren, ReactNode } from 'react';
 import { SimpleSquareCard, SimpleSquareCardPending } from '@bit-trove/ui/simple-square-card';
-import {
-  cardsHolder as cardsHolderCn,
-  cardHolder as cardHolderCn,
-} from './footer-categories.module.scss';
+
 import {
   categoryLink,
   type CategorySegmentEntity,
   quickCategoryCollectionQueryFn,
 } from '@bit-trove/api-models/category';
+
+// local modules
+import {
+  cardHolder as cardHolderCn,
+  cardsHolder as cardsHolderCn,
+  pending as pendingCn,
+  subtitleHolder as subtitleHolderCn,
+  titleHolder as titleHolderCn,
+} from './footer-categories.module.scss';
 
 const CARDS_LIMIT = 5;
 
@@ -27,25 +34,23 @@ const FooterCategoriesLayout: FC<
     subtitle?: ReactNode;
   }>
 > = (props) => (
-  <Box as="section" mb="3rem" mt="3rem">
+  <Box as="section" pb="3rem" pt="3rem">
     <Skeleton
+      className={cn(titleHolderCn, props.pending && pendingCn)}
       isLoaded={!props.pending}
-      margin={!props.pending ? undefined : '0 auto'}
-      maxW={!props.pending ? undefined : '20rem'}
+      mb="0.5rem"
     >
-      <Heading as="h4" mb="0.5rem" textAlign="center">
+      <Heading as="h4" size="lg">
         {props.title || <>&nbsp;</>}
       </Heading>
     </Skeleton>
 
     <Skeleton
+      className={cn(subtitleHolderCn, props.pending && pendingCn)}
       isLoaded={!props.pending}
-      margin={!props.pending ? undefined : '0 auto'}
-      maxW={!props.pending ? undefined : '30rem'}
+      mb="1.5rem"
     >
-      <Text mb="1.5rem" textAlign="center">
-        {props.subtitle || <>&nbsp;</>}
-      </Text>
+      <Text>{props.subtitle || <>&nbsp;</>}</Text>
     </Skeleton>
 
     <div className={cardsHolderCn}>{props.children}</div>
@@ -70,7 +75,7 @@ export const FooterCategoriesPending: FC = () => (
 );
 
 export const FooterCategories: FC = () => {
-  const { t: footerT, i18n, ready } = useTranslation('footer', { useSuspense: true });
+  const { t: footerT, i18n } = useTranslation('footer');
 
   const { data, status } = useSuspenseQuery({
     queryFn: quickCategoryCollectionQueryFn,
@@ -78,10 +83,10 @@ export const FooterCategories: FC = () => {
   });
 
   const categories = data?.data?.attributes.categories.data.slice(0, CARDS_LIMIT);
-  if (status === 'pending' || !ready) return <FooterCategoriesPending />;
+
   if (status === 'error' || !categories || !categories?.length) return null;
 
-  const renderCard = ({ attributes: category }: CategorySegmentEntity, id) => (
+  const renderCard = ({ id, attributes: category }: CategorySegmentEntity) => (
     <div className={cardHolderCn} key={id}>
       <SimpleSquareCard
         cover={category.cover.data ? getUploadFileUrl(category.cover.data.attributes) : undefined}

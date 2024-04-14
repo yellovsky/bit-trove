@@ -6,22 +6,23 @@ import { applySpacing, type SpacingProps } from '@bit-trove/ui/apply-spacing';
 import type { FC, PropsWithChildren } from 'react';
 
 // local modules
-import { skeleton as skeletonCn } from './skeleton.module.scss';
+import { isLoaded as isLoadedCn, skeleton as skeletonCn } from './skeleton.module.scss';
 
 interface SkeletonProps extends PropsWithChildren, SpacingProps, BorderRadiusProps {
   className?: string;
   ratio?: number;
+  isLoaded?: boolean;
 }
 
 const applyCn = R.compose(applyBorderRadius<SkeletonProps>(), applySpacing<SkeletonProps>());
 
 export const Skeleton: FC<SkeletonProps> = (props) => {
-  const { className, ratio, ...rest } = applyCn(props);
+  const { className, ratio, isLoaded, ...rest } = applyCn(props);
 
   return (
     <div
       {...rest}
-      className={cn(className, skeletonCn)}
+      className={cn(className, skeletonCn, isLoaded && isLoadedCn)}
       style={ratio ? { aspectRatio: ratio } : undefined}
     />
   );
