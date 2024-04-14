@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import type { FC, PropsWithChildren, ReactNode } from 'react';
 import { PlateLink, PlateLinkPending } from '@bit-trove/ui/plate-link';
-import { Stack } from '@chakra-ui/react';
+import { Stack } from '@bit-trove/ui/stack';
 import { Skeleton } from '@bit-trove/ui/skeleton';
 
 const AsideCategoriesLayout: FC<PropsWithChildren<{ title: ReactNode }>> = ({

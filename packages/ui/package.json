@@ -44,7 +44,9 @@
     "./image": "./src/image/index.ts",
     "./tag": "./src/tag/index.ts",
     "./box": "./src/box/index.ts",
-    "./stack": "./src/stack/index.ts"
+    "./stack": "./src/stack/index.ts",
+    "./avatar": "./src/avatar/index.ts",
+    "./card": "./src/card/index.ts"
   },
   "scripts": {
     "generate:component": "turbo gen react-component",
@@ -54,8 +56,6 @@
     "@bit-trove/api-models": "*",
     "@bit-trove/localization": "*",
     "@bit-trove/theme": "*",
-    "@chakra-ui/icons": "^2.1.1",
-    "@chakra-ui/react": "^2.8.2",
     "@szhsin/react-accordion": "^1.2.3",
     "classnames": "^2.5.1",
     "history": "^5.3.0",

@@ -1,11 +1,17 @@
 // global modules
 import { getUploadFileUrl } from '@bit-trove/api-models/upload-file';
-import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { Box, Flex, Heading, Skeleton, Text } from '@chakra-ui/react';
+import { Box } from '@bit-trove/ui/box';
+import { Skeleton } from '@bit-trove/ui/skeleton';
+import { Heading } from '@bit-trove/ui/heading';
+import { Text } from '@bit-trove/ui/text';
 import type { FC, PropsWithChildren, ReactNode } from 'react';
 import { SimpleSquareCard, SimpleSquareCardPending } from '@bit-trove/ui/simple-square-card';
-
+import {
+  cardsHolder as cardsHolderCn,
+  cardHolder as cardHolderCn,
+} from './footer-categories.module.scss';
 import {
   categoryLink,
   type CategorySegmentEntity,
@@ -27,7 +33,7 @@ const FooterCategoriesLayout: FC<
       margin={!props.pending ? undefined : '0 auto'}
       maxW={!props.pending ? undefined : '20rem'}
     >
-      <Heading mb="0.5rem" textAlign="center">
+      <Heading as="h4" mb="0.5rem" textAlign="center">
         {props.title || <>&nbsp;</>}
       </Heading>
     </Skeleton>
@@ -42,26 +48,24 @@ const FooterCategoriesLayout: FC<
       </Text>
     </Skeleton>
 
-    <Flex flexWrap="wrap" gap="2rem" justifyContent="center">
-      {props.children}
-    </Flex>
+    <div className={cardsHolderCn}>{props.children}</div>
   </Box>
 );
 
 export const FooterCategoriesPending: FC = () => (
   <FooterCategoriesLayout pending>
-    <Box w="12rem">
+    <div className={cardHolderCn}>
       <SimpleSquareCardPending />
-    </Box>
-    <Box w="12rem">
+    </div>
+    <div className={cardHolderCn}>
       <SimpleSquareCardPending />
-    </Box>
-    <Box w="12rem">
+    </div>
+    <div className={cardHolderCn}>
       <SimpleSquareCardPending />
-    </Box>
-    <Box w="12rem">
+    </div>
+    <div className={cardHolderCn}>
       <SimpleSquareCardPending />
-    </Box>
+    </div>
   </FooterCategoriesLayout>
 );
 
@@ -75,19 +79,16 @@ export const FooterCategories: FC = () => {
 
   const categories = data?.data?.attributes.categories.data.slice(0, CARDS_LIMIT);
   if (status === 'pending' || !ready) return <FooterCategoriesPending />;
-  if (status === 'error' || !categories || !categories?.length) {
-    console.log('return null');
-    return null;
-  }
+  if (status === 'error' || !categories || !categories?.length) return null;
 
   const renderCard = ({ attributes: category }: CategorySegmentEntity, id) => (
-    <Box key={id} w="12rem">
+    <div className={cardHolderCn} key={id}>
       <SimpleSquareCard
         cover={category.cover.data ? getUploadFileUrl(category.cover.data.attributes) : undefined}
         name={category.name}
         to={categoryLink(category)}
       />
-    </Box>
+    </div>
   );
 
   return (

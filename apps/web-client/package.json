@@ -18,7 +18,6 @@
     "@bit-trove/theme": "*",
     "@bit-trove/ui": "*",
     "@bit-trove/utils": "*",
-    "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11",
     "@emotion/server": "^11",
     "@emotion/styled": "^11",

@@ -1,7 +1,13 @@
 // global modules
 import { applySpacing, type SpacingProps } from '@bit-trove/ui/apply-spacing';
-import type { FC, HTMLAttributes } from 'react';
+import { createElement, type FC, type HTMLAttributes } from 'react';
 
-interface BoxProps extends HTMLAttributes<HTMLDivElement>, SpacingProps {}
+interface BoxProps extends HTMLAttributes<HTMLDivElement>, SpacingProps {
+  as?: 'section';
+}
 
-export const Box: FC<BoxProps> = (props) => <div {...applySpacing()(props)} />;
+const applyCn = applySpacing<BoxProps>();
+export const Box: FC<BoxProps> = (props) => {
+  const { as = 'div', ...rest } = applyCn(props);
+  return createElement(as, rest);
+};

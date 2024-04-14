@@ -39,7 +39,7 @@ interface HeadingProps
 }
 
 export const Heading: FC<HeadingProps> = (props) => {
-  const { as, size, className, ...rest } = applySpacing()(props);
+  const { as, size, className, ...rest } = applySpacing<HeadingProps>()(props);
 
   return createElement(as, {
     ...rest,

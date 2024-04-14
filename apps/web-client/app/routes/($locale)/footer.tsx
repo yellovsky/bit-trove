@@ -1,29 +1,28 @@
 // global modules
-import { Suspense, type FC } from 'react';
-import { Box, SimpleGrid } from '@chakra-ui/react';
 import { Divider } from '@bit-trove/ui/divider';
+import { type FC, Suspense } from 'react';
 
 // local modules
-import { FooterCategories, FooterCategoriesPending } from './footer-categories';
 import { pagePadding as pagePaddingCn } from './layout.module.scss';
+import { FooterCategories, FooterCategoriesPending } from './footer-categories';
 
 export const Footer: FC = () => (
-  <Box as="footer" bg="black" className={pagePaddingCn} color="gray.400">
-    <Box>
-      {/* <Suspense fallback={<FooterCategoriesPending />}>
+  <footer className={pagePaddingCn} color="gray.400">
+    <div>
+      <Suspense fallback={<FooterCategoriesPending />}>
         <FooterCategories />
-      </Suspense> */}
-    </Box>
+      </Suspense>
+    </div>
 
     <Divider />
 
-    <SimpleGrid columns={{ lg: 3, sm: 1 }} spacing="2rem">
-      <Box>Find your trove</Box>
-      <Box>links</Box>
-      <Box>newsletter</Box>
-    </SimpleGrid>
+    <div>
+      <div>Find your trove</div>
+      <div>links</div>
+      <div>newsletter</div>
+    </div>
 
     <Divider />
-    <Box>copyrigt</Box>
-  </Box>
+    <div>copyrigt d </div>
+  </footer>
 );

@@ -1,26 +1,25 @@
 // global modules
 import { categoryLink } from '@bit-trove/api-models/category';
-import { ContentPageHeader } from '~/components/content-page-header';
 import type { FC } from 'react';
 import { filterByTagLink } from '@bit-trove/api-models/tag';
 import { Link } from '@bit-trove/ui/link';
-import { PublishDateBadge } from '~/components/badge/publish-date-badge';
 import { QueryKeyOf } from '@bit-trove/api-models/common';
-import { SmallAuthorBadge } from '@bit-trove/ui/small-author-badge';
-import { SmallBadgesHolder } from '@bit-trove/ui/small-badges-holder';
-import { SmallCategoryBadge } from '@bit-trove/ui/small-category-badge';
-import { SmallTagBadge } from '@bit-trove/ui/small-tag-badge';
+// import { SmallCategoryBadge } from '@bit-trove/ui/small-category-badge';
+import { Stack } from '@bit-trove/ui/stack';
 import { dehydrate, DehydratedState, hydrate } from '@tanstack/query-core';
 import { getThoughtMetadata, thoughtQueryFn } from '@bit-trove/api-models/thought';
 import { HydrationBoundary, QueryClient, useQuery } from '@tanstack/react-query';
 import type { LoaderFunction, MetaFunction } from '@remix-run/node';
 import { type Params, useLoaderData, useParams } from '@remix-run/react';
-import { Text } from '@bit-trove/ui/text';
 
 // local modules
 import { Ad } from '~/components/ad';
+import { AuthorBadge } from '~/components/badge/author-badge';
 import { Blocks } from '~/components/blocks';
+import { ContentPageHeader } from '~/components/content-page-header';
 import { PageContent } from '~/components/page-content';
+import { PublishDateBadge } from '~/components/badge/publish-date-badge';
+import { TagBadge } from '../../components/badge/tag-badge';
 
 type ThoughtPageParams = 'locale' | 'slug';
 
@@ -70,17 +69,17 @@ const Temporary: FC = () => {
 
   const topBadges = !thought.categories.data.length ? null : (
     <>
-      {thought.categories.data.map(({ id, attributes: category }) => (
+      {/* {thought.categories.data.map(({ id, attributes: category }) => (
         <SmallCategoryBadge to={categoryLink(category)} key={id}>
           {category.name}
         </SmallCategoryBadge>
-      ))}
+      ))} */}
     </>
   );
   const bottomBadges = (
     <>
       <PublishDateBadge date={thought.publishedAt} />
-      {/* {thought.author.data && <SmallAuthorBadge author={thought.author.data.attributes} />} */}
+      {thought.author.data && <AuthorBadge author={thought.author.data.attributes} />}
     </>
   );
 
@@ -104,13 +103,11 @@ const Temporary: FC = () => {
         <Blocks blocks={thought.blocks} />
       </div>
 
-      <SmallBadgesHolder className={'marginbottom2remCn'}>
+      <Stack mb="2rem" orientation="horizontal">
         {thought.tags.data.map(({ id, attributes: tag }) => (
-          <SmallTagBadge href={filterByTagLink(tag)} key={id}>
-            {tag.name}
-          </SmallTagBadge>
+          <TagBadge key={id} name={tag.name} to={filterByTagLink(tag)} />
         ))}
-      </SmallBadgesHolder>
+      </Stack>
 
       <Ad layout="horizontal" />
     </PageContent>
