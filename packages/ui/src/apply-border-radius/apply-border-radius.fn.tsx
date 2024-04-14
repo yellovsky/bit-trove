@@ -35,11 +35,9 @@ export interface BorderRadiusProps {
   br?: BorderRadiusType;
 }
 
-export const applyBorderRadius: ApplyClassname<BorderRadiusProps> = ({
-  borderRadius,
-  br,
-  ...rest
-}) => {
+export const applyBorderRadius: ApplyClassname<BorderRadiusProps> = (defaults) => (props) => {
+  const propsWithDefaults = { ...defaults, ...props };
+  const { borderRadius, br, ...rest } = propsWithDefaults;
   const radius = br || borderRadius;
 
   return {

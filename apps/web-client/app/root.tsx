@@ -15,7 +15,7 @@ import {
 } from '@remix-run/react';
 
 // local modules
-// import normalizeCss from 'normalize.css?url';
+import normalizeCss from 'normalize.css?url';
 import rootCss from './root.scss?url';
 
 import robotoLatinCss from '@fontsource/roboto/latin.css?url';
@@ -40,6 +40,7 @@ const cssAssets: LinkDescriptor[] = [
   robotoCyrillicCss,
   robotoMonoScss,
   montserratCss,
+  normalizeCss,
 ]
   .map((href) => href.split('?')[0])
   .map((href) => ({ href, rel: 'stylesheet' }));

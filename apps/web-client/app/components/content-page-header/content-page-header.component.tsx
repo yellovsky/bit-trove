@@ -1,8 +1,11 @@
 // global modules
+import { Box } from '@bit-trove/ui/box';
 import cn from 'classnames';
-import { Box, DarkMode, Divider, HStack } from '@chakra-ui/react';
-import type { FC, PropsWithChildren, ReactNode } from 'react';
+import { Divider } from '@bit-trove/ui/divider';
 import { Heading } from '@bit-trove/ui/heading';
+import { Stack } from '@bit-trove/ui/stack';
+import { ThemeProvider } from '@bit-trove/ui/theme-provider';
+import type { FC, PropsWithChildren, ReactNode } from 'react';
 
 // local modules
 import {
@@ -20,28 +23,32 @@ interface ContentPageHeaderProps extends PropsWithChildren {
 }
 
 export const ContentPageHeader: FC<ContentPageHeaderProps> = (props) => {
-  const topBadges = !props.topBadges ? null : <HStack mb="1rem">{props.topBadges}</HStack>;
-  const bottomBadges = !props.bottomBadges ? null : <HStack>{props.bottomBadges}</HStack>;
+  const topBadges = !props.topBadges ? null : (
+    <Stack mb="1rem" orientation="horizontal">
+      {props.topBadges}
+    </Stack>
+  );
+  const bottomBadges = !props.bottomBadges ? null : (
+    <Stack orientation="horizontal">{props.bottomBadges}</Stack>
+  );
 
   const content = (
     <>
-      <div
+      <Box
         className={cn(props.className, contentPageHeaderCn, props.background && withBackgroundCn)}
         mb={props.background ? '2rem' : '3rem'}
         mt="3rem"
         style={{ backgroundImage: `url("${props.background}")` }}
       >
         {topBadges}
-        <h1 as="h1" mb="1rem">
+        <Heading as="h1" mb="1rem" size="xl">
           {props.children}
-        </h1>
+        </Heading>
         {bottomBadges}
-      </div>
-      <div className={pagePaddingCn}>
-        {props.background ? null : <Divider borderColor="gray.400" mb="3rem" />}
-      </div>
+      </Box>
+      <Box className={pagePaddingCn}>{props.background ? null : <Divider mb="3rem" />}</Box>
     </>
   );
 
-  return !props.background ? content : <DarkMode>{content}</DarkMode>;
+  return !props.background ? content : <ThemeProvider colorMode="dark">{content}</ThemeProvider>;
 };

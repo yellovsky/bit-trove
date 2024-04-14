@@ -13,14 +13,15 @@ const config: StorybookConfig = {
   stories: [
     '../stories/**/*.mdx',
     '../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../app/components/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../../../packages/ui/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
   ],
   addons: [
-    getAbsolutePath('@storybook/addon-onboarding'),
     getAbsolutePath('@storybook/addon-links'),
     getAbsolutePath('@storybook/addon-essentials'),
     getAbsolutePath('@chromatic-com/storybook'),
     getAbsolutePath('@storybook/addon-interactions'),
+    getAbsolutePath('@storybook/addon-themes'),
 
     {
       name: getAbsolutePath('@storybook/addon-styling-webpack'),
@@ -67,18 +68,11 @@ const config: StorybookConfig = {
     options: {
       builder: {
         viteConfigPath: 'sb-vite.config.ts',
-        // viteConfigPath: join(__dirname, '../vite.config.js'),
       },
     },
   },
   docs: {
     autodocs: 'tag',
   },
-  // viteFinal
-
-  // return {
-  //   // no Remix Vite plugin here
-  //   plugins: [tsconfigPaths()],
-  // }
 };
 export default config;

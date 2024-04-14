@@ -41,8 +41,8 @@ $color-schemes: (
 );
 
 .holder {
-  @for $i from 1 through length($colors-schemes) {
-    $scheme: nth($colors-schemes, $i);
+  @for $i from 1 through length($color-schemes) {
+    $scheme: nth($color-schemes, $i);
 
     &.type#{$i} {
       color: map.get($scheme, 'color');

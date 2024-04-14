@@ -1,0 +1,37 @@
+@use '@bit-trove/ui/src/scss/interactive.scss' as i;
+
+@mixin standalone-style {
+  @include i.interactive using ($state) {
+    @if $state == 'hover' {
+      color: i.color('hover');
+    } @else if $state == 'focus' {
+      color: i.color('hover');
+    } @else if $state == 'active' {
+      color: i.color('active');
+    }
+  }
+}
+
+@mixin text-style {
+  color: i.color();
+
+  @include i.interactive using ($state) {
+    @if $state == 'hover' {
+      color: i.color('hover');
+    } @else if $state == 'focus' {
+      color: i.color('hover');
+    } @else if $state == 'active' {
+      color: i.color('active');
+    }
+  }
+}
+
+.link {
+  &.standalone {
+    @include standalone-style();
+  }
+
+  &.text {
+    @include text-style();
+  }
+}

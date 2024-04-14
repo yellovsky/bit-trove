@@ -1,15 +1,24 @@
 // global modules
+import cn from 'classnames';
 import { Link as RemixLink } from '@remix-run/react';
 import { useTranslation } from 'react-i18next';
-import { Link as ChakraLink, type ThemingProps } from '@chakra-ui/react';
+import { applyColorScheme, type ColorSchemeProps } from '@bit-trove/ui/apply-color-scheme';
 import { type ComponentProps, type FC, useMemo } from 'react';
 
-interface LinkProps extends ComponentProps<typeof RemixLink>, ThemingProps<'Link'> {
-  plain?: boolean;
+// local modules
+import { link as linkCn, standalone as standaloneCn, text as textCn } from './link.module.scss';
+
+export type LinkVariant = 'text' | 'standalone' | 'plain';
+
+export interface LinkProps extends ComponentProps<typeof RemixLink>, ColorSchemeProps {
+  variant: LinkVariant;
 }
 
-export const Link: FC<LinkProps> = ({ to, plain, ...rest }) => {
+const applyLinkCn = applyColorScheme<LinkProps>({ colorScheme: 'primary' });
+
+export const Link: FC<LinkProps> = (props) => {
   const { i18n } = useTranslation();
+  const { to, variant, ...rest } = applyLinkCn(props);
 
   const localizedTo = useMemo((): ComponentProps<typeof Link>['to'] => {
     const addLocaleToPathname = (pathname: string): string =>
@@ -26,9 +35,12 @@ export const Link: FC<LinkProps> = ({ to, plain, ...rest }) => {
         : to;
   }, [to, i18n.language]);
 
-  return plain ? (
-    <RemixLink {...rest} to={localizedTo} />
-  ) : (
-    <ChakraLink {...rest} as={RemixLink} to={localizedTo} />
+  const cName = cn(
+    rest.className,
+    variant !== 'plain' && linkCn,
+    variant === 'standalone' && standaloneCn,
+    variant === 'text' && textCn
   );
+
+  return <RemixLink {...rest} className={cName} to={localizedTo} />;
 };

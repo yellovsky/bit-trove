@@ -83,8 +83,9 @@ const separateSpacingProps = <TProps extends SpacingProps>({
   spacingProps: { marginBottom, marginTop, mb, mt, paddingBottom, paddingTop, pb, pt },
 });
 
-export const applySpacing: ApplyClassname<SpacingProps> = (props) => {
-  const { rest, spacingProps } = separateSpacingProps(props);
+export const applySpacing: ApplyClassname<SpacingProps> = (defaults) => (props) => {
+  const propsWithDefaults = { ...defaults, ...props };
+  const { rest, spacingProps } = separateSpacingProps(propsWithDefaults);
   const cName = cn(
     rest.className,
     'sp',
