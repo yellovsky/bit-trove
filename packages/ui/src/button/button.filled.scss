@@ -1,7 +1,7 @@
 @use 'sass:map';
 
-@use '@bit-trove/ui/src/scss/interactive.scss' as i;
-@use '@bit-trove/ui/src/apply-color-scheme/apply-color-scheme.scss' as cs;
+@use '@repo/ui/src/scss/interactive.scss' as i;
+@use '@repo/ui/src/apply-color-scheme/apply-color-scheme.scss' as cs;
 
 @mixin button-filled-light-gray-style {
   color: var(--th-colors-gray-800);

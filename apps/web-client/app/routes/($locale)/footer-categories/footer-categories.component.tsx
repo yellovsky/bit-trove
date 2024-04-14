@@ -1,14 +1,14 @@
 // global modules
-import { Box } from '@bit-trove/ui/box';
+import { Box } from '@repo/ui/box';
 import clsx from 'clsx';
 import { getUploadFileUrl } from '@bit-trove/api-models/upload-file';
-import { Heading } from '@bit-trove/ui/heading';
-import { Skeleton } from '@bit-trove/ui/skeleton';
-import { Text } from '@bit-trove/ui/text';
+import { Heading } from '@repo/ui/heading';
+import { Skeleton } from '@repo/ui/skeleton';
+import { Text } from '@repo/ui/text';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import type { FC, PropsWithChildren, ReactNode } from 'react';
-import { SimpleSquareCard, SimpleSquareCardPending } from '@bit-trove/ui/simple-square-card';
+import { SimpleSquareCard, SimpleSquareCardPending } from '@repo/ui/simple-square-card';
 
 import {
   categoryLink,

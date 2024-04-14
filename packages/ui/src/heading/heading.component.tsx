@@ -1,6 +1,6 @@
 // global modules
 import clsx from 'clsx';
-import { applySpacing, type SpacingProps } from '@bit-trove/ui/apply-spacing';
+import { applySpacing, type SpacingProps } from '@repo/ui/apply-spacing';
 import { createElement, type FC, type HTMLAttributes } from 'react';
 
 // local modules

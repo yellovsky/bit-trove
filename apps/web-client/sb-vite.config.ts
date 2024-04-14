@@ -11,7 +11,7 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         '@bit-trove/theme': path.join(__dirname, '../../packages/theme'),
-        '@bit-trove/ui/src': path.join(__dirname, '../../packages/ui/src'),
+        '@repo/ui/src': path.join(__dirname, '../../packages/ui/src'),
       },
     },
 

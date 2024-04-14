@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import type { Preview } from '@storybook/react';
 import { createRemixStub } from '@remix-run/testing';
 import { DecoratorHelpers } from '@storybook/addon-themes';
-import { ThemeProvider } from '@bit-trove/ui/theme-provider';
+import { ThemeProvider } from '@repo/ui/theme-provider';
 
 // local modules
 import '../app/root.scss';

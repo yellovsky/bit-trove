@@ -2,7 +2,7 @@
 import type { ComponentProps } from 'react';
 import { faker } from '@faker-js/faker';
 import { Fragment } from 'react/jsx-runtime';
-import { COLOR_SCHEMES, colorSchemeArgType } from '@bit-trove/ui/apply-color-scheme';
+import { COLOR_SCHEMES, colorSchemeArgType } from '@repo/ui/apply-color-scheme';
 import type { Meta, StoryObj } from '@storybook/react';
 
 // local modules

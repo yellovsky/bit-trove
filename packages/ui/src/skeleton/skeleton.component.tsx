@@ -1,8 +1,8 @@
 // global modules
 import * as R from 'ramda';
 import clsx from 'clsx';
-import { applyBorderRadius, type BorderRadiusProps } from '@bit-trove/ui/apply-border-radius';
-import { applySpacing, type SpacingProps } from '@bit-trove/ui/apply-spacing';
+import { applyBorderRadius, type BorderRadiusProps } from '@repo/ui/apply-border-radius';
+import { applySpacing, type SpacingProps } from '@repo/ui/apply-spacing';
 import type { FC, PropsWithChildren } from 'react';
 
 // local modules

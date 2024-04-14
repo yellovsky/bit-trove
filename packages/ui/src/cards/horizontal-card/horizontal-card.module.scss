@@ -1,6 +1,6 @@
-@use '@bit-trove/ui/src/scss/typography.scss' as t;
-@use '@bit-trove/ui/src/scss/interactive.scss' as i;
-@use '../../scss/variables.scss' as vars;
+@use '@repo/ui/src/scss/typography.scss' as t;
+@use '@repo/ui/src/scss/interactive.scss' as i;
+@use '@repo/ui/src/scss/variables.scss' as vars;
 
 .horizontalCard {
   display: grid;

@@ -1,5 +1,5 @@
 // global modules
-import { Link } from '@bit-trove/ui/link';
+import { Link } from '@repo/ui/link';
 import type { ComponentProps, FC, MouseEventHandler, ReactNode } from 'react';
 
 // local modules

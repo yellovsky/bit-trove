@@ -1,8 +1,8 @@
 // global modules
 import type { FC } from 'react';
-import { Icon } from '@bit-trove/ui/icon';
+import { Icon } from '@repo/ui/icon';
 import { shortenItemsCount } from '@bit-trove/utils/shorten-items-count';
-import { Tag, TagLabel, TagLeftIcon } from '@bit-trove/ui/tag';
+import { Tag, TagLabel, TagLeftIcon } from '@repo/ui/tag';
 
 interface ViewsBadgeProps {
   viewsCount: number;

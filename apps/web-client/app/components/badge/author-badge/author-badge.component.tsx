@@ -5,9 +5,9 @@ import { getUploadFileUrl } from '@bit-trove/api-models/upload-file';
 
 // local modules
 import { holder as holderCn, img as imgCn } from './small-author-badge.module.scss';
-import { Tag, TagLabel } from '@bit-trove/ui/tag';
+import { Tag, TagLabel } from '@repo/ui/tag';
 
-import { Avatar } from '@bit-trove/ui/avatar';
+import { Avatar } from '@repo/ui/avatar';
 
 interface AuthorBadgeProps {
   author: Author;

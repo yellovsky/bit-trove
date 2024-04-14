@@ -1,7 +1,7 @@
 // global modules
 import type { ComponentProps } from 'react';
 import { Fragment } from 'react/jsx-runtime';
-import { Icon } from '@bit-trove/ui/icon';
+import { Icon } from '@repo/ui/icon';
 import type { Meta, StoryObj } from '@storybook/react';
 
 // local modules

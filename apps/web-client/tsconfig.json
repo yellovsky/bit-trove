@@ -28,7 +28,7 @@
     "paths": {
       "~/*": ["./app/*"],
       "@bit-trove/theme/*": ["../../packages/theme/*"],
-      "@bit-trove/ui/src/*": ["../../packages/ui/src/*"]
+      "@repo/ui/src/*": ["../../packages/ui/src/*"]
     },
 
     // Vite takes care of building everything, not tsc.

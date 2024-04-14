@@ -1,4 +1,4 @@
-@use '@bit-trove/ui/src/scss/interactive.scss' as i;
+@use '@repo/ui/src/scss/interactive.scss' as i;
 
 @mixin standalone-style {
   @include i.interactive using ($state) {

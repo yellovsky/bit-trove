@@ -1,5 +1,5 @@
 // global modules
-import type { ApplyClassname } from '@bit-trove/ui/apply-classname';
+import type { ApplyClassname } from '@repo/ui/apply-classname';
 import clsx from 'clsx';
 
 // local modules

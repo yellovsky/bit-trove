@@ -1,5 +1,5 @@
-@use '@bit-trove/ui/src/scss/variables.scss' as vars;
-@use '@bit-trove/ui/src/scss/screen-interval.scss' as si;
+@use '@repo/ui/src/scss/variables.scss' as vars;
+@use '@repo/ui/src/scss/screen-interval.scss' as si;
 
 .pagePadding {
   @include si.page-padding using ($padding) {
