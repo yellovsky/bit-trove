@@ -7,9 +7,11 @@
 @use './button.outline.scss' as outline;
 
 .button {
-  border-radius: map.get(br.$radiuses, 'md');
+  cursor: pointer;
   line-height: 1.2;
   font-weight: 600;
+  white-space: nowrap;
+  border-radius: map.get(br.$radiuses, 'md');
 
   &.filled {
     @include filled.button-filled-light-style;
@@ -35,8 +37,8 @@
   &.xs {
     height: 1.5rem;
     min-width: 1.5rem;
-    padding-inline-start: 5rem;
-    padding-inline-end: 5rem;
+    padding-inline-start: 0.5rem;
+    padding-inline-end: 0.5rem;
     font-size: 0.75rem;
   }
 

@@ -1,7 +1,7 @@
 @use 'sass:map';
 @use '../../scss/interactive.scss' as i;
 
-$colors-schemas: (
+$color-schemes: (
   (
     color: #fff,
     bg-color: #3f37c9,
@@ -41,20 +41,20 @@ $colors-schemas: (
 );
 
 .holder {
-  @for $i from 1 through length($colors-schemas) {
-    $schema: nth($colors-schemas, $i);
+  @for $i from 1 through length($colors-schemes) {
+    $scheme: nth($colors-schemes, $i);
 
     &.type#{$i} {
-      color: map.get($schema, 'color');
-      background-color: map.get($schema, 'bg-color');
+      color: map.get($scheme, 'color');
+      background-color: map.get($scheme, 'bg-color');
 
       @include i.interactive using ($state) {
         @if $state == 'hover' {
-          color: map.get($schema, 'color');
-          background-color: map.get($schema, 'bg-color-hover');
+          color: map.get($scheme, 'color');
+          background-color: map.get($scheme, 'bg-color-hover');
         } @else if $state == 'active' {
-          color: map.get($schema, 'color');
-          background-color: map.get($schema, 'bg-color-active');
+          color: map.get($scheme, 'color');
+          background-color: map.get($scheme, 'bg-color-active');
         }
       }
     }

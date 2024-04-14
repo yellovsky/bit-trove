@@ -1,19 +1,18 @@
-@mixin schema-colors($color-schema) {
-  --th-colors-schema-50: var(--th-colors-#{$color-schema}-50);
-  --th-colors-schema-100: var(--th-colors-#{$color-schema}-100);
-  --th-colors-schema-200: var(--th-colors-#{$color-schema}-200);
-  --th-colors-schema-300: var(--th-colors-#{$color-schema}-300);
-  --th-colors-schema-400: var(--th-colors-#{$color-schema}-400);
-  --th-colors-schema-500: var(--th-colors-#{$color-schema}-500);
-  --th-colors-schema-600: var(--th-colors-#{$color-schema}-600);
-  --th-colors-schema-700: var(--th-colors-#{$color-schema}-700);
-  --th-colors-schema-800: var(--th-colors-#{$color-schema}-800);
-  --th-colors-schema-900: var(--th-colors-#{$color-schema}-900);
+@mixin scheme-colors($color-scheme) {
+  --th-colors-scheme-50: var(--th-colors-#{$color-scheme}-50);
+  --th-colors-scheme-100: var(--th-colors-#{$color-scheme}-100);
+  --th-colors-scheme-200: var(--th-colors-#{$color-scheme}-200);
+  --th-colors-scheme-300: var(--th-colors-#{$color-scheme}-300);
+  --th-colors-scheme-400: var(--th-colors-#{$color-scheme}-400);
+  --th-colors-scheme-500: var(--th-colors-#{$color-scheme}-500);
+  --th-colors-scheme-600: var(--th-colors-#{$color-scheme}-600);
+  --th-colors-scheme-700: var(--th-colors-#{$color-scheme}-700);
+  --th-colors-scheme-800: var(--th-colors-#{$color-scheme}-800);
+  --th-colors-scheme-900: var(--th-colors-#{$color-scheme}-900);
 }
 
-
-@mixin when-color-schema($color-schema) {
-  &:global(.color-schema-#{$color-schema}) {
+@mixin when-color-scheme($color-scheme) {
+  &:global(.color-scheme-#{$color-scheme}) {
     @content;
   }
 }

@@ -15,8 +15,7 @@ import {
 } from '@remix-run/react';
 
 // local modules
-import colorSchemasCss from './color-schemas.scss?url';
-import normalizeCss from 'normalize.css?url';
+// import normalizeCss from 'normalize.css?url';
 import rootCss from './root.scss?url';
 
 import robotoLatinCss from '@fontsource/roboto/latin.css?url';
@@ -37,7 +36,6 @@ import {
 
 const cssAssets: LinkDescriptor[] = [
   rootCss,
-  colorSchemasCss,
   robotoLatinCss,
   robotoCyrillicCss,
   robotoMonoScss,
