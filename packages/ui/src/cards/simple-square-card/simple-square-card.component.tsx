@@ -1,6 +1,10 @@
 // global modules
 import { Link } from '@bit-trove/ui/link';
-import { AspectRatio, Card, CardFooter, Image, Skeleton } from '@chakra-ui/react';
+import { Card, CardFooter } from '@bit-trove/ui/card';
+import { Image } from '@bit-trove/ui/image';
+import { AspectRatio } from '@bit-trove/ui/aspect-ratio';
+import { Skeleton } from '@bit-trove/ui/skeleton';
+
 import type { ComponentProps, FC, ReactNode } from 'react';
 
 // local modules

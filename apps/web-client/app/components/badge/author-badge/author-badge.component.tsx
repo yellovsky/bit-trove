@@ -2,17 +2,18 @@
 import type { Author } from '@bit-trove/api-models/author';
 import type { FC } from 'react';
 import { getUploadFileUrl } from '@bit-trove/api-models/upload-file';
-import { SmallBadge } from '@bit-trove/ui/small-badge';
 
 // local modules
 import { holder as holderCn, img as imgCn } from './small-author-badge.module.scss';
-import { Avatar, Tag, TagLabel } from '@chakra-ui/react';
+import { Tag, TagLabel } from '@bit-trove/ui/tag';
 
-interface SmallAuthorBadgeProps {
+import { Avatar } from '@bit-trove/ui/avatar';
+
+interface AuthorBadgeProps {
   author: Author;
 }
 
-export const SmallAuthorBadge: FC<SmallAuthorBadgeProps> = ({ author }) => (
+export const AuthorBadge: FC<AuthorBadgeProps> = ({ author }) => (
   <Tag size="md" boxShadow="none" variant="outline" colorScheme="gray">
     {!author.avatar.data ? null : (
       <Avatar

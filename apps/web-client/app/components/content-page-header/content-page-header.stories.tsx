@@ -10,6 +10,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 // local modules
 import { ContentPageHeader } from './content-page-header.component';
+import { ViewsBadge } from '../badge/views-badge';
 
 const fakeAuthor = generateFakeAuthorSegmentResponse().data.attributes;
 const fakeCategories = generateFakeCatgorySegmentResponseCollection().data;
@@ -36,11 +37,11 @@ const meta: Meta<typeof ContentPageHeader> = {
       topBadges={
         !props.topBadges ? undefined : (
           <>
-            {fakeCategories.map(({ attributes: category }) => (
+            {/* {fakeCategories.map(({ attributes: category }) => (
               <SmallCategoryBadge href="#">{category.name}</SmallCategoryBadge>
-            ))}
+            ))} */}
 
-            <SmallViewsBadge viewsCount={faker.number.int({ max: 1_000_000 })} />
+            <ViewsBadge viewsCount={faker.number.int({ max: 1_000_000 })} />
           </>
         )
       }

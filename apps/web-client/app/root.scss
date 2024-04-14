@@ -16,6 +16,7 @@
 body {
   color: var(--th-text-color);
   font-family: var(--th-body-font-family);
+  background-color: var(--th-page-bg-color);
 }
 
 :where(h1, h2, h3, h4, h5, h6) {
