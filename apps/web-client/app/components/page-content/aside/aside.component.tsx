@@ -1,14 +1,16 @@
 // global modules
-import type { FC } from 'react';
+import { type FC, Suspense } from 'react';
 
 // local modules
 import { Ad } from '../../ad';
-import { AsideCategories } from './aside-categories';
 import { aside as asideCn } from './aside.module.scss';
+import { AsideCategories, AsideCategoriesPending } from './aside-categories';
 
 export const Aside: FC = () => (
   <div className={asideCn}>
     <Ad layout="square" />
-    <AsideCategories />
+    <Suspense fallback={<AsideCategoriesPending />}>
+      <AsideCategories />
+    </Suspense>
   </div>
 );

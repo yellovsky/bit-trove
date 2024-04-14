@@ -9,3 +9,7 @@
   --th-text-color: var(--th-colors-gray-900);
   --th-page-bg-color: white;
 }
+
+[data-color-mode] {
+  color: var(--th-text-color);
+}

@@ -26,9 +26,10 @@
 
   opacity: 0.7;
 
+  width: 100%;
   cursor: default;
-  color: transparent;
   user-select: none;
+  color: transparent;
   pointer-events: none;
   background: var(--skeleton-start-color);
   border-color: var(--skeleton-start-color);
