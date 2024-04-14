@@ -13,7 +13,7 @@ interface SkeletonProps extends PropsWithChildren, SpacingProps, BorderRadiusPro
   ratio?: number;
 }
 
-const applyCn = R.compose(applyBorderRadius<SkeletonProps>, applySpacing<SkeletonProps>);
+const applyCn = R.compose(applyBorderRadius<SkeletonProps>(), applySpacing<SkeletonProps>());
 
 export const Skeleton: FC<SkeletonProps> = (props) => {
   const { className, ratio, ...rest } = applyCn(props);

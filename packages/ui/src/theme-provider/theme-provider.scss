@@ -1,0 +1,11 @@
+@use '@bit-trove/theme/mode.scss' as mode;
+
+[data-color-mode='dark'] {
+  --th-text-color: white;
+  --th-page-bg-color: var(--th-colors-gray-900);
+}
+
+[data-color-mode='light'] {
+  --th-text-color: var(--th-colors-gray-900);
+  --th-page-bg-color: white;
+}

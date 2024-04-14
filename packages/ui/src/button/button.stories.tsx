@@ -5,6 +5,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 // local modules
 import { Button, type ButtonVariant } from './button.component';
+import { colorSchemeArgType } from '../apply-color-scheme';
 
 const BUTTON_SIZES = ['lg', 'md', 'sm', 'xs'] as const;
 const COLOR_SCHEMES = [
@@ -23,7 +24,7 @@ const meta = {
   title: 'Button',
 
   parameters: {
-    layout: 'centered',
+    // layout: 'centered',
   },
 
   tags: ['autodocs'],
@@ -35,17 +36,7 @@ const meta = {
       table: { category: 'Component props', type: { summary: 'ReactNode' } },
       type: { name: 'other', value: 'ReactNode' },
     },
-    colorScheme: {
-      control: 'select',
-      defaultValue: 'md',
-      description: 'Button color scheme',
-      options: COLOR_SCHEMES,
-      table: {
-        category: 'Component props',
-        type: { summary: COLOR_SCHEMES.map((scheme) => `"${scheme}"`).join(' | ') },
-      },
-      type: { name: 'other', value: COLOR_SCHEMES.map((scheme) => `"${scheme}"`).join(' | ') },
-    },
+    colorScheme: colorSchemeArgType,
     size: {
       control: 'select',
       defaultValue: 'md',

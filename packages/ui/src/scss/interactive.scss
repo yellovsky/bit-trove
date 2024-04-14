@@ -14,7 +14,7 @@
 
 @mixin focus-outline-style {
   outline: none;
-  box-shadow: 0 0 0 0.0625rem var(--chakra-colors-primary-600);
+  box-shadow: 0 0 0 0.125rem var(--th-colors-primary-200);
 }
 
 @mixin focus-outline-style-inset {
@@ -42,5 +42,21 @@
 
   @include focus-visible {
     @content ('focus');
+  }
+}
+
+@function color($type: 'base', $scheme: null) {
+  $num: '500';
+
+  @if $type == 'hover' {
+    $num: '600';
+  } @else if $type == 'active' {
+    $num: '700';
+  }
+
+  @if $scheme == null {
+    @return var(--th-colors-scheme-#{$num});
+  } @else {
+    @return var(--th-colors-#{$scheme}-#{$num});
   }
 }

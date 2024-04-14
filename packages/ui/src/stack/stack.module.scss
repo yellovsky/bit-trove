@@ -1,0 +1,13 @@
+.stack {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+
+  &.vertical {
+    flex-direction: column;
+  }
+
+  &.horizontal {
+    flex-direction: row;
+  }
+}

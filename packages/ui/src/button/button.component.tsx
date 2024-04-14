@@ -20,7 +20,7 @@ export interface ButtonProps
   size?: ButtonSize;
 }
 
-const applyButtonCn = R.compose(applyBorderRadius<ButtonProps>, applyColorScheme<ButtonProps>);
+const applyButtonCn = R.compose(applyBorderRadius<ButtonProps>(), applyColorScheme<ButtonProps>());
 
 export const Button: FC<ButtonProps> = (props) => {
   const { variant, colorScheme, className, size = 'md', ...rest } = applyButtonCn(props);
