@@ -1,9 +1,9 @@
 // global modules
 import type { FC } from 'react';
+import { Tag } from '@repo/ui/tag';
 import { useTranslation } from 'react-i18next';
 
 // local modules
-import { month as monthCn } from './short-thought-month.module.scss';
 import { ShortThoughtLineContent } from '../short-thought-line-content';
 
 interface ShortThoughtMonthProps {
@@ -21,7 +21,9 @@ export const ShortThoughtMonth: FC<ShortThoughtMonthProps> = ({ month }) => {
   return (
     <>
       <ShortThoughtLineContent position="bottom" />
-      <div className={monthCn}>{formattedMonth}</div>
+      <Tag colorScheme="gray" size="lg" variant="outline">
+        {formattedMonth}
+      </Tag>
       <br />
     </>
   );

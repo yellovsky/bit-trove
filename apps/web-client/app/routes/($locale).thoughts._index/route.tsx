@@ -1,18 +1,19 @@
 // global modules
 import { fetchThoughtSegmentCollection } from '@bit-trove/api-models/thought';
+import { initialPageParam } from '@bit-trove/api-models/common';
 import type { LoaderFunction } from '@remix-run/node';
 import { PageContent } from '~/components/page-content';
 import type { QueryKeyOf } from '@bit-trove/api-models/common';
+import { Suspense } from 'react';
 import { ThoughtsTimeline } from '~/components/thoughts-timeline';
 import { type Params, useLoaderData } from '@remix-run/react';
-import { initialPageParam } from '@bit-trove/api-models/common';
+
 import {
   dehydrate,
   type DehydratedState,
   HydrationBoundary,
   QueryClient,
 } from '@tanstack/react-query';
-import { Suspense } from 'react';
 
 type ThoughtsPageParams = 'locale';
 
@@ -49,13 +50,10 @@ export default function ThoughtsRoute() {
   return (
     <HydrationBoundary state={dehydratedState}>
       <PageContent>
-        {/* <PageContent className={thoughtsPageCn}> */}
         <Suspense fallback={<div>fallback</div>}>
           <ThoughtsTimeline queryKey={thoughtsQueryKey} />
         </Suspense>
       </PageContent>
-
-      {/* <Page thoughtsQueryKey={thoughtsQueryKey} /> */}
     </HydrationBoundary>
   );
 }

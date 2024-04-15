@@ -1,21 +1,55 @@
+@use 'sass:selector';
+
+@mixin generate-mode($mode: null, $default: false, $parent: '') {
+  $mode-selector: " \
+    :where( \
+      :host[data-color-mode='#{$mode}'], \
+      :root[data-color-mode='#{$mode}'], \
+      [data-color-mode][data-color-mode='#{$mode}'] \
+    ) \
+    #{$parent} \
+  ";
+
+  $selector: unquote($mode-selector);
+  @if $default {
+    $default-selector: "  \
+    :where(.mode-#{$mode}, [data-color-mode='#{$mode}']) \
+    :where(\
+      :host:not([data-color-mode]),\
+      :root:not([data-color-mode]),\
+      [data-color-mode]:not([data-color-mode])\
+    ) \
+    #{$parent} \
+  ";
+
+    $selector: unquote('#{$mode-selector}, #{$default-selector}');
+  }
+
+  @at-root #{$selector} {
+    @content;
+  }
+}
+
+@mixin generate-light($parent: '') {
+  @include generate-mode($mode: 'light', $parent: $parent) {
+    @content;
+  }
+}
+
+@mixin generate-dark($parent: '') {
+  @include generate-mode($mode: 'dark', $default: true, $parent: $parent) {
+    @content;
+  }
+}
+
 @mixin light {
-  [data-color-mode='light'] :host:not([data-color-mode]) &,
-  [data-color-mode='light'] :root:not([data-color-mode]) &,
-  [data-color-mode='light'] [data-color-mode]:not([data-color-mode]) &,
-  :host[data-color-mode='light'] &,
-  :root[data-color-mode='light'] &,
-  [data-color-mode][data-color-mode='light'] & {
+  @include generate-light($parent: &) {
     @content;
   }
 }
 
 @mixin dark {
-  [data-color-mode='dark'] :host:not([data-color-mode]) &,
-  [data-color-mode='dark'] :root:not([data-color-mode]) &,
-  [data-color-mode='dark'] [data-color-mode]:not([data-color-mode]) &,
-  :host[data-color-mode='dark'] &,
-  :root[data-color-mode='dark'] &,
-  [data-color-mode][data-color-mode='dark'] & {
+  @include generate-dark($parent: &) {
     @content;
   }
 }
