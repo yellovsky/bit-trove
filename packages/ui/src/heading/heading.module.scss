@@ -2,6 +2,7 @@
 @use '../scss/breakpoints.scss' as breakpoints;
 
 .heading {
+  margin: 0;
   font-weight: bold;
   font-family: var(--th-heading-font-family);
 

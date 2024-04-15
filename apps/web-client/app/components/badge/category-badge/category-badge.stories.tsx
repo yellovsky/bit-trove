@@ -2,11 +2,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 // local modules
-import { PublishDateBadge } from './publish-date-badge.component';
+import { CategoryBadge } from './category-badge.component';
+import { generateFakeCatgorySegmentResponseData } from '@bit-trove/api-models/category';
+
+const fakeCategory = generateFakeCatgorySegmentResponseData().attributes;
 
 const meta = {
-  component: PublishDateBadge,
-  title: 'Components/Badges/PublishDateBadge',
+  component: CategoryBadge,
+  title: 'Components/Badges/CategoryBadge',
 
   parameters: {
     layout: 'centered',
@@ -23,8 +26,8 @@ const meta = {
     },
   },
 
-  args: { date: Date.now() },
-} satisfies Meta<typeof PublishDateBadge>;
+  args: { category: fakeCategory },
+} satisfies Meta<typeof CategoryBadge>;
 
 export default meta;
 

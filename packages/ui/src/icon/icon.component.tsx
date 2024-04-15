@@ -7,16 +7,18 @@ import {
   chevronDown as chevronDownCn,
   chevronUp as chevronUpCn,
   clock as clockCn,
+  eye as eyeCn,
   icon as iconCn,
   tag as tagCn,
 } from './icon.component.module.scss';
 
-type IconType = 'chevron_up' | 'chevron_down' | 'tag' | 'clock';
+type IconType = 'chevron_up' | 'chevron_down' | 'tag' | 'clock' | 'eye';
 
 const ICON_TYPE_HASH: Record<IconType, string> = {
   chevron_down: chevronDownCn,
   chevron_up: chevronUpCn,
   clock: clockCn,
+  eye: eyeCn,
   tag: tagCn,
 } as const;
 

@@ -5,6 +5,6 @@ import type { FC } from 'react';
 
 interface FeedbackFormProps {}
 
-export const FeedbackForm: FC<FeedbackFormProps> = (props) => {
+export const FeedbackForm: FC<FeedbackFormProps> = () => {
   return <div>feedback form</div>;
 };

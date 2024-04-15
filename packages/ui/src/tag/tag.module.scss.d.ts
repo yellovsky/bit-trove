@@ -4,7 +4,7 @@ export const md: string;
 export const lg: string;
 export const filled: string;
 export const outline: string;
-export const plain: string;
+export const borderless: string;
 export const leftIcon: string;
 export const rightIcon: string;
 export const label: string;

@@ -1,10 +1,8 @@
 // global modules
-import { categoryLink } from '@bit-trove/api-models/category';
 import type { FC } from 'react';
 import { filterByTagLink } from '@bit-trove/api-models/tag';
 import { Link } from '@repo/ui/link';
 import { QueryKeyOf } from '@bit-trove/api-models/common';
-// import { SmallCategoryBadge } from '@repo/ui/small-category-badge';
 import { Stack } from '@repo/ui/stack';
 import { dehydrate, DehydratedState, hydrate } from '@tanstack/query-core';
 import { getThoughtMetadata, thoughtQueryFn } from '@bit-trove/api-models/thought';
@@ -16,10 +14,11 @@ import { type Params, useLoaderData, useParams } from '@remix-run/react';
 import { Ad } from '~/components/ad';
 import { AuthorBadge } from '~/components/badge/author-badge';
 import { Blocks } from '~/components/blocks';
+import { CategoryBadge } from '~/components/badge/category-badge';
 import { ContentPageHeader } from '~/components/content-page-header';
 import { PageContent } from '~/components/page-content';
 import { PublishDateBadge } from '~/components/badge/publish-date-badge';
-import { TagBadge } from '../../components/badge/tag-badge';
+import { TagBadge } from '~/components/badge/tag-badge';
 
 type ThoughtPageParams = 'locale' | 'slug';
 
@@ -58,7 +57,7 @@ export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
 const Temporary: FC = () => {
   const params = useParams<ThoughtPageParams>();
 
-  const { data, status, error } = useQuery({
+  const { data } = useQuery({
     queryFn: thoughtQueryFn,
     queryKey: getThoughtQueryKey(params),
   });
@@ -69,11 +68,9 @@ const Temporary: FC = () => {
 
   const topBadges = !thought.categories.data.length ? null : (
     <>
-      {/* {thought.categories.data.map(({ id, attributes: category }) => (
-        <SmallCategoryBadge to={categoryLink(category)} key={id}>
-          {category.name}
-        </SmallCategoryBadge>
-      ))} */}
+      {thought.categories.data.map(({ id, attributes: category }) => (
+        <CategoryBadge category={category} key={id} />
+      ))}
     </>
   );
   const bottomBadges = (
@@ -91,11 +88,11 @@ const Temporary: FC = () => {
 
   return (
     <PageContent header={header}>
-      <Link variant="standalone" to="/thoughts/typography-heading-elements">
+      <Link to="/thoughts/typography-heading-elements" variant="standalone">
         /thoughts/typography-heading-elements
       </Link>
       <br />
-      <Link variant="standalone" to="/thoughts/recursive-typings-tree-structure">
+      <Link to="/thoughts/recursive-typings-tree-structure" variant="standalone">
         /thoughts/recursive-typings-tree-structure
       </Link>
 
