@@ -5,7 +5,6 @@ import { generateFakeAuthorSegmentResponse } from '@bit-trove/api-models/author'
 import { generateFakeCatgorySegmentResponseCollection } from '@bit-trove/api-models/category';
 import { generateFakeTagSegmentResponseCollection } from '@bit-trove/api-models/tag';
 import type { QueryFunction } from '@tanstack/react-query';
-import type { SupportedLocale } from '@bit-trove/localization/config';
 
 import {
   type APIResponseCollection,
@@ -49,9 +48,8 @@ export const fetchThoughtSegmentCollection: QueryFunction<
   ThoughtSegmentResponseCollection,
   ThoughtSegmentCollectionQueryKey,
   PaginationParams
-> = ({ queryKey, signal, pageParam }) => {
-  console.log('fetchThoughtSegmentCollection', getApiClient());
-  return getApiClient()
+> = ({ queryKey, signal, pageParam }) =>
+  getApiClient()
     .get('/thoughts', {
       params: {
         ...THOUGHT_SEGMENT_POPULATE,
@@ -61,15 +59,7 @@ export const fetchThoughtSegmentCollection: QueryFunction<
       },
       signal,
     })
-    .then((response) => {
-      console.log('response.data', response.data);
-      return response.data;
-    })
-    .catch((e) => {
-      console.log('e', e);
-      throw e;
-    });
-};
+    .then((response) => response.data);
 
 export const generateFakeThoughtSegmentResponseCollection =
   (): ThoughtSegmentResponseCollection => {
@@ -78,7 +68,7 @@ export const generateFakeThoughtSegmentResponseCollection =
     const getPrecision = (delta: number) => Math.round(delta / 8);
 
     return {
-      data: R.times((id) => {
+      data: R.times((id: number) => {
         const between = {
           from: new Date(2000, 10 + getPrecision(id)),
           to: new Date(2000, 12 + getPrecision(id)),

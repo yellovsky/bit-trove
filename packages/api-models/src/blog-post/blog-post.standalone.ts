@@ -1,5 +1,4 @@
 // global modules
-import type { SupportedLocale } from '@bit-trove/localization/config';
 import { AUTHOR_SEGMENT_POPULATE, type AuthorSegmentResponse } from '@bit-trove/api-models/author';
 import { type Block, POPULATE_BLOCKS } from '@bit-trove/api-models/block';
 import { SEO_SEGMENT_POPULATE, type SeoSegment } from '@bit-trove/api-models/seo';
@@ -50,7 +49,7 @@ export type BlogpostResponse = APIResponse<Blogpost>;
 export type BlogpostResponseCollection = APIResponseCollection<Blogpost>;
 
 export interface BlogpostFP {
-  locale: SupportedLocale;
+  locale: string;
   slug: string;
 }
 

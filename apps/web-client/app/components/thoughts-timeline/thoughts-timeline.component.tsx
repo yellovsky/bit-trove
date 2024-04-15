@@ -92,15 +92,12 @@ interface ThoughtsTimelineProps {
 }
 
 export const ThoughtsTimeline: FC<ThoughtsTimelineProps> = ({ queryKey }) => {
-  console.log('ThoughtsTimeline - queryKey', queryKey);
   const { data } = useSuspenseInfiniteQuery({
     getNextPageParam,
     initialPageParam,
     queryFn: fetchThoughtSegmentCollection,
     queryKey,
   });
-
-  console.log('ThoughtsTimeline - queryKey', data);
 
   const [tree, setTree] = useState<ThoughtTree>(addPagesToTree([], data?.pages));
 

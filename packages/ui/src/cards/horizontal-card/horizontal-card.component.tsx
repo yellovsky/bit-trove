@@ -5,14 +5,8 @@ import { apiHost } from '@bit-trove/utils/api-host';
 import type { AuthorSegment } from '@bit-trove/api-models/author';
 import clsx from 'clsx';
 import Image from 'next/image';
-import { Link } from '@bit-trove/localization/link';
-// import { PublishDateBadge } from '@repo/ui/small-publish-date-badge';
-// import { SmallAuthorBadge } from '@repo/ui/small-author-badge';
-// import { SmallBadgesHolder } from '@repo/ui/small-badges-holder';
-// import { SmallTagBadge } from '@repo/ui/small-tag-badge';
-// import { Title } from '@repo/ui/title';
+
 import type { UrlObject } from 'url';
-import { useRouter } from '@bit-trove/localization/navigation';
 import { type FC, type MouseEventHandler, type ReactNode, useCallback } from 'react';
 import { filterByTagLink, type TagSegment } from '@bit-trove/api-models/tag';
 import { imgLoader, type UploadFile } from '@bit-trove/api-models/upload-file';
@@ -41,19 +35,19 @@ interface HorizontalCardProps {
 }
 
 export const HorizontalCard: FC<HorizontalCardProps> = (props) => {
-  const router = useRouter();
+  // const router = useRouter();
 
   const handleTagClick = useCallback(
     (tag: TagSegment): MouseEventHandler<HTMLButtonElement> =>
       (event) => {
         event.stopPropagation();
         event.preventDefault();
-        router.push(filterByTagLink(tag));
+        // router.push(filterByTagLink(tag));
       },
     []
   );
   return (
-    <Link className={clsx(horizontalCardCn, props.withoutImg && withoutImgCn)} href={props.href}>
+    <a className={clsx(horizontalCardCn, props.withoutImg && withoutImgCn)} href={props.href}>
       {props.withoutImg ? null : (
         <div className={imgHolderCn}>
           {!props.img ? null : (
@@ -88,7 +82,7 @@ export const HorizontalCard: FC<HorizontalCardProps> = (props) => {
           ))}
         </SmallBadgesHolder> */}
       </div>
-    </Link>
+    </a>
   );
 };
 

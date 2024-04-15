@@ -1,7 +1,6 @@
 // global modules
 import * as R from 'ramda';
 import type { QueryFunction } from '@tanstack/react-query';
-import type { SupportedLocale } from '@bit-trove/localization/config';
 
 import {
   type APIResponseCollection,
@@ -32,7 +31,7 @@ const BLOG_POST_SEGMENT_POPULATE = {
 export type BlogpostSegmentResponseCollection = APIResponseCollection<BlogpostSegment>;
 
 export interface BlogpostSegmentListFP {
-  locale: SupportedLocale;
+  locale: string;
   sort?: 'createdAt:desc' | 'createdAt:asc';
 }
 

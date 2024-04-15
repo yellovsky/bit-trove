@@ -1,6 +1,0 @@
-@use '@bit-trove/ui/src/scss/paddings.scss' as paddings;
-
-.blogPage {
-  @include paddings.page-padding-vertical;
-  @include paddings.page-padding-horizontal;
-}

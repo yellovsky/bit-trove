@@ -16,12 +16,11 @@ const myCustomDecorator = ({ themes, defaultTheme }) => {
     const selectedTheme = pluckThemeFromContext(context);
 
     useEffect(() => {
-      console.log('set', selectedTheme);
       document.body.setAttribute('data-color-mode', selectedTheme);
       document.body.style.backgroundColor = 'var(--th-page-bg-color)';
     }, [selectedTheme]);
 
-    return <ThemeProvider clorMode={selectedTheme}>{storyFn()}</ThemeProvider>;
+    return <ThemeProvider colorMode={selectedTheme}>{storyFn()}</ThemeProvider>;
   };
 };
 
