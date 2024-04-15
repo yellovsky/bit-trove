@@ -1,5 +1,4 @@
 // global modules
-import './theme-provider.scss';
 import type { FC, PropsWithChildren } from 'react';
 
 interface ThemeProviderProps extends PropsWithChildren {
