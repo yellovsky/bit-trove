@@ -1,5 +1,5 @@
 @use '@repo/ui/src/scss/paddings.scss' as paddings;
-@use '@repo/ui/src/scss/screen-interval.scss' as si;
+@use '@repo/ui/src/scss/breakpoints.scss' as breakpoints;
 
 .pageContent {
   .columns {
@@ -16,7 +16,7 @@
       position: sticky;
     }
 
-    @include si.screen-interval($to: 'sm') {
+    @include breakpoints.interval($to: breakpoints.$sm) {
       grid-template-columns: 1fr;
 
       .extraColumn {

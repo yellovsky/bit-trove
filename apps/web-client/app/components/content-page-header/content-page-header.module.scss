@@ -1,15 +1,15 @@
 @use '@repo/ui/src/scss/variables.scss' as vars;
-@use '@repo/ui/src/scss/screen-interval.scss' as si;
+@use '@repo/ui/src/scss/breakpoints.scss' as breakpoints;
 
 .pagePadding {
-  @include si.page-padding using ($padding) {
+  @include breakpoints.page-padding using ($padding) {
     padding-left: $padding;
     padding-right: $padding;
   }
 }
 
 .contentPageHeader {
-  @include si.page-padding using ($padding) {
+  @include breakpoints.page-padding using ($padding) {
     padding-left: $padding;
     padding-right: $padding;
   }

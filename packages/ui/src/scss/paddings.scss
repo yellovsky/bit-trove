@@ -1,5 +1,5 @@
 @use './variables.scss' as vars;
-@use './screen-interval.scss' as si;
+@use './breakpoints.scss' as breakpoints;
 
 @mixin page-padding-vertical {
   padding-top: vars.$var--page-top-padding;
@@ -7,7 +7,7 @@
 }
 
 @mixin page-padding-horizontal {
-  @include si.page-padding using ($padding) {
+  @include breakpoints.page-padding using ($padding) {
     padding-left: $padding;
     padding-right: $padding;
   }

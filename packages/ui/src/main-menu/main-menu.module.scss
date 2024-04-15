@@ -1,6 +1,6 @@
 @use '../scss/interactive.scss' as i;
 @use '../scss/paddings.scss' as paddings;
-@use '../scss/screen-interval.scss' as si;
+@use '../scss/breakpoints.scss' as breakpoints;
 
 .wrapper {
   @include paddings.page-padding-horizontal;
@@ -14,7 +14,7 @@
     border-bottom: 1px solid #e1e1e1;
     grid-template-columns: 1fr min-content 1fr;
 
-    @include si.screen-interval($to: 'md') {
+    @include breakpoints.interval($to: breakpoints.$md) {
       grid-template-columns: min-content 1fr;
     }
   }
@@ -25,7 +25,7 @@
     align-items: center;
 
     &.left {
-      @include si.screen-interval($to: 'md') {
+      @include breakpoints.interval($to: breakpoints.$md) {
         display: none;
       }
     }

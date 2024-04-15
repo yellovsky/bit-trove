@@ -1,4 +1,5 @@
 @use '@repo/ui/src/scss/interactive.scss' as i;
+@use '@repo/ui/src/scss/font-sizes.scss' as font-sizes;
 
 $marker-width: 2.5rem;
 
@@ -15,6 +16,7 @@ $marker-width: 2.5rem;
   grid-template-columns: 1fr 2rem;
 
   .publishDate {
+    font-size: font-sizes.$sm;
     color: var(--colors-gray-500);
   }
 

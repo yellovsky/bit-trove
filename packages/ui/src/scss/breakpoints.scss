@@ -30,3 +30,19 @@ $xxl: 96em;
     @content;
   }
 }
+
+@mixin page-padding {
+  @content (1rem);
+
+  @include min-interval($from: $sm) {
+    @content (2rem);
+  }
+
+  @include min-interval($from: $md) {
+    @content (3rem);
+  }
+
+  @include min-interval($from: $lg) {
+    @content (4rem);
+  }
+}
