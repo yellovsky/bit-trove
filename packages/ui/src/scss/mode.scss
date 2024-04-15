@@ -19,3 +19,13 @@
     @content;
   }
 }
+
+@mixin switch {
+  @include dark {
+    @content ('dark');
+  }
+
+  @include light {
+    @content ('light');
+  }
+}
