@@ -12,7 +12,7 @@ export const PublishDateBadge: FC<PublishDateBadgeProps> = ({ date }) => {
   const { t } = useTranslation();
 
   return (
-    <Tag colorScheme="gray" variant="outline">
+    <Tag colorScheme="gray" variant="plain">
       <TagLeftIcon>
         <Icon type="clock" />
       </TagLeftIcon>
