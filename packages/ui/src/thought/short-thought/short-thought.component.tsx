@@ -1,6 +1,6 @@
 // global modules
 import { Icon } from '@repo/ui/icon';
-import { Title } from '@repo/ui/title';
+// import { Title } from '@repo/ui/title';
 import { useFormatter } from 'next-intl';
 import type { FC, ReactNode } from 'react';
 
@@ -52,9 +52,9 @@ export const ShortThought: FC<ShortThoughtUIProps> = (props) => {
     <LinedSection marker ref={itemRef}>
       <button {...buttonProps} aria-label="toggle trhought" className={titleCellCn}>
         <div>
-          <Title as="h5" className={titleCn}>
+          {/* <Title as="h5" className={titleCn}>
             {header}
-          </Title>
+          </Title> */}
           <time className={publishDateCn} dateTime={new Date(publishDate).toUTCString()}>
             {formattedDate}
           </time>
