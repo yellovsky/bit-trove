@@ -18,6 +18,7 @@ import {
   md as mdCn,
   outline as outlineCn,
   pending as pendingCn,
+  plain as plainCn,
   rightIcon as rightIconCn,
   sm as smCn,
   tag as tagCn,
@@ -25,7 +26,17 @@ import {
 
 export type TagSize = 'sm' | 'md' | 'lg';
 
-export type TagVariant = 'filled' | 'outline';
+const getSizeCn = (size: TagSize): string =>
+  clsx(size === 'sm' && smCn, size === 'md' && mdCn, size === 'lg' && lgCn);
+
+export type TagVariant = 'filled' | 'outline' | 'plain';
+
+const getVariantCn = (variant: TagVariant): string =>
+  clsx(
+    variant === 'filled' && filledCn,
+    variant === 'outline' && outlineCn,
+    variant === 'plain' && plainCn
+  );
 
 export interface TagProps extends PropsWithChildren, ColorSchemeProps, BorderRadiusProps {
   size?: TagSize;
@@ -42,16 +53,7 @@ const applyTagCn = R.compose(
 export const Tag: FC<TagProps> = (props) => {
   const { className, variant, to, size = 'md', ...rest } = applyTagCn(props);
 
-  const cName = clsx(
-    className,
-    tagCn,
-    size === 'sm' && smCn,
-    size === 'md' && mdCn,
-    size === 'lg' && lgCn,
-    variant === 'filled' && filledCn,
-    variant === 'outline' && outlineCn,
-    to && linkCn
-  );
+  const cName = clsx(className, tagCn, to && linkCn, getSizeCn(size), getVariantCn(variant));
 
   return to ? (
     <Link {...rest} className={cName} to={to} variant="plain" />
@@ -75,14 +77,7 @@ type TagPendingProps = Pick<TagProps, 'size' | 'className' | 'borderRadius'>;
 export const TagPending: FC<TagPendingProps> = (props) => {
   const { className, size = 'md' } = applyBorderRadius<TagPendingProps>({ br: 'md' })(props);
 
-  const cName = clsx(
-    className,
-    tagCn,
-    pendingCn,
-    size === 'sm' && smCn,
-    size === 'md' && mdCn,
-    size === 'lg' && lgCn
-  );
+  const cName = clsx(className, tagCn, pendingCn, getSizeCn(size));
 
   return <Skeleton className={cName} />;
 };
