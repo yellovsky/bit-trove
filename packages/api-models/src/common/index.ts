@@ -50,10 +50,8 @@ export const DEFAULT_PAGE_LIMIT = 24;
 export const initialPageParam = { limit: DEFAULT_PAGE_LIMIT, start: 0 };
 
 export const getNextPageParam = (lastPage: WithAPIResponseCollectionMetadata) => {
-  console.log('getNextPageParam', lastPage);
   const { start, limit, total } = lastPage.meta.pagination;
   const nextParams = { limit, start: start + DEFAULT_PAGE_LIMIT * limit };
-  console.log('getNextPageParam~', nextParams.start < total);
   return nextParams.start < total ? nextParams : undefined;
 };
 

@@ -1,7 +1,5 @@
 // global modules
 import Backend from 'i18next-http-backend';
-import { CacheProvider } from '@emotion/react';
-import createEmotionCache from '@emotion/cache';
 import { getInitialNamespaces } from 'remix-i18next/client';
 import { hydrateRoot } from 'react-dom/client';
 import i18next from 'i18next';
@@ -14,8 +12,6 @@ import { startTransition, StrictMode } from 'react';
 import i18n from './i18n';
 
 async function hydrate() {
-  const emotionCache = createEmotionCache({ key: 'css' });
-
   // eslint-disable-next-line import/no-named-as-default-member
   await i18next
     .use(initReactI18next)
@@ -33,11 +29,9 @@ async function hydrate() {
     hydrateRoot(
       document,
       <StrictMode>
-        <CacheProvider value={emotionCache}>
-          <I18nextProvider i18n={i18next}>
-            <RemixBrowser />
-          </I18nextProvider>
-        </CacheProvider>
+        <I18nextProvider i18n={i18next}>
+          <RemixBrowser />
+        </I18nextProvider>
       </StrictMode>
     );
   });

@@ -1,9 +1,0 @@
-@use '@bit-trove/ui/src/scss/paddings.scss' as paddings;
-
-.thoughtsPage {
-  @include paddings.page-padding-vertical;
-
-  .title {
-    margin-bottom: 2rem;
-  }
-}

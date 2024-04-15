@@ -16,9 +16,6 @@
   "dependencies": {
     "@bit-trove/api-models": "*",
     "@bit-trove/utils": "*",
-    "@emotion/react": "^11",
-    "@emotion/server": "^11",
-    "@emotion/styled": "^11",
     "@fontsource-variable/montserrat": "^5.0.18",
     "@fontsource-variable/roboto-mono": "^5.0.18",
     "@fontsource/roboto": "^5.0.12",
@@ -69,6 +66,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-storybook": "^0.8.0",
     "remix-development-tools": "^4.1.4",
+    "sass": "^1.75.0",
     "storybook": "^8.0.8",
     "typescript": "^5.3.3",
     "vite": "^5.1.0",

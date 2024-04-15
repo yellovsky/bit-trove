@@ -1,9 +1,0 @@
-{
-  "extends": "@bit-trove/typescript-config/react-library.json",
-  "compilerOptions": {
-    "outDir": "dist",
-    "types": ["jest", "node"]
-  },
-  "include": ["src"],
-  "exclude": ["node_modules", "dist"]
-}

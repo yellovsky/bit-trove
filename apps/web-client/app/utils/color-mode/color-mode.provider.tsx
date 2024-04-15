@@ -35,10 +35,6 @@ const clientThemeCode = `
     } else if (theme === 'light') {
       meta.content = 'light dark';
     }
-  } else {
-    console.warn(
-      "Hey, could you let Matt know you're seeing this message? Thanks!",
-    );
   }
 })();
 `;

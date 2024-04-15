@@ -1,9 +1,0 @@
-@use '@bit-trove/ui/src/scss/paddings.scss' as paddings;
-
-.pageHolder {
-  @include paddings.page-padding-vertical;
-}
-
-.marginbottom2rem {
-  margin-bottom: 2rem;
-}
