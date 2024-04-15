@@ -1,3 +1,5 @@
+@use '@repo/ui/src/scss/mode.scss' as mode;
+
 @import './color-schemes.scss';
 @import '@repo/ui/src/apply-spacing/apply-spacing.scss';
 @import '@repo/ui/src/apply-color-scheme/apply-color-scheme.scss';
@@ -8,20 +10,32 @@
   --monospace-font-family: 'Roboto Mono Variable', monospace;
 }
 
-[data-color-mode='dark'] {
+@include mode.generate-dark() {
   --text-color: white;
   --page-bg-color: var(--colors-gray-800);
   --border-color: var(--colors-white-alpha-300);
 
+  --color-accent: var(--colors-primary-500);
+  --color-accent-hover: var(--colors-primary-600);
+  --color-accent-active: var(--colors-primary-700);
+
   --base-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 
-[data-color-mode='light'] {
+@include mode.generate-light() {
   --text-color: var(--colors-gray-900);
   --page-bg-color: white;
   --border-color: var(--colors-gray-200);
 
+  --color-accent: var(--colors-primary-500);
+  --color-accent-hover: var(--colors-primary-600);
+  --color-accent-active: var(--colors-primary-700);
+
   --base-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+[data-color-mode] {
+  color: var(--text-color);
 }
 
 :where(a) {

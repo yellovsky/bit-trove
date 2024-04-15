@@ -1,9 +1,7 @@
 // global modules
 import type { FC } from 'react';
+import { Tag } from '@repo/ui/tag';
 import { useTranslation } from 'react-i18next';
-
-// local modules
-import { year as yearCn } from './short-thought-year.module.scss';
 
 interface ShortThoughtYearProps {
   year: number;
@@ -18,8 +16,8 @@ export const ShortThoughtYear: FC<ShortThoughtYearProps> = ({ year }) => {
   });
 
   return (
-    <div>
-      <div className={yearCn}>{formattedMonth}</div>
-    </div>
+    <Tag colorScheme="gray" size="lg" variant="filled">
+      {formattedMonth}
+    </Tag>
   );
 };

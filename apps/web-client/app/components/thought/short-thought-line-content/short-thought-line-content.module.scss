@@ -1,5 +1,4 @@
-@use '@repo/ui/src/scss/variables.scss' as vars;
-@use '@repo/ui/src/scss/interactive.scss' as i;
+@use '@repo/ui/src/scss/mode.scss' as mode;
 
 $marker-width: 2.4rem;
 
@@ -10,16 +9,23 @@ $marker-width: 2.4rem;
   grid-template-columns: $marker-width 1fr;
 
   &.top {
-    min-height: 0.5rem;
+    min-height: 1rem;
   }
 
   &.bottom {
-    min-height: 0.5rem;
+    min-height: 1rem;
   }
 
   .line {
     margin: 0 auto;
     width: 0.0625rem;
-    background-color: #dadee5;
+
+    @include mode.light {
+      background-color: var(--colors-gray-300);
+    }
+
+    @include mode.dark {
+      background-color: var(--colors-gray-100);
+    }
   }
 }

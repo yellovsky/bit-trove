@@ -1,6 +1,7 @@
 // global modules
+import { Heading } from '@repo/ui/heading';
 import { Icon } from '@repo/ui/icon';
-// import { Title } from '@repo/ui/title';
+import { useTranslation } from 'react-i18next';
 import type { FC, ReactNode } from 'react';
 
 import {
@@ -19,7 +20,6 @@ import {
   titleCell as titleCellCn,
   title as titleCn,
 } from './short-thought.module.scss';
-import { useTranslation } from 'react-i18next';
 
 interface ShortThoughtUIProps {
   header: ReactNode;
@@ -52,9 +52,9 @@ export const ShortThought: FC<ShortThoughtUIProps> = (props) => {
     <LinedSection marker ref={itemRef}>
       <button {...buttonProps} aria-label="toggle trhought" className={titleCellCn}>
         <div>
-          {/* <Title as="h5" className={titleCn}>
+          <Heading as="h5" className={titleCn} mb="0.25rem" size="sm">
             {header}
-          </Title> */}
+          </Heading>
           <time className={publishDateCn} dateTime={new Date(publishDate).toUTCString()}>
             {formattedDate}
           </time>

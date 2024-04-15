@@ -3,6 +3,8 @@ import React, { useEffect } from 'react';
 import type { Preview } from '@storybook/react';
 import { createRemixStub } from '@remix-run/testing';
 import { DecoratorHelpers } from '@storybook/addon-themes';
+
+// @ts-ignore
 import { ThemeProvider } from '@repo/ui/theme-provider';
 
 // local modules
