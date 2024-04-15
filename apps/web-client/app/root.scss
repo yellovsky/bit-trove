@@ -3,25 +3,25 @@
 @import '@repo/ui/src/apply-color-scheme/apply-color-scheme.scss';
 
 :root {
-  --th-heading-font-family: 'Montserrat Variable', sans-serif;
-  --th-body-font-family: 'Roboto', sans-serif;
-  --th-monospace-font-family: 'Roboto Mono Variable', monospace;
+  --heading-font-family: 'Montserrat Variable', sans-serif;
+  --body-font-family: 'Roboto', sans-serif;
+  --monospace-font-family: 'Roboto Mono Variable', monospace;
 }
 
 [data-color-mode='dark'] {
-  --th-text-color: white;
-  --th-page-bg-color: var(--th-colors-gray-800);
-  --th-border-color: var(--th-colors-white-alpha-300);
+  --text-color: white;
+  --page-bg-color: var(--colors-gray-800);
+  --border-color: var(--colors-white-alpha-300);
 
-  --th-base-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --base-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 
 [data-color-mode='light'] {
-  --th-text-color: var(--th-colors-gray-900);
-  --th-page-bg-color: white;
-  --th-border-color: var(--th-colors-gray-200);
+  --text-color: var(--colors-gray-900);
+  --page-bg-color: white;
+  --border-color: var(--colors-gray-200);
 
-  --th-base-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --base-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 
 :where(a) {
@@ -30,15 +30,15 @@
 }
 
 body {
-  color: var(--th-text-color);
-  font-family: var(--th-body-font-family);
-  background-color: var(--th-page-bg-color);
+  color: var(--text-color);
+  font-family: var(--body-font-family);
+  background-color: var(--page-bg-color);
 }
 
 :where(h1, h2, h3, h4, h5, h6, p) {
   margin: 0;
   padding: 0;
-  font-family: var(--th-heading-font-family);
+  font-family: var(--heading-font-family);
 }
 
 :where(sub, sup) {
@@ -49,7 +49,7 @@ body {
 }
 
 :where(kbd, code) {
-  font-family: var(--th-monospace-font-family);
+  font-family: var(--monospace-font-family);
 }
 
 :where(*, *::before, *::after) {

@@ -16,12 +16,12 @@
 }
 
 @mixin skeleton-style {
-  --skeleton-start-color: var(--th-colors-gray-100);
-  --skeleton-end-color: var(--th-colors-gray-400);
+  --skeleton-start-color: var(--colors-gray-100);
+  --skeleton-end-color: var(--colors-gray-400);
 
   @include mode.dark {
-    --skeleton-start-color: var(--th-colors-gray-800);
-    --skeleton-end-color: var(--th-colors-gray-600);
+    --skeleton-start-color: var(--colors-gray-800);
+    --skeleton-end-color: var(--colors-gray-600);
   }
 
   opacity: 0.7;

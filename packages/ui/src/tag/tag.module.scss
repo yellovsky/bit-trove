@@ -3,18 +3,18 @@
 @use '@repo/ui/src/scss/interactive.scss' as i;
 
 @mixin filled-tag-colors {
-  --tag-bg: var(--th-colors-scheme-100);
-  --tag-color: var(--th-colors-scheme-800);
+  --tag-bg: var(--colors-scheme-100);
+  --tag-color: var(--colors-scheme-800);
 }
 
 @mixin outline-tag-colors {
   @include mode.switch using ($mode) {
     @if $mode == 'dark' {
-      --tag-color: var(--th-colors-scheme-300);
-      --tag-shadow: inset 0 0 0px 0.0625rem var(--th-colors-scheme-400);
+      --tag-color: var(--colors-scheme-300);
+      --tag-shadow: inset 0 0 0px 0.0625rem var(--colors-scheme-400);
     } @else if $mode == 'light' {
-      --tag-color: var(--th-colors-scheme-400);
-      --tag-shadow: inset 0 0 0px 0.0625rem var(--th-colors-scheme-300);
+      --tag-color: var(--colors-scheme-400);
+      --tag-shadow: inset 0 0 0px 0.0625rem var(--colors-scheme-300);
     }
   }
 
@@ -35,9 +35,9 @@
 @mixin borderless-tag-colors {
   @include mode.switch using ($mode) {
     @if $mode == 'dark' {
-      --tag-color: var(--th-colors-scheme-300);
+      --tag-color: var(--colors-scheme-300);
     } @else if $mode == 'light' {
-      --tag-color: var(--th-colors-scheme-400);
+      --tag-color: var(--colors-scheme-400);
     }
   }
 

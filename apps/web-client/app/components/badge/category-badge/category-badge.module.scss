@@ -19,28 +19,28 @@
   }
 
   &.type1 {
-    --badge-color: var(--th-colors-gray-50);
+    --badge-color: var(--colors-gray-50);
     --badge-bg-color: #c3195d;
     --badge-bg-color-hover: #f70776;
     --badge-bg-color-active: #680747;
   }
 
   &.type2 {
-    --badge-color: var(--th-colors-gray-800);
+    --badge-color: var(--colors-gray-800);
     --badge-bg-color: #8594e4;
     --badge-bg-color-hover: #6b80b5;
     --badge-bg-color-active: #6643b5;
   }
 
   &.type3 {
-    --badge-color: var(--th-colors-gray-50);
+    --badge-color: var(--colors-gray-50);
     --badge-bg-color: #347474;
     --badge-bg-color-hover: #42b883;
     --badge-bg-color-active: #35495e;
   }
 
   &.type4 {
-    --badge-color: var(--th-colors-gray-800);
+    --badge-color: var(--colors-gray-800);
     --badge-bg-color: #f67280;
     --badge-bg-color-hover: #f8b595;
     --badge-bg-color-active: #c06c84;

@@ -4,39 +4,39 @@
 @use '@repo/ui/src/apply-color-scheme/apply-color-scheme.scss' as cs;
 
 @mixin button-filled-light-gray-style {
-  color: var(--th-colors-gray-800);
-  background-color: var(--th-colors-scheme-100);
+  color: var(--colors-gray-800);
+  background-color: var(--colors-scheme-100);
 
   @include i.interactive using ($state) {
     @if ($state == 'hover') {
-      background-color: var(--th-colors-scheme-200);
+      background-color: var(--colors-scheme-200);
     } @else if ($state == 'focus') {
       @include i.focus-outline-style;
 
-      background-color: var(--th-colors-scheme-20);
+      background-color: var(--colors-scheme-20);
     } @else if ($state == 'active') {
-      background-color: var(--th-colors-scheme-300);
+      background-color: var(--colors-scheme-300);
     } @else if ($state == 'disabled') {
-      background-color: var(--th-colors-gray-400);
+      background-color: var(--colors-gray-400);
     }
   }
 }
 
 @mixin button-filled-light-style {
-  color: var(--th-colors-gray-100);
-  background-color: var(--th-colors-scheme-500);
+  color: var(--colors-gray-100);
+  background-color: var(--colors-scheme-500);
 
   @include i.interactive using ($state) {
     @if ($state == 'hover') {
-      background-color: var(--th-colors-scheme-600);
+      background-color: var(--colors-scheme-600);
     } @else if ($state == 'focus') {
       @include i.focus-outline-style;
 
-      background-color: var(--th-colors-scheme-600);
+      background-color: var(--colors-scheme-600);
     } @else if ($state == 'active') {
-      background-color: var(--th-colors-scheme-700);
+      background-color: var(--colors-scheme-700);
     } @else if ($state == 'disabled') {
-      background-color: var(--th-colors-gray-400);
+      background-color: var(--colors-gray-400);
     }
   }
 
@@ -46,49 +46,49 @@
 }
 
 @mixin button-filled-dark-gray-style {
-  color: var(--th-colors-white-alpha-900);
-  border-color: var(--th-colors-white-alpha-200);
-  background-color: var(--th-colors-white-alpha-200);
+  color: var(--colors-white-alpha-900);
+  border-color: var(--colors-white-alpha-200);
+  background-color: var(--colors-white-alpha-200);
 
   @include i.interactive using ($state) {
     @if ($state == 'hover') {
-      border-color: var(--th-colors-white-alpha-300);
-      background-color: var(--th-colors-white-alpha-300);
+      border-color: var(--colors-white-alpha-300);
+      background-color: var(--colors-white-alpha-300);
     } @else if ($state == 'focus') {
       @include i.focus-outline-style;
 
-      border-color: var(--th-colors-white-alpha-300);
-      background-color: var(--th-colors-white-alpha-300);
+      border-color: var(--colors-white-alpha-300);
+      background-color: var(--colors-white-alpha-300);
     } @else if ($state == 'active') {
-      border-color: var(--th-colors-white-alpha-400);
-      background-color: var(--th-colors-white-alpha-400);
+      border-color: var(--colors-white-alpha-400);
+      background-color: var(--colors-white-alpha-400);
     } @else if ($state == 'disabled') {
-      border-color: var(--th-colors-gray-400);
-      background-color: var(--th-colors-gray-400);
+      border-color: var(--colors-gray-400);
+      background-color: var(--colors-gray-400);
     }
   }
 }
 
 @mixin button-filled-dark-style {
-  color: var(--th-colors-gray-700);
-  border-color: var(--th-colors-scheme-200);
-  background-color: var(--th-colors-scheme-200);
+  color: var(--colors-gray-700);
+  border-color: var(--colors-scheme-200);
+  background-color: var(--colors-scheme-200);
 
   @include i.interactive using ($state) {
     @if ($state == 'hover') {
-      border-color: var(--th-colors-scheme-300);
-      background-color: var(--th-colors-scheme-300);
+      border-color: var(--colors-scheme-300);
+      background-color: var(--colors-scheme-300);
     } @else if ($state == 'focus') {
       @include i.focus-outline-style;
 
-      border-color: var(--th-colors-scheme-300);
-      background-color: var(--th-colors-scheme-300);
+      border-color: var(--colors-scheme-300);
+      background-color: var(--colors-scheme-300);
     } @else if ($state == 'active') {
-      border-color: var(--th-colors-scheme-400);
-      background-color: var(--th-colors-scheme-400);
+      border-color: var(--colors-scheme-400);
+      background-color: var(--colors-scheme-400);
     } @else if ($state == 'disabled') {
-      border-color: var(--th-colors-gray-400);
-      background-color: var(--th-colors-gray-400);
+      border-color: var(--colors-gray-400);
+      background-color: var(--colors-gray-400);
     }
   }
 

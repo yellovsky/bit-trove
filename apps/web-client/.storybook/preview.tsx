@@ -17,7 +17,7 @@ const myCustomDecorator = ({ themes, defaultTheme }) => {
 
     useEffect(() => {
       document.body.setAttribute('data-color-mode', selectedTheme);
-      document.body.style.backgroundColor = 'var(--th-page-bg-color)';
+      document.body.style.backgroundColor = 'var(--page-bg-color)';
     }, [selectedTheme]);
 
     return <ThemeProvider colorMode={selectedTheme}>{storyFn()}</ThemeProvider>;
