@@ -1,5 +1,5 @@
 // global modules
-import type { Block } from '@repo/api-models/block';
+import type { Block } from '@bit-trove/api-models/block';
 import type { FC } from 'react';
 import { RichTextBlock } from '@repo/ui/rich-text-block';
 

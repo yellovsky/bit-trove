@@ -39,14 +39,22 @@ module.exports = {
         react: {
           version: 'detect',
         },
-        formComponents: ['Form'],
-        linkComponents: [
-          { name: 'Link', linkAttribute: 'to' },
-          { name: 'NavLink', linkAttribute: 'to' },
-        ],
-        'import/resolver': {
-          typescript: {},
-        },
+        // formComponents: ['Form'],
+        // linkComponents: [
+        //   { name: 'Link', linkAttribute: 'to' },
+        //   { name: 'NavLink', linkAttribute: 'to' },
+        // ],
+        // 'import/resolver': {
+        //   node: {
+        //     extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        //   },
+        // alias: {
+        //   map: [['~', './src']],
+        // },
+        // typescript: {
+        //   project: '<root>',
+        // },
+        // },
       },
     },
 
@@ -63,6 +71,9 @@ module.exports = {
           },
           typescript: {
             alwaysTryTypes: true,
+          },
+          alias: {
+            map: [['~', './src']],
           },
         },
       },
@@ -82,4 +93,9 @@ module.exports = {
       },
     },
   ],
+
+  rules: {
+    'import/no-unresolved': ['error', { ignore: ['^~/'] }],
+    'no-console': ['error', { allow: ['warn', 'error'] }],
+  },
 };

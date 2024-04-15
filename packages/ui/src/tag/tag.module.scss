@@ -10,16 +10,12 @@
 @mixin outline-tag-colors {
   @include mode.switch using ($mode) {
     @if $mode == 'dark' {
-      --tag-color: var(--th-colors-scheme-500);
-      --tag-shadow: inset 0 0 0px 1px var(--th-colors-scheme-400);
+      --tag-color: var(--th-colors-scheme-300);
+      --tag-shadow: inset 0 0 0px 0.0625rem var(--th-colors-scheme-400);
     } @else if $mode == 'light' {
       --tag-color: var(--th-colors-scheme-400);
-      --tag-shadow: inset 0 0 0px 1px var(--th-colors-scheme-300);
+      --tag-shadow: inset 0 0 0px 0.0625rem var(--th-colors-scheme-300);
     }
-  }
-
-  @include mode.dark {
-    --tag-shadow: inset 0 0 0px 1px var(--th-colors-scheme-600);
   }
 
   &.link {
@@ -36,10 +32,10 @@
   }
 }
 
-@mixin plain-tag-colors {
+@mixin borderless-tag-colors {
   @include mode.switch using ($mode) {
     @if $mode == 'dark' {
-      --tag-color: var(--th-colors-scheme-500);
+      --tag-color: var(--th-colors-scheme-300);
     } @else if $mode == 'light' {
       --tag-color: var(--th-colors-scheme-400);
     }
@@ -126,8 +122,8 @@
     @include outline-tag-colors;
   }
 
-  &.plain {
-    @include plain-tag-colors;
+  &.borderless {
+    @include borderless-tag-colors;
   }
 
   .leftIcon {

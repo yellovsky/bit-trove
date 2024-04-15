@@ -11,7 +11,7 @@ interface ViewsBadgeProps {
 export const ViewsBadge: FC<ViewsBadgeProps> = (props) => (
   <Tag colorScheme="gray" variant="outline">
     <TagLeftIcon>
-      <Icon type="chevron_down" />
+      <Icon type="eye" />
     </TagLeftIcon>
     <TagLabel>
       {props.viewsCount === undefined ? null : shortenItemsCount(props.viewsCount)}

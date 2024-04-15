@@ -1,17 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
-<svg width="800px" height="800px" viewBox="0 -5 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
-    
-    <title>chevron-up</title>
-    <desc>Created with Sketch Beta.</desc>
-    <defs>
-
-</defs>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
-        <g id="Icon-Set" sketch:type="MSLayerGroup" transform="translate(-519.000000, -1200.000000)" fill="#000000">
-            <path d="M542.687,1212.29 L531.745,1200.31 C531.535,1200.1 531.258,1200.01 530.984,1200.03 C530.711,1200.01 530.434,1200.1 530.224,1200.31 L519.281,1212.29 C518.89,1212.69 518.89,1213.32 519.281,1213.72 C519.674,1214.11 520.31,1214.11 520.701,1213.72 L530.984,1202.46 L541.268,1213.72 C541.659,1214.11 542.295,1214.11 542.687,1213.72 C543.079,1213.32 543.079,1212.69 542.687,1212.29" id="chevron-up" sketch:type="MSShapeGroup">
-
-</path>
-        </g>
-    </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -5 24 24">
+    <path fill="#000" fill-rule="evenodd"
+        d="M23.687 12.29 12.745.31a.965.965 0 0 0-.761-.28.965.965 0 0 0-.76.28L.281 12.29c-.391.4-.391 1.03 0 1.43.393.39 1.029.39 1.42 0L11.984 2.46l10.284 11.26c.391.39 1.027.39 1.419 0 .392-.4.392-1.03 0-1.43" />
 </svg>

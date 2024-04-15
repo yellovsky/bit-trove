@@ -1,4 +1,5 @@
 // global modules
+import normalizeCss from 'normalize.css?url';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -15,17 +16,14 @@ import {
 } from '@remix-run/react';
 
 // local modules
-import normalizeCss from 'normalize.css?url';
-import rootCss from './root.scss?url';
-
-import robotoLatinCss from '@fontsource/roboto/latin.css?url';
-import robotoCyrillicCss from '@fontsource/roboto/cyrillic.css?url';
-import montserratCss from '@fontsource-variable/montserrat/index.css?url';
-import robotoMonoScss from '@fontsource-variable/roboto-mono/index.css?url';
-
 import { getColorModeSession } from './utils/color-mode/color-mode.server';
 import { getQueryClient } from './query-client';
 import i18next from './i18next.server';
+import montserratCss from '@fontsource-variable/montserrat/index.css?url';
+import robotoCyrillicCss from '@fontsource/roboto/cyrillic.css?url';
+import robotoLatinCss from '@fontsource/roboto/latin.css?url';
+import robotoMonoScss from '@fontsource-variable/roboto-mono/index.css?url';
+import rootCss from './root.scss?url';
 
 import {
   type ColorMode,

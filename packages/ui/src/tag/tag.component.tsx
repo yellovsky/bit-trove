@@ -10,6 +10,7 @@ import type { FC, PropsWithChildren } from 'react';
 
 // local modules
 import {
+  borderless as borderlessCn,
   filled as filledCn,
   label as labelCn,
   leftIcon as leftIconCn,
@@ -18,7 +19,6 @@ import {
   md as mdCn,
   outline as outlineCn,
   pending as pendingCn,
-  plain as plainCn,
   rightIcon as rightIconCn,
   sm as smCn,
   tag as tagCn,
@@ -29,13 +29,13 @@ export type TagSize = 'sm' | 'md' | 'lg';
 const getSizeCn = (size: TagSize): string =>
   clsx(size === 'sm' && smCn, size === 'md' && mdCn, size === 'lg' && lgCn);
 
-export type TagVariant = 'filled' | 'outline' | 'plain';
+export type TagVariant = 'filled' | 'outline' | 'borderless' | 'plain';
 
 const getVariantCn = (variant: TagVariant): string =>
   clsx(
     variant === 'filled' && filledCn,
     variant === 'outline' && outlineCn,
-    variant === 'plain' && plainCn
+    variant === 'borderless' && borderlessCn
   );
 
 export interface TagProps extends PropsWithChildren, ColorSchemeProps, BorderRadiusProps {

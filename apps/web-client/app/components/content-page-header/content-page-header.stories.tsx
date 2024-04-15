@@ -2,22 +2,21 @@
 import { faker } from '@faker-js/faker';
 import { generateFakeAuthorSegmentResponse } from '@bit-trove/api-models/author';
 import { generateFakeCatgorySegmentResponseCollection } from '@bit-trove/api-models/category';
-// import { PublishDateBadge } from '@repo/ui/small-publish-date-badge';
-// import { SmallAuthorBadge } from '@repo/ui/small-author-badge';
-// import { SmallCategoryBadge } from '@repo/ui/small-category-badge';
-// import { SmallViewsBadge } from '@repo/ui/small-views-badge';
 import type { Meta, StoryObj } from '@storybook/react';
 
 // local modules
+import { AuthorBadge } from '~/components/badge/author-badge';
+import { CategoryBadge } from '~/components/badge/category-badge';
 import { ContentPageHeader } from './content-page-header.component';
-import { ViewsBadge } from '../badge/views-badge';
+import { PublishDateBadge } from '~/components/badge/publish-date-badge';
+import { ViewsBadge } from '~/components/badge/views-badge';
 
 const fakeAuthor = generateFakeAuthorSegmentResponse().data.attributes;
 const fakeCategories = generateFakeCatgorySegmentResponseCollection().data;
 
 const meta: Meta<typeof ContentPageHeader> = {
   component: ContentPageHeader,
-  title: 'ContentPage/Header',
+  title: 'Components/ContentPage/Header',
 
   decorators: [(Story) => <div style={{ width: 1000 }}>{Story()}</div>],
   parameters: { layout: 'centered' },
@@ -29,17 +28,17 @@ const meta: Meta<typeof ContentPageHeader> = {
       bottomBadges={
         !props.bottomBadges ? undefined : (
           <>
-            {/* <PublishDateBadge date={faker.date.anytime()} /> */}
-            {/* <SmallAuthorBadge author={fakeAuthor} /> */}
+            <PublishDateBadge date={faker.date.anytime()} />
+            <AuthorBadge author={fakeAuthor} />
           </>
         )
       }
       topBadges={
         !props.topBadges ? undefined : (
           <>
-            {/* {fakeCategories.map(({ attributes: category }) => (
-              <SmallCategoryBadge href="#">{category.name}</SmallCategoryBadge>
-            ))} */}
+            {fakeCategories.map(({ id, attributes: category }) => (
+              <CategoryBadge category={category} key={id} />
+            ))}
 
             <ViewsBadge viewsCount={faker.number.int({ max: 1_000_000 })} />
           </>

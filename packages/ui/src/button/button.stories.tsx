@@ -1,11 +1,11 @@
 // global modules
+import { colorSchemeArgType } from '@repo/ui/apply-color-scheme';
 import type { ComponentProps } from 'react';
 import { Fragment } from 'react/jsx-runtime';
 import type { Meta, StoryObj } from '@storybook/react';
 
 // local modules
 import { Button, type ButtonVariant } from './button.component';
-import { colorSchemeArgType } from '../apply-color-scheme';
 
 const BUTTON_SIZES = ['lg', 'md', 'sm', 'xs'] as const;
 const COLOR_SCHEMES = [
@@ -21,10 +21,10 @@ const COLOR_SCHEMES = [
 
 const meta = {
   component: Button,
-  title: 'Button',
+  title: 'UI/Button',
 
   parameters: {
-    // layout: 'centered',
+    layout: 'centered',
   },
 
   tags: ['autodocs'],

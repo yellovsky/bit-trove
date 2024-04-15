@@ -1,9 +1,9 @@
 // global modules
-import type { FC } from 'react';
-import { Link } from '@repo/ui/link';
+import { fetchThoughtSegmentCollection } from '@bit-trove/api-models/thought';
 import type { LoaderFunction } from '@remix-run/node';
+import { PageContent } from '~/components/page-content';
 import type { QueryKeyOf } from '@bit-trove/api-models/common';
-import { fetchThoughtSegmentCollection, thoughtLink } from '@bit-trove/api-models/thought';
+import { ThoughtsTimeline } from '~/components/thoughts-timeline';
 import { type Params, useLoaderData } from '@remix-run/react';
 
 import {
@@ -11,10 +11,7 @@ import {
   type DehydratedState,
   HydrationBoundary,
   QueryClient,
-  useQuery,
 } from '@tanstack/react-query';
-import { PageContent } from '../../components/page-content';
-import { ThoughtsTimeline } from '../../components/thoughts-timeline';
 
 type ThoughtsPageParams = 'locale';
 
@@ -31,7 +28,6 @@ const getThoughtsQueryKey = (
 ];
 
 export const loader: LoaderFunction = async (args): Promise<LoaderData> => {
-  console.log('in loader');
   const params = args.params as Params<ThoughtsPageParams>;
 
   const queryClient = new QueryClient();
@@ -42,13 +38,12 @@ export const loader: LoaderFunction = async (args): Promise<LoaderData> => {
     queryKey: thoughtsQueryKey,
   });
 
-  console.log('af');
   return { dehydratedState: dehydrate(queryClient), thoughtsQueryKey };
 };
 
 export default function ThoughtsRoute() {
   const { dehydratedState, thoughtsQueryKey } = useLoaderData() as LoaderData;
-  console.log('dehydratedState', dehydratedState);
+
   return (
     <HydrationBoundary state={dehydratedState}>
       <PageContent>
