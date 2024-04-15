@@ -16,9 +16,8 @@ export interface ColorSchemeProps {
   colorScheme?: ColorSchemeType;
 }
 
-export const applyColorScheme: ApplyClassname<ColorSchemeProps> = (defaults) => (props) => {
-  const propsWithDefaults = { ...defaults, ...props };
-  const { colorScheme, ...rest } = propsWithDefaults;
+export const applyColorScheme: ApplyClassname<ColorSchemeProps> = (props) => {
+  const { colorScheme, ...rest } = props;
 
   return {
     ...rest,

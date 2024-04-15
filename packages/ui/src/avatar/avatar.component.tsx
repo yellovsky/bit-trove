@@ -36,10 +36,11 @@ export interface AvatarProps extends SpacingProps {
   size?: AvatarSize;
 }
 
-const applyCn = applySpacing<AvatarProps>();
-
 export const Avatar: FC<AvatarProps> = (props) => {
-  const { src, size = 'md', className } = applyCn(props);
+  const { src, size, className } = applySpacing({
+    ...({ size: 'md' } satisfies AvatarProps),
+    ...props,
+  });
 
   return (
     <div className={clsx(avatarCn, className, getSizeCn(size))}>
@@ -53,6 +54,9 @@ interface AvatarPendingProps extends SpacingProps {
 }
 
 export const AvatarPending: FC<AvatarPendingProps> = (props) => {
-  const { size = 'md', className } = applyCn(props);
+  const { size, className } = applySpacing({
+    size: 'md' as const,
+    ...props,
+  });
   return <Skeleton className={clsx(avatarCn, className, getSizeCn(size))} />;
 };

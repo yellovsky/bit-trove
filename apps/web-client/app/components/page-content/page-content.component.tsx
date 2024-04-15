@@ -17,16 +17,14 @@ interface PageContentProps extends PropsWithChildren {
 }
 
 export const PageContent: FC<PageContentProps> = ({ className, header, children }) => (
-  <>
-    <div className={clsx(className, pageContentCn)}>
-      {header ? <div>{header}</div> : null}
+  <div className={clsx(className, pageContentCn)}>
+    {header ? <div>{header}</div> : null}
 
-      <div className={columnsCn}>
-        <div className={contentCn}>{children}</div>
-        <div className={extraColumnCn}>
-          <Aside />
-        </div>
+    <div className={columnsCn}>
+      <div className={contentCn}>{children}</div>
+      <div className={extraColumnCn}>
+        <Aside />
       </div>
     </div>
-  </>
+  </div>
 );

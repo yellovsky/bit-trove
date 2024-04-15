@@ -14,7 +14,7 @@ interface SkeletonProps extends PropsWithChildren, SpacingProps, BorderRadiusPro
   isLoaded?: boolean;
 }
 
-const applyCn = R.compose(applyBorderRadius<SkeletonProps>(), applySpacing<SkeletonProps>());
+const applyCn = R.compose(applyBorderRadius<SkeletonProps>, applySpacing<SkeletonProps>);
 
 export const Skeleton: FC<SkeletonProps> = (props) => {
   const { className, ratio, isLoaded, ...rest } = applyCn(props);
