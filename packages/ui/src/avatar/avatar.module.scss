@@ -16,7 +16,7 @@
   border-width: 0.0625rem;
   background: var(--avatar-bg);
   color: #fff;
-  border-color: var(--th-border-color);
+  border-color: var(--border-color);
   vertical-align: top;
   width: var(--avatar-size);
   height: var(--avatar-size);
@@ -24,11 +24,11 @@
 
   @include mode.switch using ($mode) {
     @if $mode == 'light' {
-      --avatar-bg-color: var(--th-colors-gray-400);
-      --avatar-placeholder-color: var(--th-colors-gray-300);
+      --avatar-bg-color: var(--colors-gray-400);
+      --avatar-placeholder-color: var(--colors-gray-300);
     } @else if $mode == 'dark' {
-      --avatar-bg-color: var(--th-colors-gray-700);
-      --avatar-placeholder-color: var(--th-colors-gray-600);
+      --avatar-bg-color: var(--colors-gray-700);
+      --avatar-placeholder-color: var(--colors-gray-600);
     }
   }
 

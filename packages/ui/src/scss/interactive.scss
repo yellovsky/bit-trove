@@ -14,12 +14,12 @@
 
 @mixin focus-outline-style {
   outline: none;
-  box-shadow: 0 0 0 0.125rem var(--th-colors-primary-200);
+  box-shadow: 0 0 0 0.125rem var(--colors-primary-200);
 }
 
 @mixin focus-outline-style-inset {
   outline: none;
-  box-shadow: 0 0 0 0.0625rem var(--th-colors-primary-200) inset;
+  box-shadow: 0 0 0 0.0625rem var(--colors-primary-200) inset;
 }
 
 @mixin interactive {
@@ -55,8 +55,8 @@
   }
 
   @if $scheme == null {
-    @return var(--th-colors-scheme-#{$num});
+    @return var(--colors-scheme-#{$num});
   } @else {
-    @return var(--th-colors-#{$scheme}-#{$num});
+    @return var(--colors-#{$scheme}-#{$num});
   }
 }

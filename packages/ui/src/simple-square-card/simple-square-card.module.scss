@@ -12,17 +12,17 @@
 
   display: flex;
   overflow: hidden;
+  max-width: 24rem;
   position: relative;
   flex-direction: column;
-  box-shadow: var(--th-base-shadow);
-  max-width: var(--chakra-sizes-sm);
-  background-color: var(--th-colors-gray-600);
+  box-shadow: var(--base-shadow);
+  background-color: var(--colors-gray-600);
 
   .cardFooter {
     display: flex;
     padding: 1.25rem;
     justify-content: center;
-    color: var(--th-colors-gray-50);
+    color: var(--colors-gray-50);
   }
 
   .img {
@@ -34,20 +34,20 @@
       @include scaled-img;
 
       .cardFooter {
-        color: var(--chakra-colors-primary-400);
+        color: var(--colors-primary-400);
       }
     } @else if ($state == 'active') {
       @include scaled-img;
 
       .cardFooter {
-        color: var(--chakra-colors-primary-600);
+        color: var(--colors-primary-600);
       }
     } @else if ($state == 'focus') {
       @include scaled-img;
       @include i.focus-outline-style;
 
       .cardFooter {
-        color: var(--chakra-colors-primary-400);
+        color: var(--colors-primary-400);
       }
     }
   }

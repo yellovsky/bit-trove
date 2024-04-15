@@ -11,16 +11,16 @@ $color-schemes: (
 
 @each $scheme in $color-schemes {
   .color-scheme-#{$scheme} {
-    --th-colors-scheme-50: var(--th-colors-#{$scheme}-50);
-    --th-colors-scheme-100: var(--th-colors-#{$scheme}-100);
-    --th-colors-scheme-200: var(--th-colors-#{$scheme}-200);
-    --th-colors-scheme-300: var(--th-colors-#{$scheme}-300);
-    --th-colors-scheme-400: var(--th-colors-#{$scheme}-400);
-    --th-colors-scheme-500: var(--th-colors-#{$scheme}-500);
-    --th-colors-scheme-600: var(--th-colors-#{$scheme}-600);
-    --th-colors-scheme-700: var(--th-colors-#{$scheme}-700);
-    --th-colors-scheme-800: var(--th-colors-#{$scheme}-800);
-    --th-colors-scheme-900: var(--th-colors-#{$scheme}-900);
+    --colors-scheme-50: var(--colors-#{$scheme}-50);
+    --colors-scheme-100: var(--colors-#{$scheme}-100);
+    --colors-scheme-200: var(--colors-#{$scheme}-200);
+    --colors-scheme-300: var(--colors-#{$scheme}-300);
+    --colors-scheme-400: var(--colors-#{$scheme}-400);
+    --colors-scheme-500: var(--colors-#{$scheme}-500);
+    --colors-scheme-600: var(--colors-#{$scheme}-600);
+    --colors-scheme-700: var(--colors-#{$scheme}-700);
+    --colors-scheme-800: var(--colors-#{$scheme}-800);
+    --colors-scheme-900: var(--colors-#{$scheme}-900);
   }
 }
 

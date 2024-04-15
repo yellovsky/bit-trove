@@ -6,9 +6,9 @@
   border-image: initial;
   border-style: solid;
 
-  border-color: var(--th-colors-gray-200);
+  border-color: var(--colors-gray-200);
 
   @include mode.dark {
-    border-color: var(--th-colors-gray-300);
+    border-color: var(--colors-gray-300);
   }
 }
