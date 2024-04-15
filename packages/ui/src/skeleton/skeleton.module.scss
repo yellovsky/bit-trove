@@ -52,7 +52,7 @@
 }
 
 .skeleton {
-  :whwre(&:not(.isLoaded)) {
+  :where(&:not(.isLoaded)) {
     @include skeleton-style;
   }
 }

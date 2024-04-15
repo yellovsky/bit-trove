@@ -5,13 +5,14 @@ import { PageContent } from '~/components/page-content';
 import type { QueryKeyOf } from '@bit-trove/api-models/common';
 import { ThoughtsTimeline } from '~/components/thoughts-timeline';
 import { type Params, useLoaderData } from '@remix-run/react';
-
+import { initialPageParam } from '@bit-trove/api-models/common';
 import {
   dehydrate,
   type DehydratedState,
   HydrationBoundary,
   QueryClient,
 } from '@tanstack/react-query';
+import { Suspense } from 'react';
 
 type ThoughtsPageParams = 'locale';
 
@@ -33,7 +34,8 @@ export const loader: LoaderFunction = async (args): Promise<LoaderData> => {
   const queryClient = new QueryClient();
 
   const thoughtsQueryKey = getThoughtsQueryKey(params);
-  await queryClient.prefetchQuery({
+  await queryClient.prefetchInfiniteQuery({
+    initialPageParam,
     queryFn: fetchThoughtSegmentCollection,
     queryKey: thoughtsQueryKey,
   });
@@ -48,7 +50,9 @@ export default function ThoughtsRoute() {
     <HydrationBoundary state={dehydratedState}>
       <PageContent>
         {/* <PageContent className={thoughtsPageCn}> */}
-        <ThoughtsTimeline queryKey={thoughtsQueryKey} />
+        <Suspense fallback={<div>fallback</div>}>
+          <ThoughtsTimeline queryKey={thoughtsQueryKey} />
+        </Suspense>
       </PageContent>
 
       {/* <Page thoughtsQueryKey={thoughtsQueryKey} /> */}

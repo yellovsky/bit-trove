@@ -8,7 +8,7 @@ import { divider as dividerCn } from './divider.module.scss';
 
 interface DividerProps extends HTMLAttributes<HTMLHRElement>, SpacingProps {}
 
-const applyCn = applySpacing<DividerProps>();
+const applyCn = applySpacing<DividerProps>;
 export const Divider: FC<DividerProps> = (props) => {
   const { className, ...rest } = applyCn(props);
   return <hr {...rest} className={clsx(className, dividerCn)} />;

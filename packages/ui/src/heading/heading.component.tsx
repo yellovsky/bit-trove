@@ -36,7 +36,7 @@ interface HeadingProps extends SpacingProps, HTMLAttributes<HTMLHeadingElement> 
 }
 
 export const Heading: FC<HeadingProps> = (props) => {
-  const { as, size, className, ...rest } = applySpacing<HeadingProps>()(props);
+  const { as, size, className, ...rest } = applySpacing<HeadingProps>(props);
 
   return createElement(as, {
     ...rest,

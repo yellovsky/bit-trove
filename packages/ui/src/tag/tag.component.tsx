@@ -45,13 +45,16 @@ export interface TagProps extends PropsWithChildren, ColorSchemeProps, BorderRad
   to?: To;
 }
 
-const applyTagCn = R.compose(
-  applyColorScheme<TagProps>(),
-  applyBorderRadius<TagProps>({ br: 'md' })
-);
+const applyTagCn = R.compose(applyColorScheme<TagProps>, applyBorderRadius<TagProps>);
 
 export const Tag: FC<TagProps> = (props) => {
-  const { className, variant, to, size = 'md', ...rest } = applyTagCn(props);
+  const {
+    className,
+    variant,
+    to,
+    size = 'md',
+    ...rest
+  } = applyTagCn({ br: 'md' as const, ...props });
 
   const cName = clsx(className, tagCn, to && linkCn, getSizeCn(size), getVariantCn(variant));
 
@@ -72,10 +75,13 @@ export const TagRightIcon: FC<PropsWithChildren> = (props) => (
 
 export const TagLabel: FC<PropsWithChildren> = (props) => <span {...props} className={labelCn} />;
 
-type TagPendingProps = Pick<TagProps, 'size' | 'className' | 'borderRadius'>;
+type TagPendingProps = Pick<TagProps, 'size' | 'className' | keyof BorderRadiusProps>;
 
 export const TagPending: FC<TagPendingProps> = (props) => {
-  const { className, size = 'md' } = applyBorderRadius<TagPendingProps>({ br: 'md' })(props);
+  const { className, size = 'md' } = applyBorderRadius<TagPendingProps>({
+    br: 'md' as const,
+    ...props,
+  });
 
   const cName = clsx(className, tagCn, pendingCn, getSizeCn(size));
 

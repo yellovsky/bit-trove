@@ -11,13 +11,14 @@ interface ShortThoughtMonthProps {
 }
 
 export const ShortThoughtMonth: FC<ShortThoughtMonthProps> = ({ month }) => {
-  const formatter = useFormatter();
+  return null;
+  // const formatter = useFormatter();
 
-  return (
-    <>
-      <ShortThoughtLineContent position="bottom" />
-      <div className={monthCn}>{formatter.dateTime(new Date(0, month), { month: 'long' })}</div>
-      <br />
-    </>
-  );
+  // return (
+  //   <>
+  //     <ShortThoughtLineContent position="bottom" />
+  //     <div className={monthCn}>{formatter.dateTime(new Date(0, month), { month: 'long' })}</div>
+  //     <br />
+  //   </>
+  // );
 };

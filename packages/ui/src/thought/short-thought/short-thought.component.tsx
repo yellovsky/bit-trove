@@ -1,7 +1,6 @@
 // global modules
 import { Icon } from '@repo/ui/icon';
 // import { Title } from '@repo/ui/title';
-import { useFormatter } from 'next-intl';
 import type { FC, ReactNode } from 'react';
 
 import {
@@ -30,53 +29,60 @@ interface ShortThoughtUIProps {
 }
 
 export const ShortThought: FC<ShortThoughtUIProps> = (props) => {
-  const { header, children, itemKey, initialEntered, publishDate } = props;
+  return null;
+  // const { header, children, itemKey, initialEntered, publishDate } = props;
+  // const { i18n } = useTranslations();
 
-  const format = useFormatter();
-  const formattedDate = format.dateTime(new Date(publishDate), {
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-    month: 'short',
-  });
+  // const formattedMonth = i18n.t('{{val, datetime}}', {
+  //   formatParams: { val: { day: 'numeric', hour: 'numeric', minute: 'numeric', month: 'short' } },
+  //   val: new Date(publishDate),
+  // });
 
-  const accordeonEffectParams = { initialEntered, itemKey };
-  const { itemRef, state, toggle } = useAccordionItemEffect<HTMLDivElement>(accordeonEffectParams);
+  // const format = useFormatter();
+  // const formattedDate = format.dateTime(new Date(publishDate), {
+  //   day: 'numeric',
+  //   hour: 'numeric',
+  //   minute: 'numeric',
+  //   month: 'short',
+  // });
 
-  const { buttonProps, panelProps } = useAccordionItem({ state, toggle });
-  const [transitionStyle, panelRef] = useHeightTransition<HTMLDivElement>(state);
+  // const accordeonEffectParams = { initialEntered, itemKey };
+  // const { itemRef, state, toggle } = useAccordionItemEffect<HTMLDivElement>(accordeonEffectParams);
 
-  const { status, isMounted } = state;
+  // const { buttonProps, panelProps } = useAccordionItem({ state, toggle });
+  // const [transitionStyle, panelRef] = useHeightTransition<HTMLDivElement>(state);
 
-  return (
-    <LinedSection marker ref={itemRef}>
-      <button {...buttonProps} aria-label="toggle trhought" className={titleCellCn}>
-        <div>
-          {/* <Title as="h5" className={titleCn}>
-            {header}
-          </Title> */}
-          <time className={publishDateCn} dateTime={new Date(publishDate).toUTCString()}>
-            {formattedDate}
-          </time>
-        </div>
+  // const { status, isMounted } = state;
 
-        <div className={arrowCn}>
-          <Icon type={status === 'exited' || status == 'exiting' ? 'chevron_down' : 'chevron_up'} />
-        </div>
-      </button>
+  // return (
+  //   <LinedSection marker ref={itemRef}>
+  //     <button {...buttonProps} aria-label="toggle trhought" className={titleCellCn}>
+  //       <div>
+  //         {/* <Title as="h5" className={titleCn}>
+  //           {header}
+  //         </Title> */}
+  //         <time className={publishDateCn} dateTime={new Date(publishDate).toUTCString()}>
+  //           {formattedDate}
+  //         </time>
+  //       </div>
 
-      {isMounted && (
-        <div
-          style={{
-            display: status === 'exited' ? 'none' : undefined,
-            ...transitionStyle,
-          }}
-        >
-          <div className={panelCn} ref={panelRef} {...panelProps}>
-            {status !== 'exited' ? children : null}
-          </div>
-        </div>
-      )}
-    </LinedSection>
-  );
+  //       <div className={arrowCn}>
+  //         <Icon type={status === 'exited' || status == 'exiting' ? 'chevron_down' : 'chevron_up'} />
+  //       </div>
+  //     </button>
+
+  //     {isMounted && (
+  //       <div
+  //         style={{
+  //           display: status === 'exited' ? 'none' : undefined,
+  //           ...transitionStyle,
+  //         }}
+  //       >
+  //         <div className={panelCn} ref={panelRef} {...panelProps}>
+  //           {status !== 'exited' ? children : null}
+  //         </div>
+  //       </div>
+  //     )}
+  //   </LinedSection>
+  // );
 };

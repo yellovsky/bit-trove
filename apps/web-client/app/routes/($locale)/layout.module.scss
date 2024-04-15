@@ -4,6 +4,10 @@
   display: grid;
   min-height: 100vh;
   grid-template-rows: auto 1fr auto;
+
+  main {
+    padding-bottom: 3rem;
+  }
 }
 
 .pagePadding {

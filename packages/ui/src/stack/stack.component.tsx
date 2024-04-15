@@ -26,7 +26,7 @@ export const Stack: FC<StackProps> = (props) => {
     className,
     orientation = 'horizontal',
     ...rest
-  } = applySpacing<StackProps>()(props);
+  } = applySpacing<StackProps>(props);
 
   return (
     <div

@@ -13,7 +13,7 @@ interface AspectRatioProps extends PropsWithChildren, BorderRadiusProps, Spacing
   className?: string;
 }
 
-const applyCn = R.compose(applyBorderRadius<AspectRatioProps>(), applySpacing<AspectRatioProps>());
+const applyCn = R.compose(applyBorderRadius<AspectRatioProps>, applySpacing<AspectRatioProps>);
 
 export const AspectRatio: FC<AspectRatioProps> = (props) => {
   const { ratio, className, ...rest } = applyCn(props);

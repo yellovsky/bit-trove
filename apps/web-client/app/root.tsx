@@ -77,7 +77,11 @@ function App(props: { children: React.ReactNode } & LoaderData) {
   const [colorMode, setColorMode] = useColorMode();
 
   return (
-    <html data-color-mode={colorMode} dir={i18n.dir()} lang={props.locale}>
+    <html
+      dir={i18n.dir()}
+      lang={props.locale}
+      {...(colorMode && { 'data-color-mode': colorMode, style: { colorScheme: colorMode } })}
+    >
       <head>
         <meta charSet="utf-8" />
         <meta content="width=device-width, initial-scale=1" name="viewport" />

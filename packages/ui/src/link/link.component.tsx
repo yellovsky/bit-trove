@@ -14,11 +14,11 @@ export interface LinkProps extends ComponentProps<typeof RemixLink>, ColorScheme
   variant: LinkVariant;
 }
 
-const applyLinkCn = applyColorScheme<LinkProps>({ colorScheme: 'primary' });
+const applyLinkCn = applyColorScheme<LinkProps>;
 
 export const Link: FC<LinkProps> = (props) => {
   const { i18n } = useTranslation();
-  const { to, variant, ...rest } = applyLinkCn(props);
+  const { to, variant, ...rest } = applyLinkCn({ colorScheme: 'primary' as const, ...props });
 
   const localizedTo = useMemo((): ComponentProps<typeof Link>['to'] => {
     const addLocaleToPathname = (pathname: string): string =>

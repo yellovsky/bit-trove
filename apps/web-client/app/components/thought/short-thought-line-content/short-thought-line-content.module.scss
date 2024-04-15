@@ -1,0 +1,25 @@
+@use '@repo/ui/src/scss/variables.scss' as vars;
+@use '@repo/ui/src/scss/interactive.scss' as i;
+
+$marker-width: 2.4rem;
+
+.linedHolder {
+  display: grid;
+  column-gap: 1rem;
+  row-gap: 0.125rem;
+  grid-template-columns: $marker-width 1fr;
+
+  &.top {
+    min-height: 0.5rem;
+  }
+
+  &.bottom {
+    min-height: 0.5rem;
+  }
+
+  .line {
+    margin: 0 auto;
+    width: 0.0625rem;
+    background-color: #dadee5;
+  }
+}
