@@ -1,6 +1,5 @@
 @use '@repo/ui/src/scss/typography.scss' as t;
 @use '@repo/ui/src/scss/interactive.scss' as i;
-@use '@repo/ui/src/scss/variables.scss' as vars;
 
 .horizontalCard {
   display: grid;
@@ -32,7 +31,6 @@
 
   .imgHolder {
     position: relative;
-    background-color: vars.$var-color--pending-bg;
   }
 
   .img {
@@ -61,5 +59,4 @@
 .pending {
   height: 16rem;
   border-radius: 0.3rem;
-  background-color: vars.$var-color--pending-bg;
 }

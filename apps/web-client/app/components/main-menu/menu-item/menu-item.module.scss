@@ -1,5 +1,4 @@
-@use '../../scss/interactive.scss' as i;
-@use '../../scss/variables.scss' as vars;
+@use '@repo/ui/src/scss/interactive.scss' as i;
 
 .menuItem {
   border: none;
@@ -12,16 +11,14 @@
   display: flex;
   align-items: center;
 
-  color: vars.$var-color--title;
-
   @include i.interactive using ($state) {
     @if $state == 'hover' {
-      color: vars.$var-color--accent-hover;
+      color: var(--color-accent-hover);
     } @else if $state == 'focus' {
       @include i.focus-outline-style;
-      color: vars.$var-color--accent-hover;
+      color: var(--color-accent-hover);
     } @else if $state == 'active' {
-      color: vars.$var-color--accent-active;
+      color: var(--color-accent-active);
     }
   }
 

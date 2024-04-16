@@ -1,9 +1,7 @@
-@use '../../scss/variables.scss' as vars;
-
 .holder {
   line-height: 1.6;
   word-wrap: break-word;
-  color: vars.$var-color--text;
+  color: var(--text-color);
   -webkit-font-smoothing: antialiased;
 
   p {

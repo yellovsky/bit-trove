@@ -1,4 +1,3 @@
-@use '@repo/ui/src/scss/variables.scss' as vars;
 @use '@repo/ui/src/scss/breakpoints.scss' as breakpoints;
 
 .pagePadding {
@@ -27,7 +26,6 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-color: vars.$var-color--pending-bg;
 
     &:before {
       content: '';

@@ -1,6 +1,6 @@
-@use '../scss/interactive.scss' as i;
-@use '../scss/paddings.scss' as paddings;
-@use '../scss/breakpoints.scss' as breakpoints;
+@use '@repo/ui/src/scss/interactive.scss' as i;
+@use '@repo/ui/src/scss/paddings.scss' as paddings;
+@use '@repo/ui/src/scss/breakpoints.scss' as breakpoints;
 
 .wrapper {
   @include paddings.page-padding-horizontal;

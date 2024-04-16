@@ -1,11 +1,11 @@
 @use 'sass:map';
 
 $base: 0em;
-$sm: 30em;
-$md: 48em;
-$lg: 62em;
-$xl: 80em;
-$xxl: 96em;
+$sm: 30em; // 480px
+$md: 48em; // 768px
+$lg: 62em; // 992px
+$xl: 75em; // 1200px
+$xxl: 90em; // 1440px
 
 @mixin interval($from: null, $to: null) {
   @if $from == null and $to == null {
