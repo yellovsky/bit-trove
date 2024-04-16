@@ -1,9 +1,9 @@
-@use './variables.scss' as vars;
 @use './breakpoints.scss' as breakpoints;
 
 @mixin page-padding-vertical {
-  padding-top: vars.$var--page-top-padding;
-  padding-bottom: vars.$var--page-bottom-padding;
+  padding-top: var(--page-top-padding);
+  padding-bottom: var(--page-bottom-padding);
+
 }
 
 @mixin page-padding-horizontal {
