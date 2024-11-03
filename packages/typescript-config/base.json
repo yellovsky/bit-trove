@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Default",
+  "compilerOptions": {
+    "sourceMap": true,
+    "importHelpers": true,
+    "declaration": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "noImplicitReturns": true,
+    "preserveConstEnums": true,
+    "resolveJsonModule": true,
+    "noUnusedLocals": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "ignoreDeprecations": "5.0",
+    "moduleResolution": "Bundler",
+    "module": "esnext",
+    "target": "ES6",
+    "jsx": "react-jsx",
+    "lib": ["ESNext", "dom"]
+  },
+  "exclude": ["node_modules", "dist"]
+}

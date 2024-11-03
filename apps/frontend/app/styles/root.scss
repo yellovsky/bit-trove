@@ -1,0 +1,15 @@
+[data-color-mode] {
+  @apply text-text;
+}
+
+body {
+  @apply font-body text-text antialiased text-base bg-bg-general;
+}
+
+:where(h1, h2, h3, h4, h5, h6) {
+  @apply font-heading;
+}
+
+:where(kbd, code) {
+  @apply font-monospace;
+}

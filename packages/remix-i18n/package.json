@@ -1,0 +1,27 @@
+{
+  "name": "@repo/remix-i18n",
+  "version": "1.0.0",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "module": "./src/index.ts",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint . --max-warnings 0"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "*",
+    "@types/accept-language-parser": "^1.5.6",
+    "@types/eslint": "^9.6.1",
+    "@types/node": "^22.8.7",
+    "@types/react": "^18.3.12",
+    "eslint": "^9.14.0",
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "@remix-run/server-runtime": "^2.13.1",
+    "accept-language-parser": "^1.5.0",
+    "i18next": "^23.16.4",
+    "intl-parse-accept-language": "^1.0.0",
+    "react": "^18.3.1"
+  }
+}
