@@ -30,10 +30,7 @@ export interface ApiClient extends EventEmitter<'access_token_expired'> {
   axios: AxiosInstance;
   updateAuthHeader: (accessToken: string | null) => void;
 
-  get<T = any, D = any>(
-    url: string,
-    config?: AxiosRequestConfig<D>,
-  ): Effect.Effect<T, FailedResponse>;
+  get<T = any>(url: string, config?: AxiosRequestConfig<any>): Effect.Effect<T, FailedResponse>;
 }
 
 /**
@@ -57,16 +54,14 @@ class ApiClientClass extends EventEmitter<'access_token_expired'> implements Api
     else this.axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
   };
 
-  get<T = any, R = AxiosResponse<T, any>, D = any>(
-    url: string,
-    config?: AxiosRequestConfig<D>,
-  ): Effect.Effect<R, FailedResponse> {
+  get<T = any>(url: string, config?: AxiosRequestConfig<any>): Effect.Effect<T, FailedResponse> {
     return Effect.tryPromise({
       catch: error =>
         isAxiosError(error) && isFailedResponse(error.response?.data)
           ? error.response.data
           : UNKNOWN_FAILED_RESPONSE,
-      try: () => this.axios.get<T, R>(url, config),
+      try: () =>
+        this.axios.get<T, AxiosResponse<T, any>>(url, config).then(response => response.data),
     });
   }
 }

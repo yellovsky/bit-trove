@@ -1,0 +1,15 @@
+@use './link.mixins.scss' as link-mixins;
+
+.link {
+  &.standalone {
+    @include link-mixins.link-standalone-color-style;
+  }
+
+  &.text {
+    @include link-mixins.link-text-color-style;
+  }
+
+  &.navLinkActive {
+    @apply text-accent;
+  }
+}

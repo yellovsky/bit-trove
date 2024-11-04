@@ -1,0 +1,75 @@
+@use '../heading/heading.module.scss' as heading;
+@use '../link/link.mixins.scss' as link-mixins;
+
+@mixin h1-style() {
+  @apply mb-4;
+  @include heading.common-style();
+  @include heading.xxl-style();
+}
+
+@mixin h2-style() {
+  @apply mb-3;
+  @include heading.common-style();
+  @include heading.md-style();
+}
+
+@mixin h3-style() {
+  @apply mb-2;
+  @include heading.common-style();
+  @include heading.lg-style();
+}
+
+$-paragraph-margin: 1.25rem;
+
+@mixin danger-html-style() {
+  h1 {
+    @include h1-style();
+  }
+
+  h2 {
+    @include h2-style();
+  }
+
+  h3 {
+    @include h3-style();
+  }
+
+  p,
+  ul,
+  ol,
+  blockquote {
+    margin-bottom: $-paragraph-margin;
+  }
+
+  ul,
+  ol {
+    @apply pl-6;
+
+    li {
+      @apply p-0;
+    }
+  }
+
+  a {
+    @apply cursor-pointer;
+    @include link-mixins.link-text-primary-color-style;
+  }
+
+  p:has(+ :is(ul, ol)),
+  :is(p, ul, ol, blockquote):last-child {
+    margin-bottom: 0;
+  }
+
+  blockquote {
+    @apply text-gray-400 pl-4 border-l-4 border-l-gray-200
+      dark:border-l-gray-500;
+  }
+
+  img {
+    @apply max-w-full;
+  }
+}
+
+.dangerHtml {
+  @include danger-html-style();
+}

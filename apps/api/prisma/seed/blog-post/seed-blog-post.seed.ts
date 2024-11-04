@@ -1,70 +1,33 @@
 // global modules
 import { Effect } from 'effect';
+import type { Prisma } from '@prisma/client';
 
 // local modules
-import type { BlogPostData } from './seed-blog-post.types';
-import { testBlogPostData } from './seed-blog-post.data';
 import type { PrismaTransaction, Seeder } from '../seed.types';
+
+import { mobxIntroCreateBlogPostArgs } from './data/blog-post-data.mobx-intro';
+import { test1CreateBlogPostArgs } from './data/blog-post-data.test-1';
 
 const seedBlogPostData = (
   tx: PrismaTransaction,
-  data: BlogPostData,
+  args: Prisma.BlogPostCreateArgs,
 ): Effect.Effect<void, Error> =>
   Effect.gen(function* () {
-    yield* Effect.logDebug(`Seeding blog post ${data.slug}`);
-
-    const createTranslations = data.article.translations.map((t) => ({
-      language_code: t.language_code,
-      published_at: t.published_at,
-      title: t.title,
-    }));
-
-    const createArticle = {
-      original_language_code: data.article.original_language_code,
-      published_at: data.article.published_at,
-      translations: { create: createTranslations },
-    };
-
-    yield* Effect.tryPromise(() =>
-      tx.blogPost
-        .upsert({
-          create: {
-            article: { create: createArticle },
-            published_at: data.published_at,
-            slug: data.slug,
-          },
-          update: {
-            article: {
-              upsert: {
-                create: createArticle,
-                update: createArticle,
-              },
-            },
-            published_at: data.published_at,
-            slug: data.slug,
-          },
-          where: { slug: data.slug },
-        })
-        .catch((error) => {
-          console.error('error', error);
-          throw error;
-        }),
-    );
-
+    yield* Effect.logDebug(`Seeding blog post ${args.data.slug}`);
+    yield* Effect.tryPromise(() => tx.blogPost.create(args));
     yield* Effect.logDebug('seeded');
-  }).pipe(
-    Effect.tapError((error) =>
-      Effect.logError('seedBlogPostData error', error),
-    ),
-  );
+  });
 
-const dataArray = [testBlogPostData] as const;
+const argsArray = [
+  mobxIntroCreateBlogPostArgs,
+  test1CreateBlogPostArgs,
+] as const;
 
 export const seedBlogPosts: Seeder = {
   seed: (tx) =>
     Effect.gen(function* () {
       yield* Effect.logDebug('Start seeding blog posts');
-      yield* Effect.all(dataArray.map((data) => seedBlogPostData(tx, data)));
+      yield* Effect.all(argsArray.map((args) => seedBlogPostData(tx, args)));
       yield* Effect.logDebug('finish seeding blog posts');
     }),
 
@@ -73,7 +36,7 @@ export const seedBlogPosts: Seeder = {
       yield* Effect.logDebug('Start clearing blog posts');
       yield* Effect.tryPromise(() =>
         tx.blogPost.deleteMany({
-          where: { slug: { in: dataArray.map((data) => data.slug) } },
+          where: { slug: { in: argsArray.map((args) => args.data.slug) } },
         }),
       );
       yield* Effect.logDebug('finish clearing blog posts');

@@ -10,6 +10,9 @@ import { fetchBlogPost } from '~/api/blog-post/blog-post.fetch';
 import { mergeMeta } from '~/utils/meta';
 import { type ApiClient, getApiClient } from '~/api/api-client';
 
+// local modules
+import { BlogPostPage } from './page';
+
 interface LoaderData {
   blogPost: BlogPost;
 }
@@ -51,12 +54,5 @@ export const meta = mergeMeta(() => []);
 
 export default function BlogPostRoute() {
   const { blogPost } = useLoaderData<typeof loader>();
-
-  return (
-    <div>
-      Blog post route
-      <br />
-      {JSON.stringify(blogPost, null, 2)}
-    </div>
-  );
+  return <BlogPostPage blogPost={blogPost} />;
 }

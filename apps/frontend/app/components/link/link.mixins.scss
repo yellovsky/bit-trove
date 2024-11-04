@@ -1,0 +1,156 @@
+@mixin link-standalone-primary-color-style {
+  @apply hover:text-accent-hover
+    focus-visible:text-accent-hover
+    focus-visible:focus-outline
+    active:text-accent-active;
+}
+
+@mixin link-standalone-color-style {
+  &.primary {
+    @include link-standalone-primary-color-style;
+  }
+
+  &.yellow {
+    @apply focus-visible:focus-outline;
+    // light
+    @apply hover:text-yellow-600
+      focus-visible:text-yellow-600
+      active:text-yellow-700;
+    // dark
+    @apply dark:hover:text-yellow-400
+      dark:focus-visible:text-yellow-400
+      dark:active:text-yellow-600;
+  }
+
+  &.gray {
+    @apply focus-visible:focus-outline;
+    // light
+    @apply hover:text-gray-600
+      focus-visible:text-gray-600
+      active:text-gray-700;
+    // dark
+    @apply dark:hover:text-gray-400
+      dark:focus-visible:text-gray-400
+      dark:active:text-gray-600;
+  }
+
+  &.red {
+    @apply focus-visible:focus-outline;
+    // light
+    @apply hover:text-red-600
+      focus-visible:text-red-600
+      active:text-red-700;
+    // dark
+    @apply dark:hover:text-red-400
+      dark:focus-visible:text-red-400
+      dark:active:text-red-600;
+  }
+
+  &.green {
+    @apply focus-visible:focus-outline;
+    // light
+    @apply hover:text-green-600
+      focus-visible:text-green-600
+      active:text-green-700;
+    // dark
+    @apply dark:hover:text-green-400
+      dark:focus-visible:text-green-400
+      dark:active:text-green-600;
+  }
+
+  &.orange {
+    @apply focus-visible:focus-outline;
+    // light
+    @apply hover:text-orange-600
+      focus-visible:text-orange-600
+      active:text-orange-700;
+    // dark
+    @apply dark:hover:text-orange-400
+      dark:focus-visible:text-orange-400
+      dark:active:text-orange-600;
+  }
+}
+
+@mixin link-text-primary-color-style {
+  @apply text-accent
+    hover:text-accent-hover
+    focus-visible:text-accent-hover
+    focus-visible:focus-outline
+    active:text-accent-active;
+}
+
+@mixin link-text-color-style {
+  &.primary {
+    @include link-text-primary-color-style;
+  }
+
+  &.yellow {
+    @apply focus-visible:focus-outline;
+    // light
+    @apply text-yellow-500
+      hover:text-yellow-600
+      focus-visible:text-yellow-600
+      active:text-yellow-700;
+    // dark
+    @apply dark:text-yellow-500
+      dark:hover:text-yellow-400
+      dark:focus-visible:text-yellow-400
+      dark:active:text-yellow-600;
+  }
+
+  &.gray {
+    @apply focus-visible:focus-outline;
+    // light
+    @apply text-gray-500
+      hover:text-gray-600
+      focus-visible:text-gray-600
+      active:text-gray-700;
+    // dark
+    @apply dark:text-gray-500
+      dark:hover:text-gray-400
+      dark:focus-visible:text-gray-400
+      dark:active:text-gray-600;
+  }
+
+  &.red {
+    @apply focus-visible:focus-outline;
+    // light
+    @apply text-red-500
+      hover:text-red-600
+      focus-visible:text-red-600
+      active:text-red-700;
+    // dark
+    @apply dark:text-red-500
+      dark:hover:text-red-400
+      dark:focus-visible:text-red-400
+      dark:active:text-red-600;
+  }
+
+  &.green {
+    @apply focus-visible:focus-outline;
+    // light
+    @apply text-green-500
+      hover:text-green-600
+      focus-visible:text-green-600
+      active:text-green-700;
+    // dark
+    @apply dark:text-green-500
+      dark:hover:text-green-400
+      dark:focus-visible:text-green-400
+      dark:active:text-green-600;
+  }
+
+  &.orange {
+    @apply focus-visible:focus-outline;
+    // light
+    @apply text-orange-500
+      hover:text-orange-600
+      focus-visible:text-orange-600
+      active:text-orange-700;
+    // dark
+    @apply dark:text-orange-500
+      dark:hover:text-orange-400
+      dark:focus-visible:text-orange-400
+      dark:active:text-orange-600;
+  }
+}

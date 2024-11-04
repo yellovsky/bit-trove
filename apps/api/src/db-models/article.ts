@@ -18,6 +18,14 @@ export const dbArticleSegmentSelect = {
       language_code: true,
       published_at: true,
       title: true,
+
+      blocks: {
+        select: {
+          content: true,
+          order: true,
+          type: true,
+        },
+      },
     },
   },
 } satisfies Prisma.ArticleSelect;

@@ -17,6 +17,21 @@ model Language {
     @@map("language")
 }
 
+model ArticleBlock {
+    id                     String   @id @default(uuid())
+    article_translation_id String
+    order                  Int
+    type                   String
+    content                Json
+    created_at             DateTime @default(now())
+    updated_at             DateTime @updatedAt
+
+    article_translation ArticleTranslation @relation(fields: [article_translation_id], references: [id], onDelete: Cascade)
+
+    @@unique([article_translation_id, order])
+    @@map("article_block")
+}
+
 model ArticleTranslation {
     id            String    @id @default(uuid())
     created_at    DateTime  @default(now())
@@ -26,8 +41,9 @@ model ArticleTranslation {
     title         String
     article_id    String
 
-    language Language @relation(fields: [language_code], references: [code], onDelete: Restrict)
-    article  Article  @relation(fields: [article_id], references: [id], onDelete: Cascade)
+    language Language       @relation(fields: [language_code], references: [code], onDelete: Restrict)
+    article  Article        @relation(fields: [article_id], references: [id], onDelete: Cascade)
+    blocks   ArticleBlock[]
 
     @@unique([article_id, language_code])
     @@map("article_translation")

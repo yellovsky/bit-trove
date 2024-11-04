@@ -1,0 +1,55 @@
+@mixin common-style() {
+  @apply font-bold font-heading;
+}
+
+@mixin xxl-style() {
+  @apply text-4xl desktop:text-5xl;
+}
+
+@mixin xl-style() {
+  @apply text-3xl desktop:text-4xl;
+}
+
+@mixin lg-style() {
+  @apply text-2xl desktop:text-3xl;
+}
+
+@mixin md-style() {
+  @apply text-xl;
+}
+
+.heading {
+  @include common-style();
+
+  &.fourXl {
+    @apply text-6xl desktop:text-7xl;
+  }
+
+  &.threeXl {
+    @apply text-5xl desktop:text-6xl;
+  }
+
+  &.twoXl {
+    @include xxl-style();
+  }
+
+  &.xl {
+    @include xl-style();
+  }
+
+  &.lg {
+    @include lg-style();
+  }
+
+  &.md {
+    @include md-style();
+  }
+
+  &.sm {
+    @apply text-base;
+  }
+
+  &.xs {
+    @apply text-sm;
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "css.customData": [".vscode/tailwind.json"],
+  "eslint.workingDirectories": [
+    {
+      "mode": "auto"
+    }
+  ]
+}
