@@ -59,7 +59,6 @@
     "prisma": "^5.21.1",
     "ramda": "^0.30.1",
     "reflect-metadata": "^0.2.2",
-    "resolve-accept-language": "^3.1.8",
     "rxjs": "^7.8.1",
     "sharp": "^0.33.5",
     "slugify": "^1.6.6",

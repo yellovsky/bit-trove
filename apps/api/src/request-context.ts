@@ -1,11 +1,11 @@
 // global modules
 import { LogLevel } from 'effect';
 import type { Request } from 'express';
-import { resolveAcceptLanguage } from 'resolve-accept-language';
 import { createParamDecorator, type ExecutionContext } from '@nestjs/common';
 
 // common modules
 import type { AppAbility } from 'src/types/ability';
+import { getPreferredLocale } from 'src/utils/accepted-language';
 import type { PrismaTransaction } from 'src/types/prisma-transaction';
 import type { RequestContext } from 'src/types/context';
 
@@ -35,13 +35,13 @@ export class RequestContextClass implements RequestContext {
     this.#request = params.request;
 
     const locale = params.request.query.locale;
+
     this.getTranslations = defaultTranslationsStrategy(
       typeof locale === 'string'
         ? locale
-        : resolveAcceptLanguage(
+        : getPreferredLocale(
             params.request.headers['accept-language'] || '',
             SUPPORTED_LANGUAGES,
-            SUPPORTED_LANGUAGES[0],
           ),
     );
 

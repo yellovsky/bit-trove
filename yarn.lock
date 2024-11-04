@@ -6764,7 +6764,6 @@ __metadata:
     prisma: "npm:^5.21.1"
     ramda: "npm:^0.30.1"
     reflect-metadata: "npm:^0.2.2"
-    resolve-accept-language: "npm:^3.1.8"
     rxjs: "npm:^7.8.1"
     sharp: "npm:^0.33.5"
     slugify: "npm:^1.6.6"
@@ -15805,13 +15804,6 @@ __metadata:
   version: 1.0.0
   resolution: "requires-port@npm:1.0.0"
   checksum: 10c0/b2bfdd09db16c082c4326e573a82c0771daaf7b53b9ce8ad60ea46aa6e30aaf475fe9b164800b89f93b748d2c234d8abff945d2551ba47bf5698e04cd7713267
-  languageName: node
-  linkType: hard
-
-"resolve-accept-language@npm:^3.1.8":
-  version: 3.1.8
-  resolution: "resolve-accept-language@npm:3.1.8"
-  checksum: 10c0/5781646db5b33ef416e4c0eecd6482e0a0fddc13d958cd8baa1c42c7c3364e4b18da5cbeb7466c69ce0262e0502219da4072402d1c71abff611a44b1cfe8a992
   languageName: node
   linkType: hard
 
