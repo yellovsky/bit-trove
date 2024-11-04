@@ -15,11 +15,14 @@ import axios, {
 // common modules
 import { BrowserCookieManager } from '~/utils/cookie-manager/cookie-manager.browser';
 
-const isFailedResponse = (response: unknown): response is FailedResponse =>
-  !!response && typeof response === 'object' && 'errors' in response;
+const isFailedResponse = (response: unknown): response is FailedResponse => {
+  return !!response && typeof response === 'object' && 'errors' in response;
+};
 
 const UNKNOWN_FAILED_RESPONSE: FailedResponse = {
-  errors: [{ code: 'UNKNOWN', message: 'An unknown error occurred', status: 500 }],
+  errors: [
+    { error_name: 'internal_server_error', message: 'An unknown error occurred', status_code: 500 },
+  ],
   meta: { status: 500 },
 } as const;
 

@@ -18,7 +18,14 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/jest/bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "prisma:generate": "prisma generate",
+    "prisma:seed": "prisma db seed",
+    "prisma:dev:push": "prisma db push",
+    "postinstall": "yarn prisma:generate"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed/index.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.685.0",
@@ -32,6 +39,7 @@
     "@nestjs/mapped-types": "^2.0.5",
     "@nestjs/passport": "^10.0.3",
     "@nestjs/platform-express": "^10.4.6",
+    "@prisma/client": "^5.21.1",
     "@repo/api-models": "*",
     "bcrypt": "^5.1.1",
     "casbin": "^5.32.0",
@@ -48,11 +56,14 @@
     "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
+    "prisma": "^5.21.1",
     "ramda": "^0.30.1",
     "reflect-metadata": "^0.2.2",
+    "resolve-accept-language": "^3.1.8",
     "rxjs": "^7.8.1",
     "sharp": "^0.33.5",
     "slugify": "^1.6.6",
+    "typeorm": "^0.3.20",
     "uuid": "^11.0.2",
     "winston": "^3.16.0"
   },

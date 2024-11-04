@@ -1,0 +1,59 @@
+generator client {
+    provider        = "prisma-client-js"
+    previewFeatures = ["relationJoins"]
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Language {
+    code String @id @unique
+
+    article_translations ArticleTranslation[]
+    articles             Article[]
+
+    @@map("language")
+}
+
+model ArticleTranslation {
+    id            String    @id @default(uuid())
+    created_at    DateTime  @default(now())
+    updated_at    DateTime  @updatedAt
+    published_at  DateTime?
+    language_code String
+    title         String
+    article_id    String
+
+    language Language @relation(fields: [language_code], references: [code], onDelete: Restrict)
+    article  Article  @relation(fields: [article_id], references: [id], onDelete: Cascade)
+
+    @@unique([article_id, language_code])
+    @@map("article_translation")
+}
+
+model Article {
+    id                     String    @id @default(uuid())
+    created_at             DateTime  @default(now())
+    updated_at             DateTime  @updatedAt
+    published_at           DateTime?
+    original_language_code String
+
+    translations      ArticleTranslation[]
+    blog_post         BlogPost?
+    original_language Language             @relation(fields: [original_language_code], references: [code], onDelete: Restrict)
+
+    @@map("article")
+}
+
+model BlogPost {
+    id           String    @id @default(uuid())
+    slug         String    @unique
+    created_at   DateTime  @default(now())
+    updated_at   DateTime  @updatedAt
+    published_at DateTime?
+    article_id   String    @unique
+
+    article Article @relation(fields: [article_id], references: [id], onDelete: Cascade)
+}

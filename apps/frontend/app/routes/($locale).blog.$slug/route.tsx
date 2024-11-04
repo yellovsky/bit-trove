@@ -1,6 +1,7 @@
 // global modules
 import type { BlogPost } from '@repo/api-models';
 import { Cause, Effect, Either } from 'effect';
+import { FiberFailureCauseId, isFiberFailure } from 'effect/Runtime';
 import { json, type LoaderFunctionArgs } from '@remix-run/node';
 import { type Params, useLoaderData } from '@remix-run/react';
 
@@ -8,7 +9,6 @@ import { type Params, useLoaderData } from '@remix-run/react';
 import { fetchBlogPost } from '~/api/blog-post/blog-post.fetch';
 import { mergeMeta } from '~/utils/meta';
 import { type ApiClient, getApiClient } from '~/api/api-client';
-import { FiberFailureCauseId, isFiberFailure } from 'effect/Runtime';
 
 interface LoaderData {
   blogPost: BlogPost;

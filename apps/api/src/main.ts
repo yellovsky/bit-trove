@@ -7,6 +7,7 @@ import { NestFactory, Reflector } from '@nestjs/core';
 
 // local modules
 import { AppModule } from './app.module';
+import { HttpExceptionFilter } from './http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -36,6 +37,7 @@ async function bootstrap() {
         },
       }),
     )
+    .useGlobalFilters(new HttpExceptionFilter())
     .useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)))
     .enableVersioning({ type: VersioningType.URI });
 

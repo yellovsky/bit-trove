@@ -3,6 +3,7 @@ import tsEslintPlugin from '@typescript-eslint/eslint-plugin';
 import reactPlugin from 'eslint-plugin-react';
 import tsParser from '@typescript-eslint/parser';
 import prettierConfig from 'eslint-config-prettier';
+import unusedImports from 'eslint-plugin-unused-imports';
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
@@ -17,7 +18,11 @@ export default [
       parser: tsParser,
     },
 
-    plugins: { '@typescript-eslint': tsEslintPlugin, react: reactPlugin },
+    plugins: {
+      '@typescript-eslint': tsEslintPlugin,
+      react: reactPlugin,
+      'unused-imports': unusedImports,
+    },
 
     // @TODO this ignorePatterns looks strange. Eslint fails when check css files.
     // Try to remove it
@@ -46,6 +51,18 @@ export default [
           ignoreMemberSort: false,
           memberSyntaxSortOrder: ['none', 'all', 'single', 'multiple'],
           allowSeparatedGroups: true,
+        },
+      ],
+
+      'no-unused-vars': 'off', // or "@typescript-eslint/no-unused-vars": "off",
+      'unused-imports/no-unused-imports': 'error',
+      'unused-imports/no-unused-vars': [
+        'warn',
+        {
+          vars: 'all',
+          varsIgnorePattern: '^_',
+          args: 'after-used',
+          argsIgnorePattern: '^_',
         },
       ],
     },
