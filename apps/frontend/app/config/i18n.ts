@@ -3,7 +3,7 @@ import { DEFAULT_NS } from '@repo/remix-i18n';
 
 const fallbackLng = 'en';
 const defaultNS = DEFAULT_NS;
-const supportedLngs = [fallbackLng, 'ru'];
+export const supportedLngs = [fallbackLng, 'ru'];
 
 export default {
   defaultNS,
@@ -13,11 +13,11 @@ export default {
 };
 
 export const isSupportedLocale = (
-  maybeLocale: unknown
+  maybeLocale: unknown,
 ): maybeLocale is (typeof supportedLngs)[number] =>
   typeof maybeLocale !== 'string'
     ? false
-    : supportedLngs.some((locale) => locale.toLowerCase() === maybeLocale.toLowerCase());
+    : supportedLngs.some(locale => locale.toLowerCase() === maybeLocale.toLowerCase());
 
 export const languageNames: Partial<Record<string, string>> = {
   en: 'English',

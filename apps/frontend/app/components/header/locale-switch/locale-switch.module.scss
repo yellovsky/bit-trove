@@ -1,0 +1,31 @@
+.items {
+  @apply absolute right-0 z-10 mt-2 w-32 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition 
+    focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in;
+
+  .langItem {
+    @apply grid gap-4 px-4 py-2 text-sm text-gray-700 items-center cursor-pointer
+    data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-none;
+
+    grid-template-columns: 1rem 1fr;
+  }
+}
+
+.langButton {
+  @apply w-6;
+
+  &:hover .icon {
+    @apply border-accent-hover;
+  }
+}
+
+.icon {
+  @apply w-6 h-6 block aspect-square bg-no-repeat bg-cover bg-center rounded-full overflow-hidden border;
+
+  &.ru {
+    background-image: url('./icons/ru.svg');
+  }
+
+  &.en {
+    background-image: url('./icons/en.svg');
+  }
+}

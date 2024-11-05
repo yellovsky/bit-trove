@@ -1,6 +1,7 @@
 // global modules
 import clsx from 'clsx';
-import { type ComponentProps, type FC, type ReactNode, useEffect } from 'react';
+import { animated, useSpring } from 'react-spring';
+import { type ComponentProps, type FC, type ReactNode, useEffect, useState } from 'react';
 
 // common modules
 import { NavLink } from '~/components/link';
@@ -12,7 +13,6 @@ import {
   drawer as drawerCn,
   drawerHolder as drawerHolderCn,
   link as linkCn,
-  open as openCn,
   overlay as overlayCn,
 } from './drawer.module.scss';
 
@@ -39,7 +39,27 @@ interface DrawerProps {
   toggle(): void;
 }
 
+const DURATION = 150;
+
 export const Drawer: FC<DrawerProps> = ({ show, toggle }) => {
+  const [isDisplayed, setIsDisplayed] = useState(false);
+
+  const drawerStyles = useSpring({
+    config: { duration: DURATION },
+    drawerLeft: show ? 0 : -18,
+  });
+
+  const overlayStyles = useSpring({
+    config: { duration: DURATION },
+    onRest: () => {
+      if (!show) setIsDisplayed(false);
+    },
+    onStart: () => {
+      if (show) setIsDisplayed(true);
+    },
+    opacity: show ? 0.4 : 0,
+  });
+
   useEffect(() => {
     if (!show) return;
 
@@ -53,14 +73,22 @@ export const Drawer: FC<DrawerProps> = ({ show, toggle }) => {
 
   return (
     <>
-      <div className={clsx(drawerHolderCn, show && openCn)}>
+      <animated.div
+        className={drawerHolderCn}
+        style={{
+          // @ts-expect-error
+          '--drawer-left': drawerStyles.drawerLeft.to(size => `${size}rem`),
+        }}
+      >
         <div className={drawerCn}>
           <DrawerItem icon="home" onClick={toggle} text="Home" to="/" variant="plain" />
           <DrawerItem icon="article" onClick={toggle} text="Blog" to="/blog" variant="plain" />
           <DrawerItem icon="info" onClick={toggle} text="About" to="/about" variant="plain" />
         </div>
-      </div>
-      <div className={clsx(overlayCn, show && openCn)} onClick={toggle} />
+      </animated.div>
+      {!isDisplayed ? null : (
+        <animated.div className={overlayCn} onClick={toggle} style={{ ...overlayStyles }} />
+      )}
     </>
   );
 };

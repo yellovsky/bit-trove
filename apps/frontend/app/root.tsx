@@ -28,20 +28,21 @@ import {
   type MetaFunction,
 } from '@remix-run/node';
 
-// local modules
-import { getQueryClient } from './query-client';
-import { i18nServer } from './modules/i18n.server';
-import rootCss from './styles/root.scss?url';
-import stylesheetCss from '~/tailwind.scss?url';
-import { type CookieHash, CookieManagerProvider, getCookieHash } from './utils/cookie-manager';
-
+// common modules
 import {
   type ColorMode,
   ColorModeProvider,
   isColorMode,
   NonFlashOfWrongThemeEls,
   useColorMode,
-} from './utils/color-mode';
+} from '~/components/color-mode';
+
+// local modules
+import { getQueryClient } from './query-client';
+import { i18nServer } from './modules/i18n.server';
+import rootCss from './styles/root.scss?url';
+import stylesheetCss from '~/tailwind.scss?url';
+import { type CookieHash, CookieManagerProvider, getCookieHash } from './utils/cookie-manager';
 
 export const meta: MetaFunction = () => {
   return [{ title: 'Blog title' }, { content: 'Blog description', name: 'description' }];

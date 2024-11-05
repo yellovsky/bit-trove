@@ -9,6 +9,8 @@ import { Logo } from '~/components/logo';
 // local modules
 import { Drawer } from './drawer';
 import { header as hraderCn } from './header.module.scss';
+import { LocaleSwitch } from './locale-switch';
+import { ThemeSwitch } from './theme-switch';
 
 interface HeaderProps {
   className?: string;
@@ -28,6 +30,13 @@ export const Header: FC<HeaderProps> = () => {
         </div>
         <div>
           <Logo />
+        </div>
+        <div />
+        <div>
+          <LocaleSwitch />
+        </div>
+        <div>
+          <ThemeSwitch />
         </div>
       </div>
       <Drawer show={show} toggle={toggleShow} />

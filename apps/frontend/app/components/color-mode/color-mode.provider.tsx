@@ -2,9 +2,11 @@
 import { createContext, useCallback, useContext, useEffect, useMemo } from 'react';
 import type { FC, PropsWithChildren } from 'react';
 
+// common modules
+import { useCookie, useCookieManager } from '~/utils/cookie-manager';
+
 // local modules
 import { type ColorMode, isColorMode } from './color-mode.types';
-import { useCookie, useCookieManager } from '../cookie-manager';
 
 const prefersDarkMQ = '(prefers-color-scheme: dark)';
 
@@ -61,7 +63,7 @@ export const ColorModeProvider: FC<PropsWithChildren<{ specifiedColorMode: Color
   const colorMode: ColorMode | null = useMemo(
     () =>
       cokieColorMode ? cokieColorMode : typeof window === 'undefined' ? null : getPreferredTheme(),
-    [cokieColorMode]
+    [cokieColorMode],
   );
 
   const setColorMode = useCallback(
@@ -73,7 +75,7 @@ export const ColorModeProvider: FC<PropsWithChildren<{ specifiedColorMode: Color
             secure: false,
           })
         : cookieManager.removeCookie('color_mode'),
-    [cookieManager.setCookie]
+    [cookieManager.setCookie],
   );
 
   useEffect(() => {
