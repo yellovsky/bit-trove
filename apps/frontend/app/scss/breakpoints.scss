@@ -72,9 +72,13 @@ $xxl: 90em; // 1440px
   }
 }
 
-@mixin page-padding-horizontal {
+@mixin page-padding-horizontal() {
   @include page-padding using ($padding) {
     padding-left: $padding;
     padding-right: $padding;
   }
+}
+
+@mixin page-padding-vertical() {
+  @apply py-12;
 }

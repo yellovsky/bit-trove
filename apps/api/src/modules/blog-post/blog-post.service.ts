@@ -7,15 +7,22 @@ import { Inject, Injectable } from '@nestjs/common';
 // common modules
 import { annotateLogs } from 'src/modules/runtime';
 import type { DBBlogPostFragment } from 'src/db-models/blog-post';
+import type { ItemsWithTotal } from 'src/types/items-with-total';
 import type { RequestContext } from 'src/types/context';
+import { sortToOrderBy } from 'src/utils/sort-to-order-by';
 
 import {
   BLOG_POST_REPOSITORY,
   type BlogPostRepositoryService,
+  type FindManyBlogPostParams,
 } from 'src/modules/blog-post-repository';
 
 // local modules
-import type { BlogPostService, GetOneBlogPostParams } from './blog-post.types';
+import type {
+  BlogPostService,
+  GetManyBlogPostParams,
+  GetOneBlogPostParams,
+} from './blog-post.types';
 
 @Injectable()
 export class BlogPostServiceClass implements BlogPostService {
@@ -57,5 +64,25 @@ export class BlogPostServiceClass implements BlogPostService {
         where,
       });
     }).pipe(annotateLogs(BlogPostServiceClass, 'getOneBlogPost'));
+  }
+
+  getMany<TSelect extends Prisma.BlogPostSelect>(
+    reqCtx: RequestContext,
+    params: GetManyBlogPostParams<TSelect>,
+  ): Effect.Effect<ItemsWithTotal<DBBlogPostFragment<TSelect> | null>, Error> {
+    return Effect.gen(this, function* getOneBlogPost() {
+      const findParams: FindManyBlogPostParams<TSelect> = {
+        language: reqCtx.language,
+        orderBy: sortToOrderBy(params.sort),
+        select: params.select,
+        skip: params.page.offset,
+        take: params.page.limit,
+        where: {},
+      };
+
+      yield* Effect.logDebug('findParams', findParams);
+
+      return yield* this.blogPostRepositorySrv.findMany(reqCtx, findParams);
+    }).pipe(annotateLogs(BlogPostServiceClass, 'getMany'));
   }
 }

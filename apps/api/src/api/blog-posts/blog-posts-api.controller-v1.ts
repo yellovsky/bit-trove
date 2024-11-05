@@ -1,15 +1,19 @@
 // global modules
-import type { BlogPostResponse } from '@repo/api-models';
-import { Controller, Get, Inject, Param } from '@nestjs/common';
-import { Effect, LogLevel, Option } from 'effect';
+import type { BlogPostListResponse, BlogPostResponse } from '@repo/api-models';
+import { Controller, Get, Inject, Param, Query } from '@nestjs/common';
+import { Effect, LogLevel, Option, pipe } from 'effect';
 
 // common modules
-import { dbBlogPostSelect } from 'src/db-models/blog-post';
 import { NotFoundAPIError } from 'src/exceptions';
 import { Public } from 'src/modules/auth-jwt';
 import { ReqContext } from 'src/request-context';
 import type { RequestContext } from 'src/types/context';
 import { BLOG_POST_SERVICE, type BlogPostService } from 'src/modules/blog-post';
+
+import {
+  dbBlogPostSegmentSelect,
+  dbBlogPostSelect,
+} from 'src/db-models/blog-post';
 
 import {
   BLOG_POST_PUBLISHER_SRV,
@@ -32,6 +36,9 @@ import {
   type RuntimeService,
 } from 'src/modules/runtime';
 
+// local modules
+import { FindManyBlogPostsDTO } from './dto/find-many.dto';
+
 @Controller({ path: 'blog-posts', version: '1' })
 export class BlogPostsApiV1Controller {
   constructor(
@@ -47,6 +54,58 @@ export class BlogPostsApiV1Controller {
     @Inject(BLOG_POST_PUBLISHER_SRV)
     private readonly blogPostPublisherSrv: BlogPostPublisherService,
   ) {}
+
+  @Public()
+  @Get()
+  async getBlogPostList(
+    @ReqContext() reqCtx: RequestContext,
+    @Query() query: FindManyBlogPostsDTO,
+  ): Promise<BlogPostListResponse> {
+    const program = Effect.gen(this, function* () {
+      yield* Effect.logDebug('query', query);
+
+      const maybeResponse = yield* this.blogPostSrv
+        .getMany(reqCtx, {
+          ...query,
+          published: true,
+          select: dbBlogPostSegmentSelect,
+        })
+        .pipe(
+          Effect.map((res) =>
+            pipe(
+              this.blogPostAccessControlSrv.canReadBlogPostItemsWithTotal(
+                reqCtx,
+                res,
+              ),
+              Option.flatMap((res) =>
+                this.blogPostPublisherSrv.checkReadBlogPostItemsWithTotal(
+                  'published',
+                  res,
+                ),
+              ),
+              Option.flatMap((res) =>
+                this.blogPostRerializerSrv.serializeBlogPostListResponse(
+                  reqCtx,
+                  { ...res, ...query.page },
+                ),
+              ),
+            ),
+          ),
+        );
+
+      if (Option.isNone(maybeResponse)) {
+        yield* Effect.logDebug('blogPost not found');
+        return yield* new NotFoundAPIError({});
+      }
+
+      return maybeResponse.value;
+    }).pipe(
+      Effect.tapError(Effect.logError),
+      annotateLogs(BlogPostsApiV1Controller, 'getBlogPostList', LogLevel.Debug),
+    );
+
+    return this.runtimeSrv.runPromise(program);
+  }
 
   @Public()
   @Get(':slugOrID')

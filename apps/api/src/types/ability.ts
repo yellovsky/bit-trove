@@ -7,16 +7,15 @@ import {
 } from '@casl/ability';
 
 // common modules
-import type { DBArticleFragment } from 'src/db-models/article';
-import type { DBBlogPostFragment } from 'src/db-models/blog-post';
+import type { DBArticleAccessControl } from 'src/db-models/article';
+import type { DBBlogPostAccessControl } from 'src/db-models/blog-post';
 
 export type Action = 'manage' | 'create' | 'read' | 'update' | 'delete';
 
 export type BlogPostSubject = ForcedSubject<'blog_post'> &
-  DBBlogPostFragment<{ published_at: true }>;
+  DBBlogPostAccessControl;
 
-export type ArticleSubject = ForcedSubject<'article'> &
-  DBArticleFragment<{ published_at: true }>;
+export type ArticleSubject = ForcedSubject<'article'> & DBArticleAccessControl;
 
 export type Subject = InferSubjects<BlogPostSubject | ArticleSubject>;
 

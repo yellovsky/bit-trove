@@ -19,6 +19,7 @@ export class RequestContextClass implements RequestContext {
   #ability: AppAbility;
   #request: Request;
 
+  readonly language: string;
   readonly tx: PrismaTransaction | null;
   readonly can: AppAbility['can'];
   readonly user: null;
@@ -34,16 +35,15 @@ export class RequestContextClass implements RequestContext {
     this.#ability = params.ability;
     this.#request = params.request;
 
-    const locale = params.request.query.locale;
-
-    this.getTranslations = defaultTranslationsStrategy(
-      typeof locale === 'string'
-        ? locale
+    this.language =
+      typeof params.request.query.locale === 'string'
+        ? params.request.query.locale
         : getPreferredLocale(
             params.request.headers['accept-language'] || '',
             SUPPORTED_LANGUAGES,
-          ),
-    );
+          );
+
+    this.getTranslations = defaultTranslationsStrategy(this.language);
 
     this.tx = params.tx || null;
     this.user = params.user;

@@ -2,7 +2,11 @@
 import cookieParser from 'cookie-parser';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import session from 'express-session';
-import { ClassSerializerInterceptor, VersioningType } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  ValidationPipe,
+  VersioningType,
+} from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';
 
 // local modules
@@ -37,6 +41,7 @@ async function bootstrap() {
         },
       }),
     )
+    .useGlobalPipes(new ValidationPipe({ whitelist: true }))
     .useGlobalFilters(new HttpExceptionFilter())
     .useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)))
     .enableVersioning({ type: VersioningType.URI });

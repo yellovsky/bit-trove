@@ -1,7 +1,7 @@
 // global modules
 import * as R from 'ramda';
 import { Injectable } from '@nestjs/common';
-import { Option } from 'effect';
+import { Option, pipe } from 'effect';
 
 import type {
   ArticleBlock,
@@ -9,12 +9,15 @@ import type {
   ArticleImageBlock,
   ArticleTextBlock,
   BlogPost,
+  BlogPostListResponse,
   BlogPostResponse,
+  BlogPostSegment,
 } from '@repo/api-models';
 
 // common modules
-import type { DBBlogPost } from 'src/db-models/blog-post';
+import type { ItemsWithTotalAndPagination } from 'src/types/items-with-total';
 import type { SerializerContext } from 'src/types/context';
+import type { DBBlogPost, DBBlogPostSegment } from 'src/db-models/blog-post';
 
 // local modules
 import type { BlogPostSerializerService } from './blog-post-serializer.types';
@@ -66,24 +69,49 @@ const isBlock = (block: object): block is ArticleBlock =>
 export class BlogPostSerializerServiceClass
   implements BlogPostSerializerService
 {
-  serializeBlogPost(
+  serializeBlogPostSegment(
     ctx: SerializerContext,
-    dbBlogPost: DBBlogPost,
-  ): Option.Option<BlogPost> {
+    dbBlogPost: DBBlogPostSegment,
+  ): Option.Option<BlogPostSegment> {
     const optionalArticleTranslation = Option.fromNullable(
       ctx.getTranslations(dbBlogPost.article),
     );
 
     return Option.all({ articleTranslation: optionalArticleTranslation }).pipe(
       Option.map(({ articleTranslation }) => ({
+        created_at: dbBlogPost.created_at.toUTCString(),
+        id: dbBlogPost.id,
+        original_language_code: dbBlogPost.article.original_language_code,
+        published_at: dbBlogPost.published_at?.toUTCString() || null,
+        short_description: articleTranslation.short_description,
+        slug: dbBlogPost.slug,
+        title: articleTranslation.title,
+      })),
+    );
+  }
+
+  serializeBlogPost(
+    ctx: SerializerContext,
+    dbBlogPost: DBBlogPost,
+  ): Option.Option<BlogPost> {
+    const optionalArtickeTranslation = Option.fromNullable(
+      ctx.getTranslations(dbBlogPost.article),
+    );
+    const optionalSegment = this.serializeBlogPostSegment(ctx, dbBlogPost);
+
+    return Option.all({
+      articleTranslation: optionalArtickeTranslation,
+      segment: optionalSegment,
+    }).pipe(
+      Option.map(({ articleTranslation, segment }) => ({
+        ...segment,
         blocks: R.sortBy(
           R.prop('order'),
           articleTranslation.blocks.filter(isBlock),
         ),
-        id: dbBlogPost.id,
-        language_code: dbBlogPost.article.original_language_code,
-        slug: dbBlogPost.slug,
-        title: articleTranslation.title,
+        seo_description: articleTranslation.seo_description,
+        seo_keywords: articleTranslation.seo_keywords,
+        seo_title: articleTranslation.seo_title,
       })),
     );
   }
@@ -94,6 +122,34 @@ export class BlogPostSerializerServiceClass
   ): Option.Option<BlogPostResponse> {
     return this.serializeBlogPost(ctx, dbBlogPost).pipe(
       Option.map((data) => ({ data })),
+    );
+  }
+
+  serializeBlogPostListResponse(
+    ctx: SerializerContext,
+    dbBlogPostList: ItemsWithTotalAndPagination<DBBlogPostSegment | null>,
+  ): Option.Option<BlogPostListResponse> {
+    const items = Option.all(
+      dbBlogPostList.items.map((item) =>
+        pipe(
+          Option.fromNullable(item),
+          Option.flatMap((item) => this.serializeBlogPostSegment(ctx, item)),
+          Option.orElseSome(() => null),
+        ),
+      ),
+    );
+
+    return items.pipe(
+      Option.map((data) => ({
+        data,
+        meta: {
+          pagination: {
+            limit: dbBlogPostList.limit,
+            offset: dbBlogPostList.offset,
+            total: dbBlogPostList.total,
+          },
+        },
+      })),
     );
   }
 }

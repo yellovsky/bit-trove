@@ -21,5 +21,5 @@ export const isSupportedLocale = (
 
 export const languageNames: Partial<Record<string, string>> = {
   en: 'English',
-  ru: 'Russian',
+  ru: 'Русский',
 };

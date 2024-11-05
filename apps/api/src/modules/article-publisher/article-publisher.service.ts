@@ -3,17 +3,17 @@ import { Injectable } from '@nestjs/common';
 import { Option } from 'effect';
 
 // common modules
-import type { DBArticle } from 'src/db-models/article';
+import type { DBArticlePublishing } from 'src/db-models/article';
 
 // local modules
 import type { ArticlePublisherService } from './article-publisher.types';
 
 @Injectable()
 export class ArticlePublisherServiceClass implements ArticlePublisherService {
-  checkArticle(
+  checkArticle<TArticle extends DBArticlePublishing>(
     published: boolean | 'published',
-    dbArticle: DBArticle,
-  ): Option.Option<DBArticle> {
+    dbArticle: TArticle,
+  ): Option.Option<TArticle> {
     if (!published) return Option.some(dbArticle);
 
     if (!dbArticle.published_at) return Option.none();

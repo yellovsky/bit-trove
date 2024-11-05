@@ -1,5 +1,6 @@
 // global modules
 import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
 import { animated, useSpring } from 'react-spring';
 import { type ComponentProps, type FC, type ReactNode, useEffect, useState } from 'react';
 
@@ -42,6 +43,7 @@ interface DrawerProps {
 const DURATION = 150;
 
 export const Drawer: FC<DrawerProps> = ({ show, toggle }) => {
+  const { t } = useTranslation();
   const [isDisplayed, setIsDisplayed] = useState(false);
 
   const drawerStyles = useSpring({
@@ -81,9 +83,29 @@ export const Drawer: FC<DrawerProps> = ({ show, toggle }) => {
         }}
       >
         <div className={drawerCn}>
-          <DrawerItem icon="home" onClick={toggle} text="Home" to="/" variant="plain" />
-          <DrawerItem icon="article" onClick={toggle} text="Blog" to="/blog" variant="plain" />
-          <DrawerItem icon="info" onClick={toggle} text="About" to="/about" variant="plain" />
+          <DrawerItem
+            icon="home"
+            onClick={toggle}
+            text={t('HOME_PAGE_TITLE')}
+            to="/"
+            variant="plain"
+          />
+
+          <DrawerItem
+            icon="article"
+            onClick={toggle}
+            text={t('BLOG_PAGE_TITLE')}
+            to="/blog"
+            variant="plain"
+          />
+
+          <DrawerItem
+            icon="info"
+            onClick={toggle}
+            text={t('ABOUT_PAGE_TITLE')}
+            to="/about"
+            variant="plain"
+          />
         </div>
       </animated.div>
       {!isDisplayed ? null : (

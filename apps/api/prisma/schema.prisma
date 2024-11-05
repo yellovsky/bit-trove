@@ -33,13 +33,17 @@ model ArticleBlock {
 }
 
 model ArticleTranslation {
-    id            String    @id @default(uuid())
-    created_at    DateTime  @default(now())
-    updated_at    DateTime  @updatedAt
-    published_at  DateTime?
-    language_code String
-    title         String
-    article_id    String
+    id                String    @id @default(uuid())
+    created_at        DateTime  @default(now())
+    updated_at        DateTime  @updatedAt
+    published_at      DateTime?
+    language_code     String
+    title             String
+    article_id        String
+    short_description String
+    seo_title         String
+    seo_description   String
+    seo_keywords      String
 
     language Language       @relation(fields: [language_code], references: [code], onDelete: Restrict)
     article  Article        @relation(fields: [article_id], references: [id], onDelete: Cascade)

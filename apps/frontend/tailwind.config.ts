@@ -43,7 +43,7 @@ export default {
       },
 
       height: {
-        header: '3.5rem',
+        header: '4rem',
       },
 
       zIndex: {

@@ -30,5 +30,6 @@ export interface RequestContext
   extends RepositoryContext,
     SerializerContext,
     AccessControlContext {
+  language: string;
   logLevel: LogLevel.LogLevel | undefined;
 }

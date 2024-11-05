@@ -5,7 +5,7 @@ import { subject } from '@casl/ability';
 
 // common modules
 import type { AccessControlContext } from 'src/types/context';
-import type { DBArticle } from 'src/db-models/article';
+import type { DBArticleAccessControl } from 'src/db-models/article';
 
 // local modules
 import type { ArticleAccessControlService } from './article-access-control.types';
@@ -14,10 +14,10 @@ import type { ArticleAccessControlService } from './article-access-control.types
 export class ArticleAccessControlServiceClass
   implements ArticleAccessControlService
 {
-  canReadArticle(
+  canReadArticle<TArticle extends DBArticleAccessControl>(
     ctx: AccessControlContext,
-    dbArticle: DBArticle,
-  ): Option.Option<DBArticle> {
+    dbArticle: TArticle,
+  ): Option.Option<TArticle> {
     if (!ctx.can('read', subject('article', dbArticle))) {
       return Option.none();
     }

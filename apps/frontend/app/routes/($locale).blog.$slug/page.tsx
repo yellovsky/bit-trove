@@ -7,7 +7,7 @@ import { AnyBlock } from '~/components/blocks/any-block';
 import { Heading } from '~/components/heading';
 
 // local modules
-import { page as pageCn } from './page.module.scss';
+import { BlogpostPageLayout } from './layout';
 
 interface BlogPostPageProps {
   blogPost: BlogPost;
@@ -15,13 +15,13 @@ interface BlogPostPageProps {
 
 export const BlogPostPage: FC<BlogPostPageProps> = ({ blogPost }) => {
   return (
-    <div className={pageCn}>
+    <BlogpostPageLayout>
       <Heading as="h1" className="mb-8" size="lg">
         {blogPost.title}
       </Heading>
       {blogPost.blocks.map((block, index) => (
         <AnyBlock block={block} key={`${block.type}_${index}`} />
       ))}
-    </div>
+    </BlogpostPageLayout>
   );
 };
