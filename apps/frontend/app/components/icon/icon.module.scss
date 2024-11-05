@@ -1,0 +1,24 @@
+$maskIcons: (
+  article: url('./images/icon.article.svg'),
+  burger: url('./images/icon.burger.svg'),
+  home: url('./images/icon.home.svg'),
+  info: url('./images/icon.info.svg'),
+);
+
+.icon {
+  @apply w-full h-full block aspect-square;
+
+  @each $name, $mask-image in $maskIcons {
+    &.#{$name} {
+      background-color: currentColor;
+      -webkit-mask-size: contain;
+      -webkit-mask-position: center;
+      -webkit-mask-repeat: no-repeat;
+      -webkit-mask-image: $mask-image;
+      mask-size: contain;
+      mask-position: center;
+      mask-repeat: no-repeat;
+      mask-image: $mask-image;
+    }
+  }
+}

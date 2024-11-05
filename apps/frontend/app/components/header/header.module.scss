@@ -1,0 +1,8 @@
+@use '../../scss/breakpoints.scss' as bp;
+
+.header {
+  @apply grid gap-4 items-center;
+  @include bp.page-padding-horizontal();
+
+  grid-template-columns: min-content 5rem 1fr;
+}

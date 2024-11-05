@@ -1,0 +1,8 @@
+@mixin text-button-primary-style {
+  @apply border-transparent decoration-2 hover:underline;
+  @apply hover:text-accent-hover
+    focus-visible:text-accent-hover
+    active:text-accent-active
+    disabled:text-gray-250
+    dark:disabled:text-gray-500;
+}

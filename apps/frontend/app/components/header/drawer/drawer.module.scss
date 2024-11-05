@@ -1,0 +1,51 @@
+@use '../../../scss/breakpoints.scss' as bp;
+
+$darwer-duration: 0.2s;
+
+.drawerHolder {
+  @apply h-[100vh] fixed top-0 w-72 -left-72 z-10 bg-neutral-800;
+
+  transition: all $darwer-duration ease-in;
+
+  &.open {
+    @apply left-0;
+  }
+
+  .drawer {
+    @apply flex flex-col w-full py-6;
+
+    .link {
+      @apply grid items-center h-10 gap-4
+        hover:bg-neutral-700 
+        active:bg-neutral-600;
+      @include bp.page-padding-horizontal();
+
+      grid-template-columns: 1.25rem 1fr;
+
+      &.active {
+        @apply bg-neutral-700;
+      }
+    }
+  }
+}
+
+@keyframes overlayAnimation {
+  0% {
+    @apply opacity-0;
+  }
+  100% {
+    @apply opacity-40;
+  }
+}
+
+.overlay {
+  @apply opacity-40 z-0 bg-black fixed w-full h-full left-0 top-0 hidden pointer-events-none;
+
+  animation-name: overlayAnimation;
+  animation-duration: $darwer-duration;
+  animation-timing-function: ease-in;
+
+  &.open {
+    @apply pointer-events-auto block;
+  }
+}

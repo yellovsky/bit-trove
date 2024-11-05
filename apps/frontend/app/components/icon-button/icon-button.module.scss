@@ -1,0 +1,7 @@
+@mixin icon-button-style() {
+  @apply flex items-center justify-center p-1;
+}
+
+.button {
+  @include icon-button-style();
+}

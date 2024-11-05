@@ -1,0 +1,50 @@
+@mixin soft-button-default-style {
+  @apply text-gray-400
+    dark:text-gray-200;
+}
+
+@mixin soft-button-selected-style {
+  @apply text-text bg-black-alpha-50
+    dark:text-text dark:bg-white-alpha-100;
+}
+
+@mixin soft-button-hover-style {
+  @apply bg-black-alpha-100
+    dark:bg-gray-600;
+}
+
+@mixin soft-button-focus-style {
+  @include soft-button-hover-style;
+  @apply focus-visible:focus-outline;
+}
+
+@mixin soft-button-active-style {
+  @apply bg-gray-200
+    dark:bg-gray-500;
+}
+
+@mixin soft-button-disabled-style {
+  @apply text-gray-200 bg-transparent
+    dark:text-gray-500 dark:bg-transparent;
+}
+
+@mixin soft-button-style {
+  @include soft-button-default-style;
+
+  &[aria-selected='true'] {
+    @include soft-button-selected-style;
+  }
+
+  &:hover {
+    @include soft-button-hover-style;
+  }
+  &:focus-visible {
+    @include soft-button-focus-style;
+  }
+  &:active {
+    @include soft-button-active-style;
+  }
+  &:disabled {
+    @include soft-button-disabled-style;
+  }
+}
