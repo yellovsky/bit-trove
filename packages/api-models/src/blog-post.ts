@@ -9,7 +9,7 @@ export interface ArticleImageBlock {
 export interface ArticleTextBlock {
   type: 'text';
   order: number;
-  content: { html: string };
+  content: { html: string } | { md: string };
 }
 
 export interface ArticleCodeBlock {

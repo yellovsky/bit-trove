@@ -1,0 +1,80 @@
+@use 'sass:map';
+
+$base: 0em;
+$sm: 36em; // 576px
+// $sm: 30em; // 480px
+$md: 48em; // 768px
+$lg: 62em; // 992px
+$xl: 75em; // 1200px
+$xxl: 90em; // 1440px
+
+@mixin interval($from: null, $to: null) {
+  @if $from == null and $to == null {
+    @content;
+  } @else if $from == null {
+    @media only screen and (max-width: calc($to - 1px)) {
+      @content;
+    }
+  } @else if $to == null {
+    @media only screen and (min-width: $from) {
+      @content;
+    }
+  } @else {
+    @media only screen and (min-width: $from) and (max-width: calc($to - 1px)) {
+      @content;
+    }
+  }
+}
+
+@mixin min-interval($from: null) {
+  @media only screen and (min-width: $from) {
+    @content;
+  }
+}
+
+@mixin container-min-interval($container: null, $from: null) {
+  @container #{$container} (width > #{$from}) {
+    @content;
+  }
+}
+
+@mixin container-min-height-interval($container: null, $from: null) {
+  @container #{$container} (height > #{$from}) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @include min-interval($md) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @include min-interval($lg) {
+    @content;
+  }
+}
+
+@mixin page-padding() {
+  @content (0.75rem);
+
+  @include min-interval($from: $sm) {
+    @content (1.125rem);
+  }
+
+  @include min-interval($from: $md) {
+    @content (1.5rem);
+  }
+
+  @include min-interval($from: $lg) {
+    @content (2.25rem);
+  }
+}
+
+@mixin page-padding-horizontal {
+  @include page-padding using ($padding) {
+    padding-left: $padding;
+    padding-right: $padding;
+  }
+}

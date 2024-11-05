@@ -39,8 +39,8 @@ const isArticleImageBlock = (block: object): block is ArticleImageBlock =>
 const isArticleTextBlock = (block: object): block is ArticleTextBlock =>
   isBaseBlock(block) &&
   block.type === 'text' &&
-  'html' in block.content &&
-  typeof block.content.html === 'string';
+  (('html' in block.content && typeof block.content.html === 'string') ||
+    ('md' in block.content && typeof block.content.md === 'string'));
 
 const isArticleCodeBlock = (block: object): block is ArticleCodeBlock =>
   isBaseBlock(block) &&

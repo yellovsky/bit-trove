@@ -10,9 +10,10 @@ interface TextBlockProps {
 }
 
 export const TextBlock: FC<TextBlockProps> = ({ block }) => {
+  const html = 'html' in block.content ? block.content.html : undefined;
+  const md = 'md' in block.content ? block.content.md : undefined;
+
   return (
-    <div>
-      <DangerHTMLText text={block.content.html} />
-    </div>
+    <div>{html ? <DangerHTMLText html={html} /> : md ? <DangerHTMLText md={md} /> : null}</div>
   );
 };

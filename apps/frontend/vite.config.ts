@@ -8,15 +8,10 @@ installGlobals();
 
 export default defineConfig({
   optimizeDeps: {
-    exclude: ['@repo/ui', path.join(__dirname, 'node_modules/.vite/deps')],
+    exclude: [path.join(__dirname, 'node_modules/.vite/deps')],
     force: true,
   },
   plugins: [remix(), tsconfigPaths()],
-  resolve: {
-    alias: {
-      '@repo/ui/src': path.join(__dirname, '../../packages/ui/src'),
-    },
-  },
   server: {
     host: true,
     warmup: {
