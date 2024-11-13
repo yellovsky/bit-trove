@@ -5,7 +5,5 @@ import { Module } from '@nestjs/common';
 // common modules
 import { ApiModule } from 'src/api';
 
-@Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true }), ApiModule],
-})
+@Module({ imports: [ConfigModule.forRoot({ isGlobal: true }), ApiModule] })
 export class AppModule {}

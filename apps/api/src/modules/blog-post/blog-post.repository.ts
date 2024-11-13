@@ -1,6 +1,6 @@
 // global modules
+import { Effect } from 'effect';
 import type { Prisma } from '@prisma/client';
-import { Effect, Option } from 'effect';
 import { Inject, Injectable } from '@nestjs/common';
 
 // common modules
@@ -12,9 +12,9 @@ import { PRISMA_SRV, type PrismaService } from 'src/modules/prisma';
 // local modules
 import type {
   BlogPostRepositoryService,
-  FindManyBlogPostParams,
-  FindUniqueBlogPostParams,
-} from './blog-post-repository.types';
+  FindManyBlogPostRepositroeyParams,
+  FindUniqueBlogPostRepositroeyParams,
+} from './blog-post.types';
 
 @Injectable()
 export class BlogPostRepositoryServiceClass
@@ -24,22 +24,18 @@ export class BlogPostRepositoryServiceClass
 
   findUnique<TSelect extends Prisma.BlogPostSelect>(
     ctx: RepositoryContext,
-    params: FindUniqueBlogPostParams<TSelect>,
-  ): Effect.Effect<Option.Option<DBBlogPostFragment<TSelect>>, Error> {
-    return Effect.gen(this, function* () {
-      const tx = ctx.tx || this.prismaSrv;
+    params: FindUniqueBlogPostRepositroeyParams<TSelect>,
+  ): Effect.Effect<DBBlogPostFragment<TSelect> | null, Error> {
+    const tx = ctx.tx || this.prismaSrv;
 
-      const result = yield* Effect.tryPromise(() =>
-        tx.blogPost.findUnique({ select: params.select, where: params.where }),
-      );
-
-      return Option.fromNullable(result);
-    });
+    return Effect.tryPromise(() =>
+      tx.blogPost.findUnique({ select: params.select, where: params.where }),
+    );
   }
 
   findMany<TSelect extends Prisma.BlogPostSelect>(
     ctx: RepositoryContext,
-    { orderBy, ...rest }: FindManyBlogPostParams<TSelect>,
+    { orderBy, ...rest }: FindManyBlogPostRepositroeyParams<TSelect>,
   ): Effect.Effect<ItemsWithTotal<DBBlogPostFragment<TSelect> | null>, Error> {
     const tx = ctx.tx || this.prismaSrv;
 

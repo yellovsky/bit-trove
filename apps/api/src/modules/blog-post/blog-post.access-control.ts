@@ -1,5 +1,5 @@
 // global modules
-import { Option } from 'effect';
+import { Either } from 'effect';
 import { subject } from '@casl/ability';
 import { Inject, Injectable } from '@nestjs/common';
 
@@ -7,14 +7,20 @@ import { Inject, Injectable } from '@nestjs/common';
 import type { AccessControlContext } from 'src/types/context';
 import type { DBBlogPostAccessControl } from 'src/db-models/blog-post';
 import type { ItemsWithTotal } from 'src/types/items-with-total';
+import { type ApiError, ForbiddenAPIError } from 'src/exceptions';
 
 import {
   ARTICLE_ACCESS_CONTROL_SRV,
   type ArticleAccessControlService,
-} from 'src/modules/article-access-control';
+} from 'src/modules/article';
+
+// local modules
+import { BlogPostAccessControlService } from './blog-post.types';
 
 @Injectable()
-export class BlogPostAccessControlServiceClass {
+export class BlogPostAccessControlServiceClass
+  implements BlogPostAccessControlService
+{
   constructor(
     @Inject(ARTICLE_ACCESS_CONTROL_SRV)
     private readonly articleAccessControlSrv: ArticleAccessControlService,
@@ -23,29 +29,27 @@ export class BlogPostAccessControlServiceClass {
   canReadBlogPost<TBlogPost extends DBBlogPostAccessControl>(
     ctx: AccessControlContext,
     dbBlogPost: TBlogPost,
-  ): Option.Option<TBlogPost> {
+  ): Either.Either<TBlogPost, ApiError> {
     const canRead =
       ctx.can('read', subject('blog_post', dbBlogPost)) &&
       this.articleAccessControlSrv.canReadArticle(ctx, dbBlogPost.article);
 
-    return !canRead ? Option.none() : Option.some(dbBlogPost);
+    return !canRead
+      ? Either.left(new ForbiddenAPIError({}))
+      : Either.right(dbBlogPost);
   }
 
   canReadBlogPostItems<TBlogPost extends DBBlogPostAccessControl>(
     ctx: AccessControlContext,
     dbBlogPostList: Array<TBlogPost | null>,
-  ): Option.Option<Array<TBlogPost | null>> {
-    return Option.all(
-      dbBlogPostList.map((dbBlogPost) =>
-        dbBlogPost
-          ? this.canReadBlogPost(ctx, dbBlogPost).pipe(
-              Option.orElseSome(() => null),
-            )
-          : Option.some(null),
-      ),
-    ).pipe(
-      Option.flatMap((arr) =>
-        arr.every((item) => item === null) ? Option.none() : Option.some(arr),
+  ): Either.Either<Array<TBlogPost | null>, ApiError> {
+    return Either.all(
+      dbBlogPostList.map((item) =>
+        !item
+          ? Either.right(null)
+          : this.canReadBlogPost(ctx, item).pipe(
+              Either.orElse(() => Either.right(null)),
+            ),
       ),
     );
   }
@@ -53,9 +57,9 @@ export class BlogPostAccessControlServiceClass {
   canReadBlogPostItemsWithTotal<TBlogPost extends DBBlogPostAccessControl>(
     ctx: AccessControlContext,
     dbBlogPostSegmantList: ItemsWithTotal<TBlogPost | null>,
-  ): Option.Option<ItemsWithTotal<TBlogPost | null>> {
+  ): Either.Either<ItemsWithTotal<TBlogPost | null>, ApiError> {
     return this.canReadBlogPostItems(ctx, dbBlogPostSegmantList.items).pipe(
-      Option.map((items) => ({ items, total: dbBlogPostSegmantList.total })),
+      Either.map((items) => ({ items, total: dbBlogPostSegmantList.total })),
     );
   }
 }

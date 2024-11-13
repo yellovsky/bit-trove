@@ -58,22 +58,24 @@ export interface DBArticleSegment
 // ================================================================
 //                      E N T I T Y
 // ================================================================
-export const dbArticleSelect = R.mergeDeepRight(dbArticleSegmentSelect, {
-  translations: {
-    select: {
-      seo_description: true,
-      seo_keywords: true,
-      seo_title: true,
+export const dbArticleSelect = {
+  ...R.mergeDeepRight(dbArticleSegmentSelect, {
+    translations: {
+      select: {
+        seo_description: true,
+        seo_keywords: true,
+        seo_title: true,
 
-      blocks: {
-        select: {
-          content: true,
-          order: true,
-          type: true,
+        blocks: {
+          select: {
+            content: true,
+            order: true,
+            type: true,
+          },
         },
       },
     },
-  },
-}) satisfies Prisma.ArticleSelect;
+  }),
+} as const satisfies Prisma.ArticleSelect;
 
 export interface DBArticle extends DBArticleFragment<typeof dbArticleSelect> {}

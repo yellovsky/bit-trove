@@ -25,7 +25,7 @@ type InvalidParams = FailedResponse['errors'][number]['invalid_params'];
  *
  * @extends {Cause.YieldableError}
  */
-type ApiError = Cause.YieldableError & {
+export type ApiError = Cause.YieldableError & {
   readonly _tag: ApiErrorName;
 } & Readonly<{
     status_code: HttpStatus;
@@ -125,3 +125,8 @@ export const isAPIError = (error: unknown): error is ApiError =>
   error instanceof ForbiddenAPIError ||
   error instanceof InternalServerAPIError ||
   error instanceof UnauthorizedAPIError;
+
+export const toApiError = (error: Error | ApiError): ApiError =>
+  isAPIError(error)
+    ? error
+    : new InternalServerAPIError({ message: error.message });

@@ -1,7 +1,11 @@
 // global modules
 import * as R from 'ramda';
+import type { ApiErrorName } from '@repo/api-models';
 import type { NonEmptyArray } from 'effect/Array';
 import { Response } from 'express';
+import { Cause, Option } from 'effect';
+import { FiberFailureCauseId, isFiberFailure } from 'effect/Runtime';
+
 import {
   ArgumentsHost,
   Catch,
@@ -9,17 +13,16 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
-import { Cause, Option } from 'effect';
-import { FiberFailureCauseId, isFiberFailure } from 'effect/Runtime';
-
-import {
-  type ApiErrorName,
-  type FailedResponse,
-  type ResponseError,
-} from '@repo/api-models';
 
 // common modules
 import { isAPIError } from 'src/exceptions';
+
+import {
+  FailedResponseEntity,
+  FailedResponseMeta,
+  InvalidParamEntity,
+  ResponseErrorEntity,
+} from 'src/entities/error';
 
 /**
  * Represents an internal server error response.
@@ -29,10 +32,10 @@ import { isAPIError } from 'src/exceptions';
  * @property {string} error_name - The name of the error.
  * @property {number} status_code - The HTTP status code for the error.
  */
-const INTERNAL_SERVER_ERROR: ResponseError = {
+const INTERNAL_SERVER_ERROR = new ResponseErrorEntity({
   error_name: 'internal_server_error',
   status_code: 500,
-};
+});
 
 const errorNameByCode: Partial<Record<number, ApiErrorName>> = {
   [HttpStatus.BAD_REQUEST]: 'bad_request',
@@ -44,7 +47,7 @@ const errorNameByCode: Partial<Record<number, ApiErrorName>> = {
 
 const getErrorApiResponseFromException = (
   exception: Error,
-): Option.Option<NonEmptyArray<ResponseError>> => {
+): Option.Option<NonEmptyArray<ResponseErrorEntity>> => {
   if (!(exception instanceof HttpException)) return Option.none();
 
   const status_code = exception.getStatus();
@@ -52,7 +55,13 @@ const getErrorApiResponseFromException = (
 
   return !error_name
     ? Option.some([INTERNAL_SERVER_ERROR])
-    : Option.some([{ error_name, message: exception.message, status_code }]);
+    : Option.some([
+        new ResponseErrorEntity({
+          error_name,
+          message: exception.message,
+          status_code,
+        }),
+      ]);
 };
 
 /**
@@ -64,7 +73,7 @@ const getErrorApiResponseFromException = (
  */
 const getErrorApiResponseFromFiberFailure = (
   error: Error,
-): Option.Option<NonEmptyArray<ResponseError>> => {
+): Option.Option<NonEmptyArray<ResponseErrorEntity>> => {
   if (!isFiberFailure(error)) return Option.none();
 
   const cause = error[FiberFailureCauseId];
@@ -73,12 +82,14 @@ const getErrorApiResponseFromFiberFailure = (
   if (!isAPIError(cause.error)) return Option.some([INTERNAL_SERVER_ERROR]);
 
   return Option.some([
-    {
+    new ResponseErrorEntity({
       error_name: cause.error._tag,
-      invalid_params: cause.error.invalid_params,
+      invalid_params: cause.error.invalid_params?.map(
+        ({ name, reason }) => new InvalidParamEntity({ name, reason }),
+      ),
       message: cause.error.message,
       status_code: cause.error.status_code,
-    },
+    }),
   ]);
 };
 
@@ -95,18 +106,21 @@ const getErrorApiResponseFromFiberFailure = (
  */
 const getErrorApiResponse = (
   error: Error,
-): { status: number; response: FailedResponse } => {
+): { status: number; response: FailedResponseEntity } => {
   const errors = Option.firstSomeOf([
     getErrorApiResponseFromFiberFailure(error),
     getErrorApiResponseFromException(error),
   ]).pipe(
-    Option.map(R.reverse<ResponseError>),
+    Option.map(R.reverse<ResponseErrorEntity>),
     Option.map(R.sortBy(R.prop('status_code'))),
     Option.getOrElse(() => [INTERNAL_SERVER_ERROR]),
   );
 
   return {
-    response: { errors, meta: { status: errors[0].status_code } },
+    response: new FailedResponseEntity({
+      errors,
+      meta: new FailedResponseMeta({ status: errors[0].status_code }),
+    }),
     status: errors[0].status_code,
   };
 };

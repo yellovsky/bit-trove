@@ -28,7 +28,7 @@ export interface ResponseError {
   status_code: number;
   error_name: ApiErrorName;
   message?: string;
-  invalid_params?: [{ name: string; reason: string }];
+  invalid_params?: Array<{ name: string; reason: string }>;
 }
 
 export interface FailedResponse {

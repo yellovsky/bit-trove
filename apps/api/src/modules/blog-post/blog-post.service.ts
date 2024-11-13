@@ -1,25 +1,42 @@
 // global modules
-import { validate as isUUID } from 'uuid';
 import type { Prisma } from '@prisma/client';
-import { Effect, type Option } from 'effect';
+import { Effect, pipe } from 'effect';
 import { Inject, Injectable } from '@nestjs/common';
 
 // common modules
 import { annotateLogs } from 'src/modules/runtime';
-import type { DBBlogPostFragment } from 'src/db-models/blog-post';
 import type { ItemsWithTotal } from 'src/types/items-with-total';
 import type { RequestContext } from 'src/types/context';
 import { sortToOrderBy } from 'src/utils/sort-to-order-by';
+import { type ApiError, NotFoundAPIError, toApiError } from 'src/exceptions';
 
 import {
-  BLOG_POST_REPOSITORY,
-  type BlogPostRepositoryService,
-  type FindManyBlogPostParams,
-} from 'src/modules/blog-post-repository';
+  type DBBlogPost,
+  type DBBlogPostSegment,
+  dbBlogPostSegmentSelect,
+  dbBlogPostSelect,
+} from 'src/db-models/blog-post';
+
+import {
+  addArticlePublishingFilter,
+  addPublishingFilter,
+  addSlugOrIDFilter,
+} from 'src/utils/where';
 
 // local modules
+
+import {
+  BLOG_POST_ACCESS_CONTROL_SRV,
+  BLOG_POST_PUBLISHING_SRV,
+  BLOG_POST_REPOSITORY_SRV,
+} from './blog-post.constants';
+
 import type {
+  BlogPostAccessControlService,
+  BlogPostPublishingService,
+  BlogPostRepositoryService,
   BlogPostService,
+  FindManyBlogPostRepositroeyParams,
   GetManyBlogPostParams,
   GetOneBlogPostParams,
 } from './blog-post.types';
@@ -27,54 +44,64 @@ import type {
 @Injectable()
 export class BlogPostServiceClass implements BlogPostService {
   constructor(
-    @Inject(BLOG_POST_REPOSITORY)
+    @Inject(BLOG_POST_REPOSITORY_SRV)
     private readonly blogPostRepositorySrv: BlogPostRepositoryService,
+
+    @Inject(BLOG_POST_PUBLISHING_SRV)
+    private readonly blogPostPublishingSrv: BlogPostPublishingService,
+
+    @Inject(BLOG_POST_ACCESS_CONTROL_SRV)
+    private readonly blogPostAccessControlSrv: BlogPostAccessControlService,
   ) {}
 
-  getOne<TSelect extends Prisma.BlogPostSelect>(
+  getOne(
     reqCtx: RequestContext,
-    params: GetOneBlogPostParams<TSelect>,
-  ): Effect.Effect<Option.Option<DBBlogPostFragment<TSelect>>, Error> {
+    params: GetOneBlogPostParams,
+  ): Effect.Effect<DBBlogPost, ApiError> {
     return Effect.gen(this, function* getOneBlogPost() {
-      const where: Prisma.BlogPostWhereUniqueInput = isUUID(params.slugOrID)
-        ? { id: params.slugOrID }
-        : {
-            slug: params.slugOrID,
-
-            article: {
-              published_at: { not: null },
-            },
-          };
-
-      if (params.published !== undefined) {
-        const published_at = params.published ? { not: null } : null;
-        where.published_at = published_at;
-
-        where.article = where.article || {};
-        where.article.published_at = published_at;
-
-        where.article.translations = where.article.translations || {};
-        where.article.translations.some = { published_at };
-      }
+      const where: Prisma.BlogPostWhereUniqueInput = pipe(
+        {} as Partial<Prisma.BlogPostWhereUniqueInput>,
+        addSlugOrIDFilter(params.slugOrID),
+        addPublishingFilter(params.publishingFilter),
+        addArticlePublishingFilter(params.publishingFilter),
+      );
 
       yield* Effect.logDebug('where', where);
 
-      return yield* this.blogPostRepositorySrv.findUnique(reqCtx, {
-        select: params.select,
+      const founded = yield* this.blogPostRepositorySrv.findUnique(reqCtx, {
+        select: dbBlogPostSelect,
         where,
       });
-    }).pipe(annotateLogs(BlogPostServiceClass, 'getOneBlogPost'));
+      if (!founded) return yield* new NotFoundAPIError({});
+
+      const published = yield* this.blogPostPublishingSrv.checkBlogPost(
+        params.publishingFilter,
+        founded,
+      );
+
+      return yield* this.blogPostAccessControlSrv.canReadBlogPost(
+        reqCtx,
+        published,
+      );
+    }).pipe(
+      Effect.mapError(toApiError),
+      annotateLogs(BlogPostServiceClass, 'getOneBlogPost'),
+    );
   }
 
-  getMany<TSelect extends Prisma.BlogPostSelect>(
+  getMany(
     reqCtx: RequestContext,
-    params: GetManyBlogPostParams<TSelect>,
-  ): Effect.Effect<ItemsWithTotal<DBBlogPostFragment<TSelect> | null>, Error> {
+    params: GetManyBlogPostParams,
+  ): Effect.Effect<ItemsWithTotal<DBBlogPostSegment | null>, ApiError> {
     return Effect.gen(this, function* getOneBlogPost() {
-      const findParams: FindManyBlogPostParams<TSelect> = {
+      yield* Effect.logDebug('params', params);
+
+      const findParams: FindManyBlogPostRepositroeyParams<
+        typeof dbBlogPostSegmentSelect
+      > = {
         language: reqCtx.language,
         orderBy: sortToOrderBy(params.sort),
-        select: params.select,
+        select: dbBlogPostSegmentSelect,
         skip: params.page.offset,
         take: params.page.limit,
         where: {},
@@ -82,7 +109,24 @@ export class BlogPostServiceClass implements BlogPostService {
 
       yield* Effect.logDebug('findParams', findParams);
 
-      return yield* this.blogPostRepositorySrv.findMany(reqCtx, findParams);
-    }).pipe(annotateLogs(BlogPostServiceClass, 'getMany'));
+      const founded = yield* this.blogPostRepositorySrv.findMany(
+        reqCtx,
+        findParams,
+      );
+
+      const published =
+        yield* this.blogPostPublishingSrv.checkReadBlogPostItemsWithTotal(
+          params.publishingFilter,
+          founded,
+        );
+
+      return yield* this.blogPostAccessControlSrv.canReadBlogPostItemsWithTotal(
+        reqCtx,
+        published,
+      );
+    }).pipe(
+      Effect.mapError(toApiError),
+      annotateLogs(BlogPostServiceClass, 'getMany'),
+    );
   }
 }

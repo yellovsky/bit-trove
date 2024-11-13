@@ -8,7 +8,7 @@ import type { AccessControlContext } from 'src/types/context';
 import type { DBArticleAccessControl } from 'src/db-models/article';
 
 // local modules
-import type { ArticleAccessControlService } from './article-access-control.types';
+import type { ArticleAccessControlService } from './article.types';
 
 @Injectable()
 export class ArticleAccessControlServiceClass
