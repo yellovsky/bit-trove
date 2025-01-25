@@ -1,2 +1,2 @@
 export { fetchBlogPost } from './blog-post.fetch';
-export { fetchBlogPostList } from './blog-post.fetch-list';
+export { fetchBlogPostList, useCMSBlogPostList } from './blog-post.fetch-list';

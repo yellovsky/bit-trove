@@ -1,0 +1,14 @@
+{
+  "not_found": "Not found",
+  "forbidden": "Access forbidden",
+  "unauthorized": "Authorization required",
+  "internal_server_error": "Internal server error",
+  "email_not_confirmed": "Email not confirmed",
+  "bad_request": "Bad request",
+  "Required": "This field is required",
+  "At least {{num}} symbols": "The field must be at least {{num}} symbols",
+  "Value must be a positive number": "Value must be a positive number",
+  "List must not be empty": "List must not be empty",
+  "Invalid email format": "Invalid e-mail address format",
+  "Unknown": "Unknown field error"
+}

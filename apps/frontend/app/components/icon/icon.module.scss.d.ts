@@ -6,3 +6,6 @@ export const home: string;
 export const info: string;
 export const moon: string;
 export const sun: string;
+export const warningCircle: string;
+export const eye: string;
+export const eyeClosed: string;

@@ -1,0 +1,14 @@
+{
+  "not_found": "Не найдено",
+  "forbidden": "Доступ запрещен",
+  "unauthorized": "Требуется авторизация",
+  "internal_server_error": "Внутренняя ошибка сервера",
+  "email_not_confirmed": "Пользователь не подтвержден",
+  "bad_request": "Неверный запрос",
+  "Required": "Это поле обязательно для заполнения",
+  "At least {{num}} symbols": "Поле должно содержать не менее {{num}} символов",
+  "Value must be a positive number": "Значение должно быть больше нуля",
+  "List must not be empty": "Список не должен быть пустым",
+  "Invalid email format": "Неверный формат адреса электронной почты",
+  "Unknown": "Неизвестная ошибка"
+}

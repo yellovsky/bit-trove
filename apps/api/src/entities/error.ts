@@ -71,13 +71,13 @@ export class FailedResponseEntity extends Entity implements FailedResponse {
   @ApiProperty({ type: FailedResponseMeta })
   meta: FailedResponseMeta;
 
-  @ApiProperty({ type: [ResponseErrorEntity] })
-  errors: ResponseErrorEntity[];
+  @ApiProperty({ type: ResponseErrorEntity })
+  error: ResponseErrorEntity;
 
   constructor(data: WithoutEntityType<FailedResponseEntity>) {
     super();
 
     this.meta = data.meta;
-    this.errors = data.errors;
+    this.error = data.error;
   }
 }

@@ -1,0 +1,41 @@
+.holder {
+  @apply text-sm flex justify-stretch fill-current text-passive;
+
+  .placeholder {
+    @apply w-0 select-none;
+  }
+
+  .message {
+    @apply flex flex-1 flex-col items-start;
+
+    &.top {
+      @apply justify-start;
+    }
+
+    &.bottom {
+      @apply justify-end;
+    }
+
+    &.both {
+      @apply justify-between;
+    }
+  }
+
+  &.error {
+    @apply text-invalid;
+
+    .footnoteHolder {
+      @apply gap-1 grid;
+
+      grid-template-columns: 0.875rem 1fr;
+    }
+  }
+
+  .errorIconHolder {
+    @apply w-3.5 h-3.5;
+
+    .errorIcon {
+      @apply mt-0.5;
+    }
+  }
+}

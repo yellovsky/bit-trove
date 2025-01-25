@@ -1,0 +1,8 @@
+{
+  "ID_COLUMN": "ID",
+  "SLUG_COLUMN": "Slug",
+  "ORIGINAL_LANGUAGE_COLUMN": "Orig. lang",
+  "CREATED_AT_COLUMN": "Created at",
+  "PUBLISHED_AT_COLUMN": "Published at",
+  "EDIT_ACTION": "Edit"
+}

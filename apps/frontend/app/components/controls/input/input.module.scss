@@ -1,0 +1,124 @@
+@mixin autofill-style {
+  &:autofill,
+  &:-webkit-autofill,
+  &:-internal-autofill-selected {
+    @content;
+  }
+}
+
+@mixin remove-autofill-background-style {
+  @include autofill-style {
+    transition-property: background-color;
+    transition-delay: 86400s;
+    background-image: none !important;
+  }
+}
+
+@mixin input-bg-color-style() {
+  @apply bg-neutral-50 dark:bg-neutral-800;
+}
+
+@mixin interactive-style() {
+  @include input-bg-color-style();
+  @apply border border-border
+    hover:border-accent-hover dark:hover:border-accent-hover
+    disabled:text-passive disabled:cursor-not-allowed
+    disabled:bg-black-alpha-100 dark:disabled:bg-white-alpha-100
+    disabled:border-gray-250 dark:disabled:border-gray-500;
+}
+
+.holder {
+  @apply relative z-base;
+
+  .inputOutline {
+    @include interactive-style();
+
+    @apply w-full h-10 rounded-md block px-3.5 focus-visible:focus-outline
+      text-text placeholder-passive;
+
+    &:disabled ~ * {
+      @apply cursor-not-allowed;
+    }
+
+    & ~ .autofillBackdrop {
+      @include input-bg-color-style();
+      @apply rounded-md;
+    }
+
+    @include remove-autofill-background-style;
+
+    &:where(.invalid) {
+      @apply border-invalid;
+    }
+
+    &:where(.success) {
+      @apply border-success;
+    }
+
+    &:where(.warning) {
+      @apply border-warning;
+    }
+  }
+
+  .autofillBackdrop {
+    @apply z-under full-overlay;
+  }
+}
+
+.inputControl {
+  @include interactive-style();
+  @apply w-full flex items-center relative rounded-md focus-within:focus-outline;
+
+  label:hover + & {
+    @apply border-accent-hover dark:border-accent-hover;
+  }
+
+  &:has(.overlay) {
+    @apply bg-border;
+  }
+
+  .holder {
+    @apply inline-block;
+  }
+
+  .suffix,
+  .prefix {
+    @apply h-10 items-center flex pe-3.5 ps-3.5;
+  }
+
+  .prefix {
+    @apply rounded-s-lg;
+
+    &:not(.overlay) {
+      @include input-bg-color-style();
+    }
+  }
+
+  .suffix {
+    @apply rounded-e-lg;
+
+    &:not(.overlay) {
+      @include input-bg-color-style();
+    }
+  }
+
+  .holder {
+    @apply flex-grow;
+  }
+
+  .inputOutline {
+    @apply border-none;
+
+    &:focus {
+      @apply outline-0;
+    }
+  }
+
+  &:has(.prefix) .inputOutline {
+    @apply rounded-s-none;
+  }
+
+  &:has(.suffix) .inputOutline {
+    @apply rounded-e-none;
+  }
+}

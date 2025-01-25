@@ -1,0 +1,8 @@
+{
+  "ID_COLUMN": "ID",
+  "SLUG_COLUMN": "Slug",
+  "ORIGINAL_LANGUAGE_COLUMN": "Язык ориг.",
+  "CREATED_AT_COLUMN": "Создано",
+  "PUBLISHED_AT_COLUMN": "Опубликовано",
+  "EDIT_ACTION": "Редактировать"
+}

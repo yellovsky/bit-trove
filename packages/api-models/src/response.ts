@@ -12,9 +12,11 @@ export interface ListResponseMeta {
   pagination: ListResponseMetaPagination;
 }
 
-export interface ListResponse<TData> {
-  data: Array<TData | null>;
+export interface WithListResponseMeta {
   meta: ListResponseMeta;
+}
+export interface ListResponse<TData> extends WithListResponseMeta {
+  data: Array<TData | null>;
 }
 
 export type ApiErrorName =
@@ -32,7 +34,7 @@ export interface ResponseError {
 }
 
 export interface FailedResponse {
-  errors: ResponseError[];
+  error: ResponseError;
   meta: { status: number };
 }
 

@@ -1,0 +1,27 @@
+.holder {
+  @apply flex text-xs text-invalid justify-stretch fill-current;
+
+  .placeholder {
+    @apply w-0 select-none;
+  }
+
+  .message {
+    @apply flex flex-1 flex-col items-start;
+
+    &.top {
+      @apply justify-start;
+    }
+
+    &.bottom {
+      @apply justify-end;
+    }
+
+    &.both {
+      @apply justify-between;
+    }
+  }
+
+  .errorHolder {
+    @apply grid gap-1 grid-cols-[0.875rem_1fr];
+  }
+}

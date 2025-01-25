@@ -21,7 +21,7 @@ export const ApiCommonErrorResponses = (
         ? ApiBadRequestResponse({
             description: 'Not found',
             example: {
-              errors: [{ error_name: 'not_found', status_code: 404 }],
+              error: { error_name: 'not_found', status_code: 404 },
               meta: { status: 404 },
             } satisfies FailedResponse,
             type: FailedResponseEntity,
@@ -31,7 +31,7 @@ export const ApiCommonErrorResponses = (
         ? ApiBadRequestResponse({
             description: 'Bad request',
             example: {
-              errors: [{ error_name: 'bad_request', status_code: 400 }],
+              error: { error_name: 'bad_request', status_code: 400 },
               meta: { status: 400 },
             } satisfies FailedResponse,
             type: FailedResponseEntity,
@@ -41,7 +41,7 @@ export const ApiCommonErrorResponses = (
         ? ApiForbiddenResponse({
             description: 'Forbidden',
             example: {
-              errors: [{ error_name: 'forbidden', status_code: 403 }],
+              error: { error_name: 'forbidden', status_code: 403 },
               meta: { status: 403 },
             } satisfies FailedResponse,
             type: FailedResponseEntity,
@@ -51,7 +51,7 @@ export const ApiCommonErrorResponses = (
         ? ApiUnauthorizedResponse({
             description: 'Unauthorized',
             example: {
-              errors: [{ error_name: 'unauthorized', status_code: 401 }],
+              error: { error_name: 'unauthorized', status_code: 401 },
               meta: { status: 401 },
             } satisfies FailedResponse,
             type: FailedResponseEntity,
@@ -60,7 +60,7 @@ export const ApiCommonErrorResponses = (
       ApiInternalServerErrorResponse({
         description: 'Internal server error',
         example: {
-          errors: [{ error_name: 'internal_server_error', status_code: 500 }],
+          error: { error_name: 'internal_server_error', status_code: 500 },
           meta: { status: 500 },
         } satisfies FailedResponse,
         type: FailedResponseEntity,

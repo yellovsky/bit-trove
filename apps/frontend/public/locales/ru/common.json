@@ -2,5 +2,12 @@
   "HOME_PAGE_TITLE": " Главная",
   "ABOUT_PAGE_TITLE": "О сайте",
   "BLOG_PAGE_TITLE": "Блог",
-  "Page Not Found": "Страница не найдена"
+  "Page Not Found": "Страница не найдена",
+  "email label": "Электронная почта",
+  "email placeholder": "Введите вашу электронную почту",
+  "password label": "Пароль",
+  "password placeholder": "Введите ваш пароль",
+  "login": "Вход",
+  "incorrect email or password": "Неверный адрес электронной почты или пароль",
+  "login success": "Добро пожаловать! Вы успешно авторизовались."
 }

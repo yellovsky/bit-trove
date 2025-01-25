@@ -1,0 +1,32 @@
+{
+  "name": "@repo/runtime",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "module": "./dist/esm/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "lint": "eslint . --max-warnings 0 && tsc --noEmit --incremental",
+    "build": "tsup src/index.ts --format cjs,esm --dts --sourcemap",
+    "dev": "tsup src/index.ts --format cjs,esm --dts --sourcemap --watch",
+    "postinstall": "yarn build"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "*",
+    "@types/eslint": "^8.56.5",
+    "@types/jest": "^29.5.12",
+    "@types/ramda": "^0.29.12",
+    "eslint": "^8.57.0",
+    "jest": "^29.7.0",
+    "tsup": "^8.0.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "effect": "^3.10.13",
+    "ramda": "^0.29.1",
+    "winston": "^3.13.0"
+  }
+}

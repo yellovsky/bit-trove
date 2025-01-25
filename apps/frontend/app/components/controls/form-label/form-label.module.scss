@@ -1,0 +1,9 @@
+.label {
+  @apply text-text block text-sm font-medium;
+
+  &.required:after {
+    @apply text-invalid;
+
+    content: ' *';
+  }
+}

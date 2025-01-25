@@ -7,6 +7,16 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 installGlobals();
 
 export default defineConfig({
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: 'modern-compiler', // or "modern"
+      },
+    },
+  },
+  define: {
+    'process.env': process.env,
+  },
   optimizeDeps: {
     exclude: [path.join(__dirname, 'node_modules/.vite/deps')],
     force: true,

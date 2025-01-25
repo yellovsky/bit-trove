@@ -15,14 +15,16 @@ import axios, {
 // common modules
 import { BrowserCookieManager } from '~/utils/cookie-manager/cookie-manager.browser';
 
-const isFailedResponse = (response: unknown): response is FailedResponse => {
+export const isFailedResponse = (response: unknown): response is FailedResponse => {
   return !!response && typeof response === 'object' && 'errors' in response;
 };
 
-const UNKNOWN_FAILED_RESPONSE: FailedResponse = {
-  errors: [
-    { error_name: 'internal_server_error', message: 'An unknown error occurred', status_code: 500 },
-  ],
+export const UNKNOWN_FAILED_RESPONSE: FailedResponse = {
+  error: {
+    error_name: 'internal_server_error',
+    message: 'An unknown error occurred',
+    status_code: 500,
+  },
   meta: { status: 500 },
 } as const;
 
@@ -31,6 +33,11 @@ export interface ApiClient extends EventEmitter<'access_token_expired'> {
   updateAuthHeader: (accessToken: string | null) => void;
 
   get<T = any>(url: string, config?: AxiosRequestConfig<any>): Effect.Effect<T, FailedResponse>;
+  post<T = any>(
+    url: string,
+    data?: any,
+    config?: AxiosRequestConfig<any>,
+  ): Effect.Effect<T, FailedResponse>;
 }
 
 /**
@@ -62,6 +69,23 @@ class ApiClientClass extends EventEmitter<'access_token_expired'> implements Api
           : UNKNOWN_FAILED_RESPONSE,
       try: () =>
         this.axios.get<T, AxiosResponse<T, any>>(url, config).then(response => response.data),
+    });
+  }
+
+  post<T = any>(
+    url: string,
+    data?: any,
+    config?: AxiosRequestConfig<any>,
+  ): Effect.Effect<T, FailedResponse> {
+    return Effect.tryPromise({
+      catch: error =>
+        isAxiosError(error) && isFailedResponse(error.response?.data)
+          ? error.response.data
+          : UNKNOWN_FAILED_RESPONSE,
+      try: () =>
+        this.axios
+          .post<T, AxiosResponse<T, any>>(url, data, config)
+          .then(response => response.data),
     });
   }
 }

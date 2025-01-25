@@ -12,7 +12,7 @@ const HttpStatusLookup: Record<ApiErrorName, HttpStatus> = {
   unauthorized: HttpStatus.UNAUTHORIZED,
 } as const;
 
-type InvalidParams = FailedResponse['errors'][number]['invalid_params'];
+type InvalidParams = FailedResponse['error']['invalid_params'];
 
 /**
  * Represents an API error with additional metadata.
