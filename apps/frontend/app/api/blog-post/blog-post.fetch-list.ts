@@ -5,7 +5,7 @@ import type { BlogPostListFP, BlogPostListResponse, FailedResponse } from '@repo
 // common modules
 import type { ApiClient } from '~/api/api-client';
 import { runtime } from '~/utils/runtime';
-import { type MakeQueryFn, makeUseQuery } from '~/api/query';
+import { getQueryKeyVariables, type MakeQueryFn, makeUseQuery } from '~/api/query';
 
 // local modules
 import { tokenizeBlogPostQKey, type TokenizedBlogPostQKey } from './blog-post.query-key';
@@ -31,7 +31,7 @@ const fetchCMSBlogPostListQFn: MakeQueryFn<
   FetcCMSBlogPostListQKey
 > = apiClient => {
   return ({ queryKey, signal }) =>
-    runtime.runPromise(fetchBlogPostList(apiClient, queryKey[2], signal));
+    runtime.runPromise(fetchBlogPostList(apiClient, getQueryKeyVariables(queryKey), signal));
 };
 
 export const useCMSBlogPostList = makeUseQuery({

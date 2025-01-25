@@ -4,6 +4,10 @@
  * @template TToken The type of the token.
  * @template TQKeyName The type of the query key.
  * @template TVariables The type of the variables.
+ *
+ * @example
+ *   type BlogPostQKey: QKey<'blog_post', 'blog_post', string>;
+ *   type BlogPostListQKey: QKey<'blog_post', 'blog_post_list', BlogPostListFP>;
  */
 export type QKey<
   TToken extends string = string,
