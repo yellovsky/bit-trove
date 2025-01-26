@@ -1,6 +1,3 @@
-@use '../../scss/breakpoints.scss' as bp;
-
 .page {
-  @include bp.page-padding-horizontal();
-  @include bp.page-padding-vertical();
+  @apply page-padding-vertical page-padding-horizontal;
 }

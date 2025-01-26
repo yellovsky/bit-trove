@@ -1,5 +1,3 @@
-@use '../../../scss/breakpoints.scss' as bp;
-
 $darwer-duration: 0.2s;
 
 .drawerHolder {
@@ -11,10 +9,9 @@ $darwer-duration: 0.2s;
     @apply flex flex-col w-full py-6;
 
     .link {
-      @apply grid items-center h-10 gap-4
+      @apply page-padding-horizontal grid items-center h-10 gap-4
         hover:bg-neutral-700 
         active:bg-neutral-600;
-      @include bp.page-padding-horizontal();
 
       & {
         grid-template-columns: 1.25rem 1fr;

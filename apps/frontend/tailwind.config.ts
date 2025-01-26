@@ -9,6 +9,7 @@ import { hocus } from './tailwind/hocus';
 import { hoverable } from './tailwind/hoverable';
 import { maskContain } from './tailwind/mask-contain';
 import { textOverflowEllipsis } from './tailwind/text-overflow-ellipsis';
+import { pagePaddingHorizontal, pagePaddingVertical } from './tailwind/page-padding';
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -22,7 +23,16 @@ export default {
     ],
   ],
 
-  plugins: [hoverable, hocus, maskContain, fullOverlay, focusOutline, textOverflowEllipsis],
+  plugins: [
+    hoverable,
+    hocus,
+    maskContain,
+    fullOverlay,
+    focusOutline,
+    textOverflowEllipsis,
+    pagePaddingVertical,
+    pagePaddingHorizontal,
+  ],
 
   theme: {
     extend: {

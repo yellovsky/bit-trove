@@ -1,10 +1,4 @@
-@use '../../scss/breakpoints.scss' as bp;
-
 .page {
-  @apply grid gap-4;
-
-  grid-template-columns: 1fr 20rem;
-
-  @include bp.page-padding-horizontal();
-  @include bp.page-padding-vertical();
+  @apply page-padding-vertical page-padding-horizontal 
+    grid gap-4 grid-cols-[1fr] xl:grid-cols-[1fr_20rem];
 }
