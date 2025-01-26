@@ -9,5 +9,6 @@
   "password placeholder": "Введите ваш пароль",
   "login": "Вход",
   "incorrect email or password": "Неверный адрес электронной почты или пароль",
-  "login success": "Добро пожаловать! Вы успешно авторизовались."
+  "login success": "Добро пожаловать! Вы успешно авторизовались.",
+  "This page is not available in the selected language": "Эта страница недоступна на выбранном языке"
 }

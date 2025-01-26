@@ -37,6 +37,12 @@ export class BlogPostSegmentEntity extends Entity implements BlogPostSegment {
   @ApiProperty({ type: String })
   title: string;
 
+  @ApiProperty({ type: String })
+  language_code: string;
+
+  @ApiProperty({ type: [String] })
+  language_codes: string[];
+
   constructor(data: WithoutEntityType<BlogPostSegmentEntity>) {
     super();
 
@@ -47,6 +53,8 @@ export class BlogPostSegmentEntity extends Entity implements BlogPostSegment {
     this.short_description = data.short_description;
     this.slug = data.slug;
     this.title = data.title;
+    this.language_code = data.language_code;
+    this.language_codes = data.language_codes;
   }
 }
 

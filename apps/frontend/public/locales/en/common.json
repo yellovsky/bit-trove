@@ -9,5 +9,6 @@
   "password placeholder": "Enter your password",
   "login": "Sign In",
   "incorrect email or password": "Incorrect email or password",
-  "login success": "Welcome! You have signed in successfully."
+  "login success": "Welcome! You have signed in successfully.",
+  "This page is not available in the selected language": "This page is not available in the selected language"
 }

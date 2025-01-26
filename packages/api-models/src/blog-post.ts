@@ -41,6 +41,8 @@ export interface BlogPostSegment {
   slug: string;
   title: string;
   created_at: string;
+  language_code: string;
+  language_codes: string[];
   published_at: string | null;
   original_language_code: string;
   short_description: string;
