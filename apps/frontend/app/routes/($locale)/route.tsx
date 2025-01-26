@@ -54,7 +54,7 @@ export default function IndexLayout() {
           <Outlet />
         </main>
 
-        <footer className={footerCn}>FOOTER</footer>
+        <footer className={footerCn}>© Copyright {new Date().getFullYear()}</footer>
       </div>
     </>
   );

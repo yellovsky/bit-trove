@@ -1,9 +1,11 @@
 // global modules
+import clsx from 'clsx';
 import { type FC, useCallback, useState } from 'react';
 
 // common modules
 import { Icon } from '~/components/icon';
 import { IconButton } from '~/components/icon-button';
+import { Link } from '~/components/link';
 import { Logo } from '~/components/logo';
 
 // local modules
@@ -16,20 +18,22 @@ interface HeaderProps {
   className?: string;
 }
 
-export const Header: FC<HeaderProps> = () => {
+export const Header: FC<HeaderProps> = ({ className }) => {
   const [show, updateShow] = useState(false);
   const toggleShow = useCallback(() => updateShow(prev => !prev), []);
 
   return (
     <>
-      <div className={hraderCn}>
+      <div className={clsx(className, hraderCn)}>
         <div>
           <IconButton onClick={toggleShow} size="lg" variant="text">
             <Icon type="burger" />
           </IconButton>
         </div>
         <div>
-          <Logo />
+          <Link to="/" variant="plain">
+            <Logo />
+          </Link>
         </div>
         <div />
         <div>

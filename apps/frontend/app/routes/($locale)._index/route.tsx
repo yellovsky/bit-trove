@@ -1,8 +1,11 @@
 // common modules
 import { mergeMeta } from '~/utils/meta';
 
+// local modules
+import { page as pageCn } from './page.module.scss';
+
 export const meta = mergeMeta(() => []);
 
 export default function BlogPostRoute() {
-  return <div>home page</div>;
+  return <div className={pageCn}>home page</div>;
 }

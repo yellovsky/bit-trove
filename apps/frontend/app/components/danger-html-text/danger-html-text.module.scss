@@ -68,6 +68,12 @@ $-paragraph-margin: 1.25rem;
   img {
     @apply max-w-full;
   }
+
+  code {
+    @apply inline-block rounded-md px-2 py-1 -my-2
+     text-neutral-600 bg-neutral-300/50
+     dark:text-neutral-200 dark:bg-neutral-700/50;
+  }
 }
 
 .dangerHtml {

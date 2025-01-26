@@ -9,6 +9,7 @@
 }
 
 .header {
+  @apply bg-neutral-200 dark:bg-neutral-800;
   grid-area: header;
 }
 
@@ -17,7 +18,7 @@
 }
 
 .footer {
-  @apply border-t border-t-border text-center min-h-14 flex items-center justify-center;
+  @apply border-t border-t-border text-center min-h-14 flex items-center justify-center text-text opacity-40;
 
   grid-area: footer;
 }

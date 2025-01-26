@@ -5,7 +5,9 @@ import type { Prisma } from '@prisma/client';
 // local modules
 import type { PrismaTransaction, Seeder } from '../seed.types';
 
+import { effectFinalizerCreateBlogPostArgs } from './data/blog-post-data.effect-finalizers';
 import { mobxIntroCreateBlogPostArgs } from './data/blog-post-data.mobx-intro';
+import { tailwindGlobalPaddingsCreateBlogPostArgs } from './data/blog-post-data.tailwind-page-padding';
 import { test1CreateBlogPostArgs } from './data/blog-post-data.test-1';
 
 const seedBlogPostData = (
@@ -21,6 +23,8 @@ const seedBlogPostData = (
 const argsArray = [
   mobxIntroCreateBlogPostArgs,
   test1CreateBlogPostArgs,
+  tailwindGlobalPaddingsCreateBlogPostArgs,
+  effectFinalizerCreateBlogPostArgs,
 ] as const;
 
 export const seedBlogPosts: Seeder = {
