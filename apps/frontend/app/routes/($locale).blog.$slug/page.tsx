@@ -1,24 +1,24 @@
 // global modules
 import type { BlogPost } from '@repo/api-models';
-import type { FC } from 'react';
 import { useLocale } from '@repo/remix-i18n';
-import { useTranslation } from 'react-i18next';
+import { type FC, useCallback } from 'react';
 
 // common modules
 import { AnyBlock } from '~/components/blocks/any-block';
 import { Heading } from '~/components/heading';
+import { LanguageMismatchInfo } from '~/components/language-mismatch-info';
 
 // local modules
 import { BlogpostPageLayout } from './layout';
-import { Info } from '../../components/info';
 
 interface BlogPostPageProps {
   blogPost: BlogPost;
 }
 
 export const BlogPostPage: FC<BlogPostPageProps> = ({ blogPost }) => {
-  const { t } = useTranslation();
   const locale = useLocale();
+
+  const getLink = useCallback(() => `/blog/${blogPost.slug}`, [blogPost]);
 
   return (
     <BlogpostPageLayout>
@@ -27,7 +27,7 @@ export const BlogPostPage: FC<BlogPostPageProps> = ({ blogPost }) => {
       </Heading>
 
       {!blogPost.language_codes.includes(locale) && (
-        <Info className="mb-8">{t('This page is not available in the selected language')}</Info>
+        <LanguageMismatchInfo availableLangCodes={blogPost.language_codes} getLink={getLink} />
       )}
 
       {blogPost.blocks.map((block, index) => (
