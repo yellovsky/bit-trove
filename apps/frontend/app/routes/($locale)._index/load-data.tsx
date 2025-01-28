@@ -1,16 +1,19 @@
 // global modules
 import type { BlogPostListFP } from '@repo/api-models';
 import { Effect } from 'effect';
-import type { Params } from '@remix-run/react';
+import type { LoaderFunctionArgs } from '@remix-run/node';
 import { dehydrate, type DehydratedState, type QueryClient } from '@tanstack/react-query';
 
 // common modules
 import type { ApiClient } from '~/api/api-client';
-import { getParamsParam } from '~/utils/loader';
 import { initialPageParam } from '~/api/pagination';
 import { prefetchBlogPostListQuery } from '~/api/blog-post';
+import { getFixedT, getRequestLocale } from '~/utils/loader';
 
 export interface LoaderData {
+  pageSEOTitle: string;
+  pageSEOKeywords: string;
+  pageSEODescription: string;
   blogPostFP: BlogPostListFP;
   dehydratedState: DehydratedState;
 }
@@ -18,10 +21,11 @@ export interface LoaderData {
 export const loadBlogRouteData = (
   apiClient: ApiClient,
   queryClient: QueryClient,
-  params: Params,
+  { request }: LoaderFunctionArgs,
 ): Effect.Effect<LoaderData, Response> =>
   Effect.gen(function* () {
-    const locale = yield* getParamsParam('locale', params);
+    const locale = yield* getRequestLocale(request);
+    const t = yield* getFixedT(locale);
 
     const blogPostFP: BlogPostListFP = {
       locale,
@@ -30,5 +34,11 @@ export const loadBlogRouteData = (
     };
     yield* prefetchBlogPostListQuery(apiClient, queryClient, blogPostFP);
 
-    return { blogPostFP, dehydratedState: dehydrate(queryClient) };
+    return {
+      blogPostFP,
+      dehydratedState: dehydrate(queryClient),
+      pageSEODescription: t('INDEX_PAGE_SEO_DESCRIPTION'),
+      pageSEOKeywords: t('INDEX_PAGE_SEO_KEYWORDS'),
+      pageSEOTitle: t('INDEX_PAGE_SEO_TITLE'),
+    };
   });

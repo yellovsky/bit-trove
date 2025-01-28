@@ -16,7 +16,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
   return json<LoaderData>(await runAsyncEffect(loadBlogRouteData(apiClient, params)));
 };
 
-export const meta = mergeMeta(() => []);
+export const meta = mergeMeta<typeof loader>(() => []);
 
 export default function BlogPostRoute() {
   const { blogPostListResponse } = useLoaderData<typeof loader>();

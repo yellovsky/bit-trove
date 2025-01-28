@@ -1,3 +1,11 @@
 .page {
   @apply page-padding-vertical page-padding-horizontal;
+
+  .title {
+    @apply text-text text-3xl mb-8 mt-4;
+  }
+
+  .description {
+    @apply text-text text-lg pb-4 mb-8 border-b border-b-border;
+  }
 }
