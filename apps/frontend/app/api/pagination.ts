@@ -13,5 +13,6 @@ export const getNextPageParam: GetNextPageParamFunction<PaginationFP, WithListRe
   const pageSize = DEFAULT_PAGE_SIZE;
   const limit = pageSize;
   const offset = allPages.length * pageSize;
-  return offset > total ? null : { limit, offset };
+
+  return offset >= total ? null : { limit, offset };
 };
