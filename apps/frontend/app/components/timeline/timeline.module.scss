@@ -1,0 +1,35 @@
+.timeline {
+  .dateHolder {
+    .date {
+      @apply inline-block border px-4 py-1 rounded text-sm;
+    }
+
+    &:not(.pending) {
+      .date {
+        @apply border-primary-600 text-primary-600 bg-primary-300/30
+          dark:border-primary-500 dark:text-primary-500 dark:bg-primary-900/30;
+      }
+    }
+
+    &.pending {
+      .date {
+        @apply bg-pending w-40;
+      }
+    }
+  }
+
+  .timelineBlock {
+    @apply relative grid grid-cols-[min-content_1fr] gap-x-4;
+
+    .blockLine:before {
+      @apply block relative ml-4 h-full w-px 
+        bg-primary-600
+        dark:bg-primary-500;
+      content: '';
+    }
+
+    .blockContent {
+      @apply py-4 pr-4;
+    }
+  }
+}

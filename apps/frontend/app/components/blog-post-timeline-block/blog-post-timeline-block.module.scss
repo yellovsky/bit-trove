@@ -1,0 +1,67 @@
+.blogPostListCard {
+  @apply block w-full;
+
+  &.pending {
+    @apply animate-pulse;
+  }
+
+  .title {
+    @apply mb-1 text-xl font-bold tracking-tight text-text;
+
+    &.pending {
+      @apply pb-2;
+
+      &:before {
+        @apply block h-5 rounded-sm w-60 bg-bg-pending;
+
+        & {
+          content: '';
+        }
+      }
+    }
+  }
+
+  &:hover .title {
+    @apply text-accent;
+  }
+
+  .date {
+    @apply text-sm mb-4 text-passive;
+
+    &.pending {
+      @apply pb-2;
+
+      &:before {
+        @apply block h-3  rounded-sm w-52 bg-bg-pending;
+
+        & {
+          content: '';
+        }
+      }
+    }
+  }
+
+  .text {
+    @apply font-normal line-clamp-4 text-text;
+
+    &.pending {
+      &:before {
+        @apply block h-5 rounded-sm w-96 bg-bg-pending;
+
+        & {
+          content: '';
+        }
+      }
+
+      &:not(:last-child) {
+        @apply mb-2;
+      }
+
+      &:nth-child(4) {
+        &:before {
+          @apply w-80;
+        }
+      }
+    }
+  }
+}
