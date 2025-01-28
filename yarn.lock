@@ -2739,6 +2739,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@faker-js/faker@npm:^9.4.0":
+  version: 9.4.0
+  resolution: "@faker-js/faker@npm:9.4.0"
+  checksum: 10c0/52f242a764b506f84f0f80e8122758a4b4a82873d72e67b5ddee9d8132c33d462705b43543dd0b86b743f54daec668a1938b9e5b9d643c606a775fb48959580c
+  languageName: node
+  linkType: hard
+
 "@floating-ui/core@npm:^1.6.0":
   version: 1.6.8
   resolution: "@floating-ui/core@npm:1.6.8"
@@ -7444,6 +7451,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@uidotdev/usehooks@npm:^2.4.1":
+  version: 2.4.1
+  resolution: "@uidotdev/usehooks@npm:2.4.1"
+  peerDependencies:
+    react: ">=18.0.0"
+    react-dom: ">=18.0.0"
+  checksum: 10c0/181c43fb324dbe4fef9762c61ab4b8235efa48abedf39a9bfeab65872522c43dae789c4f85b82a1164ed7bb18ae7ff25c3a19e7c4e0eb944937ac7f8109cee9b
+  languageName: node
+  linkType: hard
+
 "@ungap/structured-clone@npm:^1.0.0, @ungap/structured-clone@npm:^1.2.0":
   version: 1.2.0
   resolution: "@ungap/structured-clone@npm:1.2.0"
@@ -12085,6 +12102,7 @@ __metadata:
   resolution: "frontend@workspace:apps/frontend"
   dependencies:
     "@chromatic-com/storybook": "npm:^3.2.4"
+    "@faker-js/faker": "npm:^9.4.0"
     "@fontsource-variable/geologica": "npm:^5.1.0"
     "@fontsource-variable/inter": "npm:^5.1.0"
     "@fontsource-variable/manrope": "npm:^5.1.0"
@@ -12122,6 +12140,7 @@ __metadata:
     "@types/react-beautiful-dnd": "npm:^13.1.8"
     "@types/react-dom": "npm:^18.3.1"
     "@types/react-syntax-highlighter": "npm:^15"
+    "@uidotdev/usehooks": "npm:^2.4.1"
     "@yornaath/batshit": "npm:^0.10.1"
     autoprefixer: "npm:^10.4.20"
     axios: "npm:^1.7.7"
