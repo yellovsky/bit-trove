@@ -1,12 +1,11 @@
 // global modules
-import clsx from 'clsx';
 import type { FC } from 'react';
 
 // local modules
-import { logo as logoCn } from './logo.module.scss';
+import logoURL from './images/bt-logo-no-square.svg?url';
 
 interface LogoProps {
   className?: string;
 }
 
-export const Logo: FC<LogoProps> = ({ className }) => <div className={clsx(logoCn, className)} />;
+export const Logo: FC<LogoProps> = ({ className }) => <img className={className} src={logoURL} />;
