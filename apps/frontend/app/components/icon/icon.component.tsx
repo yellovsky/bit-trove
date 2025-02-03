@@ -13,6 +13,7 @@ export const ICON_TYPES = [
   'home',
   'info',
   'moon',
+  'scroll',
   'sun',
   'warningCircle',
 ] as const;

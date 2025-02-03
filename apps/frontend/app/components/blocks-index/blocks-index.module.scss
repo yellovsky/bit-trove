@@ -1,0 +1,19 @@
+.list {
+  @apply list-disc ps-4;
+
+  li::marker {
+    @apply text-accent;
+
+    & {
+      content: '- ';
+    }
+  }
+
+  .link {
+    @apply block;
+  }
+}
+
+.title {
+  @apply font-bold mb-2 opacity-70;
+}

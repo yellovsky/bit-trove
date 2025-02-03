@@ -12,16 +12,16 @@
     "@repo/typescript-config": "*",
     "@types/accept-language-parser": "^1.5.6",
     "@types/eslint": "^9.6.1",
-    "@types/node": "^22.8.7",
-    "@types/react": "^18.3.12",
-    "eslint": "^9.14.0",
-    "typescript": "^5.6.3"
+    "@types/node": "^22.13.0",
+    "@types/react": "^19.0.8",
+    "eslint": "^9.19.0",
+    "typescript": "^5.7.3"
   },
   "dependencies": {
-    "@remix-run/server-runtime": "^2.13.1",
+    "@remix-run/server-runtime": "^2.15.3",
     "accept-language-parser": "^1.5.0",
-    "i18next": "^23.16.4",
+    "i18next": "^24.2.2",
     "intl-parse-accept-language": "^1.0.0",
-    "react": "^18.3.1"
+    "react": "^19.0.0"
   }
 }

@@ -2,22 +2,22 @@
 import type { ArticleBlock } from './article';
 import type { ItemResponse, ListResponse, PaginationFP, SortWithDirection } from './response';
 
-export interface BlogPostTranslations {
+export interface GuideTranslations {
   language_code: string;
   title: string;
   blocks: ArticleBlock[];
 }
 
 // ==========================================================
-//           P B L O G   P O S T   S E G M E N T
+//           G U I D E   S E G M E N T
 // ==========================================================
-export interface BlogPostListFP {
+export interface GuideItemListFP {
   page: PaginationFP;
   locale: string;
   sort: SortWithDirection<'created_at'>;
 }
 
-export interface BlogPostSegment {
+export interface GuideItemSegment {
   id: string;
   slug: string;
   title: string;
@@ -29,16 +29,16 @@ export interface BlogPostSegment {
   short_description: string;
 }
 
-export type BlogPostListResponse = ListResponse<BlogPostSegment>;
+export type GuideItemListResponse = ListResponse<GuideItemSegment>;
 
 // ==========================================================
-//           P B L O G   P O S T   I T E M
+//           G U I D E   I T E M
 // ==========================================================
-export interface BlogPost extends BlogPostSegment {
+export interface GuideItem extends GuideItemSegment {
   blocks: ArticleBlock[];
   seo_title: string | null;
   seo_keywords: string | null;
   seo_description: string | null;
 }
 
-export type BlogPostResponse = ItemResponse<BlogPost>;
+export type GuideItemResponse = ItemResponse<GuideItem>;

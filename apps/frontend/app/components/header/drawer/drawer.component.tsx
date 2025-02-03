@@ -100,6 +100,14 @@ export const Drawer: FC<DrawerProps> = ({ show, toggle }) => {
           />
 
           <DrawerItem
+            icon="scroll"
+            onClick={toggle}
+            text={t('GUIDES_PAGE_TITLE')}
+            to="/guides"
+            variant="plain"
+          />
+
+          <DrawerItem
             icon="info"
             onClick={toggle}
             text={t('ABOUT_PAGE_TITLE')}

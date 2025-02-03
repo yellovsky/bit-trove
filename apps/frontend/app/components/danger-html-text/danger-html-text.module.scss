@@ -19,8 +19,6 @@
   @include heading.lg-style();
 }
 
-$-paragraph-margin: 1.25rem;
-
 @mixin danger-html-style() {
   h1 {
     @include h1-style();
@@ -38,7 +36,7 @@ $-paragraph-margin: 1.25rem;
   ul,
   ol,
   blockquote {
-    margin-bottom: $-paragraph-margin;
+    @apply mb-5 leading-6;
   }
 
   ul,
@@ -50,12 +48,19 @@ $-paragraph-margin: 1.25rem;
     }
   }
 
+  ul li::marker {
+    content: '- ';
+  }
+
   a {
     @apply cursor-pointer;
     @include link-mixins.link-text-primary-color-style;
   }
 
-  p:has(+ :is(ul, ol)),
+  p:has(+ :is(ul, ol)) {
+    @apply mb-2;
+  }
+
   :is(p, ul, ol, blockquote):last-child {
     margin-bottom: 0;
   }
@@ -70,9 +75,15 @@ $-paragraph-margin: 1.25rem;
   }
 
   code {
-    @apply inline-block rounded-md px-2 py-1 -my-2
-     text-neutral-600 bg-neutral-300/50
-     dark:text-neutral-200 dark:bg-neutral-700/50;
+    @apply font-monospace font-medium inline-block rounded-md px-1 py-1 leading-[0.95]
+     text-primary-800 bg-neutral-300/50
+     dark:text-primary-400 dark:bg-neutral-700/50;
+
+    //  background-color: rgba(27, 31, 35, 0.05); /* Light background */
+    //  padding: 2px 5px; /* Some spacing */
+    //  border-radius: 4px; /* Rounded edges */
+    //  color: #d63384; /* A standout color (pinkish) */
+    //  font-weight: 500; /* Slightly bolder for emphasis */
   }
 }
 

@@ -2,6 +2,7 @@
   "HOME_PAGE_TITLE": "Home",
   "ABOUT_PAGE_TITLE": "About",
   "BLOG_PAGE_TITLE": "Blog",
+  "GUIDES_PAGE_TITLE": "Guides",
   "Page Not Found": "Page Not Found",
   "email label": "Email",
   "email placeholder": "Enter your email",
@@ -16,5 +17,6 @@
   "INDEX_PAGE_SEO_TITLE": "Personal blog",
   "INDEX_PAGE_SEO_DESCRIPTION": "Personal blog description",
   "INDEX_PAGE_SEO_KEYWORDS": "kw1, kw2, kw2",
-  "INDEX_PAGE_DESCRIPTION": "Welcome to my personal blog! Here, I share my thoughts and discoveries on topics like React, MobX, Tailwind, and anything related to JavaScript and web development. This blog is more of a playground where I test out new ideas and approaches. But who knows — maybe something here will be useful to you."
+  "INDEX_PAGE_DESCRIPTION": "Welcome to my personal blog! Here, I share my thoughts and discoveries on topics like React, MobX, Tailwind, and anything related to JavaScript and web development. This blog is more of a playground where I test out new ideas and approaches. But who knows — maybe something here will be useful to you.",
+  "ARTICLE_INDEX_TITLE": "What's inside?"
 }

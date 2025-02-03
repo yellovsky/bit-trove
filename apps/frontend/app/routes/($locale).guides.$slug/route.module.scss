@@ -1,0 +1,9 @@
+.page {
+  @apply page-padding-vertical page-padding-horizontal;
+}
+
+.index {
+  @apply inline-block px-8 py-4 mb-12 rounded 
+  bg-neutral-200 
+  dark:bg-neutral-800;
+}

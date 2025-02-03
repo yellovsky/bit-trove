@@ -82,11 +82,19 @@ export class ArticleImageBlockEntity
   @ApiProperty({ enum: ['image'] })
   type: 'image' = 'image';
 
+  @ApiProperty({ nullable: true, type: String })
+  title: string | null;
+
+  @ApiProperty({ nullable: true, type: String })
+  subtitle: string | null;
+
   constructor(data: WithoutEntityType<ArticleImageBlockEntity>) {
     super();
 
     this.content = data.content;
     this.order = data.order;
+    this.title = data.title;
+    this.subtitle = data.subtitle;
   }
 }
 
@@ -126,11 +134,19 @@ export class ArticleTextBlockEntity extends Entity implements ArticleTextBlock {
   @ApiProperty({ enum: ['text'] })
   type: 'text' = 'text';
 
+  @ApiProperty({ nullable: true, type: String })
+  title: string | null;
+
+  @ApiProperty({ nullable: true, type: String })
+  subtitle: string | null;
+
   constructor(data: WithoutEntityType<ArticleTextBlockEntity>) {
     super();
 
     this.content = data.content;
     this.order = data.order;
+    this.title = data.title;
+    this.subtitle = data.subtitle;
   }
 }
 
@@ -170,11 +186,19 @@ export class ArticleCodeBlockEntity extends Entity implements ArticleCodeBlock {
   @ApiProperty({ enum: ['code'] })
   type: 'code' = 'code';
 
+  @ApiProperty({ nullable: true, type: String })
+  title: string | null;
+
+  @ApiProperty({ nullable: true, type: String })
+  subtitle: string | null;
+
   constructor(data: WithoutEntityType<ArticleCodeBlockEntity>) {
     super();
 
     this.content = data.content;
     this.order = data.order;
+    this.title = data.title;
+    this.subtitle = data.subtitle;
   }
 }
 

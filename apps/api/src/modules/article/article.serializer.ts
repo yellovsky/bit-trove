@@ -32,6 +32,8 @@ const isCodeVariant = (
   'text' in data &&
   typeof data.text === 'string';
 
+console.log('add title and subtitle');
+
 @Injectable()
 export class ArticleSerializerServiceClass implements ArticleSerializerService {
   serializeBlock(
@@ -79,6 +81,8 @@ export class ArticleSerializerServiceClass implements ArticleSerializerService {
           new ArticleTextBlockEntity({
             content,
             order: block.order,
+            subtitle: null,
+            title: null,
             type: 'text',
           }),
       ),
@@ -102,6 +106,8 @@ export class ArticleSerializerServiceClass implements ArticleSerializerService {
           new ArticleCodeBlockEntity({
             content: new ArticleCodeBlockContentEntity({ variants }),
             order: block.order,
+            subtitle: null,
+            title: null,
             type: 'code',
           }),
       ),
@@ -138,6 +144,8 @@ export class ArticleSerializerServiceClass implements ArticleSerializerService {
           new ArticleImageBlockEntity({
             content,
             order: block.order,
+            subtitle: null,
+            title: null,
             type: 'image',
           }),
       ),

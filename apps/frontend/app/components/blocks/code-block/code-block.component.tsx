@@ -4,6 +4,9 @@ import type { ArticleCodeBlock } from '@repo/api-models';
 import type { FC } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 
+// common modules
+import { BlockTitle } from '~/components/blocks/block-title';
+
 // local modules
 import { codeBlock as codeBlockCn } from './code-block.module.scss';
 
@@ -13,6 +16,8 @@ interface CodeBlockProps {
 
 export const CodeBlock: FC<CodeBlockProps> = ({ block }) => (
   <div className={codeBlockCn}>
+    <BlockTitle block={block} />
+
     {block.content.variants.map(variant => (
       <SyntaxHighlighter key={variant.language} language={variant.language} style={a11yDark}>
         {variant.text}
