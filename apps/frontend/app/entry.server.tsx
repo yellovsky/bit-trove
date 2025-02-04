@@ -11,7 +11,7 @@ import { I18nextProvider, initReactI18next } from 'react-i18next';
 
 // local modules
 import i18n from '~/config/i18n';
-import { i18nServer } from '~/modules/i18n.server';
+import { i18nServer } from '~/modules/i18n';
 import { getCookie, getSetCookie } from './utils/cookie-manager';
 
 const ABORT_DELAY = 5000;

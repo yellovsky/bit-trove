@@ -1,14 +1,16 @@
+// global modules
 import { defineConfig } from 'vite';
 import { installGlobals } from '@remix-run/node';
-import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
 import path from 'path';
 import { vitePlugin as remix } from '@remix-run/dev';
-import tailwindcss from '@tailwindcss/vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 installGlobals();
 
 export default defineConfig({
+  build: {
+    target: 'esnext',
+  },
   css: {
     preprocessorOptions: {
       scss: {
@@ -16,20 +18,19 @@ export default defineConfig({
       },
     },
   },
-  define: {
-    // 'process.env': process.env,
-    // 'process.env': R.pick(['API_HOST', 'CLIENT_HOST'], process.env),
+  esbuild: {
+    supported: {
+      'top-level-await': true,
+    },
   },
   optimizeDeps: {
     exclude: [path.join(__dirname, 'node_modules/.vite/deps')],
     force: true,
+    esbuildOptions: {
+      target: 'esnext',
+    },
   },
-  plugins: [
-    remix(),
-    tsconfigPaths(),
-    tailwindcss(),
-    NodeGlobalsPolyfillPlugin({ process: true, buffer: true }),
-  ],
+  plugins: [remix(), tsconfigPaths()],
   server: {
     host: true,
     warmup: {

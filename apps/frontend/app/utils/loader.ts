@@ -5,7 +5,7 @@ import type { Params } from '@remix-run/react';
 import type { Namespace, TFunction } from 'i18next';
 
 // common modules
-import { i18nServer } from '~/modules/i18n.server';
+import { i18nServer } from '~/modules/i18n';
 
 export const getParamsParam = (name: string, params: Params): Effect.Effect<string, Response> =>
   Effect.gen(function* () {

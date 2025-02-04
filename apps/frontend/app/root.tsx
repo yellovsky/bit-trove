@@ -39,7 +39,7 @@ import {
 
 // local modules
 import { getQueryClient } from './query-client';
-import { i18nServer } from './modules/i18n.server';
+import { i18nServer } from './modules/i18n';
 import rootCss from './styles/root.scss?url';
 import stylesheetCss from '~/tailwind.scss?url';
 import { type CookieHash, CookieManagerProvider, getCookieHash } from './utils/cookie-manager';

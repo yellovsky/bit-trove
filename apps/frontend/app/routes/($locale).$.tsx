@@ -2,7 +2,7 @@
 import { json, type LoaderFunctionArgs, type MetaFunction } from '@remix-run/node';
 
 // common modules
-import { i18nServer } from '~/modules/i18n.server';
+import { i18nServer } from '~/modules/i18n';
 import { makePageMetaTitle } from '~/utils/seo';
 import { NotFoundScreen } from '~/components/screens/not-found';
 

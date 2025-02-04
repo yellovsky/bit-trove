@@ -33,7 +33,7 @@ export const makeWinstonLogger = () => {
 
   const consoleFormat = winston.format.printf(
     ({ level, message, label, timestamp, srv }) => {
-      const srvName = srv;
+      const srvName = `${srv}`;
 
       const combinedLabel = [srvName ? `@${srvName}` : undefined, label]
         .filter(Boolean)
