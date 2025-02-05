@@ -1,3 +1,36 @@
 .codeBlock {
-  @apply mb-8;
+  @apply rounded-md bg-neutral-900/70;
+
+  .header {
+    @apply rounded-t-md bg-neutral-800 gap-2 grid grid-cols-[1fr_min-content_min-content] px-4 py-2 items-end;
+
+    .filename {
+      @apply text-white-alpha-500 font-monospace text-sm;
+    }
+  }
+}
+
+.languages {
+  @apply flex h-8;
+
+  button {
+    @apply px-2;
+
+    &:first-child {
+      @apply rounded-l-md;
+    }
+
+    &:last-child {
+      @apply rounded-r-md;
+    }
+
+    &:hover,
+    &.active {
+      @apply bg-gray-600;
+    }
+
+    &:active {
+      @apply bg-white-alpha-100;
+    }
+  }
 }

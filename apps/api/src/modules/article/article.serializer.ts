@@ -17,22 +17,42 @@ import {
   ArticleTextBlockEntity,
   ArticleTextBlockHTMLContentEntity,
   ArticleTextBlockMDContentEntity,
-} from 'src/entities/blog-post';
+} from 'src/entities/article';
 
 // local modules
 import type { ArticleSerializerService } from './article.types';
 
 const isCodeVariant = (
   data: unknown,
-): data is { language: string; text: string } =>
-  !!data &&
-  typeof data === 'object' &&
-  'language' in data &&
-  typeof data.language === 'string' &&
-  'text' in data &&
-  typeof data.text === 'string';
+): data is {
+  language: string;
+  text: string;
+  filename?: string;
+  label?: string;
+} => {
+  if (!data) return false;
+  if (typeof data !== 'object') return false;
 
-console.log('add title and subtitle');
+  const hasLanguage = 'language' in data && typeof data.language === 'string';
+  if (!hasLanguage) return false;
+
+  const hasText = 'text' in data && typeof data.text === 'string';
+  if (!hasText) return false;
+
+  const mayHaveFilename =
+    'filename' in data
+      ? typeof data.filename === 'string' || data.filename === null
+      : true;
+  if (!mayHaveFilename) return false;
+
+  const mayHaveLabel =
+    'label' in data
+      ? typeof data.label === 'string' || data.label === null
+      : true;
+  if (!mayHaveLabel) return false;
+
+  return true;
+};
 
 @Injectable()
 export class ArticleSerializerServiceClass implements ArticleSerializerService {
@@ -81,8 +101,8 @@ export class ArticleSerializerServiceClass implements ArticleSerializerService {
           new ArticleTextBlockEntity({
             content,
             order: block.order,
-            subtitle: null,
-            title: null,
+            subtitle: block.subtitle,
+            title: block.title,
             type: 'text',
           }),
       ),
@@ -106,8 +126,8 @@ export class ArticleSerializerServiceClass implements ArticleSerializerService {
           new ArticleCodeBlockEntity({
             content: new ArticleCodeBlockContentEntity({ variants }),
             order: block.order,
-            subtitle: null,
-            title: null,
+            subtitle: block.subtitle,
+            title: block.title,
             type: 'code',
           }),
       ),
@@ -121,8 +141,13 @@ export class ArticleSerializerServiceClass implements ArticleSerializerService {
       Option.fromNullable(data),
       Option.filter(isCodeVariant),
       Option.map(
-        ({ language, text }) =>
-          new ArticleCodeBlockVariantEntity({ language, text }),
+        ({ language, text, filename = null, label = null }) =>
+          new ArticleCodeBlockVariantEntity({
+            filename,
+            label,
+            language,
+            text,
+          }),
       ),
     );
   }
@@ -144,8 +169,8 @@ export class ArticleSerializerServiceClass implements ArticleSerializerService {
           new ArticleImageBlockEntity({
             content,
             order: block.order,
-            subtitle: null,
-            title: null,
+            subtitle: block.subtitle,
+            title: block.title,
             type: 'image',
           }),
       ),

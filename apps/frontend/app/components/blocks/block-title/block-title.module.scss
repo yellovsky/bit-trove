@@ -1,0 +1,15 @@
+.withLinkIcon {
+  @apply -ml-4;
+
+  &::before {
+    @apply inline-block invisible w-4 text-right;
+
+    & {
+      content: '#';
+    }
+  }
+
+  &:hover::before {
+    @apply visible;
+  }
+}

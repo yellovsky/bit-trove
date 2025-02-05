@@ -1,27 +1,78 @@
 // global modules
 import { a11yDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
-import type { ArticleCodeBlock } from '@repo/api-models';
-import type { FC } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import type { ArticleCodeBlock, CodeBlockVariant } from '@repo/api-models';
+import { type FC, useCallback, useState } from 'react';
 
 // common modules
-import { BlockTitle } from '~/components/blocks/block-title';
+import { Icon } from '~/components/icon';
+import { IconButton } from '~/components/icon-button';
 
 // local modules
-import { codeBlock as codeBlockCn } from './code-block.module.scss';
+import { LanguageTabs } from './code-block.language-tabs';
 
-interface CodeBlockProps {
+import {
+  codeBlock as codeBlockCn,
+  filename as filenameCn,
+  header as headerCn,
+} from './code-block.module.scss';
+
+interface CodeBlockContentProps {
+  variant: CodeBlockVariant;
+  variants: CodeBlockVariant[];
+  onSelectVariant(variant: CodeBlockVariant): void;
+}
+
+const CodeBlockContent: FC<CodeBlockContentProps> = props => {
+  const copy = useCallback(() => {
+    navigator.clipboard.writeText(props.variant.text);
+  }, [props.variant.text]);
+
+  return (
+    <div className={codeBlockCn}>
+      <div className={headerCn}>
+        <div className={filenameCn}>{props.variant.filename}</div>
+        <div>
+          <LanguageTabs
+            onSelectVariant={props.onSelectVariant}
+            variant={props.variant}
+            variants={props.variants}
+          />
+        </div>
+        <div>
+          <IconButton onClick={copy} variant="soft">
+            <Icon type="copy" />
+          </IconButton>
+        </div>
+      </div>
+      <SyntaxHighlighter
+        customStyle={{ background: 'none' }}
+        language={props.variant.language}
+        style={a11yDark}
+      >
+        {props.variant.text}
+      </SyntaxHighlighter>
+    </div>
+  );
+};
+
+export interface CodeBlockProps {
+  className?: string;
   block: ArticleCodeBlock;
 }
 
-export const CodeBlock: FC<CodeBlockProps> = ({ block }) => (
-  <div className={codeBlockCn}>
-    <BlockTitle block={block} />
+export const CodeBlock: FC<CodeBlockProps> = ({ block, className }) => {
+  const [selectedVariant, updateSelectedVariant] = useState(() => block.content.variants.at(0));
 
-    {block.content.variants.map(variant => (
-      <SyntaxHighlighter key={variant.language} language={variant.language} style={a11yDark}>
-        {variant.text}
-      </SyntaxHighlighter>
-    ))}
-  </div>
-);
+  return (
+    <div className={className}>
+      {!selectedVariant ? null : (
+        <CodeBlockContent
+          onSelectVariant={updateSelectedVariant}
+          variant={selectedVariant}
+          variants={block.content.variants}
+        />
+      )}
+    </div>
+  );
+};

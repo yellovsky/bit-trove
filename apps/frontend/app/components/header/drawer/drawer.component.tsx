@@ -2,7 +2,14 @@
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import { animated, useSpring } from 'react-spring';
-import { type ComponentProps, type FC, type ReactNode, useEffect, useState } from 'react';
+import {
+  type ComponentProps,
+  type FC,
+  type HTMLAttributes,
+  type ReactNode,
+  useEffect,
+  useState,
+} from 'react';
 
 // common modules
 import { NavLink } from '~/components/link';
@@ -34,6 +41,10 @@ const DrawerItem: FC<DrawerItemProps> = ({ text, icon, ...rest }) => (
     )}
   </NavLink>
 );
+
+const Overlay = animated<FC<HTMLAttributes<HTMLDivElement>>>(props => (
+  <div {...props} className={clsx(props.className, overlayCn)} />
+));
 
 interface DrawerProps {
   show: boolean;
@@ -116,9 +127,7 @@ export const Drawer: FC<DrawerProps> = ({ show, toggle }) => {
           />
         </div>
       </animated.div>
-      {!isDisplayed ? null : (
-        <animated.div className={overlayCn} onClick={toggle} style={{ ...overlayStyles }} />
-      )}
+      {!isDisplayed ? null : <Overlay onClick={toggle} style={{ ...overlayStyles }} />}
     </>
   );
 };

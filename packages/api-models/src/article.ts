@@ -9,9 +9,13 @@ export interface ArticleBaseBlock<TType extends string, TContent extends object>
 export type ArticleImageBlock = ArticleBaseBlock<'image', { url: string }>;
 export type ArticleTextBlock = ArticleBaseBlock<'text', { html: string } | { md: string }>;
 
-export type ArticleCodeBlock = ArticleBaseBlock<
-  'code',
-  { variants: Array<{ language: string; text: string }> }
->;
+export interface CodeBlockVariant {
+  filename: string | null;
+  language: string;
+  label: string | null;
+  text: string;
+}
+
+export type ArticleCodeBlock = ArticleBaseBlock<'code', { variants: CodeBlockVariant[] }>;
 
 export type ArticleBlock = ArticleImageBlock | ArticleTextBlock | ArticleCodeBlock;

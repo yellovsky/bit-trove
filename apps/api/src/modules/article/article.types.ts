@@ -3,7 +3,7 @@ import { type Either, Option } from 'effect';
 
 // common modules
 import type { ApiError } from 'src/exceptions';
-import type { ArticleBlockEntity } from 'src/entities/blog-post';
+import type { ArticleBlockEntity } from 'src/entities/article';
 import type { PublishingFilter } from 'src/types/publishing-filter';
 
 import type {

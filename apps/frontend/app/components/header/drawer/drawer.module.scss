@@ -9,7 +9,7 @@ $darwer-duration: 0.2s;
     @apply flex flex-col w-full py-6;
 
     .link {
-      @apply page-padding-horizontal grid items-center gap-4
+      @apply page-padding-horizontal py-2 grid items-center gap-4
         text-primary-100
         hover:bg-neutral-700 hover:text-primary-300
         active:bg-neutral-600 active:text-primary-200;

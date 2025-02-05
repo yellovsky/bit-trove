@@ -16,7 +16,7 @@ import axios, {
 import { BrowserCookieManager } from '~/utils/cookie-manager/cookie-manager.browser';
 
 export const isFailedResponse = (response: unknown): response is FailedResponse => {
-  return !!response && typeof response === 'object' && 'errors' in response;
+  return !!response && typeof response === 'object' && 'error' in response;
 };
 
 export const UNKNOWN_FAILED_RESPONSE: FailedResponse = {
@@ -46,10 +46,18 @@ export interface ApiClient extends EventEmitter<'access_token_expired'> {
 class ApiClientClass extends EventEmitter<'access_token_expired'> implements ApiClient {
   axios: AxiosInstance;
 
+  static getApiHost() {
+    try {
+      return process.env.API_HOST;
+    } catch {
+      return typeof window === undefined ? undefined : window.ENV?.API_HOST;
+    }
+  }
+
   constructor() {
     super();
 
-    this.axios = axios.create({ baseURL: `${process.env.API_HOST}/api` });
+    this.axios = axios.create({ baseURL: `${ApiClientClass.getApiHost()}/api` });
   }
 
   /**
@@ -63,10 +71,11 @@ class ApiClientClass extends EventEmitter<'access_token_expired'> implements Api
 
   get<T = any>(url: string, config?: AxiosRequestConfig<any>): Effect.Effect<T, FailedResponse> {
     return Effect.tryPromise({
-      catch: error =>
-        isAxiosError(error) && isFailedResponse(error.response?.data)
+      catch: error => {
+        return isAxiosError(error) && isFailedResponse(error.response?.data)
           ? error.response.data
-          : UNKNOWN_FAILED_RESPONSE,
+          : UNKNOWN_FAILED_RESPONSE;
+      },
       try: () =>
         this.axios.get<T, AxiosResponse<T, any>>(url, config).then(response => response.data),
     });

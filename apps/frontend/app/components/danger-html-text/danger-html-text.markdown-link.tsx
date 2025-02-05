@@ -1,6 +1,8 @@
 // global modules
-import { useLocation, useNavigation } from '@remix-run/react';
 import type { AnchorHTMLAttributes, DetailedHTMLProps } from 'react';
+
+// common modules
+import { getClientHost } from '~/utils/env';
 
 type MarkdownLinkProps = DetailedHTMLProps<
   AnchorHTMLAttributes<HTMLAnchorElement>,
@@ -8,17 +10,10 @@ type MarkdownLinkProps = DetailedHTMLProps<
 >;
 
 export const MarkdownLink = ({ href, ...rest }: MarkdownLinkProps) => {
-  const location = useLocation();
-  const n = useNavigation();
-  // console.log('process.env', process.env);
-  // console.log('n', n);
-  // console.log('location', location);
-  const rel = undefined;
-  // typeof window === undefined || href?.startsWith(window.location.origin)
-  //   ? undefined
-  //   : 'nofollow noopener';
+  const clientHost = getClientHost();
 
-  const target = undefined;
-  // typeof window === undefined || href?.startsWith(window.location.origin) ? undefined : '_blank';
+  const rel = !clientHost || href?.startsWith(clientHost) ? undefined : 'nofollow noopener';
+  const target = !clientHost || href?.startsWith(clientHost) ? undefined : '_blank';
+
   return <a {...rest} href={href} rel={rest.rel || rel} target={rest.target || target} />;
 };

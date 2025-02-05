@@ -9,7 +9,11 @@ import { TextBlock } from '~/components/blocks/text-block';
 import { BlockSubtitle, BlockTitle } from '~/components/blocks/block-title';
 
 // local modules
-import { holder as holderCn } from './any-block.module.scss';
+import {
+  holder as holderCn,
+  subtitle as subtitleCn,
+  title as titleCn,
+} from './any-block.module.scss';
 
 interface AnyBlockProps {
   className?: string;
@@ -33,8 +37,8 @@ export const AnyBlock: FC<AnyBlockProps> = ({ block, className }) => {
 
   return !content ? null : (
     <div className={clsx(className, holderCn)}>
-      <BlockTitle block={block} />
-      <BlockSubtitle block={block} />
+      <BlockTitle block={block} className={titleCn} />
+      <BlockSubtitle block={block} className={subtitleCn} />
 
       {content}
     </div>

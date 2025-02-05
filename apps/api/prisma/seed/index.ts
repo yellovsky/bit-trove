@@ -5,11 +5,12 @@ import { Effect, Logger, LogLevel } from 'effect';
 
 // local modules
 import { seedBlogPosts } from './blog-post';
+import { seedGuides } from './guide';
 import { seedLanguages } from './language';
 
 const prisma = new PrismaClient({ transactionOptions: { timeout: 100500 } });
 
-const seeders = [seedLanguages, seedBlogPosts];
+const seeders = [seedLanguages, seedBlogPosts, seedGuides];
 
 const main = () => {
   return prisma.$transaction(async (tx) => {

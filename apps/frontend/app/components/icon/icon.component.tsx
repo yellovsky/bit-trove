@@ -8,6 +8,7 @@ import styles from './icon.module.scss';
 export const ICON_TYPES = [
   'article',
   'burger',
+  'copy',
   'eye',
   'eyeClosed',
   'home',

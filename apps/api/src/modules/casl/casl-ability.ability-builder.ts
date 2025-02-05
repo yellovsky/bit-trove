@@ -20,6 +20,16 @@ const blogPostByRolePermissions: ByRolePermissions = {
   },
 };
 
+const guideByRolePermissions: ByRolePermissions = {
+  public(_currentUser, { can, cannot }) {
+    can('read', 'guide');
+    cannot('read', 'guide', ['published_at'], { published_at: null });
+  },
+  support(_currentUser, { can }) {
+    can('manage', 'guide');
+  },
+};
+
 const makePermissionByRole =
   (byRolePermissions: ByRolePermissions) =>
   (abilityBuilder: AbilityBuilder<AppAbility>, currentUser: null) => {
@@ -38,7 +48,7 @@ export const setUserPermissions = (
   abilityBuilder: AbilityBuilder<AppAbility>,
   currentUser: null,
 ): void => {
-  [blogPostByRolePermissions]
+  [blogPostByRolePermissions, guideByRolePermissions]
     .map(makePermissionByRole)
     .forEach((fn) => fn(abilityBuilder, currentUser));
 };

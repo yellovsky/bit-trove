@@ -70,6 +70,8 @@ export const dbArticleSelect = {
           select: {
             content: true,
             order: true,
+            subtitle: true,
+            title: true,
             type: true,
           },
         },

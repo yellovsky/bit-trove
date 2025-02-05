@@ -24,11 +24,9 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
+    esbuildOptions: { target: 'esnext' },
     exclude: [path.join(__dirname, 'node_modules/.vite/deps')],
     force: true,
-    esbuildOptions: {
-      target: 'esnext',
-    },
   },
   plugins: [remix(), tsconfigPaths()],
   server: {

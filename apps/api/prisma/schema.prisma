@@ -20,6 +20,8 @@ model Language {
 model ArticleBlock {
     id                     String   @id @default(uuid())
     article_translation_id String
+    title                  String?
+    subtitle               String?
     order                  Int
     type                   String
     content                Json
@@ -62,12 +64,24 @@ model Article {
 
     translations      ArticleTranslation[]
     blog_post         BlogPost?
+    guide             Guide?
     original_language Language             @relation(fields: [original_language_code], references: [code], onDelete: Restrict)
 
     @@map("article")
 }
 
 model BlogPost {
+    id           String    @id @default(uuid())
+    slug         String    @unique
+    created_at   DateTime  @default(now())
+    updated_at   DateTime  @updatedAt
+    published_at DateTime?
+    article_id   String    @unique
+
+    article Article @relation(fields: [article_id], references: [id], onDelete: Cascade)
+}
+
+model Guide {
     id           String    @id @default(uuid())
     slug         String    @unique
     created_at   DateTime  @default(now())

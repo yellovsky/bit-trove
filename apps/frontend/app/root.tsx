@@ -113,17 +113,18 @@ export function App(props: { children: React.ReactNode } & LoaderData) {
 
         <Meta />
         <NonFlashOfWrongThemeEls ssrColorMode={Boolean(props.colorMode)} />
+
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `console.log('set'); window.ENV = ${JSON.stringify(props.env)}`,
+          }}
+        />
+
         <Links />
       </head>
       <body>
         {props.children}
         <ScrollRestoration />
-
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.ENV = ${JSON.stringify(props.env)}`,
-          }}
-        />
 
         <Scripts />
       </body>

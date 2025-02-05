@@ -19,7 +19,7 @@ export const LanguageMismatchInfo: FC<LanguageMismatchInfoProps> = props => {
   const suggestLangeLinks = props.availableLangCodes
     .map(lang =>
       !languageNames[lang] ? null : (
-        <Link lang={lang} to={props.getLink(lang)} variant="text">
+        <Link key={lang} lang={lang} to={props.getLink(lang)} variant="text">
           {languageNames[lang]}
         </Link>
       ),
