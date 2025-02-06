@@ -1,5 +1,8 @@
+// common modules
+import { getClientHost } from '~/utils/env';
+
 const TODAY = new Date().toISOString();
-const HOSTNAME = 'https://test.com';
+const HOSTNAME = getClientHost();
 const CHANGEFREQ = 'weekly';
 const PRIORITY = '0.7';
 

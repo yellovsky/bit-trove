@@ -6,6 +6,7 @@ import { type FC, useCallback } from 'react';
 // common modules
 import { AnyBlock } from '~/components/blocks/any-block';
 import { BlocksIndex } from '~/components/blocks-index';
+import { getGuideRouteLink } from '~/utils/links';
 import { Heading } from '~/components/heading';
 import { LanguageMismatchInfo } from '~/components/language-mismatch-info';
 
@@ -18,7 +19,7 @@ interface GuidePageProps {
 
 export const GuidePage: FC<GuidePageProps> = ({ guide }) => {
   const locale = useLocale();
-  const getLink = useCallback((l: string) => `/${l}/guides/${guide.slug}`, [guide]);
+  const getLink = useCallback((l: string) => getGuideRouteLink(guide, l), [guide]);
 
   return (
     <div className={pageCn}>

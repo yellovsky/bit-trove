@@ -32,7 +32,7 @@
       @apply pb-2;
 
       &:before {
-        @apply block h-3  rounded-sm w-52 bg-bg-pending;
+        @apply block h-3 rounded-sm w-52 bg-bg-pending;
 
         & {
           content: '';

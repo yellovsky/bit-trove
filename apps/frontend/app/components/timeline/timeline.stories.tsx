@@ -2,10 +2,11 @@
 import type { BlogPostSegment } from '@repo/api-models';
 import { faker } from '@faker-js/faker';
 import type { Meta } from '@storybook/react';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 
 // common modules
 import { BlogPostTimelineBlock } from '~/components/blog-post-timeline-block';
+import { useDateFormatter } from '~/utils/formatter';
 
 // local modules
 import { Timeline, TimelineBlock, TimelineDate } from './timeline.component';
@@ -31,14 +32,7 @@ const getFakeItem = (): BlogPostSegment => {
 };
 
 export const ButtonShowcase = () => {
-  const dateFormatter = useMemo(
-    () =>
-      new Intl.DateTimeFormat('en', {
-        month: 'long',
-        year: 'numeric',
-      }),
-    ['en'],
-  );
+  const dateFormatter = useDateFormatter('en');
 
   const [dateOne] = useState(() => dateFormatter.format(faker.date.past()));
   const [blogPostsOne] = useState(() => [getFakeItem(), getFakeItem(), getFakeItem()]);

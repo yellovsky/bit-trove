@@ -116,7 +116,7 @@ export function App(props: { children: React.ReactNode } & LoaderData) {
 
         <script
           dangerouslySetInnerHTML={{
-            __html: `console.log('set'); window.ENV = ${JSON.stringify(props.env)}`,
+            __html: `window.ENV = ${JSON.stringify(props.env)}`,
           }}
         />
 

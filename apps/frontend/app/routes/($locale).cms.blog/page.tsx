@@ -1,7 +1,6 @@
 // common modules
 import type { BlogPostSegment } from '@repo/api-models';
 import { page as pageCn } from './page.module.scss';
-import { useLocale } from '@repo/remix-i18n';
 import { useTranslation } from 'react-i18next';
 import { type FC, useMemo, useState } from 'react';
 
@@ -19,21 +18,13 @@ import { Heading } from '~/components/heading';
 import { Link } from '~/components/link';
 import { TableWithData } from '~/components/table';
 import { useCMSBlogPostList } from '~/api/blog-post';
+import { useDateFormatter } from '~/utils/formatter';
 
 const columnHelper = createColumnHelper<BlogPostSegment | null>();
 
 const useColumns = (): ColumnDef<BlogPostSegment | null, any>[] => {
   const { t: tBlogCMS } = useTranslation('blog-cms');
-  const locale = useLocale();
-
-  const dateFormatter = useMemo(
-    () =>
-      new Intl.DateTimeFormat(locale, {
-        dateStyle: 'short',
-        timeStyle: 'short',
-      }),
-    [locale],
-  );
+  const dateFormatter = useDateFormatter();
 
   return useMemo(
     () => [

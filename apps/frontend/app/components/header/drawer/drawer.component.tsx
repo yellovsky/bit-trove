@@ -12,6 +12,7 @@ import {
 } from 'react';
 
 // common modules
+import { getGuidesRouteLink } from '~/utils/links';
 import { NavLink } from '~/components/link';
 import { Icon, type IconType } from '~/components/icon';
 
@@ -114,7 +115,7 @@ export const Drawer: FC<DrawerProps> = ({ show, toggle }) => {
             icon="scroll"
             onClick={toggle}
             text={t('GUIDES_PAGE_TITLE')}
-            to="/guides"
+            to={getGuidesRouteLink()}
             variant="plain"
           />
 

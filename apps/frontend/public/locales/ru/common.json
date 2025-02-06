@@ -24,5 +24,6 @@
   "PAGE_FORBIDDEN_TITLE": "Доступ запрещён",
   "PAGE_FORBIDDEN_MESSAGE": "У вас нет прав для просмотра этой страницы",
   "PAGE_UNKNOWN_ERROR_TITLE": "Ошибка сервера",
-  "PAGE_UNKNOWN_ERROR_MESSAGE": "Something went wrong. Try refreshing the page or come back later."
+  "PAGE_UNKNOWN_ERROR_MESSAGE": "Something went wrong. Try refreshing the page or come back later.",
+  "SEE_ALL_GUIDES": "Смотреть все"
 }

@@ -5,6 +5,7 @@ import { type FC, useCallback } from 'react';
 
 // common modules
 import { AnyBlock } from '~/components/blocks/any-block';
+import { getBlogpostRouteLink } from '~/utils/links';
 import { Heading } from '~/components/heading';
 import { LanguageMismatchInfo } from '~/components/language-mismatch-info';
 
@@ -17,8 +18,7 @@ interface BlogPostPageProps {
 
 export const BlogPostPage: FC<BlogPostPageProps> = ({ blogPost }) => {
   const locale = useLocale();
-
-  const getLink = useCallback(() => `/blog/${blogPost.slug}`, [blogPost]);
+  const getLink = useCallback(() => getBlogpostRouteLink(blogPost), [blogPost]);
 
   return (
     <BlogpostPageLayout>

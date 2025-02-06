@@ -8,19 +8,14 @@ interface TimelineData {
 }
 
 export const getTimelineData = (
-  locale: string,
+  formatter: Intl.DateTimeFormat,
   rawData: (BlogPostSegment | null)[] | undefined,
 ): TimelineData[] => {
   if (!rawData) return [];
 
-  const dateFormatter = new Intl.DateTimeFormat(locale, {
-    month: 'long',
-    year: 'numeric',
-  });
-
   const data = rawData.filter(val => !!val);
-  const dates = R.uniq(data.map(item => dateFormatter.format(new Date(item.created_at))));
-  const byDates = R.groupBy(item => dateFormatter.format(new Date(item.created_at)), data);
+  const dates = R.uniq(data.map(item => formatter.format(new Date(item.created_at))));
+  const byDates = R.groupBy(item => formatter.format(new Date(item.created_at)), data);
 
   return dates.reduce(
     (accum, date) => (!byDates[date] ? accum : [...accum, { blogPosts: byDates[date], date }]),

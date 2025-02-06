@@ -24,5 +24,6 @@
   "PAGE_FORBIDDEN_TITLE": "Access Denied",
   "PAGE_FORBIDDEN_MESSAGE": "You don’t have permission to view this page",
   "PAGE_UNKNOWN_ERROR_TITLE": "Server Error",
-  "PAGE_UNKNOWN_ERROR_MESSAGE": "Something went wrong. Try refreshing the page or come back later."
+  "PAGE_UNKNOWN_ERROR_MESSAGE": "Something went wrong. Try refreshing the page or come back later.",
+  "SEE_ALL_GUIDES": "See all guides"
 }

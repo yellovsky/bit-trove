@@ -28,7 +28,7 @@ export const fetchGuideList = (
   params: GuideItemListFP,
   signal?: AbortSignal,
 ): Effect.Effect<GuideItemListResponse, FailedResponse> =>
-  apiClient.get<GuideItemListResponse>(`/v1/blog-posts`, { params, signal });
+  apiClient.get<GuideItemListResponse>(`/v1/guides`, { params, signal });
 
 type FetcGuideListQKey = TokenizedGuideQKey<typeof FETCH_GUIDE_LIST_QUERY_TOKEN, GuideItemListFP>;
 

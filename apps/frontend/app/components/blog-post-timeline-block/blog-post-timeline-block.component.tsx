@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 // common modules
 import { formatDate } from '~/utils/format-date';
+import { getBlogpostRouteLink } from '~/utils/links';
 import { Link } from '~/components/link';
 
 // local modules
@@ -40,7 +41,7 @@ export const BlogPostTimelineBlock: FC<BlogPostTimelineBlockProps> = props => {
   ) : (
     <Link
       className={clsx(props.className, blogPostListCardCn)}
-      to={`/blog/${props.item.slug}`}
+      to={getBlogpostRouteLink(props.item)}
       variant="standalone"
     >
       <h5 className={titleCn}>{props.item.title}</h5>

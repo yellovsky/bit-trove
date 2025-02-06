@@ -1,4 +1,5 @@
 // global modules
+import * as R from 'ramda';
 import { Effect } from 'effect';
 import type { GuideItemResponse } from '@repo/api-models';
 import type { LoaderFunctionArgs } from '@remix-run/node';
@@ -6,14 +7,15 @@ import type { LoaderFunctionArgs } from '@remix-run/node';
 // common modules
 import type { ApiClient } from '~/api/api-client';
 import { fetchGuide } from '~/api/guide';
+import type { SEOMetaParams } from '~/utils/seo';
+import { supportedLngs } from '~/config/i18n';
+import { addLocaleToLink, getGuideRouteLink } from '~/utils/links';
 import { failedResponseToResponse, getParamsParam, getRequestLocale } from '~/utils/loader';
 
 export interface LoaderData {
   guideResponse: GuideItemResponse;
 
-  pageSEOTitle: string;
-  pageSEODescription: string | null;
-  pageSEOKeywords: string | null;
+  seo: SEOMetaParams;
 }
 
 export const loadGuideRouteData = (
@@ -27,10 +29,23 @@ export const loadGuideRouteData = (
       Effect.mapError(failedResponseToResponse),
     );
 
+    const routeUrl = getGuideRouteLink(guideResponse.data);
+
     return {
       guideResponse,
-      pageSEODescription: guideResponse.data.seo_description,
-      pageSEOKeywords: guideResponse.data.seo_keywords,
-      pageSEOTitle: guideResponse.data.seo_title || guideResponse.data.title,
+
+      seo: {
+        canonical: addLocaleToLink(routeUrl, locale),
+        description: guideResponse.data.seo_description,
+        keywords: guideResponse.data.seo_keywords,
+        title: guideResponse.data.seo_title || guideResponse.data.title,
+
+        alternate: R.intersection(supportedLngs, guideResponse.data.language_codes)
+          .filter(lang => lang !== locale)
+          .map(hreflang => ({
+            href: addLocaleToLink(routeUrl, hreflang),
+            hreflang,
+          })),
+      },
     };
   });

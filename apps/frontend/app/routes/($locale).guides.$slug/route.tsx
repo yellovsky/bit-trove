@@ -4,6 +4,7 @@ import { useLoaderData } from '@remix-run/react';
 
 // local modules
 import { getApiClient } from '~/api/api-client';
+import { makeSeoMeta } from '~/utils/seo';
 import { mergeMeta } from '~/utils/meta';
 import { runAsyncEffect } from '~/utils/effect';
 
@@ -16,11 +17,9 @@ export const loader = async (loaderArgs: LoaderFunctionArgs): Promise<LoaderData
   return runAsyncEffect(loadGuideRouteData(apiClient, loaderArgs));
 };
 
-export const meta = mergeMeta<typeof loader>(params => [
-  { title: params.data?.pageSEOTitle },
-  { content: params.data?.pageSEODescription, name: 'description' },
-  { content: params.data?.pageSEOKeywords, name: 'keywords' },
-]);
+export const meta = mergeMeta<typeof loader>(params =>
+  params.data ? makeSeoMeta(params.data.seo) : [],
+);
 
 export default function GuideRoute() {
   const { guideResponse } = useLoaderData<typeof loader>();

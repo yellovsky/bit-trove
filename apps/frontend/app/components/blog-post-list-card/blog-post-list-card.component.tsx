@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 // common modules
 import { formatDate } from '~/utils/format-date';
+import { getBlogpostRouteLink } from '~/utils/links';
 import { Link } from '~/components/link';
 
 // local modules
@@ -31,7 +32,7 @@ export const BlogPostListCard: FC<BlogPostListCardProps> = ({ item }) => {
     : null;
 
   return (
-    <Link className={blogPostListCardCn} to={`/blog/${item.slug}`} variant="standalone">
+    <Link className={blogPostListCardCn} to={getBlogpostRouteLink(item)} variant="standalone">
       <h5 className={titleCn}>{item.title}</h5>
       <div className={dateCn}>{formattedDate}</div>
       <div className={textCn}>{item.short_description}</div>
