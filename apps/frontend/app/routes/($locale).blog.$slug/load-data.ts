@@ -1,36 +1,36 @@
 // global modules
+import type { BlogPostResponse } from '@repo/api-models';
 import { Effect } from 'effect';
-import type { GuideItemResponse } from '@repo/api-models';
 import type { LoaderFunctionArgs } from '@remix-run/node';
 
 // common modules
 import type { ApiClient } from '~/api/api-client';
-import { fetchGuide } from '~/api/guide';
+import { fetchBlogPost } from '~/api/blog-post';
 import { failedResponseToResponse, getParamsParam, getRequestLocale } from '~/utils/loader';
 
 export interface LoaderData {
-  guideResponse: GuideItemResponse;
+  blogPostResponse: BlogPostResponse;
 
   pageSEOTitle: string;
   pageSEODescription: string | null;
   pageSEOKeywords: string | null;
 }
 
-export const loadGuideRouteData = (
+export const loadBlogPostRouteData = (
   apiClient: ApiClient,
   { params, request }: LoaderFunctionArgs,
 ): Effect.Effect<LoaderData, Response> =>
   Effect.gen(function* () {
     const locale = yield* getRequestLocale(request);
     const slug = yield* getParamsParam('slug', params);
-    const guideResponse = yield* fetchGuide(apiClient, { locale, slug }).pipe(
+    const blogPostResponse = yield* fetchBlogPost(apiClient, { locale, slug }).pipe(
       Effect.mapError(failedResponseToResponse),
     );
 
     return {
-      guideResponse,
-      pageSEODescription: guideResponse.data.seo_description,
-      pageSEOKeywords: guideResponse.data.seo_keywords,
-      pageSEOTitle: guideResponse.data.seo_title || guideResponse.data.title,
+      blogPostResponse,
+      pageSEODescription: blogPostResponse.data.seo_description,
+      pageSEOKeywords: blogPostResponse.data.seo_keywords,
+      pageSEOTitle: blogPostResponse.data.seo_title || blogPostResponse.data.title,
     };
   });

@@ -1,0 +1,15 @@
+.holder {
+  @apply flex flex-col gap-8 max-w-3xl mx-auto h-full justify-center;
+
+  .code {
+    @apply text-passive text-center font-bold text-8xl font-heading;
+  }
+
+  .title {
+    @apply font-bold text-center text-2xl font-heading mb-4;
+  }
+
+  .message {
+    @apply font-heading text-center;
+  }
+}

@@ -18,5 +18,11 @@
   "INDEX_PAGE_SEO_DESCRIPTION": "Personal blog description",
   "INDEX_PAGE_SEO_KEYWORDS": "kw1, kw2, kw2",
   "INDEX_PAGE_DESCRIPTION": "Welcome to my personal blog! Here, I share my thoughts and discoveries on topics like React, MobX, Tailwind, and anything related to JavaScript and web development. This blog is more of a playground where I test out new ideas and approaches. But who knows — maybe something here will be useful to you.",
-  "ARTICLE_INDEX_TITLE": "What's inside?"
+  "ARTICLE_INDEX_TITLE": "What's inside?",
+  "PAGE_NOT_FOUND_TITLE": "Page Not Found",
+  "PAGE_NOT_FOUND_MESSAGE": "Sorry, the page you are looking for does not exist. It might have been removed or moved. Try going back to the homepage.",
+  "PAGE_FORBIDDEN_TITLE": "Access Denied",
+  "PAGE_FORBIDDEN_MESSAGE": "You don’t have permission to view this page",
+  "PAGE_UNKNOWN_ERROR_TITLE": "Server Error",
+  "PAGE_UNKNOWN_ERROR_MESSAGE": "Something went wrong. Try refreshing the page or come back later."
 }

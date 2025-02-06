@@ -16,7 +16,11 @@ export const loader = async (loaderArgs: LoaderFunctionArgs): Promise<LoaderData
   return runAsyncEffect(loadGuideRouteData(apiClient, loaderArgs));
 };
 
-export const meta = mergeMeta(() => []);
+export const meta = mergeMeta<typeof loader>(params => [
+  { title: params.data?.pageSEOTitle },
+  { content: params.data?.pageSEODescription, name: 'description' },
+  { content: params.data?.pageSEOKeywords, name: 'keywords' },
+]);
 
 export default function GuideRoute() {
   const { guideResponse } = useLoaderData<typeof loader>();

@@ -1,4 +1,5 @@
 // global modules
+import type { FC } from 'react';
 import { Outlet, useRouteError } from '@remix-run/react';
 
 // common modules
@@ -17,6 +18,10 @@ import {
 } from './layout.module.scss';
 
 export const meta = mergeMeta(() => []);
+
+const Footer: FC = () => (
+  <footer className={footerCn}>© Copyright {new Date().getFullYear()}</footer>
+);
 
 export function ErrorBoundary() {
   const error = useRouteError();
@@ -39,7 +44,7 @@ export function ErrorBoundary() {
         )}
       </main>
 
-      <footer className={footerCn}>FOOTER</footer>
+      <Footer />
     </div>
   );
 }
@@ -54,7 +59,7 @@ export default function IndexLayout() {
           <Outlet />
         </main>
 
-        <footer className={footerCn}>© Copyright {new Date().getFullYear()}</footer>
+        <Footer />
       </div>
     </>
   );

@@ -11,7 +11,7 @@
 }
 
 .langButton {
-  @apply w-8 h-8;
+  @apply w-8 h-8 flex items-center justify-center;
 
   &:hover .icon {
     @apply border-accent-hover;

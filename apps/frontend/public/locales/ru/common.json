@@ -18,5 +18,11 @@
   "INDEX_PAGE_SEO_DESCRIPTION": "Персональный блог - описание",
   "INDEX_PAGE_SEO_KEYWORDS": "кв1, кв2, кв2",
   "INDEX_PAGE_DESCRIPTION": "Добро пожаловать в мой персональный блог! Здесь я делюсь своими мыслями и находками на темы, связанные с React, MobX, Tailwind и всем, что касается JavaScript и веб-разработки. Этот блог скорее плейграунд, где я проверяю новые идеи и подходы. Но, возможно, что-то из того, что вы здесь найдёте, окажется полезным для вас.",
-  "ARTICLE_INDEX_TITLE": "Что внутри?"
+  "ARTICLE_INDEX_TITLE": "Что внутри?",
+  "PAGE_NOT_FOUND_TITLE": "Страница не найдена",
+  "PAGE_NOT_FOUND_MESSAGE": "К сожалению, страница, которую вы ищете, не существует. Возможно, она была удалена или перемещена. Попробуйте вернуться на главную.",
+  "PAGE_FORBIDDEN_TITLE": "Доступ запрещён",
+  "PAGE_FORBIDDEN_MESSAGE": "У вас нет прав для просмотра этой страницы",
+  "PAGE_UNKNOWN_ERROR_TITLE": "Ошибка сервера",
+  "PAGE_UNKNOWN_ERROR_MESSAGE": "Something went wrong. Try refreshing the page or come back later."
 }
