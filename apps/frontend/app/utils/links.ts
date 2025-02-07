@@ -1,5 +1,5 @@
 // global modules
-import type { BlogPostSegment, GuideItemSegment } from '@repo/api-models';
+import type { BlogPostSegment, TutorialSegment } from '@repo/api-models';
 import type { Path, To } from 'history';
 
 // common modules
@@ -39,15 +39,18 @@ export function addLocaleToLink<TTo extends To>(to: TTo, locale: string | undefi
 }
 
 // ============================================================================
-//                   G U I D E S   R O U T E
+//                   T U T O R I A L S   R O U T E
 // ============================================================================
-export const getGuidesRouteLink = (locale?: string): string => addLocaleToLink('/guides', locale);
+export const getTutorialsRouteLink = (locale?: string): string =>
+  addLocaleToLink('/tutorials', locale);
 
 // ============================================================================
-//               S I N G L E   G U I D E   R O U T E
+//               S I N G L E   T U T O R I A L   R O U T E
 // ============================================================================
-export const getGuideRouteLink = (guide: Pick<GuideItemSegment, 'slug'>, locale?: string): string =>
-  addLocaleToLink(`/guides/${guide.slug}`, locale);
+export const getTutorialRouteLink = (
+  tutorial: Pick<TutorialSegment, 'slug'>,
+  locale?: string,
+): string => [getTutorialsRouteLink(locale), tutorial.slug].join('/');
 
 // ============================================================================
 //                    B L O G   R O U T E
@@ -58,6 +61,6 @@ export const getBlogRouteLink = (locale?: string): string => addLocaleToLink('/b
 //                B L O G   P O S T   R O U T E
 // ============================================================================
 export const getBlogpostRouteLink = (
-  guide: Pick<BlogPostSegment, 'slug'>,
+  blogPost: Pick<BlogPostSegment, 'slug'>,
   locale?: string,
-): string => addLocaleToLink(`/blog/${guide.slug}`, locale);
+): string => [getBlogRouteLink(locale), blogPost.slug].join('/');

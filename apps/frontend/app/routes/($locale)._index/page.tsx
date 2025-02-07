@@ -1,12 +1,12 @@
 // global modules
 import { useTranslation } from 'react-i18next';
-import type { BlogPostListFP, GuideItemListFP } from '@repo/api-models';
+import type { BlogPostListFP, TutorialListFP } from '@repo/api-models';
 import { type FC, useMemo } from 'react';
 
 // common modules
-import { getGuidesRouteLink } from '~/utils/links';
-import { GuidesSlider } from '~/components/guides-slider';
-import { useGuideListInfiniteQuery } from '~/api/guide';
+import { getTutorialsRouteLink } from '~/utils/links';
+import { TutorialsSlider } from '~/components/tutorials-slider';
+import { useTutorialListInfiniteQuery } from '~/api/tutorial';
 
 // local modules
 import { SectionLink } from './section-link';
@@ -14,21 +14,21 @@ import { TimelineSection } from './timeline-section';
 import { description as descriptionCn, page as pageCn, title as titleCn } from './page.module.scss';
 
 interface IndexPageProps {
-  guidesFP: GuideItemListFP;
-  blogPostFP: BlogPostListFP;
+  tutorialListFP: TutorialListFP;
+  blogPostListFP: BlogPostListFP;
 }
 
-export const IndexPage: FC<IndexPageProps> = ({ blogPostFP, guidesFP }) => {
+export const IndexPage: FC<IndexPageProps> = ({ blogPostListFP, tutorialListFP }) => {
   const { t } = useTranslation();
 
-  const guidesQuery = useGuideListInfiniteQuery(guidesFP);
-  const guides = useMemo(
+  const tutorialsQuery = useTutorialListInfiniteQuery(tutorialListFP);
+  const tutorials = useMemo(
     () =>
-      guidesQuery.data?.pages
+      tutorialsQuery.data?.pages
         .map(page => page.data)
         .flat()
         .filter(val => !!val),
-    [guidesQuery.data],
+    [tutorialsQuery.data],
   );
 
   return (
@@ -36,14 +36,14 @@ export const IndexPage: FC<IndexPageProps> = ({ blogPostFP, guidesFP }) => {
       <div className={titleCn}>{t('INDEX_PAGE_TITLE')}</div>
       <div className={descriptionCn}>{t('INDEX_PAGE_DESCRIPTION')}</div>
 
-      <SectionLink to={getGuidesRouteLink()}>{t('GUIDES_PAGE_TITLE')}</SectionLink>
-      <GuidesSlider
-        guides={guides}
-        hasNextPage={guidesQuery.hasNextPage}
-        pending={!guidesQuery.isFetched}
+      <SectionLink to={getTutorialsRouteLink()}>{t('TUTORIALS_PAGE_TITLE')}</SectionLink>
+      <TutorialsSlider
+        hasNextPage={tutorialsQuery.hasNextPage}
+        pending={!tutorialsQuery.isFetched}
+        tutorials={tutorials}
       />
 
-      <TimelineSection blogPostFP={blogPostFP} />
+      <TimelineSection blogPostListFP={blogPostListFP} />
     </div>
   );
 };

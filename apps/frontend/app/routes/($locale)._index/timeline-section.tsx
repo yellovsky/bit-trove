@@ -21,12 +21,12 @@ import { getTimelineData } from './helpers';
 import { SectionLink } from './section-link';
 
 interface TimelineSectionProps {
-  blogPostFP: BlogPostListFP;
+  blogPostListFP: BlogPostListFP;
 }
 
-export const TimelineSection: FC<TimelineSectionProps> = ({ blogPostFP }) => {
+export const TimelineSection: FC<TimelineSectionProps> = ({ blogPostListFP }) => {
   const { t } = useTranslation();
-  const blogListQuery = useBlogPostListInfiniteQuery(blogPostFP);
+  const blogListQuery = useBlogPostListInfiniteQuery(blogPostListFP);
 
   const blogPosts = blogListQuery.data?.pages.map(page => page.data).flat();
   const dateFormatter = useDateFormatter();

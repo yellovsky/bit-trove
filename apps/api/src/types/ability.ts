@@ -9,19 +9,20 @@ import {
 // common modules
 import type { DBArticleAccessControl } from 'src/db-models/article';
 import type { DBBlogPostAccessControl } from 'src/db-models/blog-post';
-import type { DBGuideAccessControl } from 'src/db-models/guide';
+import type { DBTutorialAccessControl } from 'src/db-models/tutorial';
 
 export type Action = 'manage' | 'create' | 'read' | 'update' | 'delete';
 
 export type BlogPostSubject = ForcedSubject<'blog_post'> &
   DBBlogPostAccessControl;
 
-export type GuideSubject = ForcedSubject<'guide'> & DBGuideAccessControl;
+export type TutorialSubject = ForcedSubject<'tutorial'> &
+  DBTutorialAccessControl;
 
 export type ArticleSubject = ForcedSubject<'article'> & DBArticleAccessControl;
 
 export type Subject = InferSubjects<
-  BlogPostSubject | ArticleSubject | GuideSubject
+  BlogPostSubject | ArticleSubject | TutorialSubject
 >;
 
 export type AppAbility = PureAbility<[Action, Subject]>;

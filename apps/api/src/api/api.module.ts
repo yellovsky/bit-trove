@@ -5,14 +5,14 @@ import { Module } from '@nestjs/common';
 // common modules
 import { CaslModule } from 'src/modules/casl';
 import { JwtGuard } from 'src/modules/auth-jwt';
+import { RuntimeModule } from 'src/modules/runtime';
 
 // local modules
 import { BlogPostsApiModule } from './blog-posts';
-import { GuidesApiModule } from './guides';
-import { RuntimeModule } from '../modules/runtime';
+import { TutorialsApiModule } from './tutorials';
 
 @Module({
-  imports: [RuntimeModule, CaslModule, BlogPostsApiModule, GuidesApiModule],
+  imports: [RuntimeModule, CaslModule, BlogPostsApiModule, TutorialsApiModule],
   providers: [{ provide: APP_GUARD, useClass: JwtGuard }],
 })
 export class ApiModule {}

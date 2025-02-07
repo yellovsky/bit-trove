@@ -64,7 +64,7 @@ model Article {
 
     translations      ArticleTranslation[]
     blog_post         BlogPost?
-    guide             Guide?
+    tutorial          Tutorial?
     original_language Language             @relation(fields: [original_language_code], references: [code], onDelete: Restrict)
 
     @@map("article")
@@ -81,7 +81,7 @@ model BlogPost {
     article Article @relation(fields: [article_id], references: [id], onDelete: Cascade)
 }
 
-model Guide {
+model Tutorial {
     id           String    @id @default(uuid())
     slug         String    @unique
     created_at   DateTime  @default(now())

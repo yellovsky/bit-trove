@@ -2,7 +2,7 @@
   "HOME_PAGE_TITLE": "Home",
   "ABOUT_PAGE_TITLE": "About",
   "BLOG_PAGE_TITLE": "Blog",
-  "GUIDES_PAGE_TITLE": "Guides",
+  "TUTORIALS_PAGE_TITLE": "Tutorials",
   "Page Not Found": "Page Not Found",
   "email label": "Email",
   "email placeholder": "Enter your email",
@@ -24,10 +24,10 @@
   "PAGE_FORBIDDEN_MESSAGE": "You don’t have permission to view this page",
   "PAGE_UNKNOWN_ERROR_TITLE": "Server Error",
   "PAGE_UNKNOWN_ERROR_MESSAGE": "Something went wrong. Try refreshing the page or come back later.",
-  "SEE_ALL_GUIDES": "See all guides",
-  "BLOG_PAGE_META_DESCRIPTION": "Explore articles on web development, React, MobX, Effect, and modern JavaScript. Stay updated with insights, guides, and experiments from my personal blog.",
+  "SEE_ALL_TUTORIALS": "See all tutorials",
+  "BLOG_PAGE_META_DESCRIPTION": "Explore articles on web development, React, MobX, Effect, and modern JavaScript. Stay updated with insights, tutorials, and experiments from my personal blog.",
   "BLOG_PAGE_META_KEYWORDS": "blog, web development, React, MobX, Effect, JavaScript, frontend, programming, coding, tutorials, guides",
   "META_APP_TITLE": "Bit Trove",
-  "TUTORIAL_META_DESCRIPTION": "Discover in-depth guides on web development, React, MobX, Effect, and modern JavaScript. Practical tutorials and insights to level up your coding skills.",
+  "TUTORIAL_META_DESCRIPTION": "Discover in-depth tutorials on web development, React, MobX, Effect, and modern JavaScript. Practical tutorials and insights to level up your coding skills.",
   "TUTORIAL_META_KEYWORDS": "guides, tutorials, web development, React, MobX, Effect, JavaScript, frontend, programming, coding, learning"
 }

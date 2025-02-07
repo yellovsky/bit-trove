@@ -1,20 +1,20 @@
 // global modules
 import { Effect } from 'effect';
-import type { BlogPostListFP, GuideItemListFP } from '@repo/api-models';
+import type { BlogPostListFP, TutorialListFP } from '@repo/api-models';
 import { dehydrate, type DehydratedState } from '@tanstack/react-query';
 
 // common modules
 import { addLocaleToLink } from '~/utils/links';
 import { initialPageParam } from '~/api/pagination';
 import { prefetchBlogPostListQuery } from '~/api/blog-post';
-import { prefetchGuideListQuery } from '~/api/guide';
+import { prefetchTutorialListQuery } from '~/api/tutorial';
 import type { SEOMetaParams } from '~/utils/seo';
 import { supportedLngs } from '~/config/i18n';
 import { getFixedT, type GetLoaderData, getRequestLocale } from '~/utils/loader';
 
 export interface LoaderData {
-  blogPostFP: BlogPostListFP;
-  guidesFP: GuideItemListFP;
+  blogPostListFP: BlogPostListFP;
+  tutorialListFP: TutorialListFP;
   dehydratedState: DehydratedState;
   seo: SEOMetaParams;
 }
@@ -28,24 +28,24 @@ export const getIndexLoaderData: GetLoaderData<LoaderData> = (
     const locale = yield* getRequestLocale(request);
     const t = yield* getFixedT(locale);
 
-    const blogPostFP: BlogPostListFP = {
+    const blogPostListFP: BlogPostListFP = {
       locale,
       page: initialPageParam,
       sort: '-created_at',
     };
-    yield* prefetchBlogPostListQuery(apiClient, queryClient, blogPostFP);
+    yield* prefetchBlogPostListQuery(apiClient, queryClient, blogPostListFP);
 
-    const guidesFP: GuideItemListFP = {
+    const tutorialListFP: TutorialListFP = {
       locale,
       page: initialPageParam,
       sort: '-created_at',
     };
-    yield* prefetchGuideListQuery(apiClient, queryClient, guidesFP);
+    yield* prefetchTutorialListQuery(apiClient, queryClient, tutorialListFP);
 
     return {
-      blogPostFP,
+      blogPostListFP,
       dehydratedState: dehydrate(queryClient),
-      guidesFP,
+      tutorialListFP,
 
       seo: {
         canonical: addLocaleToLink('/', locale),

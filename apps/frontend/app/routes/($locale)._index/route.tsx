@@ -18,11 +18,11 @@ export const meta = mergeMeta<typeof loader>(params =>
 );
 
 export default function BlogPostRoute() {
-  const { blogPostFP, guidesFP, dehydratedState } = useLoaderData<typeof loader>();
+  const { tutorialListFP, blogPostListFP, dehydratedState } = useLoaderData<typeof loader>();
 
   return (
     <HydrationBoundary state={dehydratedState}>
-      <IndexPage blogPostFP={blogPostFP} guidesFP={guidesFP} />
+      <IndexPage blogPostListFP={blogPostListFP} tutorialListFP={tutorialListFP} />
     </HydrationBoundary>
   );
 }
