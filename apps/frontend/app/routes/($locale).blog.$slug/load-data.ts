@@ -1,13 +1,20 @@
 // global modules
 import * as R from 'ramda';
-import type { BlogPostResponse } from '@repo/api-models';
 import { Effect } from 'effect';
+import type { BlogPost, BlogPostResponse } from '@repo/api-models';
+import type { BlogPosting, WithContext } from 'schema-dts';
 
 // common modules
 import { fetchBlogPost } from '~/api/blog-post';
 import { supportedLngs } from '~/config/i18n';
-import { addLocaleToLink, getBlogpostRouteLink } from '~/utils/links';
-import { makePageMetaTitle, type SEOMetaParams } from '~/utils/seo';
+import { getISODate, makePageMetaTitle, type SEOMetaParams } from '~/utils/seo';
+
+import {
+  addHostnameToPathname,
+  addLocaleToLink,
+  getBlogpostRouteLink,
+  getTutorialRouteLink,
+} from '~/utils/links';
 
 import {
   failedResponseToResponse,
@@ -16,6 +23,19 @@ import {
   getParamsParam,
   getRequestLocale,
 } from '~/utils/loader';
+
+const getBlogpostJSONSchema = (tutorial: BlogPost, locale: string): WithContext<BlogPosting> => ({
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+
+  description: tutorial.short_description || tutorial.seo_description || undefined,
+  headline: tutorial.title,
+  keywords: tutorial.seo_keywords || undefined,
+  url: addHostnameToPathname(getTutorialRouteLink(tutorial, locale)),
+
+  dateCreated: !tutorial.created_at ? undefined : getISODate(tutorial.created_at),
+  datePublished: !tutorial.published_at ? undefined : getISODate(tutorial.published_at),
+});
 
 export interface LoaderData {
   blogPostResponse: BlogPostResponse;
@@ -44,6 +64,7 @@ export const getBlogPostLoaderData: GetLoaderData<LoaderData> = (
       seo: {
         canonical: addLocaleToLink(routeUrl, locale),
         description: blogPostResponse.data.seo_description,
+        jsonSchemas: [getBlogpostJSONSchema],
         keywords: blogPostResponse.data.seo_keywords,
         title: makePageMetaTitle(
           blogPostResponse.data.seo_title || blogPostResponse.data.title,

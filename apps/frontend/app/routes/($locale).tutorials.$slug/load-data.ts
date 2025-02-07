@@ -1,13 +1,14 @@
 // global modules
 import * as R from 'ramda';
 import { Effect } from 'effect';
-import type { TutorialResponse } from '@repo/api-models';
+import type { BlogPosting, WithContext } from 'schema-dts';
+import type { Tutorial, TutorialResponse } from '@repo/api-models';
 
 // common modules
 import { fetchTutorial } from '~/api/tutorial';
 import { supportedLngs } from '~/config/i18n';
-import { addLocaleToLink, getTutorialRouteLink } from '~/utils/links';
-import { makePageMetaTitle, type SEOMetaParams } from '~/utils/seo';
+import { addHostnameToPathname, addLocaleToLink, getTutorialRouteLink } from '~/utils/links';
+import { getISODate, makePageMetaTitle, type SEOMetaParams } from '~/utils/seo';
 
 import {
   failedResponseToResponse,
@@ -16,6 +17,19 @@ import {
   getParamsParam,
   getRequestLocale,
 } from '~/utils/loader';
+
+const getTutorialJSONSchema = (tutorial: Tutorial, locale: string): WithContext<BlogPosting> => ({
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+
+  description: tutorial.short_description || tutorial.seo_description || undefined,
+  headline: tutorial.title,
+  keywords: tutorial.seo_keywords || undefined,
+  url: addHostnameToPathname(getTutorialRouteLink(tutorial, locale)),
+
+  dateCreated: !tutorial.created_at ? undefined : getISODate(tutorial.created_at),
+  datePublished: !tutorial.published_at ? undefined : getISODate(tutorial.published_at),
+});
 
 export interface TutorialRouteLoaderData {
   tutorialResponse: TutorialResponse;
@@ -36,7 +50,7 @@ export const getTutorialRouteLoaderData: GetLoaderData<TutorialRouteLoaderData> 
       Effect.mapError(failedResponseToResponse),
     );
 
-    const routeUrl = getTutorialRouteLink(tutorialResponse.data);
+    const routeUrl = getTutorialRouteLink(tutorialResponse.data, locale);
 
     return {
       tutorialResponse,
@@ -44,6 +58,7 @@ export const getTutorialRouteLoaderData: GetLoaderData<TutorialRouteLoaderData> 
       seo: {
         canonical: addLocaleToLink(routeUrl, locale),
         description: tutorialResponse.data.seo_description,
+        jsonSchemas: [getTutorialJSONSchema(tutorialResponse.data, locale)],
         keywords: tutorialResponse.data.seo_keywords,
         title: makePageMetaTitle(
           tutorialResponse.data.seo_title || tutorialResponse.data.title,
