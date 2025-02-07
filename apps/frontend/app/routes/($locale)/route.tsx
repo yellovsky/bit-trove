@@ -17,7 +17,7 @@ import {
   main as mainCn,
 } from './layout.module.scss';
 
-export const meta = mergeMeta(() => []);
+export const meta = mergeMeta(() => [{ 'og:site_name': 'Bit Trove' }]);
 
 const Footer: FC = () => (
   <footer className={footerCn}>© Copyright {new Date().getFullYear()}</footer>

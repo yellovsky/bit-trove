@@ -7,7 +7,14 @@ import type { BlogPosting, WithContext } from 'schema-dts';
 // common modules
 import { fetchBlogPost } from '~/api/blog-post';
 import { supportedLngs } from '~/config/i18n';
-import { getISODate, makePageMetaTitle, type SEOMetaParams } from '~/utils/seo';
+
+import {
+  getISODate,
+  makePageMetaTitle,
+  type OGMeta,
+  type SEOMetaParams,
+  type TwitterMeta,
+} from '~/utils/seo';
 
 import {
   addHostnameToPathname,
@@ -36,6 +43,28 @@ const getBlogpostJSONSchema = (tutorial: BlogPost, locale: string): WithContext<
   dateCreated: !tutorial.created_at ? undefined : getISODate(tutorial.created_at),
   datePublished: !tutorial.published_at ? undefined : getISODate(tutorial.published_at),
 });
+
+const getBlogPostOG = (tutorial: BlogPost, locale: string): OGMeta | null => {
+  const description = tutorial.short_description || tutorial.seo_description;
+
+  return !description || !tutorial.published_at
+    ? null
+    : {
+        description,
+        locale,
+        published_time: tutorial.published_at,
+        title: tutorial.title,
+        type: 'article',
+        url: addHostnameToPathname(getTutorialRouteLink(tutorial, locale)),
+      };
+};
+
+const getBlogPostTwiiterMeta = (tutorial: BlogPost): TwitterMeta | null => {
+  const description = tutorial.short_description || tutorial.seo_description;
+  return !description || !tutorial.published_at
+    ? null
+    : { card: 'summary', description, title: tutorial.title };
+};
 
 export interface LoaderData {
   blogPostResponse: BlogPostResponse;
@@ -66,6 +95,9 @@ export const getBlogPostLoaderData: GetLoaderData<LoaderData> = (
         description: blogPostResponse.data.seo_description,
         jsonSchemas: [getBlogpostJSONSchema],
         keywords: blogPostResponse.data.seo_keywords,
+        og: getBlogPostOG(blogPostResponse.data, locale),
+        twitter: getBlogPostTwiiterMeta(blogPostResponse.data),
+
         title: makePageMetaTitle(
           blogPostResponse.data.seo_title || blogPostResponse.data.title,
           t('META_APP_TITLE'),

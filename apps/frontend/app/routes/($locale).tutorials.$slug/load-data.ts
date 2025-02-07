@@ -8,7 +8,14 @@ import type { Tutorial, TutorialResponse } from '@repo/api-models';
 import { fetchTutorial } from '~/api/tutorial';
 import { supportedLngs } from '~/config/i18n';
 import { addHostnameToPathname, addLocaleToLink, getTutorialRouteLink } from '~/utils/links';
-import { getISODate, makePageMetaTitle, type SEOMetaParams } from '~/utils/seo';
+
+import {
+  getISODate,
+  makePageMetaTitle,
+  type OGMeta,
+  type SEOMetaParams,
+  type TwitterMeta,
+} from '~/utils/seo';
 
 import {
   failedResponseToResponse,
@@ -30,6 +37,28 @@ const getTutorialJSONSchema = (tutorial: Tutorial, locale: string): WithContext<
   dateCreated: !tutorial.created_at ? undefined : getISODate(tutorial.created_at),
   datePublished: !tutorial.published_at ? undefined : getISODate(tutorial.published_at),
 });
+
+const getTutorialOGMeta = (tutorial: Tutorial, locale: string): OGMeta | null => {
+  const description = tutorial.short_description || tutorial.seo_description;
+
+  return !description || !tutorial.published_at
+    ? null
+    : {
+        description,
+        locale,
+        published_time: tutorial.published_at,
+        title: tutorial.title,
+        type: 'article',
+        url: addHostnameToPathname(getTutorialRouteLink(tutorial, locale)),
+      };
+};
+
+const getTutorialTwiiterMeta = (tutorial: Tutorial): TwitterMeta | null => {
+  const description = tutorial.short_description || tutorial.seo_description;
+  return !description || !tutorial.published_at
+    ? null
+    : { card: 'summary', description, title: tutorial.title };
+};
 
 export interface TutorialRouteLoaderData {
   tutorialResponse: TutorialResponse;
@@ -60,6 +89,9 @@ export const getTutorialRouteLoaderData: GetLoaderData<TutorialRouteLoaderData> 
         description: tutorialResponse.data.seo_description,
         jsonSchemas: [getTutorialJSONSchema(tutorialResponse.data, locale)],
         keywords: tutorialResponse.data.seo_keywords,
+        og: getTutorialOGMeta(tutorialResponse.data, locale),
+        twitter: getTutorialTwiiterMeta(tutorialResponse.data),
+
         title: makePageMetaTitle(
           tutorialResponse.data.seo_title || tutorialResponse.data.title,
           t('META_APP_TITLE'),

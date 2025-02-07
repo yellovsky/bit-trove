@@ -26,8 +26,11 @@ export const getTutorialsRouteLoaderData: GetLoaderData<TutorialsRouteLoaderData
       seo: {
         canonical: addLocaleToLink(routeUrl, locale),
         description: t('TUTORIAL_META_DESCRIPTION'),
+        jsonSchemas: null,
         keywords: t('TUTORIAL_META_KEYWORDS'),
+        og: null,
         title: makePageMetaTitle(t('TUTORIALS_PAGE_TITLE'), t('META_APP_TITLE')),
+        twitter: null,
 
         alternate: supportedLngs
           .filter(lang => lang !== locale)

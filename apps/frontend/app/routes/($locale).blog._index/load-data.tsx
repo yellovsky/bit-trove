@@ -41,8 +41,11 @@ export const getBlogLoaderData: GetLoaderData<LoaderData> = (
       seo: {
         canonical: addLocaleToLink(getBlogRouteLink(), locale),
         description: t('BLOG_PAGE_META_DESCRIPTION'),
+        jsonSchemas: null,
         keywords: t('BLOG_PAGE_META_KEYWORDS'),
+        og: null,
         title: makePageMetaTitle(t('BLOG_PAGE_TITLE'), t('META_APP_TITLE')),
+        twitter: null,
 
         alternate: supportedLngs
           .filter(lang => lang !== locale)

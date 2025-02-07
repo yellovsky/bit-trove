@@ -50,8 +50,11 @@ export const getIndexLoaderData: GetLoaderData<LoaderData> = (
       seo: {
         canonical: addLocaleToLink('/', locale),
         description: t('INDEX_PAGE_SEO_DESCRIPTION'),
+        jsonSchemas: null,
         keywords: t('INDEX_PAGE_SEO_KEYWORDS'),
+        og: null,
         title: t('META_APP_TITLE'),
+        twitter: null,
 
         alternate: supportedLngs
           .filter(lang => lang !== locale)
