@@ -1,50 +1,50 @@
 // global modules
 import * as R from 'ramda';
 import { Effect } from 'effect';
-import type { BlogPostListFP, BlogPostSegment } from '@repo/api-models';
+import type { TutorialListFP, TutorialSegment } from '@repo/api-models';
 
 // common modules
-import { fetchBlogPostList } from '~/api/blog-post';
+import { fetchTutorialList } from '~/api/tutorial';
 import { getApiClient } from '~/api/api-client';
-import { getBlogpostRouteLink } from '~/utils/links';
+import { getTutorialRouteLink } from '~/utils/links';
 import { initialPageParam } from '~/api/pagination';
 import { supportedLngs } from '~/config/i18n';
 
 // local modules
 import { generateURLTag } from './sitemap.helpers';
 
-const getBlogPostUrlTag = (blogPost: BlogPostSegment): string | null => {
-  const lastmod = blogPost.published_at;
+const getTutorialUrlTag = (tutorial: TutorialSegment): string | null => {
+  const lastmod = tutorial.published_at;
   if (!lastmod) return null;
 
-  const commonLocales = R.intersection(supportedLngs, blogPost.language_codes);
+  const commonLocales = R.intersection(supportedLngs, tutorial.language_codes);
 
   return commonLocales
     .map(locale =>
       generateURLTag({
         lastmod,
         locale,
-        pathname: getBlogpostRouteLink(blogPost, locale),
+        pathname: getTutorialRouteLink(tutorial, locale),
 
         alternameLangs: commonLocales
           .filter(al => al !== locale)
-          .map(hreflang => ({ hreflang, pathname: getBlogpostRouteLink(blogPost, hreflang) })),
+          .map(hreflang => ({ hreflang, pathname: getTutorialRouteLink(tutorial, hreflang) })),
       }),
     )
     .filter(Boolean)
     .join('\n');
 };
 
-export const getBlogPostTags = (): Effect.Effect<string | null> =>
+export const getTutorialTags = (): Effect.Effect<string | null> =>
   Effect.gen(function* () {
-    const blogPostFP: BlogPostListFP = {
+    const tutorialListFP: TutorialListFP = {
       locale: 'en',
       page: initialPageParam,
       sort: '-created_at',
     };
 
     const apiClient = getApiClient();
-    const firstPage = yield* fetchBlogPostList(apiClient, blogPostFP);
+    const firstPage = yield* fetchTutorialList(apiClient, tutorialListFP);
 
     const total = firstPage.meta.pagination.total;
     const pageSize = initialPageParam.limit;
@@ -55,17 +55,17 @@ export const getBlogPostTags = (): Effect.Effect<string | null> =>
         ? []
         : yield* Effect.all(
             R.range(1, pageSize).map(index =>
-              fetchBlogPostList(apiClient, {
-                ...blogPostFP,
-                page: { ...blogPostFP.page, offset: index * blogPostFP.page.limit },
+              fetchTutorialList(apiClient, {
+                ...tutorialListFP,
+                page: { ...tutorialListFP.page, offset: index * tutorialListFP.page.limit },
               }),
             ),
           );
 
-    const blogPosts = [
+    const tutorials = [
       ...firstPage.data,
       ...restPages.map(response => response.data).flat(),
     ].filter(val => !!val);
 
-    return blogPosts.map(getBlogPostUrlTag).filter(Boolean).join('\n') as any;
+    return tutorials.map(getTutorialUrlTag).filter(Boolean).join('\n') as any;
   }).pipe(Effect.catchAll(() => Effect.succeed(null)));

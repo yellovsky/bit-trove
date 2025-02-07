@@ -6,11 +6,12 @@ import { runAsyncEffect } from '~/utils/effect';
 
 // local modules
 import { getBlogPostTags } from './sitemap.blog-post';
-import { getIndexTags } from './sitemap.index';
+import { getBuiltInTags } from './sitemap.built-in';
+import { getTutorialTags } from './sitemap.tutorial';
 
 const getTags = (): Effect.Effect<string> =>
   Effect.gen(function* () {
-    const tags = yield* Effect.all([getIndexTags(), getBlogPostTags()]);
+    const tags = yield* Effect.all([getBuiltInTags(), getBlogPostTags(), getTutorialTags()]);
 
     return tags.filter(Boolean).join('\n');
   });
