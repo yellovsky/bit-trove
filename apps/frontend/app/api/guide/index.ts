@@ -6,4 +6,5 @@ export {
   useGuideListInfiniteQuery,
   useGuideListQuery,
   prefetchGuideListQuery,
+  type GuideListInfiniteQuery,
 } from './guide.fetch-list';

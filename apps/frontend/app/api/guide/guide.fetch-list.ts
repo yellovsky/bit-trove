@@ -51,6 +51,8 @@ export const useGuideListInfiniteQuery = makeUseInfiniteListQuery({
   makeQueryKey: makeFetcGuideListQKey,
 });
 
+export type GuideListInfiniteQuery = ReturnType<typeof useGuideListInfiniteQuery>;
+
 export const getGuideListQueryResult = (
   queryClient: QueryClient,
   variables: GuideItemListFP,

@@ -2,15 +2,20 @@
 import * as R from 'ramda';
 import { Effect } from 'effect';
 import type { GuideItemResponse } from '@repo/api-models';
-import type { LoaderFunctionArgs } from '@remix-run/node';
 
 // common modules
-import type { ApiClient } from '~/api/api-client';
 import { fetchGuide } from '~/api/guide';
-import type { SEOMetaParams } from '~/utils/seo';
 import { supportedLngs } from '~/config/i18n';
 import { addLocaleToLink, getGuideRouteLink } from '~/utils/links';
-import { failedResponseToResponse, getParamsParam, getRequestLocale } from '~/utils/loader';
+import { makePageMetaTitle, type SEOMetaParams } from '~/utils/seo';
+
+import {
+  failedResponseToResponse,
+  getFixedT,
+  type GetLoaderData,
+  getParamsParam,
+  getRequestLocale,
+} from '~/utils/loader';
 
 export interface LoaderData {
   guideResponse: GuideItemResponse;
@@ -18,12 +23,15 @@ export interface LoaderData {
   seo: SEOMetaParams;
 }
 
-export const loadGuideRouteData = (
-  apiClient: ApiClient,
-  { params, request }: LoaderFunctionArgs,
+export const getGuideLoaderData: GetLoaderData<LoaderData> = (
+  apiClient,
+  _queryClient,
+  { params, request },
 ): Effect.Effect<LoaderData, Response> =>
   Effect.gen(function* () {
     const locale = yield* getRequestLocale(request);
+    const t = yield* getFixedT(locale);
+
     const slug = yield* getParamsParam('slug', params);
     const guideResponse = yield* fetchGuide(apiClient, { locale, slug }).pipe(
       Effect.mapError(failedResponseToResponse),
@@ -38,13 +46,16 @@ export const loadGuideRouteData = (
         canonical: addLocaleToLink(routeUrl, locale),
         description: guideResponse.data.seo_description,
         keywords: guideResponse.data.seo_keywords,
-        title: guideResponse.data.seo_title || guideResponse.data.title,
+        title: makePageMetaTitle(
+          guideResponse.data.seo_title || guideResponse.data.title,
+          t('META_APP_TITLE'),
+        ),
 
         alternate: R.intersection(supportedLngs, guideResponse.data.language_codes)
           .filter(lang => lang !== locale)
-          .map(hreflang => ({
-            href: addLocaleToLink(routeUrl, hreflang),
-            hreflang,
+          .map(hrefLang => ({
+            href: addLocaleToLink(routeUrl, hrefLang),
+            hrefLang,
           })),
       },
     };

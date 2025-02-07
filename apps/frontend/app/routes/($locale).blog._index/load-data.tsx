@@ -1,23 +1,33 @@
 // global modules
 import type { BlogPostListResponse } from '@repo/api-models';
 import { Effect } from 'effect';
-import type { Params } from '@remix-run/react';
 
 // common modules
-import type { ApiClient } from '~/api/api-client';
 import { fetchBlogPostList } from '~/api/blog-post';
-import { failedResponseToResponse, getParamsParam } from '~/utils/loader';
+import { supportedLngs } from '~/config/i18n';
+import { addLocaleToLink, getBlogRouteLink } from '~/utils/links';
+import { makePageMetaTitle, type SEOMetaParams } from '~/utils/seo';
+
+import {
+  failedResponseToResponse,
+  getFixedT,
+  type GetLoaderData,
+  getParamsParam,
+} from '~/utils/loader';
 
 export interface LoaderData {
+  seo: SEOMetaParams;
   blogPostListResponse: BlogPostListResponse;
 }
 
-export const loadBlogRouteData = (
-  apiClient: ApiClient,
-  params: Params,
+export const getBlogLoaderData: GetLoaderData<LoaderData> = (
+  apiClient,
+  _queryClient,
+  { params },
 ): Effect.Effect<LoaderData, Response> =>
   Effect.gen(function* () {
     const locale = yield* getParamsParam('locale', params);
+    const t = yield* getFixedT(locale);
 
     const blogPostListResponse = yield* fetchBlogPostList(apiClient, {
       locale,
@@ -25,5 +35,21 @@ export const loadBlogRouteData = (
       sort: 'created_at',
     }).pipe(Effect.mapError(failedResponseToResponse));
 
-    return { blogPostListResponse };
+    return {
+      blogPostListResponse,
+
+      seo: {
+        canonical: addLocaleToLink(getBlogRouteLink(), locale),
+        description: t('BLOG_PAGE_META_DESCRIPTION'),
+        keywords: t('BLOG_PAGE_META_KEYWORDS'),
+        title: makePageMetaTitle(t('BLOG_PAGE_TITLE'), t('META_APP_TITLE')),
+
+        alternate: supportedLngs
+          .filter(lang => lang !== locale)
+          .map(hrefLang => ({
+            href: addLocaleToLink(getBlogRouteLink(), hrefLang),
+            hrefLang,
+          })),
+      },
+    };
   });

@@ -14,7 +14,6 @@
   "This page is not available in the selected language": "This page is not available in the selected language",
   "You can read it in:": "You can read it in:",
   "INDEX_PAGE_TITLE": "Hey! I'm Author,",
-  "INDEX_PAGE_SEO_TITLE": "Personal blog",
   "INDEX_PAGE_SEO_DESCRIPTION": "Personal blog description",
   "INDEX_PAGE_SEO_KEYWORDS": "kw1, kw2, kw2",
   "INDEX_PAGE_DESCRIPTION": "Welcome to my personal blog! Here, I share my thoughts and discoveries on topics like React, MobX, Tailwind, and anything related to JavaScript and web development. This blog is more of a playground where I test out new ideas and approaches. But who knows — maybe something here will be useful to you.",
@@ -25,5 +24,10 @@
   "PAGE_FORBIDDEN_MESSAGE": "You don’t have permission to view this page",
   "PAGE_UNKNOWN_ERROR_TITLE": "Server Error",
   "PAGE_UNKNOWN_ERROR_MESSAGE": "Something went wrong. Try refreshing the page or come back later.",
-  "SEE_ALL_GUIDES": "See all guides"
+  "SEE_ALL_GUIDES": "See all guides",
+  "BLOG_PAGE_META_DESCRIPTION": "Explore articles on web development, React, MobX, Effect, and modern JavaScript. Stay updated with insights, guides, and experiments from my personal blog.",
+  "BLOG_PAGE_META_KEYWORDS": "blog, web development, React, MobX, Effect, JavaScript, frontend, programming, coding, tutorials, guides",
+  "META_APP_TITLE": "Bit Trove",
+  "TUTORIAL_META_DESCRIPTION": "Discover in-depth guides on web development, React, MobX, Effect, and modern JavaScript. Practical tutorials and insights to level up your coding skills.",
+  "TUTORIAL_META_KEYWORDS": "guides, tutorials, web development, React, MobX, Effect, JavaScript, frontend, programming, coding, learning"
 }

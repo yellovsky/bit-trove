@@ -12,7 +12,7 @@ export interface SEOMetaParams {
   canonical: string;
   description: string | null;
   keywords: string | null;
-  alternate: Array<{ hreflang: string; href: string }>;
+  alternate: Array<{ hrefLang: string; href: string }>;
 }
 
 export const makeSeoMeta = (params: SEOMetaParams): ReturnType<MetaFunction> => {
@@ -21,7 +21,7 @@ export const makeSeoMeta = (params: SEOMetaParams): ReturnType<MetaFunction> => 
     { href: addHostnameToLink(params.canonical), rel: 'canonical', tagName: 'link' },
     ...params.alternate.map(alt => ({
       href: addHostnameToLink(alt.href),
-      hreflang: alt.hreflang,
+      hrefLang: alt.hrefLang,
       rel: 'alternate',
       tagname: 'link',
     })),
