@@ -114,6 +114,14 @@ export const InternalServerAPIError = makeAPIError('internal_server_error');
 export const UnauthorizedAPIError = makeAPIError('unauthorized');
 
 /**
+ * Represents an API error indicating that the access token has expired.
+ * This error is typically thrown when an API request is made with an expired access token.
+ *
+ * @constant {APIError} AccessTokenExpiredAPIError
+ */
+export const AccessTokenExpiredAPIError = makeAPIError('access_token_expired');
+
+/**
  * Type guard to check if a given error is an instance of `ApiError`.
  *
  * @param error - The error to check.
@@ -124,7 +132,8 @@ export const isAPIError = (error: unknown): error is ApiError =>
   error instanceof BadRequestAPIError ||
   error instanceof ForbiddenAPIError ||
   error instanceof InternalServerAPIError ||
-  error instanceof UnauthorizedAPIError;
+  error instanceof UnauthorizedAPIError ||
+  error instanceof AccessTokenExpiredAPIError;
 
 export const toApiError = (error: Error | ApiError): ApiError =>
   isAPIError(error)

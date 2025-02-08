@@ -1,13 +1,12 @@
 // global modules
 import { Effect } from 'effect';
+import type { Request } from 'express';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Controller, Get, Inject, Param, Query } from '@nestjs/common';
+import { Controller, Get, Inject, Param, Query, Req } from '@nestjs/common';
 
 // common modules
 import { ApiCommonErrorResponses } from 'src/utils/swagger';
-import { Public } from 'src/modules/auth-jwt';
-import { ReqContext } from 'src/request-context';
-import type { RequestContext } from 'src/types/context';
+import { Public } from 'src/utils/access-control';
 import { RUNTIME_SRV, type RuntimeService } from 'src/modules/runtime';
 
 import {
@@ -21,6 +20,11 @@ import {
   type TutorialSerializerService,
   type TutorialService,
 } from 'src/modules/tutorial';
+
+import {
+  REQUEST_CONTEXT_SRV,
+  type RequestContextService,
+} from 'src/modules/request-context';
 
 // local modules
 import { FindManyTutorialsDTO } from './dto/find-many.dto';
@@ -37,6 +41,9 @@ export class TutorialsApiV1Controller {
 
     @Inject(TUTORIAL_SERIALIZER_SRV)
     private readonly tutorialRerializerSrv: TutorialSerializerService,
+
+    @Inject(REQUEST_CONTEXT_SRV)
+    private readonly requestContextSrv: RequestContextService,
   ) {}
 
   @ApiOperation({ description: 'Get one blog posts' })
@@ -45,12 +52,13 @@ export class TutorialsApiV1Controller {
   @Get()
   @Public()
   async getTutorialList(
-    @ReqContext() reqCtx: RequestContext,
+    @Req() req: Request,
     @Query() query: FindManyTutorialsDTO,
   ): Promise<TutorialListResponseEntity> {
     const program = Effect.gen(this, function* () {
       yield* Effect.logDebug('query', query);
 
+      const reqCtx = yield* this.requestContextSrv.get(req);
       const founded = yield* this.tutorialSrv.getMany(reqCtx, {
         ...query,
         publishingFilter: 'published',
@@ -58,10 +66,7 @@ export class TutorialsApiV1Controller {
 
       return yield* this.tutorialRerializerSrv.serializeTutorialListResponse(
         reqCtx,
-        {
-          ...founded,
-          ...query.page,
-        },
+        { ...founded, ...query.page },
       );
     });
 
@@ -74,10 +79,11 @@ export class TutorialsApiV1Controller {
   @Public()
   @Get(':slugOrID')
   async getTutorial(
-    @ReqContext() reqCtx: RequestContext,
+    @Req() req: Request,
     @Param('slugOrID') slugOrID: string,
   ): Promise<TutorialResponseEntity> {
     const program = Effect.gen(this, function* () {
+      const reqCtx = yield* this.requestContextSrv.get(req);
       const founded = yield* this.tutorialSrv.getOne(reqCtx, {
         publishingFilter: 'published',
         slugOrID,

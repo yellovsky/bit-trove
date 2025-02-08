@@ -1,7 +1,3 @@
-// local modules
-import type { ItemResponse } from './response';
-import type { Profile } from './profile';
-
 export interface AuthTokens {
   access_token: string;
 }
@@ -11,6 +7,6 @@ export interface LoginWithEmailFP {
   password: string;
 }
 
-export interface LoginResponse extends ItemResponse<Profile> {
+export interface LoginResponse {
   meta: AuthTokens;
 }

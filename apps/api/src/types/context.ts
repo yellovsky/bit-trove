@@ -3,6 +3,7 @@ import type { LogLevel } from 'effect';
 
 // common modules
 import type { AppAbility } from 'src/types/ability';
+import type { DBUser } from 'src/db-models/user';
 import type { GetTranslationsStrategy } from 'src/utils/translation-strategy';
 import type { PrismaTransaction } from 'src/types/prisma-transaction';
 
@@ -11,7 +12,7 @@ export interface RepositoryContext {
 }
 
 export interface AccessControlContext {
-  user: null;
+  user: DBUser | null;
   can: AppAbility['can'];
 }
 

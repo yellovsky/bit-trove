@@ -1,0 +1,2 @@
+export const AUTH_SRV = 'AUTH_SRV';
+export const AUTH_SERIALIZER_SRV = 'AUTH_SERIALIZER_SRV';

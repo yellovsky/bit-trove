@@ -62,6 +62,25 @@ const getErrorApiResponseFromException = (
       );
 };
 
+const getErrorApiResponseFromApiError = (
+  exception: Error,
+): Option.Option<ResponseErrorEntity> => {
+  if (!isAPIError(exception)) return Option.none();
+
+  const status_code = exception.status_code;
+  const error_name = errorNameByCode[status_code];
+
+  return !error_name
+    ? Option.some(INTERNAL_SERVER_ERROR)
+    : Option.some(
+        new ResponseErrorEntity({
+          error_name,
+          message: exception.message,
+          status_code,
+        }),
+      );
+};
+
 /**
  * Transforms a Fiber failure error into an API response error.
  *
@@ -108,6 +127,7 @@ const getErrorApiResponse = (
   const apiError = Option.firstSomeOf([
     getErrorApiResponseFromFiberFailure(error),
     getErrorApiResponseFromException(error),
+    getErrorApiResponseFromApiError(error),
   ]).pipe(Option.getOrElse(() => INTERNAL_SERVER_ERROR));
 
   return {

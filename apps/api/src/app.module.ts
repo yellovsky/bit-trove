@@ -1,9 +1,18 @@
 // global modules
-import { ConfigModule } from '@nestjs/config';
 import { Module } from '@nestjs/common';
+import { PassportModule } from '@nestjs/passport';
 
 // common modules
 import { ApiModule } from 'src/api';
+import { AppConfigModule } from 'src/modules/app-config';
+import { PrismaModule } from 'src/modules/prisma';
 
-@Module({ imports: [ConfigModule.forRoot({ isGlobal: true }), ApiModule] })
+@Module({
+  imports: [
+    PassportModule.register({ session: true }),
+    AppConfigModule,
+    PrismaModule,
+    ApiModule,
+  ],
+})
 export class AppModule {}

@@ -1,18 +1,18 @@
 // global modules
 import { Effect } from 'effect';
+import type { Request } from 'express';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Controller, Get, Inject, Param, Query } from '@nestjs/common';
+import { Controller, Get, Inject, Param, Query, Req } from '@nestjs/common';
 
 // common modules
 import { ApiCommonErrorResponses } from 'src/utils/swagger';
-import { Public } from 'src/modules/auth-jwt';
-import { ReqContext } from 'src/request-context';
-import type { RequestContext } from 'src/types/context';
+import { Public } from 'src/utils/access-control';
+import { RUNTIME_SRV, type RuntimeService } from 'src/modules/runtime';
+
 import {
   BlogPostListResponseEntity,
   BlogPostResponseEntity,
 } from 'src/entities/blog-post';
-import { RUNTIME_SRV, type RuntimeService } from 'src/modules/runtime';
 
 import {
   BLOG_POST_SERIALIZER_SRV,
@@ -20,6 +20,11 @@ import {
   type BlogPostSerializerService,
   type BlogPostService,
 } from 'src/modules/blog-post';
+
+import {
+  REQUEST_CONTEXT_SRV,
+  type RequestContextService,
+} from 'src/modules/request-context';
 
 // local modules
 import { FindManyBlogPostsDTO } from './dto/find-many.dto';
@@ -36,6 +41,9 @@ export class BlogPostsApiV1Controller {
 
     @Inject(BLOG_POST_SERIALIZER_SRV)
     private readonly blogPostRerializerSrv: BlogPostSerializerService,
+
+    @Inject(REQUEST_CONTEXT_SRV)
+    private readonly requestContextSrv: RequestContextService,
   ) {}
 
   @ApiOperation({ description: 'Get one blog posts' })
@@ -44,12 +52,13 @@ export class BlogPostsApiV1Controller {
   @Get()
   @Public()
   async getBlogPostList(
-    @ReqContext() reqCtx: RequestContext,
+    @Req() req: Request,
     @Query() query: FindManyBlogPostsDTO,
   ): Promise<BlogPostListResponseEntity> {
     const program = Effect.gen(this, function* () {
       yield* Effect.logDebug('query', query);
 
+      const reqCtx = yield* this.requestContextSrv.get(req);
       const founded = yield* this.blogPostSrv.getMany(reqCtx, {
         ...query,
         publishingFilter: 'published',
@@ -70,10 +79,11 @@ export class BlogPostsApiV1Controller {
   @Public()
   @Get(':slugOrID')
   async getBlogPost(
-    @ReqContext() reqCtx: RequestContext,
+    @Req() req: Request,
     @Param('slugOrID') slugOrID: string,
   ): Promise<BlogPostResponseEntity> {
     const program = Effect.gen(this, function* () {
+      const reqCtx = yield* this.requestContextSrv.get(req);
       const founded = yield* this.blogPostSrv.getOne(reqCtx, {
         publishingFilter: 'published',
         slugOrID,

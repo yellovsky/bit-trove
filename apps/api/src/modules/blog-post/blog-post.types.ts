@@ -108,7 +108,7 @@ export interface BlogPostPublishingService {
 }
 
 // =================================================================================
-//                          S E R V I C E
+//                          S E R I A L I Z E R
 // =================================================================================
 export interface BlogPostSerializerService {
   serializeBlogPost(
