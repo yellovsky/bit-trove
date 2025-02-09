@@ -1,17 +1,14 @@
 // global modules
 import { useCallback } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
 
 // common modules
-import { setMyProfileResponseQuery } from '~/api/my';
-import { useCookieManager } from '~/utils/cookie-manager';
+import { useLogoutMutation } from '../../api/auth';
+
+const LOGOUT_MUTATION_PARAMS = {} as const;
 
 export const useLogout = () => {
-  const cookieManager = useCookieManager();
-  const queryClient = useQueryClient();
-
+  const logoutMutation = useLogoutMutation(LOGOUT_MUTATION_PARAMS);
   return useCallback(() => {
-    setMyProfileResponseQuery(queryClient, undefined);
-    cookieManager.removeCookie('access_token');
-  }, [cookieManager.removeCookie]);
+    logoutMutation.mutate();
+  }, [logoutMutation]);
 };

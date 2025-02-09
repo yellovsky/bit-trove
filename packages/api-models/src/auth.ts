@@ -1,12 +1,9 @@
-export interface AuthTokens {
-  access_token: string;
-}
+// local modules
+import type { ItemResponse } from './response';
 
 export interface LoginWithEmailFP {
   email: string;
   password: string;
 }
 
-export interface LoginResponse {
-  meta: AuthTokens;
-}
+export type IsAuthorizedResponse = ItemResponse<{ isAuthorized: boolean }>;

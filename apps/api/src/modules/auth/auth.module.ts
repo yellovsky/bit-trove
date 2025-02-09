@@ -14,16 +14,10 @@ import {
 } from 'src/modules/app-config';
 
 // local modules
+import { AUTH_SRV } from './auth.constants';
 import { AuthEmailStrategy } from './auth.email-strategy';
-import { AuthSerializerServiceClass } from './auth.serializer';
 import { AuthServiceClass } from './auth.service';
 import { JwtStrategy } from './auth.jwt-strategy';
-import { AUTH_SERIALIZER_SRV, AUTH_SRV } from './auth.constants';
-
-const serializerRef = {
-  provide: AUTH_SERIALIZER_SRV,
-  useClass: AuthSerializerServiceClass,
-};
 
 const serviceRef = {
   provide: AUTH_SRV,
@@ -31,7 +25,7 @@ const serviceRef = {
 };
 
 @Module({
-  exports: [serializerRef, serviceRef, JwtModule],
+  exports: [serviceRef, JwtModule],
   imports: [
     RuntimeModule,
     PrismaModule,
@@ -46,6 +40,6 @@ const serviceRef = {
       }),
     }),
   ],
-  providers: [serializerRef, serviceRef, AuthEmailStrategy, JwtStrategy],
+  providers: [serviceRef, AuthEmailStrategy, JwtStrategy],
 })
 export class AuthModule {}

@@ -1,7 +1,6 @@
 // global modules
 import cookieParser from 'cookie-parser';
 import type { NestExpressApplication } from '@nestjs/platform-express';
-import session from 'express-session';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { NestFactory, Reflector } from '@nestjs/core';
 
@@ -42,29 +41,15 @@ async function bootstrap() {
   if (!secret) throw new Error('Define SESSION_SECRET process variable');
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    cors: true,
+    cors: { origin: ['http://127.0.0.1:5173'] },
   });
 
-  app.enableCors({ credentials: true, origin: 'http://localhost:5173' });
+  app.enableCors({ credentials: true, origin: 'http://127.0.0.1:5173' });
   app.set('trust proxy', 1);
 
   app
     .setGlobalPrefix(API_PREFIX)
     .use(cookieParser())
-    .use(
-      session({
-        resave: false,
-        saveUninitialized: false,
-        secret,
-
-        cookie: {
-          httpOnly: true,
-          maxAge: 1000 * 60 * 60 * 24 * 30,
-          sameSite: 'lax',
-          secure: process.env.NODE_ENV === 'production',
-        },
-      }),
-    )
     .useGlobalPipes(
       new ValidationPipe({
         exceptionFactory: () => new BadRequestAPIError({}),

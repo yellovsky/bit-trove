@@ -33,6 +33,8 @@ export const getQueryKeyVariables = <TQKey extends QKey<string, string, unknown>
  */
 export type MakeQueryKey<TQKey extends QKey> = (variables: TQKey[2]) => TQKey;
 
+export type QueryKeyVariables<TQKey extends QKey> = TQKey[2];
+
 /**
  * Creates a query key generator function that tokenizes the query key and variables.
  *

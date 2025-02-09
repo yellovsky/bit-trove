@@ -19,7 +19,6 @@ export const getCookieHash = (request: Request): CookieHash => {
   const cookieString = request.headers.get('Cookie') || '';
 
   return {
-    access_token: getCookie(cookieString)('access_token'),
     color_mode: getCookie(cookieString)('color_mode'),
     locale: getCookie(cookieString)('locale'),
   };

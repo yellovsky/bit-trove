@@ -57,7 +57,6 @@ export const links: LinksFunction = () => [...cssAssets];
 type LoaderData = {
   locale: string;
   colorMode: ColorMode | null;
-  access_token: string | null;
   cookieHash: CookieHash;
   env: {
     API_HOST: string;
@@ -80,7 +79,6 @@ export const loader: LoaderFunction = async ({ request }: LoaderFunctionArgs) =>
 
   return json<LoaderData>(
     {
-      access_token: cookieHash.access_token,
       colorMode,
       cookieHash,
       env: { API_HOST, CLIENT_HOST },

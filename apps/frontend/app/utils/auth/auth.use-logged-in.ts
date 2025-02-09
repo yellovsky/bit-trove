@@ -1,5 +1,4 @@
-// local modules
-import { useCookie } from '../cookie-manager/cookie-manager.provider';
+// common modules
+import { useIsAuthorizedQuery } from '~/api/auth';
 
-export const useAccessToken = (): string | null => useCookie('access_token');
-export const useLoggedIn = (): boolean => !!useAccessToken();
+export const useLoggedIn = (): boolean => !!useIsAuthorizedQuery().data?.data.isAuthorized;

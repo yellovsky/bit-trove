@@ -13,7 +13,6 @@ import { ReactFormPasswordControl } from '~/components/form-controls/react-form-
 import { ReactFormTextControl } from '~/components/form-controls/react-form-text-control';
 import { useLoginWithEmailMutation } from '~/api/auth';
 import { useReactFormWithMutation } from '~/utils/react-form';
-import { useSetAccessToken } from '~/utils/auth';
 
 const loginWithEmailFPSchema: zod.ZodType<LoginWithEmailFP> = zod.object({
   email: zod.string().email().min(1),
@@ -28,7 +27,7 @@ interface SignInFormProps {
 
 export const SignInForm: FC<SignInFormProps> = ({ onSuccess }) => {
   const { t } = useTranslation();
-  const setAccessToken = useSetAccessToken();
+
   const [handleSubmit, { control, formState }] = useReactFormWithMutation({
     defaultValues,
     schema: loginWithEmailFPSchema,
@@ -40,8 +39,7 @@ export const SignInForm: FC<SignInFormProps> = ({ onSuccess }) => {
       }
     },
     onMutationMutate: methods => methods.clearErrors('root'),
-    onMutationSuccess: (_methods, response) => {
-      setAccessToken(response.meta.access_token);
+    onMutationSuccess: () => {
       toast.success(t('login success'));
       onSuccess?.();
     },

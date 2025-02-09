@@ -1,17 +1,35 @@
 // global modules
 import { ApiProperty } from '@nestjs/swagger';
-import type { LoginResponse } from '@repo/api-models';
+import type { IsAuthorizedResponse } from '@repo/api-models';
 
 // common modules
 import { Entity, type WithoutEntityType } from 'src/entities/entity';
 
-export class LoginResponseEntity extends Entity implements LoginResponse {
-  @ApiProperty({ type: String })
-  meta: LoginResponse['meta'];
+type IsAuthorizedResponseData = IsAuthorizedResponse['data'];
+class IsAuthorizedResponseEntityData
+  extends Entity
+  implements IsAuthorizedResponseData
+{
+  @ApiProperty({ type: Boolean })
+  isAuthorized: IsAuthorizedResponseData['isAuthorized'];
 
-  constructor(response: WithoutEntityType<LoginResponseEntity>) {
+  constructor(response: WithoutEntityType<IsAuthorizedResponseEntityData>) {
     super();
 
-    this.meta = response.meta;
+    this.isAuthorized = response.isAuthorized;
+  }
+}
+
+export class IsAuthorizedResponseEntity
+  extends Entity
+  implements IsAuthorizedResponse
+{
+  @ApiProperty({ type: String })
+  data: IsAuthorizedResponse['data'];
+
+  constructor(isAuthorized: boolean) {
+    super();
+
+    this.data = new IsAuthorizedResponseEntityData({ isAuthorized });
   }
 }

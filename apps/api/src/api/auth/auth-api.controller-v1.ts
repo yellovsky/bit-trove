@@ -1,12 +1,23 @@
 // global modules
 import { ApiTags } from '@nestjs/swagger';
 import { Effect } from 'effect';
-import type { Request } from 'express';
-import { Body, Controller, Inject, Post, Req, UseGuards } from '@nestjs/common';
+import type { Request, Response } from 'express';
+
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 
 // common modules
-import type { LoginResponseEntity } from 'src/entities/auth';
+import { IsAuthorizedResponseEntity } from 'src/entities/auth';
 import { Public } from 'src/utils/access-control';
+import { ACCESS_TOKEN_COOKIE_KEY, AuthEmailGuard } from 'src/modules/auth';
 import { RUNTIME_SRV, type RuntimeService } from 'src/modules/runtime';
 
 import {
@@ -14,18 +25,9 @@ import {
   type OauthAccessTokenService,
 } from 'src/modules/oauth';
 
-import {
-  AUTH_SERIALIZER_SRV,
-  AuthEmailGuard,
-  type AuthSerializerService,
-} from 'src/modules/auth';
-
 // local modules
 import { LoginWithEmailDTO } from './dto/login-with-email.dto';
-import {
-  REQUEST_CONTEXT_SRV,
-  type RequestContextService,
-} from '../../modules/request-context';
+import { StatusSuccessResponseEntity } from '../../entities/status-success';
 
 @ApiTags('Auth')
 @Controller({ path: 'auth', version: '1' })
@@ -34,23 +36,18 @@ export class AuthApiV1Controller {
     @Inject(RUNTIME_SRV)
     private readonly runtimeSrv: RuntimeService,
 
-    @Inject(AUTH_SERIALIZER_SRV)
-    private readonly authSerializerSrv: AuthSerializerService,
-
     @Inject(OAUTH_ACCESS_TOKEN_SRV)
     private readonly oauthAccessTokenSrv: OauthAccessTokenService,
-
-    @Inject(REQUEST_CONTEXT_SRV)
-    private readonly requestContextSrv: RequestContextService,
   ) {}
 
-  @Post()
+  @Post('login')
   @Public()
   @UseGuards(AuthEmailGuard)
   async loginWithEmail(
     @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
     @Body() body: LoginWithEmailDTO,
-  ): Promise<LoginResponseEntity> {
+  ): Promise<StatusSuccessResponseEntity> {
     const program = Effect.gen(this, function* () {
       yield* Effect.logDebug('body', body);
 
@@ -58,10 +55,31 @@ export class AuthApiV1Controller {
         email: body.email,
       });
 
-      const reqCtx = yield* this.requestContextSrv.get(req);
-      return yield* this.authSerializerSrv.loginResponse(reqCtx, accessToken);
+      res.cookie(ACCESS_TOKEN_COOKIE_KEY, accessToken, {
+        domain: '127.0.0.1',
+        expires: new Date(Date.now() + 3600000),
+        httpOnly: true,
+        sameSite: 'lax',
+      });
+
+      return new StatusSuccessResponseEntity();
     });
 
     return this.runtimeSrv.runPromise(program);
+  }
+
+  @Get('is-authorized')
+  @Public()
+  async isAuthorized(@Req() req: Request): Promise<IsAuthorizedResponseEntity> {
+    const isAuthorized = !!req.cookies?.[ACCESS_TOKEN_COOKIE_KEY];
+    return new IsAuthorizedResponseEntity(isAuthorized);
+  }
+
+  @Post('logout')
+  async logout(
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<StatusSuccessResponseEntity> {
+    res.cookie(ACCESS_TOKEN_COOKIE_KEY, '', { expires: new Date(Date.now()) });
+    return new StatusSuccessResponseEntity();
   }
 }

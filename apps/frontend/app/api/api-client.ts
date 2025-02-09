@@ -12,9 +12,6 @@ import axios, {
   isAxiosError,
 } from 'axios';
 
-// common modules
-import { BrowserCookieManager } from '~/utils/cookie-manager/cookie-manager.browser';
-
 export const isFailedResponse = (response: unknown): response is FailedResponse => {
   return !!response && typeof response === 'object' && 'error' in response;
 };
@@ -109,12 +106,7 @@ let cached: ApiClient | undefined;
  */
 export const getApiClient = (): ApiClient => {
   if (typeof window === 'undefined') return new ApiClientClass();
-  if (!cached) {
-    const cookieManager = new BrowserCookieManager();
-    cached = new ApiClientClass();
-    cached.updateAuthHeader(cookieManager.getCookie('access_token'));
-    cookieManager.dispose();
-  }
+  if (!cached) cached = new ApiClientClass();
   return cached;
 };
 

@@ -1,4 +1,4 @@
-export type CookieKey = 'color_mode' | 'access_token' | 'locale';
+export type CookieKey = 'color_mode' | 'locale';
 export type CookieHash = Record<CookieKey, string | null>;
 
 export interface SetCookieOptions {
