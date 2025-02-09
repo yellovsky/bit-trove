@@ -4,7 +4,7 @@ import { Effect } from 'effect';
 // common modules
 import { supportedLngs } from '~/config/i18n';
 import { addLocaleToLink, getTutorialsRouteLink } from '~/utils/links';
-import { getFixedT, type GetLoaderData, getRequestLocale } from '~/utils/loader';
+import { getFixedT, type GetLoaderData, getRequestLocale } from '~/utils/loader.server';
 import { makePageMetaTitle, type SEOMetaParams } from '~/utils/seo';
 
 export interface TutorialsRouteLoaderData {

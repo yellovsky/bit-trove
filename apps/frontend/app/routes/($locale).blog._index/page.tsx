@@ -1,21 +1,31 @@
 // global modules
-import type { BlogPostListResponse } from '@repo/api-models';
-import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
+import { type FC, useMemo } from 'react';
 
 // common modules
 import { BlogPostListCard } from '~/components/blog-post-list-card';
 import { Heading } from '~/components/heading';
+import { type FetchBlogPostListVariables, useBlogPostListInfiniteQuery } from '~/api/blog-post';
 
 // local modules
 import { cardsGrid as cardsGridCn, page as pageCn } from './page.module.scss';
 
 interface BlogPageProps {
-  blogPostListResponse: BlogPostListResponse;
+  blogPostListVariables: FetchBlogPostListVariables;
 }
 
-export const BlogPage: FC<BlogPageProps> = ({ blogPostListResponse }) => {
+export const BlogPage: FC<BlogPageProps> = ({ blogPostListVariables }) => {
   const { t } = useTranslation();
+  const { data } = useBlogPostListInfiniteQuery(blogPostListVariables);
+
+  const blogPosts = useMemo(
+    () =>
+      data?.pages
+        .map(page => page.data)
+        .flat()
+        .filter(val => !!val),
+    [data?.pages],
+  );
 
   return (
     <div className={pageCn}>
@@ -24,9 +34,7 @@ export const BlogPage: FC<BlogPageProps> = ({ blogPostListResponse }) => {
       </Heading>
 
       <div className={cardsGridCn}>
-        {blogPostListResponse.data.map(item =>
-          !item ? null : <BlogPostListCard item={item} key={item.id} />,
-        )}
+        {blogPosts?.map(item => <BlogPostListCard item={item} key={item.id} />)}
       </div>
     </div>
   );

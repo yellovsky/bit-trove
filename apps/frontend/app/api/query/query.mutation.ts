@@ -41,7 +41,7 @@ export const useEffectMutation =
 
     return useMutation<TResponse, FailedResponse, TVariables>({
       ...mutationOptions,
-      mutationFn: params => runAsyncEffect(endpointOptions.endpoint(apiClient)({ params })),
+      mutationFn: variables => runAsyncEffect(endpointOptions.endpoint(apiClient)({ variables })),
       onError: async (error, variables, context) => {
         await endpointOptions.onError?.(queryClient, error, variables, context);
         return mutationOptions?.onError?.(error, variables, context);

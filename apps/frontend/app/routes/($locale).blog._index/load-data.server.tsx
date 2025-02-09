@@ -1,42 +1,39 @@
 // global modules
-import type { BlogPostListResponse } from '@repo/api-models';
 import { Effect } from 'effect';
+import { dehydrate, type DehydratedState } from '@tanstack/react-query';
 
 // common modules
-import { fetchBlogPostList } from '~/api/blog-post';
 import { supportedLngs } from '~/config/i18n';
 import { addLocaleToLink, getBlogRouteLink } from '~/utils/links';
+import { type FetchBlogPostListVariables, prefetchBlogPostListQuery } from '~/api/blog-post';
+import { getFixedT, type GetLoaderData, getParamsParam } from '~/utils/loader.server';
 import { makePageMetaTitle, type SEOMetaParams } from '~/utils/seo';
-
-import {
-  failedResponseToResponse,
-  getFixedT,
-  type GetLoaderData,
-  getParamsParam,
-} from '~/utils/loader';
 
 export interface LoaderData {
   seo: SEOMetaParams;
-  blogPostListResponse: BlogPostListResponse;
+  blogPostListVariables: FetchBlogPostListVariables;
+  dehydratedState: DehydratedState;
 }
 
 export const getBlogLoaderData: GetLoaderData<LoaderData> = (
   apiClient,
-  _queryClient,
+  queryClient,
   { params },
 ): Effect.Effect<LoaderData, Response> =>
   Effect.gen(function* () {
     const locale = yield* getParamsParam('locale', params);
     const t = yield* getFixedT(locale);
 
-    const blogPostListResponse = yield* fetchBlogPostList(apiClient, {
+    const blogPostListVariables: FetchBlogPostListVariables = {
       locale,
-      page: { limit: 10, offset: 0 },
       sort: 'created_at',
-    }).pipe(Effect.mapError(failedResponseToResponse));
+    };
+
+    yield* prefetchBlogPostListQuery(apiClient, queryClient, blogPostListVariables);
 
     return {
-      blogPostListResponse,
+      blogPostListVariables,
+      dehydratedState: dehydrate(queryClient),
 
       seo: {
         canonical: addLocaleToLink(getBlogRouteLink(), locale),

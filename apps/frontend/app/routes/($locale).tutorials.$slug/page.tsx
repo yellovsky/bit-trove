@@ -9,15 +9,16 @@ import { BlocksIndex } from '~/components/blocks-index';
 import { getTutorialRouteLink } from '~/utils/links';
 import { Heading } from '~/components/heading';
 import { LanguageMismatchInfo } from '~/components/language-mismatch-info';
+import { type FetchTutorialVariables, useTutorialQuery } from '~/api/tutorial';
 
 // local modules
 import { index as indexCn, page as pageCn } from './route.module.scss';
 
-interface TutorialPageProps {
+interface TutorialPageContentProps {
   tutorial: Tutorial;
 }
 
-export const TutorialPage: FC<TutorialPageProps> = ({ tutorial }) => {
+const TutorialPageContent: FC<TutorialPageContentProps> = ({ tutorial }) => {
   const locale = useLocale();
   const getLink = useCallback((l: string) => getTutorialRouteLink(tutorial, l), [tutorial]);
 
@@ -38,4 +39,14 @@ export const TutorialPage: FC<TutorialPageProps> = ({ tutorial }) => {
       ))}
     </div>
   );
+};
+
+interface TutorialPageProps {
+  tutorialVariables: FetchTutorialVariables;
+}
+
+export const TutorialPage: FC<TutorialPageProps> = ({ tutorialVariables }) => {
+  const tutorialQuery = useTutorialQuery(tutorialVariables);
+  const tutorial = tutorialQuery.data?.data;
+  return !tutorial ? null : <TutorialPageContent tutorial={tutorial} />;
 };

@@ -1,5 +1,4 @@
 // global modules
-import type { BlogPostListFP } from '@repo/api-models';
 import { useDebounce } from '@uidotdev/usehooks';
 import { useTranslation } from 'react-i18next';
 import { type FC, Fragment, useCallback } from 'react';
@@ -7,8 +6,8 @@ import { type FC, Fragment, useCallback } from 'react';
 // common modules
 import { getBlogRouteLink } from '~/utils/links';
 import { OnIntersectingChange } from '~/components/on-intersecting-change';
-import { useBlogPostListInfiniteQuery } from '~/api/blog-post';
 import { useDateFormatter } from '~/utils/formatter';
+import { type FetchBlogPostListVariables, useBlogPostListInfiniteQuery } from '~/api/blog-post';
 import { Timeline, TimelineBlock, TimelineDate, TimelineDatePending } from '~/components/timeline';
 
 import {
@@ -21,12 +20,12 @@ import { getTimelineData } from './helpers';
 import { SectionLink } from './section-link';
 
 interface TimelineSectionProps {
-  blogPostListFP: BlogPostListFP;
+  blogPostListVariables: FetchBlogPostListVariables;
 }
 
-export const TimelineSection: FC<TimelineSectionProps> = ({ blogPostListFP }) => {
+export const TimelineSection: FC<TimelineSectionProps> = ({ blogPostListVariables }) => {
   const { t } = useTranslation();
-  const blogListQuery = useBlogPostListInfiniteQuery(blogPostListFP);
+  const blogListQuery = useBlogPostListInfiniteQuery(blogPostListVariables);
 
   const blogPosts = blogListQuery.data?.pages.map(page => page.data).flat();
   const dateFormatter = useDateFormatter();

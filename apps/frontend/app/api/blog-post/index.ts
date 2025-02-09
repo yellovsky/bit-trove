@@ -1,9 +1,21 @@
-export { fetchBlogPost } from './blog-post.fetch';
+export {
+  fetchBlogPostEP,
+  type FetchBlogPostVariables,
+  useBlogPostQuery,
+  getBlogPostQueryResult,
+  prefetchBlogPostQuery,
+} from './blog-post.fetch';
 
 export {
-  fetchBlogPostList,
-  useCMSBlogPostList,
   useBlogPostListInfiniteQuery,
-  useBlogPostListQuery,
   prefetchBlogPostListQuery,
+  fetchBlogPostListEP,
+  type FetchBlogPostListVariables,
 } from './blog-post.fetch-list';
+
+export {
+  fetchCMSBlogPostListEP,
+  type FetchCMSBlogPostListVariables,
+  useCMSBlogPostListInfiniteQuery,
+  prefetchCMSBlogPostListQuery,
+} from './blog-post.cms.fetch-list';

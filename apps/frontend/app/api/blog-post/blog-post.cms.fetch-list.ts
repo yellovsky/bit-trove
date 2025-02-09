@@ -17,25 +17,25 @@ import { tokenizeBlogPostQKey, type TokenizedBlogPostQKey } from './blog-post.qu
 // ============================================================================
 //                         Q U E R Y   K E Y
 // ============================================================================
-const FETCH_BLOG_POST_LIST_QUERY_TOKEN = 'blog_post_list';
+const FETCH_CMS_BLOG_POST_LIST_QUERY_TOKEN = 'cms_blog_post_list';
 
-export type FetchBlogPostListVariables = Omit<BlogPostListFP, 'page'>;
+export type FetchCMSBlogPostListVariables = Omit<BlogPostListFP, 'page'>;
 
-type FetcBlogPostListQKey = TokenizedBlogPostQKey<
-  typeof FETCH_BLOG_POST_LIST_QUERY_TOKEN,
-  FetchBlogPostListVariables
+type FetcCMSBlogPostListQKey = TokenizedBlogPostQKey<
+  typeof FETCH_CMS_BLOG_POST_LIST_QUERY_TOKEN,
+  FetchCMSBlogPostListVariables
 >;
 
-const makeFetcBlogPostListQKey = tokenizeBlogPostQKey(
-  FETCH_BLOG_POST_LIST_QUERY_TOKEN,
-)<FetchBlogPostListVariables>;
+const makeFetcCMSBlogPostListQKey = tokenizeBlogPostQKey(
+  FETCH_CMS_BLOG_POST_LIST_QUERY_TOKEN,
+)<FetchCMSBlogPostListVariables>;
 
 // ============================================================================
-//                           E N D P O I N T
+//                          E N D P O I N T
 // ============================================================================
-export const fetchBlogPostListEP: EndpointListFn<
+export const fetchCMSBlogPostListEP: EndpointListFn<
   BlogPostListResponse,
-  FetchBlogPostListVariables
+  FetchCMSBlogPostListVariables
 > =
   apiClient =>
   ({ variables, pageParam, signal }) =>
@@ -44,53 +44,57 @@ export const fetchBlogPostListEP: EndpointListFn<
       signal,
     });
 
-const fetchBlogPostListQEP: EndpointListQFn<BlogPostListResponse, FetcBlogPostListQKey> =
+const fetchCMSBlogPostListQEP: EndpointListQFn<BlogPostListResponse, FetcCMSBlogPostListQKey> =
   apiClient =>
-  ({ pageParam, signal, queryKey }) =>
-    fetchBlogPostListEP(apiClient)({
+  ({ queryKey, pageParam, signal }) =>
+    fetchCMSBlogPostListEP(apiClient)({
       pageParam,
       signal,
       variables: getQueryKeyVariables(queryKey),
     });
 
 // ============================================================================
-//                          U S E   Q U E R Y
+//                         U S E   Q U E R Y
 // ============================================================================
-export const useBlogPostListInfiniteQuery = makeUseInfiniteListQuery({
-  endpointQFn: fetchBlogPostListQEP,
-  makeQueryKey: makeFetcBlogPostListQKey,
+export const useCMSBlogPostListInfiniteQuery = makeUseInfiniteListQuery({
+  endpointQFn: fetchCMSBlogPostListQEP,
+  makeQueryKey: makeFetcCMSBlogPostListQKey,
 });
 
 // ============================================================================
 //                        P R E F E T C H
 // ============================================================================
-export const getBlogPostListQueryResult = (
+export const getCMSBlogPostListQueryResult = (
   queryClient: QueryClient,
-  variables: FetchBlogPostListVariables,
-): Effect.Effect<InfiniteData<BlogPostListResponse, FetchBlogPostListVariables>, FailedResponse> =>
+  variables: FetchCMSBlogPostListVariables,
+): Effect.Effect<
+  InfiniteData<BlogPostListResponse, FetchCMSBlogPostListVariables>,
+  FailedResponse
+> =>
   Effect.gen(function* () {
-    const result: InfiniteData<BlogPostListResponse, FetchBlogPostListVariables> | undefined =
-      queryClient.getQueryData(makeFetcBlogPostListQKey(variables));
+    const result: InfiniteData<BlogPostListResponse, FetchCMSBlogPostListVariables> | undefined =
+      queryClient.getQueryData(makeFetcCMSBlogPostListQKey(variables));
 
     if (result) return result;
     else return yield* Effect.fail(UNKNOWN_FAILED_RESPONSE);
   });
 
-export const prefetchBlogPostListQuery = (
+export const prefetchCMSBlogPostListQuery = (
   apiClient: ApiClient,
   queryClient: QueryClient,
-  variables: FetchBlogPostListVariables,
-): Effect.Effect<InfiniteData<BlogPostListResponse, FetchBlogPostListVariables>, Response> =>
+  variables: FetchCMSBlogPostListVariables,
+): Effect.Effect<InfiniteData<BlogPostListResponse, FetchCMSBlogPostListVariables>, Response> =>
   Effect.gen(function* () {
-    yield* Effect.tryPromise({
-      catch: err => (isFailedResponse(err) ? err : UNKNOWN_FAILED_RESPONSE),
-      try: () =>
-        queryClient.prefetchInfiniteQuery({
-          initialPageParam,
-          queryFn: context => runAsyncEffect(fetchBlogPostListQEP(apiClient)(context)),
-          queryKey: makeFetcBlogPostListQKey(variables),
-        }),
-    });
+    yield* Effect.tryPromise(() =>
+      queryClient.prefetchInfiniteQuery({
+        initialPageParam,
+        queryFn: context => runAsyncEffect(fetchCMSBlogPostListQEP(apiClient)(context)),
+        queryKey: makeFetcCMSBlogPostListQKey(variables),
+      }),
+    );
 
-    return yield* getBlogPostListQueryResult(queryClient, variables);
-  }).pipe(Effect.mapError(failedResponseToResponse));
+    return yield* getCMSBlogPostListQueryResult(queryClient, variables);
+  }).pipe(
+    Effect.mapError(err => (isFailedResponse(err) ? err : UNKNOWN_FAILED_RESPONSE)),
+    Effect.mapError(failedResponseToResponse),
+  );

@@ -5,6 +5,11 @@ import type { PaginationFP, WithListResponseMeta } from '@repo/api-models';
 export const DEFAULT_PAGE_SIZE = 20;
 export const initialPageParam: PaginationFP = { limit: DEFAULT_PAGE_SIZE, offset: 0 };
 
+export const getPageParamByIndex = (index: number): PaginationFP => ({
+  limit: DEFAULT_PAGE_SIZE,
+  offset: index * DEFAULT_PAGE_SIZE,
+});
+
 export const getNextPageParam: GetNextPageParamFunction<PaginationFP, WithListResponseMeta> = (
   lastPage,
   allPages,

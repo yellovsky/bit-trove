@@ -1,13 +1,13 @@
 // global modules
 import * as R from 'ramda';
+import type { BlogPost } from '@repo/api-models';
 import { Effect } from 'effect';
 import type { BlogPosting, WithContext } from 'schema-dts';
-import type { Tutorial, TutorialResponse } from '@repo/api-models';
+import { dehydrate, type DehydratedState } from '@tanstack/react-query';
 
 // common modules
-import { fetchTutorial } from '~/api/tutorial';
 import { supportedLngs } from '~/config/i18n';
-import { addHostnameToPathname, addLocaleToLink, getTutorialRouteLink } from '~/utils/links';
+import { type FetchBlogPostVariables, prefetchBlogPostQuery } from '~/api/blog-post';
 
 import {
   getISODate,
@@ -18,14 +18,20 @@ import {
 } from '~/utils/seo';
 
 import {
-  failedResponseToResponse,
+  addHostnameToPathname,
+  addLocaleToLink,
+  getBlogpostRouteLink,
+  getTutorialRouteLink,
+} from '~/utils/links';
+
+import {
   getFixedT,
   type GetLoaderData,
   getParamsParam,
   getRequestLocale,
-} from '~/utils/loader';
+} from '~/utils/loader.server';
 
-const getTutorialJSONSchema = (tutorial: Tutorial, locale: string): WithContext<BlogPosting> => ({
+const getBlogpostJSONSchema = (tutorial: BlogPost, locale: string): WithContext<BlogPosting> => ({
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
 
@@ -38,7 +44,7 @@ const getTutorialJSONSchema = (tutorial: Tutorial, locale: string): WithContext<
   datePublished: !tutorial.published_at ? undefined : getISODate(tutorial.published_at),
 });
 
-const getTutorialOGMeta = (tutorial: Tutorial, locale: string): OGMeta | null => {
+const getBlogPostOG = (tutorial: BlogPost, locale: string): OGMeta | null => {
   const description = tutorial.short_description || tutorial.seo_description;
 
   return !description || !tutorial.published_at
@@ -53,51 +59,57 @@ const getTutorialOGMeta = (tutorial: Tutorial, locale: string): OGMeta | null =>
       };
 };
 
-const getTutorialTwiiterMeta = (tutorial: Tutorial): TwitterMeta | null => {
+const getBlogPostTwiiterMeta = (tutorial: BlogPost): TwitterMeta | null => {
   const description = tutorial.short_description || tutorial.seo_description;
   return !description || !tutorial.published_at
     ? null
     : { card: 'summary', description, title: tutorial.title };
 };
 
-export interface TutorialRouteLoaderData {
-  tutorialResponse: TutorialResponse;
+export interface LoaderData {
+  blogPostVariables: FetchBlogPostVariables;
   seo: SEOMetaParams;
+  dehydratedState: DehydratedState;
 }
 
-export const getTutorialRouteLoaderData: GetLoaderData<TutorialRouteLoaderData> = (
+export const getBlogPostLoaderData: GetLoaderData<LoaderData> = (
   apiClient,
-  _queryClient,
-  { params, request },
-) =>
+  queryClient,
+  loaderArgs,
+): Effect.Effect<LoaderData, Response> =>
   Effect.gen(function* () {
-    const locale = yield* getRequestLocale(request);
+    const locale = yield* getRequestLocale(loaderArgs.request);
     const t = yield* getFixedT(locale);
 
-    const slug = yield* getParamsParam('slug', params);
-    const tutorialResponse = yield* fetchTutorial(apiClient, { locale, slug }).pipe(
-      Effect.mapError(failedResponseToResponse),
+    const slug = yield* getParamsParam('slug', loaderArgs.params);
+    const blogPostVariables: FetchBlogPostVariables = { locale, slug };
+
+    const blogPostResponse = yield* prefetchBlogPostQuery(
+      apiClient,
+      queryClient,
+      blogPostVariables,
     );
 
-    const routeUrl = getTutorialRouteLink(tutorialResponse.data, locale);
+    const routeUrl = getBlogpostRouteLink(blogPostResponse.data);
 
     return {
-      tutorialResponse,
+      blogPostVariables,
+      dehydratedState: dehydrate(queryClient),
 
       seo: {
         canonical: addLocaleToLink(routeUrl, locale),
-        description: tutorialResponse.data.seo_description,
-        jsonSchemas: [getTutorialJSONSchema(tutorialResponse.data, locale)],
-        keywords: tutorialResponse.data.seo_keywords,
-        og: getTutorialOGMeta(tutorialResponse.data, locale),
-        twitter: getTutorialTwiiterMeta(tutorialResponse.data),
+        description: blogPostResponse.data.seo_description,
+        jsonSchemas: [getBlogpostJSONSchema],
+        keywords: blogPostResponse.data.seo_keywords,
+        og: getBlogPostOG(blogPostResponse.data, locale),
+        twitter: getBlogPostTwiiterMeta(blogPostResponse.data),
 
         title: makePageMetaTitle(
-          tutorialResponse.data.seo_title || tutorialResponse.data.title,
+          blogPostResponse.data.seo_title || blogPostResponse.data.title,
           t('META_APP_TITLE'),
         ),
 
-        alternate: R.intersection(supportedLngs, tutorialResponse.data.language_codes)
+        alternate: R.intersection(supportedLngs, blogPostResponse.data.language_codes)
           .filter(lang => lang !== locale)
           .map(hrefLang => ({
             href: addLocaleToLink(routeUrl, hrefLang),

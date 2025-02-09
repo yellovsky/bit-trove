@@ -12,6 +12,7 @@ import type {
 
 // common modules
 import type { ApiClient } from '~/api/api-client';
+import type { EndpointQFn } from '~/api/endpoint';
 
 // local modules
 import type { MakeQueryKey, QKey, QueryKeyVariables } from './query.key';
@@ -47,12 +48,12 @@ export type MakeQueryFn<TResponse, TQKey extends QKey> = (
   ? QueryFunction<TResponse, TQKey, PaginationFP>
   : QueryFunction<TResponse, TQKey>;
 
-export interface MakeUseQueryParams<TListResponse, TQKey extends QKey> {
-  makeQueryFn: MakeQueryFn<TListResponse, TQKey>;
+export interface MakeUseQueryParams<TResponse, TQKey extends QKey, TPaginationParams = never> {
+  endpointQFn: EndpointQFn<TResponse, TQKey, TPaginationParams>;
   makeQueryKey: MakeQueryKey<TQKey>;
   onSuccess?: (
     queryClient: QueryClient,
-    response: TListResponse,
+    response: TResponse,
     variables: TQKey[2],
     context: unknown,
   ) => void;

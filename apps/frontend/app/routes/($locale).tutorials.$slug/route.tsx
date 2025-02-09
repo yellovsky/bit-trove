@@ -1,13 +1,14 @@
 // global modules
+import { HydrationBoundary } from '@tanstack/react-query';
 import { useLoaderData } from '@remix-run/react';
 
 // local modules
-import { makeLoader } from '~/utils/loader';
+import { makeLoader } from '~/utils/loader.server';
 import { makeSeoMeta } from '~/utils/seo';
 import { mergeMeta } from '~/utils/meta';
 
 // local modules
-import { getTutorialRouteLoaderData } from './load-data';
+import { getTutorialRouteLoaderData } from './load-data.server';
 import { TutorialPage } from './page';
 
 export const loader = makeLoader(getTutorialRouteLoaderData);
@@ -17,7 +18,11 @@ export const meta = mergeMeta<typeof loader>(params =>
 );
 
 export default function TutorialRoute() {
-  const { tutorialResponse } = useLoaderData<typeof loader>();
+  const { dehydratedState, tutorialVariables } = useLoaderData<typeof loader>();
 
-  return <TutorialPage tutorial={tutorialResponse.data} />;
+  return (
+    <HydrationBoundary state={dehydratedState}>
+      <TutorialPage tutorialVariables={tutorialVariables} />
+    </HydrationBoundary>
+  );
 }

@@ -1,10 +1,14 @@
-export { fetchTutorial } from './tutorial.fetch';
+export {
+  type FetchTutorialVariables,
+  fetchTutorialEP,
+  getTutorialQueryResult,
+  prefetchTutorialQuery,
+  useTutorialQuery,
+} from './tutorial.fetch';
 
 export {
-  fetchTutorialList,
-  useCMSTutorialList,
   useTutorialListInfiniteQuery,
-  useTutorialListQuery,
   prefetchTutorialListQuery,
-  type TutorialListInfiniteQuery,
+  fetchTutorialListEP,
+  type FetchTutorialListVariables,
 } from './tutorial.fetch-list';

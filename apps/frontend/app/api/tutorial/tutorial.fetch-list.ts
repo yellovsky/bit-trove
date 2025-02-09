@@ -4,117 +4,93 @@ import type { FailedResponse, TutorialListFP, TutorialListResponse } from '@repo
 import type { InfiniteData, QueryClient } from '@tanstack/react-query';
 
 // common modules
-import type { ApiClient } from '~/api/api-client';
+import { failedResponseToResponse } from '~/utils/response';
 import { initialPageParam } from '~/api/pagination';
-import { runtime } from '~/utils/runtime';
-
-import {
-  getQueryKeyVariables,
-  type MakeQueryFn,
-  makeUseInfiniteListQuery,
-  makeUseQuery,
-} from '~/api/query';
+import { runAsyncEffect } from '~/utils/effect';
+import { type ApiClient, isFailedResponse, UNKNOWN_FAILED_RESPONSE } from '~/api/api-client';
+import type { EndpointListFn, EndpointListQFn } from '~/api/endpoint';
+import { getQueryKeyVariables, makeUseInfiniteListQuery } from '~/api/query';
 
 // local modules
 import { type TokenizedTutorialQKey, tokenizeTutorialQKey } from './tutorial.query-key';
 
-// ==================================================================
-//               T U T O R I A L   L I S T
-// ==================================================================
+// ============================================================================
+//                          Q U E R Y   K E Y
+// ============================================================================
 const FETCH_TUTORIAL_LIST_QUERY_TOKEN = 'tutorial_list';
 
-export const fetchTutorialList = (
-  apiClient: ApiClient,
-  params: TutorialListFP,
-  signal?: AbortSignal,
-): Effect.Effect<TutorialListResponse, FailedResponse> =>
-  apiClient.get<TutorialListResponse>(`/v1/tutorials`, { params, signal });
+export type FetchTutorialListVariables = Omit<TutorialListFP, 'page'>;
 
 type FetcTutorialListQKey = TokenizedTutorialQKey<
   typeof FETCH_TUTORIAL_LIST_QUERY_TOKEN,
-  TutorialListFP
+  FetchTutorialListVariables
 >;
 
 const makeFetcTutorialListQKey = tokenizeTutorialQKey(
   FETCH_TUTORIAL_LIST_QUERY_TOKEN,
-)<TutorialListFP>;
+)<FetchTutorialListVariables>;
 
-const fetchTutorialListQFn: MakeQueryFn<TutorialListResponse, FetcTutorialListQKey> =
+// ============================================================================
+//                            E N D P O I N T
+// ============================================================================
+export const fetchTutorialListEP: EndpointListFn<
+  TutorialListResponse,
+  FetchTutorialListVariables
+> =
   apiClient =>
-  ({ queryKey, pageParam, signal }) =>
-    runtime.runPromise(
-      fetchTutorialList(apiClient, { ...getQueryKeyVariables(queryKey), page: pageParam }, signal),
-    );
+  ({ variables, pageParam, signal }) =>
+    apiClient.get<TutorialListResponse>(`/v1/tutorials`, {
+      params: { ...variables, page: pageParam },
+      signal,
+    });
 
-export const useTutorialListQuery = makeUseQuery({
-  makeQueryFn: fetchTutorialListQFn,
-  makeQueryKey: makeFetcTutorialListQKey,
-});
+const fetchTutorialListQEP: EndpointListQFn<TutorialListResponse, FetcTutorialListQKey> =
+  apiClient =>
+  ({ pageParam, signal, queryKey }) =>
+    fetchTutorialListEP(apiClient)({
+      pageParam,
+      signal,
+      variables: getQueryKeyVariables(queryKey),
+    });
 
+// ============================================================================
+//                        U S E   Q U E R Y
+// ============================================================================
 export const useTutorialListInfiniteQuery = makeUseInfiniteListQuery({
-  makeQueryFn: fetchTutorialListQFn,
+  endpointQFn: fetchTutorialListQEP,
   makeQueryKey: makeFetcTutorialListQKey,
 });
 
-export type TutorialListInfiniteQuery = ReturnType<typeof useTutorialListInfiniteQuery>;
-
+// ============================================================================
+//                        P R E F E T C H
+// ============================================================================
 export const getTutorialListQueryResult = (
   queryClient: QueryClient,
-  variables: TutorialListFP,
-): Effect.Effect<InfiniteData<TutorialListResponse, TutorialListFP>, Response> =>
+  variables: FetchTutorialListVariables,
+): Effect.Effect<InfiniteData<TutorialListResponse, FetchTutorialListVariables>, FailedResponse> =>
   Effect.gen(function* () {
-    const result: InfiniteData<TutorialListResponse, TutorialListFP> | undefined =
+    const result: InfiniteData<TutorialListResponse, FetchTutorialListVariables> | undefined =
       queryClient.getQueryData(makeFetcTutorialListQKey(variables));
 
     if (result) return result;
-    else return yield* Effect.fail(new Response('Internal server error', { status: 500 }));
+    else return yield* Effect.fail(UNKNOWN_FAILED_RESPONSE);
   });
 
 export const prefetchTutorialListQuery = (
   apiClient: ApiClient,
   queryClient: QueryClient,
-  variables: TutorialListFP,
-): Effect.Effect<InfiniteData<TutorialListResponse, TutorialListFP>, Response> =>
+  variables: FetchTutorialListVariables,
+): Effect.Effect<InfiniteData<TutorialListResponse, FetchTutorialListVariables>, Response> =>
   Effect.gen(function* () {
-    yield* Effect.tryPromise(() =>
-      queryClient.prefetchInfiniteQuery({
-        initialPageParam,
-        queryFn: fetchTutorialListQFn(apiClient),
-        queryKey: makeFetcTutorialListQKey(variables),
-      }),
-    );
+    yield* Effect.tryPromise({
+      catch: err => (isFailedResponse(err) ? err : UNKNOWN_FAILED_RESPONSE),
+      try: () =>
+        queryClient.prefetchInfiniteQuery({
+          initialPageParam,
+          queryFn: context => runAsyncEffect(fetchTutorialListQEP(apiClient)(context)),
+          queryKey: makeFetcTutorialListQKey(variables),
+        }),
+    });
 
     return yield* getTutorialListQueryResult(queryClient, variables);
-  }).pipe(
-    Effect.mapError(
-      (err): Response =>
-        err instanceof Response ? err : new Response('Internal server error', { status: 500 }),
-    ),
-  );
-
-// ==================================================================
-//          C M S   T U T O R I A L   L I S T
-// ==================================================================
-const FETCH_CMS_TUTORIAL_LIST_QUERY_TOKEN = 'cms_tutorial_list';
-
-type FetcCMSTutorialListQKey = TokenizedTutorialQKey<
-  typeof FETCH_CMS_TUTORIAL_LIST_QUERY_TOKEN,
-  TutorialListFP
->;
-
-const makeFetcCMSTutorialListQKey = tokenizeTutorialQKey(
-  FETCH_CMS_TUTORIAL_LIST_QUERY_TOKEN,
-)<TutorialListFP>;
-
-const fetchCMSTutorialListQFn: MakeQueryFn<
-  TutorialListResponse,
-  FetcCMSTutorialListQKey
-> = apiClient => {
-  return ({ queryKey, signal }) =>
-    runtime.runPromise(fetchTutorialList(apiClient, getQueryKeyVariables(queryKey), signal));
-};
-
-export const useCMSTutorialList = makeUseQuery({
-  makeQueryFn: fetchCMSTutorialListQFn,
-  makeQueryKey: makeFetcCMSTutorialListQKey,
-});
+  }).pipe(Effect.mapError(failedResponseToResponse));

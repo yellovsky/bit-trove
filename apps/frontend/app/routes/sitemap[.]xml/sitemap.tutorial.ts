@@ -1,14 +1,14 @@
 // global modules
 import * as R from 'ramda';
 import { Effect } from 'effect';
-import type { TutorialListFP, TutorialSegment } from '@repo/api-models';
+import type { TutorialSegment } from '@repo/api-models';
 
 // common modules
-import { fetchTutorialList } from '~/api/tutorial';
 import { getApiClient } from '~/api/api-client';
 import { getTutorialRouteLink } from '~/utils/links';
-import { initialPageParam } from '~/api/pagination';
 import { supportedLngs } from '~/config/i18n';
+import { fetchTutorialListEP, type FetchTutorialListVariables } from '~/api/tutorial';
+import { getPageParamByIndex, initialPageParam } from '~/api/pagination';
 
 // local modules
 import { generateURLTag } from './sitemap.helpers';
@@ -37,14 +37,16 @@ const getTutorialUrlTag = (tutorial: TutorialSegment): string | null => {
 
 export const getTutorialTags = (): Effect.Effect<string | null> =>
   Effect.gen(function* () {
-    const tutorialListFP: TutorialListFP = {
+    const fetchTutorialVariables: FetchTutorialListVariables = {
       locale: 'en',
-      page: initialPageParam,
       sort: '-created_at',
     };
 
     const apiClient = getApiClient();
-    const firstPage = yield* fetchTutorialList(apiClient, tutorialListFP);
+    const firstPage = yield* fetchTutorialListEP(apiClient)({
+      pageParam: initialPageParam,
+      variables: fetchTutorialVariables,
+    });
 
     const total = firstPage.meta.pagination.total;
     const pageSize = initialPageParam.limit;
@@ -55,9 +57,9 @@ export const getTutorialTags = (): Effect.Effect<string | null> =>
         ? []
         : yield* Effect.all(
             R.range(1, pageSize).map(index =>
-              fetchTutorialList(apiClient, {
-                ...tutorialListFP,
-                page: { ...tutorialListFP.page, offset: index * tutorialListFP.page.limit },
+              fetchTutorialListEP(apiClient)({
+                pageParam: getPageParamByIndex(index),
+                variables: fetchTutorialVariables,
               }),
             ),
           );

@@ -1,11 +1,13 @@
 // global modules
+import { Effect } from 'effect';
 import { useCallback } from 'react';
 import type { FailedResponse, PaginationFP } from '@repo/api-models';
-import type { QueryFunction, QueryFunctionContext, UseQueryOptions } from '@tanstack/react-query';
+import type { QueryFunction, UseQueryOptions } from '@tanstack/react-query';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 // common modules
-import { useApiClient } from '~/api/api-client';
+import { runAsyncEffect } from '~/utils/effect';
+import { isFailedResponse, UNKNOWN_FAILED_RESPONSE, useApiClient } from '~/api/api-client';
 
 // local modules
 import type { MakeUseQueryParams } from './query.types';
@@ -21,7 +23,7 @@ import { getQueryKeyVariables, type QKey } from './query.key';
  */
 export const makeUseQuery =
   <TResponse, TQKey extends QKey>({
-    makeQueryFn,
+    endpointQFn,
     makeQueryKey,
     onSuccess,
   }: MakeUseQueryParams<TResponse, TQKey>) =>
@@ -36,16 +38,24 @@ export const makeUseQuery =
     const queryClient = useQueryClient();
 
     const queryFn: QueryFunction<TResponse, TQKey, PaginationFP> = useCallback(
-      async (context: QueryFunctionContext<TQKey, PaginationFP>) => {
-        const response = await makeQueryFn(apiClient)(context);
+      context => {
+        const pipeline: Effect.Effect<TResponse, FailedResponse> = Effect.gen(function* () {
+          const response = yield* endpointQFn(apiClient)(context);
 
-        if (onSuccess) {
-          await onSuccess(queryClient, response, getQueryKeyVariables(context.queryKey), context);
-        }
+          if (onSuccess) {
+            yield* Effect.tryPromise(async () =>
+              onSuccess(queryClient, response, getQueryKeyVariables(context.queryKey), context),
+            );
+          }
 
-        return response;
+          return response;
+        }).pipe(
+          Effect.mapError(error => (isFailedResponse(error) ? error : UNKNOWN_FAILED_RESPONSE)),
+        );
+
+        return runAsyncEffect(pipeline);
       },
-      [makeQueryFn, apiClient],
+      [endpointQFn, apiClient],
     );
 
     return useQuery<TResponse, FailedResponse, TResponse, TQKey>({

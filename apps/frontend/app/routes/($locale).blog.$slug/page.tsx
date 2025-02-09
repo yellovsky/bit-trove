@@ -8,15 +8,16 @@ import { AnyBlock } from '~/components/blocks/any-block';
 import { getBlogpostRouteLink } from '~/utils/links';
 import { Heading } from '~/components/heading';
 import { LanguageMismatchInfo } from '~/components/language-mismatch-info';
+import { type FetchBlogPostVariables, useBlogPostQuery } from '~/api/blog-post';
 
 // local modules
 import { BlogpostPageLayout } from './layout';
 
-interface BlogPostPageProps {
+interface BlogPostPageContentProps {
   blogPost: BlogPost;
 }
 
-export const BlogPostPage: FC<BlogPostPageProps> = ({ blogPost }) => {
+const BlogPostPageContent: FC<BlogPostPageContentProps> = ({ blogPost }) => {
   const locale = useLocale();
   const getLink = useCallback(() => getBlogpostRouteLink(blogPost), [blogPost]);
 
@@ -35,4 +36,15 @@ export const BlogPostPage: FC<BlogPostPageProps> = ({ blogPost }) => {
       ))}
     </BlogpostPageLayout>
   );
+};
+
+interface BlogPostPageProps {
+  blogPostVariables: FetchBlogPostVariables;
+}
+
+export const BlogPostPage: FC<BlogPostPageProps> = ({ blogPostVariables }) => {
+  const blogPostQuery = useBlogPostQuery(blogPostVariables);
+  const blogPost = blogPostQuery.data?.data;
+
+  return !blogPost ? null : <BlogPostPageContent blogPost={blogPost} />;
 };

@@ -1,5 +1,5 @@
 // common modules
-import { makeLoader } from '~/utils/loader';
+import { makeLoader } from '~/utils/loader.server';
 import { makeSeoMeta } from '~/utils/seo';
 import { mergeMeta } from '~/utils/meta';
 
