@@ -1,9 +1,11 @@
 // global modules
+import { ClientOnly } from 'remix-utils/client-only';
 import geologicaCss from '@fontsource-variable/geologica/index.css?url';
 import interCss from '@fontsource-variable/inter/index.css?url';
 import manropeCss from '@fontsource-variable/manrope/index.css?url';
 
 import { QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useChangeLanguage } from '@repo/remix-i18n';
 import { useTranslation } from 'react-i18next';
 import { Suspense, useState } from 'react';
@@ -159,6 +161,7 @@ export default function AppWithProviders() {
             <Suspense fallback={<AppLoading />}>
               <Outlet />
             </Suspense>
+            <ClientOnly>{() => <ReactQueryDevtools client={queryClient} />}</ClientOnly>
           </App>
         </QueryClientProvider>
       </ColorModeProvider>

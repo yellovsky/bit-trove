@@ -8,6 +8,7 @@ import { RuntimeModule } from 'src/modules/runtime';
 // local modules
 import { AuthApiModule } from './auth';
 import { BlogPostsApiModule } from './blog-posts';
+import { CMSTutorialsApiModule } from './cms.tutorials';
 import { TutorialsApiModule } from './tutorials';
 
 @Module({
@@ -17,6 +18,7 @@ import { TutorialsApiModule } from './tutorials';
     BlogPostsApiModule,
     TutorialsApiModule,
     AuthApiModule,
+    CMSTutorialsApiModule,
   ],
 })
 export class ApiModule {}

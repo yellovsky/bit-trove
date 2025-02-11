@@ -1,4 +1,5 @@
 // global modules
+import { addDays } from 'date-fns';
 import { ApiTags } from '@nestjs/swagger';
 import { Effect } from 'effect';
 import type { Request, Response } from 'express';
@@ -57,7 +58,7 @@ export class AuthApiV1Controller {
 
       res.cookie(ACCESS_TOKEN_COOKIE_KEY, accessToken, {
         domain: '127.0.0.1',
-        expires: new Date(Date.now() + 3600000),
+        expires: addDays(Date.now(), 7),
         httpOnly: true,
         sameSite: 'lax',
       });

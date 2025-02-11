@@ -34,6 +34,11 @@ import type {
   TutorialSegmentEntity,
 } from 'src/entities/tutorial';
 
+import type {
+  CMSTutorialEntity,
+  CMSTutorialResponseEntity,
+} from '../../entities/cms.tutorial';
+
 // =================================================================================
 //                       R E P O S I T O R Y
 // =================================================================================
@@ -67,9 +72,6 @@ export interface TutorialRepositoryService {
   ): Effect.Effect<ItemsWithTotal<DBTutorialFragment<TSelect> | null>, Error>;
 }
 
-// =================================================================================
-//                      A C C E S S   C O N T R O L
-// =================================================================================
 export interface TutorialAccessControlService {
   canReadTutorial(
     ctx: AccessControlContext,
@@ -107,9 +109,11 @@ export interface TutorialPublishingService {
   ): Either.Either<ItemsWithTotal<TTutorial | null>, ApiError>;
 }
 
-// =================================================================================
-//                          S E R V I C E
-// =================================================================================
+/**
+ * @interface TutorialAccessControlService
+ *
+ * @description Tutorial serializer service
+ */
 export interface TutorialSerializerService {
   serializeTutorial(
     ctx: SerializerContext,
@@ -130,6 +134,16 @@ export interface TutorialSerializerService {
     ctx: SerializerContext,
     dbTutorialList: ItemsWithTotalAndPagination<DBTutorialSegment | null>,
   ): Effect.Effect<TutorialListResponseEntity, ApiError>;
+
+  serializeCMSTutorial(
+    ctx: SerializerContext,
+    dbTutorial: DBTutorial,
+  ): Effect.Effect<CMSTutorialEntity, ApiError>;
+
+  serializeCMSTutorialResponse(
+    ctx: SerializerContext,
+    dbTutorial: DBTutorial,
+  ): Effect.Effect<CMSTutorialResponseEntity, ApiError>;
 }
 
 // =================================================================================

@@ -1,0 +1,15 @@
+.languageCodes {
+  @apply flex justify-between items-center;
+
+  .buttons {
+    @apply flex gap-2;
+  }
+
+  .noLanguages {
+    @apply text-passive;
+  }
+
+  .addButtonContent {
+    @apply grid grid-cols-[1.5rem_min-content] gap-1;
+  }
+}

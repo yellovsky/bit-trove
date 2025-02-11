@@ -8,9 +8,9 @@ export interface TutorialTranslations {
   blocks: ArticleBlock[];
 }
 
-// ==========================================================
-//         T U T O R I A L   S E G M E N T
-// ==========================================================
+// ============================================================================
+//                 T U T O R I A L   S E G M E N T
+// ============================================================================
 export interface TutorialListFP {
   page: PaginationFP;
   locale: string;
@@ -31,9 +31,9 @@ export interface TutorialSegment {
 
 export type TutorialListResponse = ListResponse<TutorialSegment>;
 
-// ==========================================================
-//          T U T O R I A L   I T E M
-// ==========================================================
+// ============================================================================
+//                   T U T O R I A L   I T E M
+// ============================================================================
 export interface Tutorial extends TutorialSegment {
   blocks: ArticleBlock[];
   seo_title: string | null;
@@ -42,3 +42,23 @@ export interface Tutorial extends TutorialSegment {
 }
 
 export type TutorialResponse = ItemResponse<Tutorial>;
+
+// ============================================================================
+//                                C M S
+// ============================================================================
+
+export interface CMSTutorialTranslations {
+  language_code: string;
+  seo_title: string | null;
+  seo_keywords: string | null;
+  seo_description: string | null;
+  blocks: ArticleBlock[];
+  title: string;
+  short_description: string;
+}
+
+export interface CMSTutorial {
+  translations: CMSTutorialTranslations[];
+}
+
+export type CMSTutorialResponse = ItemResponse<CMSTutorial>;

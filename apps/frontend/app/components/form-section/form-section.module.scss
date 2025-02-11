@@ -1,0 +1,51 @@
+.formSection {
+  @apply py-2  mb-4;
+
+  .wrapper {
+    @apply flex rounded-lg shadow-md py-6 px-4 gap-4 border
+      bg-white border-black/5
+      dark:bg-gray-700 dark:border-white/5;
+
+    &:hover > div > .dragIcon {
+      @apply text-black/70 dark:text-white/70;
+    }
+  }
+
+  .content {
+    @apply flex-grow;
+
+    .buttons {
+      @apply mt-2;
+    }
+  }
+
+  .dragIcon {
+    @apply w-8 h-8 
+      text-black/50
+      dark:text-white/50;
+  }
+
+  .formSection {
+    @apply mb-0;
+
+    .wrapper {
+      @apply rounded shadow-sm py-4 px-2 border
+        bg-black/5 border-black/5 
+        dark:bg-white/5 dark:border-white/5;
+    }
+  }
+
+  .actions {
+    @apply flex gap-2;
+  }
+
+  .header {
+    @apply -mt-6 -mx-4 py-6 px-4    
+    bg-primary-500/5 border-b-primary-200/20
+    dark:bg-primary-800/20 dark:border-b-primary-700/20;
+
+    &:first-child {
+      @apply -mt-6 -mx-4 py-6 px-4   rounded-t-lg border-b;
+    }
+  }
+}

@@ -1,5 +1,5 @@
 // global modules
-import { Effect, pipe } from 'effect';
+import { Effect, Option, pipe } from 'effect';
 import { Inject, Injectable } from '@nestjs/common';
 
 // common modules
@@ -23,6 +23,11 @@ import {
 
 // local modules
 import type { TutorialSerializerService } from './tutorial.types';
+import {
+  CMSTutorialEntity,
+  CMSTutorialResponseEntity,
+  CMSTutorialTranslationsEntity,
+} from '../../entities/cms.tutorial';
 
 @Injectable()
 export class TutorialSerializerServiceClass
@@ -130,6 +135,44 @@ export class TutorialSerializerServiceClass
             }),
           }),
       ),
+    );
+  }
+
+  serializeCMSTutorial(
+    ctx: SerializerContext,
+    dbTutorial: DBTutorial,
+  ): Effect.Effect<CMSTutorialEntity, ApiError> {
+    const translationOptions = dbTutorial.article.translations.map((t) =>
+      this.articleSerializerSrv.serializeBlockLists(ctx, t.blocks).pipe(
+        Option.map(
+          (blocks) =>
+            new CMSTutorialTranslationsEntity({
+              blocks,
+
+              language_code: t.language_code,
+              seo_description: t.seo_description,
+              seo_keywords: t.seo_keywords,
+              seo_title: t.seo_title,
+              short_description: t.short_description,
+              title: t.title,
+            }),
+        ),
+      ),
+    );
+
+    const translations = Option.all(translationOptions).pipe(
+      Option.getOrElse(() => [] as CMSTutorialTranslationsEntity[]),
+    );
+
+    return Effect.succeed(new CMSTutorialEntity({ translations }));
+  }
+
+  serializeCMSTutorialResponse(
+    ctx: SerializerContext,
+    dbTutorial: DBTutorial,
+  ): Effect.Effect<CMSTutorialResponseEntity, ApiError> {
+    return this.serializeCMSTutorial(ctx, dbTutorial).pipe(
+      Effect.map((data) => new CMSTutorialResponseEntity({ data })),
     );
   }
 }

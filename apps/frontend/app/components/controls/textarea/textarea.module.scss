@@ -1,0 +1,65 @@
+@mixin input-bg-color-style() {
+  @apply bg-neutral-50 dark:bg-neutral-800;
+}
+
+@mixin interactive-style() {
+  @include input-bg-color-style();
+  @apply border border-border
+    hover:border-accent-hover dark:hover:border-accent-hover
+    disabled:text-passive disabled:cursor-not-allowed
+    disabled:bg-black-alpha-100 dark:disabled:bg-white-alpha-100
+    disabled:border-gray-250 dark:disabled:border-gray-500;
+}
+
+.holder {
+  @apply relative z-base;
+
+  .inputOutline {
+    @include interactive-style();
+    @include input-bg-color-style();
+
+    @apply w-full h-44 rounded-md block px-3.5 py-2 focus-visible:focus-outline
+      text-text placeholder-passive;
+
+    &:disabled ~ * {
+      @apply cursor-not-allowed;
+    }
+
+    &:where(.invalid) {
+      @apply border-invalid;
+    }
+
+    &:where(.success) {
+      @apply border-success;
+    }
+
+    &:where(.warning) {
+      @apply border-warning;
+    }
+  }
+}
+
+.inputControl {
+  @include interactive-style();
+  @apply w-full flex items-center relative rounded-md focus-within:focus-outline;
+
+  label:hover + & {
+    @apply border-accent-hover dark:border-accent-hover;
+  }
+
+  .holder {
+    @apply inline-block;
+  }
+
+  .holder {
+    @apply flex-grow;
+  }
+
+  .inputOutline {
+    @apply border-none;
+
+    &:focus {
+      @apply outline-0;
+    }
+  }
+}

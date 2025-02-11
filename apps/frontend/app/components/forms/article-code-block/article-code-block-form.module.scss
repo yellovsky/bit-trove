@@ -1,0 +1,11 @@
+.types {
+  @apply grid grid-cols-2 gap-2 mb-4;
+}
+
+.variantsHolder {
+  @apply flex justify-between;
+}
+
+.twoCols {
+  @apply grid grid-cols-2 gap-4;
+}

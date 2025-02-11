@@ -6,9 +6,13 @@ import type { FC, HTMLAttributes } from 'react';
 import styles from './icon.module.scss';
 
 export const ICON_TYPES = [
+  'addCircleFilled',
   'article',
   'burger',
   'copy',
+  'cross',
+  'drag',
+  'edit',
   'eye',
   'eyeClosed',
   'home',

@@ -23,7 +23,7 @@ import { useDateFormatter } from '~/utils/formatter';
 const columnHelper = createColumnHelper<BlogPostSegment | null>();
 
 const useColumns = (): ColumnDef<BlogPostSegment | null, any>[] => {
-  const { t: tBlogCMS } = useTranslation('blog-cms');
+  const { t: tBlogCMS } = useTranslation('cms');
   const dateFormatter = useDateFormatter();
 
   return useMemo(

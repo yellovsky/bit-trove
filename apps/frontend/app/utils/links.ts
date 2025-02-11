@@ -53,6 +53,22 @@ export const getTutorialRouteLink = (
 ): string => [getTutorialsRouteLink(locale), tutorial.slug].join('/');
 
 // ============================================================================
+//                C M S   T U T O R I A L S   R O U T E
+// ============================================================================
+export const getCMSTutorialRouteLink = (
+  tutorial: Pick<TutorialSegment, 'slug'>,
+  locale?: string,
+): string => addLocaleToLink('/cms/tutorials', locale);
+
+// ============================================================================
+//            C M S   E D I T   T U T O R I A L   R O U T E
+// ============================================================================
+export const getCMSTutorialEditRouteLink = (
+  tutorial: Pick<TutorialSegment, 'slug'>,
+  locale?: string,
+): string => [getCMSTutorialRouteLink(tutorial, locale), 'edit', tutorial.slug].join('/');
+
+// ============================================================================
 //                    B L O G   R O U T E
 // ============================================================================
 export const getBlogRouteLink = (locale?: string): string => addLocaleToLink('/blog', locale);

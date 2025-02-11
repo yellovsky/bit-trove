@@ -8,7 +8,7 @@ import { CmsPage } from './page';
 export const meta = mergeMeta(() => []);
 
 export const handle = {
-  i18n: ['zod'],
+  i18n: ['zod', 'cms'],
 };
 
 export default function CMSRoute() {

@@ -1,8 +1,12 @@
 export const icon: string;
 
+export const addCircleFilled: string;
 export const article: string;
 export const burger: string;
 export const copy: string;
+export const cross: string;
+export const drag: string;
+export const edit: string;
 export const home: string;
 export const info: string;
 export const left: string;

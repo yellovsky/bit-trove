@@ -1,8 +1,8 @@
 // global modules
 import type { FailedResponse } from '@repo/api-models';
-import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import type zod from 'zod';
+import { useCallback, useMemo } from 'react';
 
 import {
   type DefaultValues,
@@ -37,8 +37,12 @@ export const useReactForm = <TFieldValues extends FieldValues, TContext = unknow
     resolver,
   });
 
-  const handleSubmit = useMemo(
-    () => methods.handleSubmit(onSubmit),
+  const handleSubmit = useCallback(
+    (e?: React.BaseSyntheticEvent) => {
+      e?.stopPropagation();
+      e?.preventDefault();
+      return methods.handleSubmit(onSubmit)(e);
+    },
     [methods.handleSubmit, onSubmit],
   );
 

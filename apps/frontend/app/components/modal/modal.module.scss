@@ -1,0 +1,73 @@
+.dialog {
+  @apply relative z-popup;
+
+  .backdrop {
+    @apply fixed inset-0 bg-black/60;
+  }
+
+  .holder {
+    @apply fixed flex justify-center
+      w-screen h-dvh
+      inset-0 overflow-auto overscroll-y-none bg-bg-general
+      tablet:px-0 tablet:py-16 tablet:bg-transparent;
+
+    .panel {
+      @apply relative w-full self-baseline 
+        mx-0 my-auto px-4 py-5 
+        bg-bg-general
+        tablet:overflow-visible tablet:rounded-lg tablet:shadow-modal;
+
+      &.narrow {
+        @apply tablet:max-w-[26rem];
+      }
+
+      &.medium {
+        @apply tablet:max-w-[32rem];
+      }
+
+      &.wide {
+        @apply tablet:max-w-[40rem];
+      }
+    }
+  }
+}
+
+.enterAnimation {
+  @apply transition-all duration-200 ease-out;
+}
+
+.leaveAnimation {
+  @apply transition-all duration-200 ease-in;
+}
+
+.modalHeader {
+  @apply flex gap-2 border-b pb-1 mb-4 
+  border-b-black/20
+  dark:border-b-white/20;
+
+  &.withSubtitle {
+    @apply gap-4 pb-2;
+  }
+
+  .logo {
+    @apply w-6 h-6 
+    text-black/40
+    dark:text-white/40;
+
+    &.withSubtitle {
+      @apply w-12 h-12;
+    }
+  }
+
+  .texts {
+    @apply flex-1;
+  }
+
+  .subtitle {
+    @apply text-passive text-sm;
+  }
+}
+
+.standaloneClose {
+  @apply absolute top-5 right-3;
+}

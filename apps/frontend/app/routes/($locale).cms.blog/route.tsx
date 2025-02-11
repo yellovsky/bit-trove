@@ -6,10 +6,6 @@ import { CMSBlogPage } from './page';
 
 export const meta = mergeMeta(() => []);
 
-export const handle = {
-  i18n: ['blog-cms'],
-};
-
 export default function CMSBlogRoute() {
   return <CMSBlogPage />;
 }

@@ -3,7 +3,7 @@
 @use './button.soft.scss' as button-soft;
 @use './button.text.scss' as button-text;
 
-.button {
+:where(.button) {
   @apply font-semibold cursor-pointer text-nowrap border
     focus-visible:focus-outline;
 
@@ -353,7 +353,7 @@
     // @apply border-transparent text-neutral-400 bg-neutral-100 hover:bg-neutral-200 active:bg-neutral-300;
   }
 
-  &.xs {
+  &:where(.xs) {
     @apply h-6 rounded-md text-xs min-w-6;
 
     &:not(.paddingReset) {
@@ -361,7 +361,7 @@
     }
   }
 
-  &.sm {
+  &:where(.sm) {
     @apply h-8 rounded-md text-sm min-w-8;
 
     &:not(.paddingReset) {
@@ -369,7 +369,7 @@
     }
   }
 
-  &.md {
+  &:where(.md) {
     @apply h-10 rounded-lg text-base min-w-10;
 
     &:not(.paddingReset) {
@@ -377,7 +377,7 @@
     }
   }
 
-  &.lg {
+  &:where(.lg) {
     @apply h-12 rounded-lg text-lg min-w-12;
 
     &:not(.paddingReset) {
