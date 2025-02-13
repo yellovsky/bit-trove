@@ -5,41 +5,44 @@ import { Module } from '@nestjs/common';
 // common modules
 import { ArticleModule } from 'src/modules/article';
 import { PrismaModule } from 'src/modules/prisma';
+import { RequestContextModule } from 'src/modules/request-context';
 import { RuntimeModule } from 'src/modules/runtime';
-
-import {
-  APP_CONFIG_SRV,
-  AppConfigModule,
-  type AppConfigService,
-} from 'src/modules/app-config';
+import { AppConfigModule, AppConfigService } from 'src/modules/app-config';
 
 // local modules
-import { AUTH_SRV } from './auth.constants';
-import { AuthEmailStrategy } from './auth.email-strategy';
-import { AuthServiceClass } from './auth.service';
-import { JwtStrategy } from './auth.jwt-strategy';
-
-const serviceRef = {
-  provide: AUTH_SRV,
-  useClass: AuthServiceClass,
-};
+import { AccessTokenService } from './services/access-token.service';
+import { AccountRepository } from './repositories/account.repository';
+import { AuthService } from './services/auth.service';
+import { AuthV1Controller } from './controllers/auth.controller-v1';
+import { BcryptService } from './services/bcrypt.service';
+import { JwtStrategy } from './strategies/jwt.strategy';
+import { LocalStrategy } from './strategies/local.strategy';
 
 @Module({
-  exports: [serviceRef, JwtModule],
+  controllers: [AuthV1Controller],
+  exports: [AuthService, JwtModule],
   imports: [
     RuntimeModule,
     PrismaModule,
     ArticleModule,
     AppConfigModule,
+    RequestContextModule,
     JwtModule.registerAsync({
       imports: [AppConfigModule],
-      inject: [APP_CONFIG_SRV],
+      inject: [AppConfigService],
       useFactory: async (appConfigSrv: AppConfigService) => ({
         secret: appConfigSrv.jwtSecret,
         signOptions: { expiresIn: '7d' },
       }),
     }),
   ],
-  providers: [serviceRef, AuthEmailStrategy, JwtStrategy],
+  providers: [
+    AuthService,
+    LocalStrategy,
+    JwtStrategy,
+    AccountRepository,
+    AccessTokenService,
+    BcryptService,
+  ],
 })
 export class AuthModule {}

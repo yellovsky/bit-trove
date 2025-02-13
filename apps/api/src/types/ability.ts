@@ -7,9 +7,10 @@ import {
 } from '@casl/ability';
 
 // common modules
-import type { DBArticleAccessControl } from 'src/db-models/article';
-import type { DBBlogPostAccessControl } from 'src/db-models/blog-post';
-import type { DBTutorialAccessControl } from 'src/db-models/tutorial';
+import type { DBAccount } from 'src/modules/auth';
+import type { DBArticleAccessControl } from 'src/modules/article';
+import type { DBBlogPostAccessControl } from 'src/modules/blog-post';
+import type { DBTutorialAccessControl } from 'src/modules/tutorial';
 
 export type Action = 'manage' | 'create' | 'read' | 'update' | 'delete';
 
@@ -36,7 +37,7 @@ export const isRole = (maybeRole: unknown): maybeRole is Role =>
   maybeRole === 'public';
 
 export type DefineRolePermissions = (
-  user: null,
+  user: DBAccount | null,
   builder: AbilityBuilder<AppAbility>,
 ) => void;
 

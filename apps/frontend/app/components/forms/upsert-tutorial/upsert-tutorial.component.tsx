@@ -1,24 +1,24 @@
 // global modules
+import type { CMSTutorial } from '@repo/api-models';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
 // common modules
 import { Button } from '~/components/button';
 import { ErrorDivider } from '~/components/controls/error-divider';
-import { type UpdateTutorialVariables } from '~/api/tutorial';
 import { useReactForm } from '~/utils/react-form';
 
 // local modules
 import { UpsertTutorialFormTranslations } from './upsert-tutorial.translations';
 import { upsertTutorialFPSchema } from './upsert-tutorial.schema';
 
-export const UPSERT_TUTORIAL_DEFAULT_VALUES: UpdateTutorialVariables = {
+export const UPSERT_TUTORIAL_DEFAULT_VALUES: CMSTutorial = {
   translations: [],
 } as const;
 
 interface UpsertTutorialFormProps {
-  defaultValues?: UpdateTutorialVariables;
-  onSubmit(cmsTutorial: UpdateTutorialVariables): void;
+  defaultValues?: CMSTutorial;
+  onSubmit(cmsTutorial: CMSTutorial): void;
 }
 
 export const UpsertTutorialForm: FC<UpsertTutorialFormProps> = props => {

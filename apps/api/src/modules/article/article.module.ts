@@ -5,34 +5,12 @@ import { Module } from '@nestjs/common';
 import { PrismaModule } from 'src/modules/prisma';
 
 // local modules
-import { ArticleAccessControlServiceClass } from './article.access-control';
-import { ArticlePublishingServiceClass } from './article.publishing';
-import { ArticleSerializerServiceClass } from './article.serializer';
-
-import {
-  ARTICLE_ACCESS_CONTROL_SRV,
-  ARTICLE_PUBLISHING_SRV,
-  ARTICLE_SERIALIZER_SRV,
-} from './article.constants';
-
-const publishingRef = {
-  provide: ARTICLE_PUBLISHING_SRV,
-  useClass: ArticlePublishingServiceClass,
-};
-
-const accessControlRef = {
-  provide: ARTICLE_ACCESS_CONTROL_SRV,
-  useClass: ArticleAccessControlServiceClass,
-};
-
-const serializerRef = {
-  provide: ARTICLE_SERIALIZER_SRV,
-  useClass: ArticleSerializerServiceClass,
-};
+import { ArticleAccessControlService } from './services/article-access-control.service';
+import { ArticlePublishingService } from './services/article-publishing.service';
 
 @Module({
-  exports: [accessControlRef, publishingRef, serializerRef],
+  exports: [ArticleAccessControlService, ArticlePublishingService],
   imports: [PrismaModule],
-  providers: [accessControlRef, publishingRef, serializerRef],
+  providers: [ArticleAccessControlService, ArticlePublishingService],
 })
 export class ArticleModule {}

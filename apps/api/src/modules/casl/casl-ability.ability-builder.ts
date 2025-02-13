@@ -3,6 +3,8 @@ import * as R from 'ramda';
 import { AbilityBuilder } from '@casl/ability';
 
 // common modules
+import type { DBAccount } from 'src/modules/auth';
+
 import {
   type AppAbility,
   type ByRolePermissions,
@@ -11,36 +13,42 @@ import {
 } from 'src/types/ability';
 
 const blogPostByRolePermissions: ByRolePermissions = {
-  public(_currentUser, { can, cannot }) {
+  public(_currentAccount, { can, cannot }) {
     can('read', 'blog_post');
     cannot('read', 'blog_post', ['published_at'], { published_at: null });
   },
-  support(_currentUser, { can }) {
+  support(_currentAccount, { can }) {
     can('manage', 'blog_post');
   },
 };
 
 const tutorialByRolePermissions: ByRolePermissions = {
-  public(_currentUser, { can, cannot }) {
+  admin(_currentAccount, { can }) {
+    can('manage', 'tutorial');
+  },
+  public(_currentAccount, { can, cannot }) {
     can('read', 'tutorial');
     cannot('read', 'tutorial', ['published_at'], { published_at: null });
   },
-  support(_currentUser, { can }) {
+  support(_currentAccount, { can }) {
     can('manage', 'tutorial');
   },
 };
 
 const makePermissionByRole =
   (byRolePermissions: ByRolePermissions) =>
-  (abilityBuilder: AbilityBuilder<AppAbility>, currentUser: null) => {
+  (
+    abilityBuilder: AbilityBuilder<AppAbility>,
+    currentAccount: DBAccount | null,
+  ) => {
     const roleNames: Role[] = R.uniq([
       'public',
-      currentUser ? 'user' : undefined,
+      ...[currentAccount?.roles ?? []],
     ]).filter(isRole);
 
     for (const roleName of roleNames) {
       const fn = byRolePermissions[roleName];
-      fn?.(currentUser, abilityBuilder);
+      fn?.(currentAccount, abilityBuilder);
     }
   };
 

@@ -15,20 +15,18 @@ import { useReactForm } from '~/utils/react-form';
 import { types as typesCn } from './article-text-block-form.module.scss';
 
 export const articleTextBlockSchema: zod.ZodType<ArticleTextBlock> = zod.object({
-  order: zod.number().int(),
   subtitle: zod.string().nullable(),
   title: zod.string().nullable(),
   type: zod.literal('text'),
 
-  content: zod.union([
-    zod.object({ md: zod.string().min(1) }),
-    zod.object({ html: zod.string().min(1) }),
-  ]),
+  content: zod.object({
+    text: zod.string().min(1),
+    type: zod.union([zod.literal('md'), zod.literal('html')]),
+  }),
 });
 
 export const DEFAULT_TEXT_BLOCK: ArticleTextBlock = {
-  content: { html: '', md: '' },
-  order: 0,
+  content: { text: '', type: 'md' },
   subtitle: null,
   title: null,
   type: 'text',
@@ -93,7 +91,7 @@ export const ArticleTextBlockForm: FC<ArticleTextBlockFormProps> = props => {
           <Controller
             control={control}
             key="md"
-            name="content.md"
+            name="content.text"
             render={fieldsState => (
               <ReactFormTextareaControl
                 {...fieldsState}
@@ -107,7 +105,7 @@ export const ArticleTextBlockForm: FC<ArticleTextBlockFormProps> = props => {
           <Controller
             control={control}
             key="html"
-            name="content.html"
+            name="content.text"
             render={fieldsState => (
               <ReactFormTextareaControl
                 {...fieldsState}

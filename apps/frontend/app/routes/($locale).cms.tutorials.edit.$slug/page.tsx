@@ -1,6 +1,7 @@
 // common modules
-import type { FC } from 'react';
+import type { CMSTutorial } from '@repo/api-models';
 import { useLocale } from '@repo/remix-i18n';
+import { type FC, useCallback } from 'react';
 
 // common modules
 import { UpsertTutorialForm } from '~/components/forms/upsert-tutorial';
@@ -18,13 +19,14 @@ export const CMSEditTutorialPage: FC<CMSEditTutorialPageProps> = ({ slug }) => {
   const cmsTutorialQuery = useCMSTutorialQuery({ locale, slug });
 
   const updateMutation = useUpdateTutorialMutation({});
+  const handleSubmit = useCallback(
+    (data: CMSTutorial) => updateMutation.mutateAsync({ ...data, slug }),
+    [slug, updateMutation.mutateAsync],
+  );
 
   return !cmsTutorialQuery.isFetched ? null : (
     <div className={pageCn}>
-      <UpsertTutorialForm
-        defaultValues={cmsTutorialQuery.data?.data}
-        onSubmit={updateMutation.mutateAsync}
-      />
+      <UpsertTutorialForm defaultValues={cmsTutorialQuery.data?.data} onSubmit={handleSubmit} />
     </div>
   );
 };

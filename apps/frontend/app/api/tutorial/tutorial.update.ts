@@ -1,6 +1,6 @@
 // global modules
 import { Effect } from 'effect';
-import type { CMSTutorial, TutorialResponse } from '@repo/api-models';
+import type { CMSTutorial, CMSTutorialResponse } from '@repo/api-models';
 
 // common modules
 import type { EndpointFn } from '~/api/endpoint';
@@ -9,19 +9,23 @@ import { useEffectMutation } from '~/api/query';
 // ============================================================================
 //                         Q U E R Y   K E Y
 // ============================================================================
-export type UpdateTutorialVariables = CMSTutorial;
+export interface UpdateTutorialVariables extends CMSTutorial {
+  slug: string;
+}
 
 // ============================================================================
 //                          E N D P O I N T
 // ============================================================================
-export const updateTutorialEP: EndpointFn<TutorialResponse, UpdateTutorialVariables> =
-  () =>
-  ({ variables }) =>
+export const updateTutorialEP: EndpointFn<CMSTutorialResponse, UpdateTutorialVariables> =
+  apiClient =>
+  ({ variables, signal }) =>
     Effect.gen(function* () {
       console.warn('[updateTutorialEP]', variables);
-      return yield* Effect.fail({
-        error: { error_name: 'internal_server_error' as const, status_code: 501 },
-        meta: { status: 501 },
+      const { slug, ...rest } = variables;
+
+      return yield* apiClient.put<CMSTutorialResponse>(`/v1/cms/tutorials/${slug}`, rest, {
+        signal,
+        withCredentials: true,
       });
     });
 

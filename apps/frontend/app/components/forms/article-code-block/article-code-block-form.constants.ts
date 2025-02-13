@@ -10,7 +10,6 @@ export const DEFAULT_CODE_BLOCK_VARIANT: CodeBlockVariant = {
 
 export const DEFAULT_CODE_BLOCK: ArticleCodeBlock = {
   content: { variants: [] },
-  order: 0,
   subtitle: null,
   title: null,
   type: 'code',

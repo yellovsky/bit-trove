@@ -1,4 +1,5 @@
 // global modules
+import type { CMSTutorial } from '@repo/api-models';
 import { useTranslation } from 'react-i18next';
 import { type Control, Controller, useFieldArray } from 'react-hook-form';
 import { type FC, useCallback, useState } from 'react';
@@ -8,12 +9,13 @@ import { Heading } from '~/components/heading';
 import { LanguageCodes } from '~/components/language-codes';
 import { ReactFormTextareaControl } from '~/components/form-controls/react-form-textarea-control';
 import { ReactFormTextControl } from '~/components/form-controls/react-form-text-control';
-import type { UpdateTutorialVariables } from '~/api/tutorial';
+
+// local modules
 import { UpsertTutorialFormBlocks } from './upsert-tutorial.blocks';
 
 interface UpsertTutorialFormTranslationsContentProps {
   languageCode: string;
-  control: Control<UpdateTutorialVariables>;
+  control: Control<CMSTutorial>;
 }
 
 const UpsertTutorialFormTranslationsContent: FC<
@@ -94,7 +96,7 @@ const UpsertTutorialFormTranslationsContent: FC<
 };
 
 interface UpsertTutorialFormTranslationsProps {
-  control: Control<UpdateTutorialVariables>;
+  control: Control<CMSTutorial>;
 }
 
 export const UpsertTutorialFormTranslations: FC<UpsertTutorialFormTranslationsProps> = props => {

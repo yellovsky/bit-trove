@@ -20,7 +20,7 @@ import {
   FailedResponseMeta,
   InvalidParamEntity,
   ResponseErrorEntity,
-} from 'src/entities/error';
+} from 'src/common/entities/error';
 
 /**
  * Represents an internal server error response.

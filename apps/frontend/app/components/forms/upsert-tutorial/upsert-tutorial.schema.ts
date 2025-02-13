@@ -1,11 +1,10 @@
 // global modules
 import * as zod from 'zod';
-import type { ArticleImageBlock } from '@repo/api-models';
+import type { ArticleImageBlock, CMSTutorial } from '@repo/api-models';
 
 // common modules
 import { articleCodeBlockSchema } from '~/components/forms/article-code-block';
 import { articleTextBlockSchema } from '~/components/forms/article-text-block';
-import type { UpdateTutorialVariables } from '~/api/tutorial';
 
 const articleImageBlockSchema: zod.ZodType<ArticleImageBlock> = zod.object({
   order: zod.number().int(),
@@ -16,16 +15,16 @@ const articleImageBlockSchema: zod.ZodType<ArticleImageBlock> = zod.object({
   content: zod.object({ url: zod.string().min(1) }),
 });
 
-export const upsertTutorialFPSchema: zod.ZodType<UpdateTutorialVariables> = zod.object({
+export const upsertTutorialFPSchema: zod.ZodType<CMSTutorial> = zod.object({
   translations: zod
     .object({
       blocks: zod
         .union([articleCodeBlockSchema, articleTextBlockSchema, articleImageBlockSchema])
         .array(),
       language_code: zod.string().min(1),
-      seo_description: zod.string().nullable(),
-      seo_keywords: zod.string().nullable(),
-      seo_title: zod.string().nullable(),
+      seo_description: zod.string(),
+      seo_keywords: zod.string(),
+      seo_title: zod.string(),
       short_description: zod.string().min(1),
       title: zod.string().min(1),
     })

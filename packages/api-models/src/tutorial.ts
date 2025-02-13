@@ -36,9 +36,9 @@ export type TutorialListResponse = ListResponse<TutorialSegment>;
 // ============================================================================
 export interface Tutorial extends TutorialSegment {
   blocks: ArticleBlock[];
-  seo_title: string | null;
-  seo_keywords: string | null;
-  seo_description: string | null;
+  seo_title: string;
+  seo_keywords: string;
+  seo_description: string;
 }
 
 export type TutorialResponse = ItemResponse<Tutorial>;
@@ -49,9 +49,9 @@ export type TutorialResponse = ItemResponse<Tutorial>;
 
 export interface CMSTutorialTranslations {
   language_code: string;
-  seo_title: string | null;
-  seo_keywords: string | null;
-  seo_description: string | null;
+  seo_title: string;
+  seo_keywords: string;
+  seo_description: string;
   blocks: ArticleBlock[];
   title: string;
   short_description: string;

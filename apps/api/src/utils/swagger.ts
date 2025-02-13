@@ -10,7 +10,7 @@ import {
 } from '@nestjs/swagger';
 
 // common modules
-import { FailedResponseEntity } from 'src/entities/error';
+import { FailedResponseEntity } from 'src/common/entities/error';
 
 export const ApiCommonErrorResponses = (
   ...types: Array<'forbidden' | 'unauthorized' | 'bad_request' | 'not_found'>

@@ -3,18 +3,12 @@ import { ConfigModule } from '@nestjs/config';
 import { Global, Module } from '@nestjs/common';
 
 // local modules
-import { APP_CONFIG_SRV } from './app-config.constants';
-import { AppConfigServiceClass } from './app-config.service';
-
-const serviceRef = {
-  provide: APP_CONFIG_SRV,
-  useClass: AppConfigServiceClass,
-};
+import { AppConfigService } from './services/app-config.service';
 
 @Global()
 @Module({
-  exports: [serviceRef],
+  exports: [AppConfigService],
   imports: [ConfigModule.forRoot({ isGlobal: true })],
-  providers: [serviceRef],
+  providers: [AppConfigService],
 })
 export class AppConfigModule {}

@@ -35,6 +35,12 @@ export interface ApiClient extends EventEmitter<'access_token_expired'> {
     data?: any,
     config?: AxiosRequestConfig<any>,
   ): Effect.Effect<T, FailedResponse>;
+
+  put<T = any>(
+    url: string,
+    data?: any,
+    config?: AxiosRequestConfig<any>,
+  ): Effect.Effect<T, FailedResponse>;
 }
 
 /**
@@ -92,6 +98,21 @@ class ApiClientClass extends EventEmitter<'access_token_expired'> implements Api
         this.axios
           .post<T, AxiosResponse<T, any>>(url, data, config)
           .then(response => response.data),
+    });
+  }
+
+  put<T = any>(
+    url: string,
+    data?: any,
+    config?: AxiosRequestConfig<any>,
+  ): Effect.Effect<T, FailedResponse> {
+    return Effect.tryPromise({
+      catch: error =>
+        isAxiosError(error) && isFailedResponse(error.response?.data)
+          ? error.response.data
+          : UNKNOWN_FAILED_RESPONSE,
+      try: () =>
+        this.axios.put<T, AxiosResponse<T, any>>(url, data, config).then(response => response.data),
     });
   }
 }

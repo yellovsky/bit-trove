@@ -2,11 +2,10 @@
 import { Module } from '@nestjs/common';
 
 // local modules
-import { PRISMA_SRV } from './prisma.types';
-import { PrismaServiceClass } from './prisma.service';
+import { PrismaService } from './services/prisma.service';
 
 @Module({
-  exports: [{ provide: PRISMA_SRV, useClass: PrismaServiceClass }],
-  providers: [{ provide: PRISMA_SRV, useClass: PrismaServiceClass }],
+  exports: [PrismaService],
+  providers: [PrismaService],
 })
 export class PrismaModule {}

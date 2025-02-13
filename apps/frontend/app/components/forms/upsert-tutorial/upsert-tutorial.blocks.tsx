@@ -1,6 +1,6 @@
 // global modules
-import type { ArticleBlock } from '@repo/api-models';
 import { useTranslation } from 'react-i18next';
+import type { ArticleBlock, CMSTutorial } from '@repo/api-models';
 import { type Control, useFieldArray } from 'react-hook-form';
 import { type FC, useCallback, useState } from 'react';
 
@@ -10,7 +10,6 @@ import { Button } from '~/components/button';
 import { EmptyText } from '~/components/empty-text';
 import { Heading } from '~/components/heading';
 import { Modal } from '~/components/modal';
-import type { UpdateTutorialVariables } from '~/api/tutorial';
 import { useModalState } from '~/utils/use-modal-state';
 import { ArticleCodeBlockForm, DEFAULT_CODE_BLOCK } from '~/components/forms/article-code-block';
 import { ArticleTextBlockForm, DEFAULT_TEXT_BLOCK } from '~/components/forms/article-text-block';
@@ -26,10 +25,7 @@ import {
 // local modules
 import { buttons as buttonsCn } from './upsert-tutorial.module.scss';
 
-type BlockItemProps = ReactFormDreggableRenderProps<
-  UpdateTutorialVariables,
-  `translations.${number}.blocks`
->;
+type BlockItemProps = ReactFormDreggableRenderProps<CMSTutorial, `translations.${number}.blocks`>;
 
 const BlockItem: FC<BlockItemProps> = props => {
   const { t: cmsT } = useTranslation('cms');
@@ -72,7 +68,7 @@ const BlockItem: FC<BlockItemProps> = props => {
 
 interface UpsertTutorialFormBlocksProps {
   name: `translations.${number}.blocks`;
-  control: Control<UpdateTutorialVariables>;
+  control: Control<CMSTutorial>;
 }
 
 export const UpsertTutorialFormBlocks: FC<UpsertTutorialFormBlocksProps> = props => {
