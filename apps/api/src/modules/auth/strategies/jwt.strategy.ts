@@ -8,7 +8,6 @@ import { Inject, Injectable } from '@nestjs/common';
 // common modules
 import { AppConfigService } from 'src/modules/app-config';
 import { RequestContextService } from 'src/modules/request-context';
-import { UnauthorizedAPIError } from 'src/exceptions';
 import { annotateLogs, RuntimeService } from 'src/modules/runtime';
 
 // local modules
@@ -52,22 +51,17 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(
-    _request: Request,
-    _payload: JWTTokenPayload,
+    request: Request,
+    payload: JWTTokenPayload,
   ): Promise<DBAccount> {
     const program: Effect.Effect<DBAccount, Error> = Effect.gen(
       this,
       function* () {
-        // const reqCtx = yield* this.requestContextSrv.get(request);
-        // const dbUser = yield* this.authSrv.validateAccountByEmail(reqCtx, {
-        //   email,
-        //   password,
-        // });
-
-        // if (!dbUser) return yield* new UnauthorizedAPIError({});
-        // return dbUser;
-
-        return yield* new UnauthorizedAPIError({});
+        const reqCtx = yield* this.requestContextSrv.get(request);
+        return yield* this.authSrv.validateAccountByJWTTokenPayload(
+          reqCtx,
+          payload,
+        );
       },
     ).pipe(annotateLogs(JwtStrategy, 'validate'));
 

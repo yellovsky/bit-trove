@@ -16,6 +16,7 @@ import {
 // local modules
 import { AccountRepository } from '../repositories/account.repository';
 import type { DBAccount } from '../repositories/account.db-models';
+import type { JWTTokenPayload } from './access-token.service';
 
 @Injectable()
 export class AuthService {
@@ -41,6 +42,21 @@ export class AuthService {
       if (params.password !== this.appConfigSrv.adminPassword) {
         return yield* new UnauthorizedAPIError({});
       }
+      return account;
+    }).pipe(Effect.mapError(toApiError));
+  }
+
+  validateAccountByJWTTokenPayload(
+    reqCtx: RequestContext,
+    payload: JWTTokenPayload,
+  ): Effect.Effect<DBAccount, ApiError> {
+    return Effect.gen(this, function* () {
+      const account = yield* this.accountRepo.findUnique(reqCtx, {
+        email: payload.email,
+      });
+
+      if (!account) return yield* new UnauthorizedAPIError({});
+
       return account;
     }).pipe(Effect.mapError(toApiError));
   }

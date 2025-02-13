@@ -43,28 +43,29 @@ export class CMSTutorialsV1Controller {
     private readonly requestContextSrv: RequestContextService,
   ) {}
 
-  @ApiOperation({ description: 'Get one blog posts' })
+  @Get()
+  @ApiOperation({ description: 'Get CMS tutorial list' })
   @ApiOkResponse({ type: TutorialListResponseEntity })
   @ApiCommonErrorResponses('bad_request')
-  @Get()
   async getTutorialList(
     @Req() req: Request,
     @Query() query: FindManyTutorialsDTO,
   ): Promise<TutorialListResponseEntity> {
-    const program = Effect.gen(this, function* () {
-      yield* Effect.logDebug('query', query);
+    const program: Effect.Effect<TutorialListResponseEntity, ApiError> =
+      Effect.gen(this, function* () {
+        yield* Effect.logDebug('query', query);
 
-      const reqCtx = yield* this.requestContextSrv.get(req);
-      const founded = yield* this.tutorialSrv.getMany(reqCtx, {
-        ...query,
-        publishingFilter: 'published',
-      });
+        const reqCtx = yield* this.requestContextSrv.get(req);
+        const founded = yield* this.tutorialSrv.getMany(reqCtx, {
+          ...query,
+          publishingFilter: 'published',
+        });
 
-      return yield* serializeTutorialListResponse(reqCtx, {
-        ...founded,
-        ...query.page,
+        return yield* serializeTutorialListResponse(reqCtx, {
+          ...founded,
+          ...query.page,
+        });
       });
-    });
 
     return this.runtimeSrv.runPromise(program);
   }

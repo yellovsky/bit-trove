@@ -6,6 +6,7 @@ import { Controller, Get, Inject, Param, Query, Req } from '@nestjs/common';
 
 // common modules
 import { ApiCommonErrorResponses } from 'src/utils/swagger';
+import type { ApiError } from 'src/exceptions';
 import { Public } from 'src/utils/access-control';
 import { RequestContextService } from 'src/modules/request-context';
 import { RuntimeService } from 'src/modules/runtime';
@@ -32,11 +33,11 @@ export class TutorialsV1Controller {
     private readonly requestContextSrv: RequestContextService,
   ) {}
 
-  @ApiOperation({ description: 'Get one blog posts' })
-  @ApiOkResponse({ type: TutorialListResponseEntity })
-  @ApiCommonErrorResponses('bad_request')
   @Get()
   @Public()
+  @ApiOperation({ description: 'Get tutorial list' })
+  @ApiOkResponse({ type: TutorialListResponseEntity })
+  @ApiCommonErrorResponses('bad_request')
   async getTutorialList(
     @Req() req: Request,
     @Query() query: FindManyTutorialsDTO,
@@ -59,7 +60,7 @@ export class TutorialsV1Controller {
     return this.runtimeSrv.runPromise(program);
   }
 
-  @ApiOperation({ description: 'Get blog posts list' })
+  @ApiOperation({ description: 'Get tutorial by slug or id ' })
   @ApiOkResponse({ type: TutorialResponseEntity })
   @ApiCommonErrorResponses('not_found')
   @Public()
@@ -68,15 +69,18 @@ export class TutorialsV1Controller {
     @Req() req: Request,
     @Param('slugOrID') slugOrID: string,
   ): Promise<TutorialResponseEntity> {
-    const program = Effect.gen(this, function* () {
-      const reqCtx = yield* this.requestContextSrv.get(req);
-      const founded = yield* this.tutorialSrv.getOne(reqCtx, {
-        publishingFilter: 'published',
-        slugOrID,
-      });
+    const program: Effect.Effect<TutorialResponseEntity, ApiError> = Effect.gen(
+      this,
+      function* () {
+        const reqCtx = yield* this.requestContextSrv.get(req);
+        const founded = yield* this.tutorialSrv.getOne(reqCtx, {
+          publishingFilter: 'published',
+          slugOrID,
+        });
 
-      return yield* serializeTutorialResponse(reqCtx, founded);
-    });
+        return yield* serializeTutorialResponse(reqCtx, founded);
+      },
+    );
 
     return this.runtimeSrv.runPromise(program);
   }

@@ -7,7 +7,6 @@ import { Inject, Injectable } from '@nestjs/common';
 
 // common modules
 import { RequestContextService } from 'src/modules/request-context';
-import { UnauthorizedAPIError } from 'src/exceptions';
 import { annotateLogs, RuntimeService } from 'src/modules/runtime';
 
 // local modules
@@ -44,7 +43,6 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
           password,
         });
 
-        if (!dbAccount) return yield* new UnauthorizedAPIError({});
         return dbAccount;
       },
     ).pipe(annotateLogs(LocalStrategy, 'validate'));
