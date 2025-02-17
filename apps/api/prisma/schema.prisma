@@ -61,11 +61,13 @@ model Article {
     updated_at             DateTime  @updatedAt
     published_at           DateTime?
     original_language_code String
+    author_id              String?
 
     translations      ArticleTranslation[]
     blog_post         BlogPost?
     tutorial          Tutorial?
     original_language Language             @relation(fields: [original_language_code], references: [code], onDelete: Restrict)
+    author            Account?             @relation(fields: [author_id], references: [id], onDelete: SetNull)
 
     @@map("article")
 }
@@ -90,4 +92,27 @@ model Tutorial {
     article_id   String    @unique
 
     article Article @relation(fields: [article_id], references: [id], onDelete: Cascade)
+}
+
+model CasbinRule {
+    id    Int     @id @default(autoincrement())
+    ptype String
+    v0    String?
+    v1    String?
+    v2    String?
+    v3    String?
+    v4    String?
+    v5    String?
+
+    @@map("casbin_rule")
+}
+
+model Account {
+    id       String @id @default(uuid())
+    email    String @unique
+    pwd_hash String
+
+    articles Article[]
+
+    @@map("account")
 }

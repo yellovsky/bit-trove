@@ -1,142 +1,33 @@
 // global modules
-import type { ApiErrorName } from '@repo/api-models';
+import { Cause } from 'effect';
+import type { FailedResponse } from '@repo/api-models';
 import { Response } from 'express';
-import { Cause, Option } from 'effect';
-import { FiberFailureCauseId, isFiberFailure } from 'effect/Runtime';
+
+import {
+  type FiberFailure,
+  FiberFailureCauseId,
+  isFiberFailure,
+} from 'effect/Runtime';
 
 import {
   ArgumentsHost,
+  BadRequestException,
   Catch,
   ExceptionFilter,
-  HttpException,
+  ForbiddenException,
   HttpStatus,
+  NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 
-// common modules
-import { isAPIError } from 'src/exceptions';
+const getFiberFailureError = (failure: FiberFailure) => {
+  const cause = failure[FiberFailureCauseId];
 
-import {
-  FailedResponseEntity,
-  FailedResponseMeta,
-  InvalidParamEntity,
-  ResponseErrorEntity,
-} from 'src/common/entities/error';
+  if (!Cause.isFailType(cause)) return new Error('Faiber failure is not cause');
 
-/**
- * Represents an internal server error response.
- *
- * @constant
- * @type {ApiResponseError}
- * @property {string} error_name - The name of the error.
- * @property {number} status_code - The HTTP status code for the error.
- */
-const INTERNAL_SERVER_ERROR = new ResponseErrorEntity({
-  error_name: 'internal_server_error',
-  status_code: 500,
-});
-
-const errorNameByCode: Partial<Record<number, ApiErrorName>> = {
-  [HttpStatus.BAD_REQUEST]: 'bad_request',
-  [HttpStatus.FORBIDDEN]: 'forbidden',
-  [HttpStatus.INTERNAL_SERVER_ERROR]: 'internal_server_error',
-  [HttpStatus.NOT_FOUND]: 'not_found',
-  [HttpStatus.UNAUTHORIZED]: 'unauthorized',
-};
-
-const getErrorApiResponseFromException = (
-  exception: Error,
-): Option.Option<ResponseErrorEntity> => {
-  if (!(exception instanceof HttpException)) return Option.none();
-
-  const status_code = exception.getStatus();
-  const error_name = errorNameByCode[status_code];
-
-  return !error_name
-    ? Option.some(INTERNAL_SERVER_ERROR)
-    : Option.some(
-        new ResponseErrorEntity({
-          error_name,
-          message: exception.message,
-          status_code,
-        }),
-      );
-};
-
-const getErrorApiResponseFromApiError = (
-  exception: Error,
-): Option.Option<ResponseErrorEntity> => {
-  if (!isAPIError(exception)) return Option.none();
-
-  const status_code = exception.status_code;
-  const error_name = errorNameByCode[status_code];
-
-  return !error_name
-    ? Option.some(INTERNAL_SERVER_ERROR)
-    : Option.some(
-        new ResponseErrorEntity({
-          error_name,
-          message: exception.message,
-          status_code,
-        }),
-      );
-};
-
-/**
- * Transforms a Fiber failure error into an API response error.
- *
- * @param error - The error object to be transformed.
- * @returns An Option containing a NonEmptyArray of ApiResponseError if the error is a Fiber failure,
- *          otherwise returns Option.none().
- */
-const getErrorApiResponseFromFiberFailure = (
-  error: Error,
-): Option.Option<ResponseErrorEntity> => {
-  if (!isFiberFailure(error)) return Option.none();
-
-  const cause = error[FiberFailureCauseId];
-
-  if (!Cause.isFailType(cause)) return Option.some(INTERNAL_SERVER_ERROR);
-  if (!isAPIError(cause.error)) return Option.some(INTERNAL_SERVER_ERROR);
-
-  return Option.some(
-    new ResponseErrorEntity({
-      error_name: cause.error._tag,
-      invalid_params: cause.error.invalid_params?.map(
-        ({ name, reason }) => new InvalidParamEntity({ name, reason }),
-      ),
-      message: cause.error.message,
-      status_code: cause.error.status_code,
-    }),
-  );
-};
-
-/**
- * Generates an API response based on the provided error.
- *
- * This function attempts to derive an appropriate API response from the given error
- * by checking it against multiple potential error sources. It returns the first
- * matching error response, sorted by status code, or defaults to an internal server
- * error if no specific error response is found.
- *
- * @param error - The error object to generate the API response from.
- * @returns An object containing the HTTP status code and the corresponding error response.
- */
-const getErrorApiResponse = (
-  error: Error,
-): { status: number; response: FailedResponseEntity } => {
-  const apiError = Option.firstSomeOf([
-    getErrorApiResponseFromFiberFailure(error),
-    getErrorApiResponseFromException(error),
-    getErrorApiResponseFromApiError(error),
-  ]).pipe(Option.getOrElse(() => INTERNAL_SERVER_ERROR));
-
-  return {
-    response: new FailedResponseEntity({
-      error: apiError,
-      meta: new FailedResponseMeta({ status: apiError.status_code }),
-    }),
-    status: apiError.status_code,
-  };
+  return cause.error instanceof Error
+    ? cause.error
+    : new Error('Cause not an error');
 };
 
 /**
@@ -151,8 +42,44 @@ export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: Error, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
-    const { response: errorResponse, status } = getErrorApiResponse(exception);
+    const error = isFiberFailure(exception)
+      ? getFiberFailureError(exception)
+      : exception;
 
-    response.status(status).json(errorResponse);
+    if (error instanceof NotFoundException) {
+      return response.status(HttpStatus.NOT_FOUND).json({
+        error: { error_name: 'not_found', status_code: HttpStatus.NOT_FOUND },
+        meta: { status: HttpStatus.NOT_FOUND },
+      } satisfies FailedResponse);
+    } else if (error instanceof ForbiddenException) {
+      return response.status(HttpStatus.FORBIDDEN).json({
+        error: { error_name: 'forbidden', status_code: HttpStatus.FORBIDDEN },
+        meta: { status: HttpStatus.FORBIDDEN },
+      } satisfies FailedResponse);
+    } else if (error instanceof UnauthorizedException) {
+      return response.status(HttpStatus.UNAUTHORIZED).json({
+        error: {
+          error_name: 'unauthorized',
+          status_code: HttpStatus.UNAUTHORIZED,
+        },
+        meta: { status: HttpStatus.UNAUTHORIZED },
+      } satisfies FailedResponse);
+    } else if (error instanceof BadRequestException) {
+      return response.status(HttpStatus.BAD_REQUEST).json({
+        error: {
+          error_name: 'bad_request',
+          status_code: HttpStatus.BAD_REQUEST,
+        },
+        meta: { status: HttpStatus.BAD_REQUEST },
+      } satisfies FailedResponse);
+    } else {
+      return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        error: {
+          error_name: 'internal_server_error',
+          status_code: HttpStatus.INTERNAL_SERVER_ERROR,
+        },
+        meta: { status: HttpStatus.INTERNAL_SERVER_ERROR },
+      } satisfies FailedResponse);
+    }
   }
 }

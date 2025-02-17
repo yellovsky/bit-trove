@@ -3,11 +3,7 @@ import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
 import type { CMSTutorial, CMSTutorialTranslations } from '@repo/api-models';
 
 // common modules
-import { Entity, type WithoutEntityType } from 'src/common/entities/entity';
-
-// local modules
 import {
-  type ArticleBlockEntity,
   ArticleCodeBlockEntity,
   ArticleImageBlockEntity,
   ArticleTextBlockEntity,
@@ -18,10 +14,7 @@ import {
   ArticleTextBlockEntity,
   ArticleImageBlockEntity,
 )
-export class CMSTutorialTranslationsEntity
-  extends Entity
-  implements CMSTutorialTranslations
-{
+export class CMSTutorialTranslationsEntity implements CMSTutorialTranslations {
   @ApiProperty({ type: String })
   language_code: string;
 
@@ -49,11 +42,9 @@ export class CMSTutorialTranslationsEntity
       { $ref: getSchemaPath(ArticleImageBlockEntity) },
     ],
   })
-  blocks: ArticleBlockEntity[];
+  blocks: CMSTutorialTranslations['blocks'];
 
-  constructor(data: WithoutEntityType<CMSTutorialTranslationsEntity>) {
-    super();
-
+  constructor(data: CMSTutorialTranslationsEntity) {
     this.language_code = data.language_code;
     this.seo_title = data.seo_title;
     this.seo_keywords = data.seo_keywords;
@@ -64,13 +55,15 @@ export class CMSTutorialTranslationsEntity
   }
 }
 
-export class CMSTutorialEntity extends Entity implements CMSTutorial {
+export class CMSTutorialEntity implements CMSTutorial {
   @ApiProperty({ type: [CMSTutorialTranslationsEntity] })
-  translations: CMSTutorialTranslationsEntity[];
+  translations: CMSTutorial['translations'];
 
-  constructor(data: WithoutEntityType<CMSTutorialEntity>) {
-    super();
+  @ApiProperty({ type: String })
+  original_language_code: string;
 
+  constructor(data: CMSTutorialEntity) {
+    this.original_language_code = data.original_language_code;
     this.translations = data.translations;
   }
 }

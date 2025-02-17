@@ -1,5 +1,4 @@
 // global modules
-import { Effect } from 'effect';
 import { PassportStrategy } from '@nestjs/passport';
 import type { Request } from 'express';
 import { ExtractJwt, Strategy } from 'passport-jwt';
@@ -7,12 +6,11 @@ import { Inject, Injectable } from '@nestjs/common';
 
 // common modules
 import { AppConfigService } from 'src/modules/app-config';
-import { RequestContextService } from 'src/modules/request-context';
-import { annotateLogs, RuntimeService } from 'src/modules/runtime';
+import type { DBAccount } from 'src/modules/account';
+import { RuntimeService } from 'src/modules/runtime';
 
 // local modules
 import { AuthService } from '../services/auth.service';
-import type { DBAccount } from '../repositories/account.db-models';
 import type { JWTTokenPayload } from '../services/access-token.service';
 
 export const ACCESS_TOKEN_COOKIE_KEY = 'access_token';
@@ -34,9 +32,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     private readonly authSrv: AuthService,
 
     @Inject()
-    private readonly requestContextSrv: RequestContextService,
-
-    @Inject()
     readonly appConfigSrv: AppConfigService,
   ) {
     super({
@@ -45,26 +40,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         ExtractJwtFromCookies,
         ExtractJwt.fromAuthHeaderAsBearerToken(),
       ]),
-      passReqToCallback: true,
       secretOrKey: appConfigSrv.jwtSecret,
     });
   }
 
-  async validate(
-    request: Request,
-    payload: JWTTokenPayload,
-  ): Promise<DBAccount> {
-    const program: Effect.Effect<DBAccount, Error> = Effect.gen(
-      this,
-      function* () {
-        const reqCtx = yield* this.requestContextSrv.get(request);
-        return yield* this.authSrv.validateAccountByJWTTokenPayload(
-          reqCtx,
-          payload,
-        );
-      },
-    ).pipe(annotateLogs(JwtStrategy, 'validate'));
-
-    return this.runtime.runPromise(program);
+  async validate(payload: JWTTokenPayload): Promise<DBAccount> {
+    return this.runtime.runPromise(
+      this.authSrv.validateAccountByJWTTokenPayload(payload),
+    );
   }
 }

@@ -3,8 +3,7 @@ import type { BlogPost } from '@repo/api-models';
 import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
 
 // common modules
-import { BlogPostSegmentEntity } from './blog-post-segment.entity';
-import type { WithoutEntityType } from 'src/common/entities/entity';
+import { BlogPostShortEntity } from './blog-post-short.entity';
 
 import {
   type ArticleBlockEntity,
@@ -18,7 +17,7 @@ import {
   ArticleTextBlockEntity,
   ArticleImageBlockEntity,
 )
-export class BlogPostEntity extends BlogPostSegmentEntity implements BlogPost {
+export class BlogPostEntity extends BlogPostShortEntity implements BlogPost {
   @ApiProperty({
     isArray: true,
 
@@ -39,7 +38,7 @@ export class BlogPostEntity extends BlogPostSegmentEntity implements BlogPost {
   @ApiProperty({ nullable: true, type: String })
   seo_title: string | null;
 
-  constructor(data: WithoutEntityType<BlogPostEntity>) {
+  constructor(data: BlogPostEntity) {
     super(data);
 
     this.blocks = data.blocks;

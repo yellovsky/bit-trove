@@ -4,24 +4,18 @@ import type { BlogPostListResponse } from '@repo/api-models';
 
 // common modules
 import { ListResponseMetaEntity } from 'src/common/entities/response';
-import { Entity, type WithoutEntityType } from 'src/common/entities/entity';
 
 // local modules
-import { BlogPostSegmentEntity } from './blog-post-segment.entity';
+import { BlogPostShortEntity } from './blog-post-short.entity';
 
-export class BlogPostListResponseEntity
-  extends Entity
-  implements BlogPostListResponse
-{
-  @ApiProperty({ type: [BlogPostSegmentEntity] })
-  data: (BlogPostSegmentEntity | null)[];
+export class BlogPostListResponseEntity implements BlogPostListResponse {
+  @ApiProperty({ type: [BlogPostShortEntity] })
+  data: BlogPostListResponse['data'];
 
   @ApiProperty({ type: [ListResponseMetaEntity] })
   meta: ListResponseMetaEntity;
 
-  constructor(response: WithoutEntityType<BlogPostListResponseEntity>) {
-    super();
-
+  constructor(response: BlogPostListResponseEntity) {
     this.data = response.data;
     this.meta = response.meta;
   }

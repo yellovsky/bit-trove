@@ -4,13 +4,14 @@ import { PrismaClient } from '@prisma/client';
 import { Effect, Logger, LogLevel } from 'effect';
 
 // local modules
+import { seedAccounts } from './account';
 import { seedBlogPosts } from './blog-post';
 import { seedLanguages } from './language';
 import { seedTutorials } from './tutorial';
 
 const prisma = new PrismaClient({ transactionOptions: { timeout: 100500 } });
 
-const seeders = [seedLanguages, seedBlogPosts, seedTutorials];
+const seeders = [seedLanguages, seedAccounts, seedBlogPosts, seedTutorials];
 
 const main = () => {
   return prisma.$transaction(async (tx) => {

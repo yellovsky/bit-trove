@@ -1,12 +1,16 @@
 // global modules
 import { Effect } from 'effect';
 import { JwtService } from '@nestjs/jwt';
-import { Inject, Injectable } from '@nestjs/common';
+
+import {
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 
 // common modules
 import { annotateLogs } from 'src/modules/runtime';
 import { AppConfigService } from 'src/modules/app-config';
-import { InternalServerAPIError } from 'src/exceptions';
 
 export interface JWTTokenPayload {
   email: string;
@@ -73,6 +77,6 @@ export class AccessTokenService {
   validate(payload: unknown): Effect.Effect<JWTTokenPayload, Error> {
     return isJWTTokenPayload(payload)
       ? Effect.succeed(payload)
-      : new InternalServerAPIError({});
+      : Effect.fail(new InternalServerErrorException());
   }
 }

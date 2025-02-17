@@ -2,22 +2,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import type { CMSTutorialResponse } from '@repo/api-models';
 
-// common modules
-import { Entity, type WithoutEntityType } from 'src/common/entities/entity';
-
 // local modules
 import { CMSTutorialEntity } from './cms-tutorial.entity';
 
-export class CMSTutorialResponseEntity
-  extends Entity
-  implements CMSTutorialResponse
-{
+export class CMSTutorialResponseEntity implements CMSTutorialResponse {
   @ApiProperty({ type: CMSTutorialEntity })
-  data: CMSTutorialEntity;
+  data: CMSTutorialResponse['data'];
 
-  constructor(response: WithoutEntityType<CMSTutorialResponseEntity>) {
-    super();
-
-    this.data = response.data;
+  constructor(response: CMSTutorialResponseEntity) {
+    this.data = new CMSTutorialEntity(response.data);
   }
 }

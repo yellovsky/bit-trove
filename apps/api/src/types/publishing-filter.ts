@@ -1,1 +1,1 @@
-export type PublishingFilter = 'any' | 'published' | 'unpublished';
+export type PublishingFilter = 'any' | 'published';

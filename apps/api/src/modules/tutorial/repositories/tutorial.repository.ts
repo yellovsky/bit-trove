@@ -1,120 +1,110 @@
 // global modules
+import type { DB } from 'src/db';
 import { Effect } from 'effect';
-import type { Prisma } from '@prisma/client';
-import { Inject, Injectable } from '@nestjs/common';
+import { validate as validateUUID } from 'uuid';
+import { count, eq } from 'drizzle-orm';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 
 // common modules
-import type { ItemsWithTotal } from 'src/types/items-with-total';
-import { PrismaService } from 'src/modules/prisma';
-import type { RepositoryContext } from 'src/types/context';
+import { ArticleRepository } from 'src/modules/article';
+import { DRIZZLE_SRV } from 'src/modules/drizzle';
+import { tutorials } from 'src/db/schema';
 
 // local modules
-import type { DBTutorialFragment } from './tutorial.db-models';
-
-export interface FindUniqueTutorialRepositroeyParams<
-  TSelect extends Prisma.TutorialSelect,
-> {
-  select: TSelect;
-  where: Prisma.TutorialWhereUniqueInput;
-}
-
-export interface FindManyTutorialRepositoryParams<
-  TSelect extends Prisma.TutorialSelect,
-> {
-  select: TSelect;
-  where: Prisma.TutorialWhereInput;
-  skip: number;
-  take: number;
-  language: string;
-  orderBy: { title: Prisma.SortOrder } | { created_at: Prisma.SortOrder };
-}
-
-export interface UpdteTutorialRepositroeyParams<
-  TSelect extends Prisma.TutorialSelect,
-> {
-  select: TSelect;
-  data: Prisma.TutorialUpdateInput;
-  where: Prisma.TutorialWhereUniqueInput;
-}
+import type { FindManyTutorialsDTO } from '../dto/find-many-tutorials.dto';
+import type { UpdateCMSTutorialDTO } from '../dto/update-tutorial.dto';
+import type { DBTutorial, DBTutorialShort } from './tutorial.db-types';
 
 @Injectable()
-export class TutorialRepositoryService {
+export class TutorialRepository {
   constructor(
+    @Inject(DRIZZLE_SRV)
+    private readonly db: DB,
+
     @Inject()
-    private readonly prismaSrv: PrismaService,
+    private readonly articleRepo: ArticleRepository,
   ) {}
 
-  findUnique<TSelect extends Prisma.TutorialSelect>(
-    ctx: RepositoryContext,
-    params: FindUniqueTutorialRepositroeyParams<TSelect>,
-  ): Effect.Effect<DBTutorialFragment<TSelect> | null, Error> {
-    const tx = ctx.tx || this.prismaSrv;
-
+  findOne(
+    db: DB | null,
+    slugOrID: string,
+  ): Effect.Effect<DBTutorial | undefined, Error> {
     return Effect.tryPromise(() =>
-      tx.tutorial.findUnique({ select: params.select, where: params.where }),
-    );
-  }
-
-  findMany<TSelect extends Prisma.TutorialSelect>(
-    ctx: RepositoryContext,
-    { orderBy, ...rest }: FindManyTutorialRepositoryParams<TSelect>,
-  ): Effect.Effect<ItemsWithTotal<DBTutorialFragment<TSelect> | null>, Error> {
-    const tx = ctx.tx || this.prismaSrv;
-
-    if ('title' in orderBy) {
-      return Effect.gen(this, function* () {
-        const where = { article: { tutorial: rest.where } };
-        const select = {
-          article: { select: { tutorial: { select: rest.select } } },
-        };
-
-        const { items, total } = yield* Effect.all({
-          items: Effect.tryPromise(() =>
-            tx.articleTranslation.findMany({
-              orderBy: orderBy,
-              select,
-              skip: rest.skip,
-              take: rest.take,
-              where,
-            }),
-          ),
-          total: Effect.tryPromise(() =>
-            tx.articleTranslation.count({ where }),
-          ),
-        });
-
-        return { items: items.map((item) => item.article.tutorial), total };
-      });
-    } else {
-      return Effect.all({
-        items: Effect.tryPromise(() =>
-          tx.tutorial.findMany({
-            orderBy: orderBy,
-            select: rest.select,
-            skip: rest.skip,
-            take: rest.take,
-            where: rest.where,
-          }),
-        ),
-        total: Effect.tryPromise(() =>
-          tx.tutorial.count({ where: rest.where }),
-        ),
-      });
-    }
-  }
-
-  update<TSelect extends Prisma.TutorialSelect>(
-    ctx: RepositoryContext,
-    params: UpdteTutorialRepositroeyParams<TSelect>,
-  ): Effect.Effect<DBTutorialFragment<TSelect> | null, Error> {
-    const tx = ctx.tx || this.prismaSrv;
-
-    return Effect.tryPromise(() =>
-      tx.tutorial.update({
-        data: params.data,
-        select: params.select,
-        where: params.where,
+      (db || this.db).query.tutorials.findFirst({
+        where: this.#getFindOneWhere(slugOrID),
+        with: {
+          article: { with: { translations: { with: { blocks: true } } } },
+        },
       }),
     );
+  }
+
+  findOneShort(
+    db: DB | null,
+    slugOrID: string,
+  ): Effect.Effect<DBTutorialShort | undefined, Error> {
+    return Effect.tryPromise(() =>
+      (db || this.db).query.tutorials.findFirst({
+        where: this.#getFindOneWhere(slugOrID),
+
+        with: {
+          article: { with: { translations: true } },
+        },
+      }),
+    );
+  }
+
+  findManyShort(
+    db: DB | null,
+    dto: FindManyTutorialsDTO,
+  ): Effect.Effect<DBTutorialShort[], Error> {
+    return Effect.tryPromise(() =>
+      (db || this.db).query.tutorials.findMany({
+        limit: dto.page.limit,
+        offset: dto.page.offset,
+        orderBy: (tutorials, { desc }) => [desc(tutorials.created_at)],
+        with: {
+          article: { with: { translations: true } },
+        },
+      }),
+    );
+  }
+
+  findTotal(
+    db: DB | null,
+    dto: FindManyTutorialsDTO,
+  ): Effect.Effect<number, Error> {
+    return Effect.tryPromise(() =>
+      (db || this.db)
+        .select({ count: count() })
+        .from(tutorials)
+        .limit(dto.page.limit)
+        .offset(dto.page.offset),
+    ).pipe(Effect.map(() => 100));
+  }
+
+  update(
+    tx: DB,
+    slugOrID: string,
+    dto: UpdateCMSTutorialDTO,
+  ): Effect.Effect<DBTutorial, Error> {
+    return Effect.gen(this, function* () {
+      const tutorial = yield* this.findOneShort(tx, slugOrID);
+      if (!tutorial) return yield* Effect.fail(new NotFoundException());
+
+      const updatedArticle = yield* this.articleRepo.update(
+        tx,
+        tutorial?.article_id,
+        dto,
+      );
+
+      return { ...tutorial, article: updatedArticle };
+    });
+  }
+
+  #getFindOneWhere(slugOrID: string) {
+    return validateUUID(slugOrID)
+      ? eq(tutorials.id, slugOrID)
+      : eq(tutorials.slug, slugOrID);
   }
 }

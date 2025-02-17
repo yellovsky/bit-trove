@@ -4,25 +4,21 @@ import type { TutorialListResponse } from '@repo/api-models';
 
 // common modules
 import { ListResponseMetaEntity } from 'src/common/entities/response';
-import { Entity, type WithoutEntityType } from 'src/common/entities/entity';
 
 // local modules
-import { TutorialSegmentEntity } from './tutorial-segment.entity';
+import { TutorialShortEntity } from './tutorial-short.entity';
 
-export class TutorialListResponseEntity
-  extends Entity
-  implements TutorialListResponse
-{
-  @ApiProperty({ type: [TutorialSegmentEntity] })
-  data: (TutorialSegmentEntity | null)[];
+export class TutorialListResponseEntity implements TutorialListResponse {
+  @ApiProperty({ type: [TutorialShortEntity] })
+  data: TutorialListResponse['data'];
 
   @ApiProperty({ type: [ListResponseMetaEntity] })
-  meta: ListResponseMetaEntity;
+  meta: TutorialListResponse['meta'];
 
-  constructor(response: WithoutEntityType<TutorialListResponseEntity>) {
-    super();
-
-    this.data = response.data;
-    this.meta = response.meta;
+  constructor(response: TutorialListResponseEntity) {
+    this.data = response.data.map((tutorial) =>
+      !tutorial ? null : new TutorialShortEntity(tutorial),
+    );
+    this.meta = new ListResponseMetaEntity(response.meta);
   }
 }

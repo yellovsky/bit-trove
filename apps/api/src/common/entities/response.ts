@@ -6,11 +6,7 @@ import type {
   ListResponseMetaPagination,
 } from '@repo/api-models';
 
-// common modules
-import { Entity, type WithoutEntityType } from 'src/common/entities/entity';
-
 export class ListResponseMetaPaginationEntity
-  extends Entity
   implements ListResponseMetaPagination
 {
   @ApiProperty({ type: Number })
@@ -22,21 +18,18 @@ export class ListResponseMetaPaginationEntity
   @ApiProperty({ type: Number })
   total: number;
 
-  constructor(data: WithoutEntityType<ListResponseMetaPaginationEntity>) {
-    super();
-
+  constructor(data: ListResponseMetaPaginationEntity) {
     this.limit = data.limit;
     this.offset = data.offset;
     this.total = data.total;
   }
 }
 
-export class ListResponseMetaEntity extends Entity implements ListResponseMeta {
+export class ListResponseMetaEntity implements ListResponseMeta {
   @ApiProperty({ type: ListResponseMetaPaginationEntity })
-  pagination: ListResponseMetaPagination;
+  pagination: ListResponseMeta['pagination'];
 
-  constructor(data: WithoutEntityType<ListResponseMetaEntity>) {
-    super();
-    this.pagination = data.pagination;
+  constructor(data: ListResponseMetaEntity) {
+    this.pagination = new ListResponseMetaPaginationEntity(data.pagination);
   }
 }

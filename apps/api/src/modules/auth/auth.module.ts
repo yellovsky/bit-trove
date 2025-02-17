@@ -4,8 +4,7 @@ import { Module } from '@nestjs/common';
 
 // common modules
 import { ArticleModule } from 'src/modules/article';
-import { PrismaModule } from 'src/modules/prisma';
-import { RequestContextModule } from 'src/modules/request-context';
+import { DrizzleModule } from 'src/modules/drizzle';
 import { RuntimeModule } from 'src/modules/runtime';
 import { AppConfigModule, AppConfigService } from 'src/modules/app-config';
 
@@ -22,11 +21,10 @@ import { LocalStrategy } from './strategies/local.strategy';
   controllers: [AuthV1Controller],
   exports: [AuthService, JwtModule],
   imports: [
+    DrizzleModule,
     RuntimeModule,
-    PrismaModule,
     ArticleModule,
     AppConfigModule,
-    RequestContextModule,
     JwtModule.registerAsync({
       imports: [AppConfigModule],
       inject: [AppConfigService],

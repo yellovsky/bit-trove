@@ -1,63 +1,55 @@
 // global modules
+import * as R from 'ramda';
 import { Effect } from 'effect';
 import type { LoginWithEmailFP } from '@repo/api-models';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 
 // common modules
-import { AppConfigService } from 'src/modules/app-config';
-import type { RequestContext } from 'src/types/context';
-
-import {
-  type ApiError,
-  toApiError,
-  UnauthorizedAPIError,
-} from 'src/exceptions';
+import type { DBAccount } from 'src/modules/account';
 
 // local modules
 import { AccountRepository } from '../repositories/account.repository';
-import type { DBAccount } from '../repositories/account.db-models';
+import { BcryptService } from './bcrypt.service';
 import type { JWTTokenPayload } from './access-token.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     @Inject()
-    private readonly appConfigSrv: AppConfigService,
+    private readonly accountRepo: AccountRepository,
 
     @Inject()
-    private readonly accountRepo: AccountRepository,
+    private readonly bcryptSrv: BcryptService,
   ) {}
 
   validateAccountByEmail(
-    reqCtx: RequestContext,
     params: LoginWithEmailFP,
-  ): Effect.Effect<DBAccount, ApiError> {
+  ): Effect.Effect<DBAccount, Error> {
     return Effect.gen(this, function* () {
-      const account = yield* this.accountRepo.findUnique(reqCtx, {
-        email: params.email,
-      });
+      const account = yield* this.accountRepo.findByEmailWithPWDHash(
+        null,
+        params.email,
+      );
+      if (!account) return yield* Effect.fail(new UnauthorizedException());
 
-      if (!account) return yield* new UnauthorizedAPIError({});
+      const pwdValid = yield* this.bcryptSrv.compare(
+        params.password,
+        account.pwd_hash,
+      );
 
-      if (params.password !== this.appConfigSrv.adminPassword) {
-        return yield* new UnauthorizedAPIError({});
-      }
-      return account;
-    }).pipe(Effect.mapError(toApiError));
+      return !pwdValid
+        ? yield* Effect.fail(new UnauthorizedException())
+        : R.omit(['pwd_hash'], account);
+    });
   }
 
   validateAccountByJWTTokenPayload(
-    reqCtx: RequestContext,
     payload: JWTTokenPayload,
-  ): Effect.Effect<DBAccount, ApiError> {
+  ): Effect.Effect<DBAccount, Error> {
     return Effect.gen(this, function* () {
-      const account = yield* this.accountRepo.findUnique(reqCtx, {
-        email: payload.email,
-      });
-
-      if (!account) return yield* new UnauthorizedAPIError({});
-
+      const account = yield* this.accountRepo.findByEmail(null, payload.email);
+      if (!account) return yield* Effect.fail(new UnauthorizedException());
       return account;
-    }).pipe(Effect.mapError(toApiError));
+    });
   }
 }

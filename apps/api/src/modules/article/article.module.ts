@@ -2,15 +2,27 @@
 import { Module } from '@nestjs/common';
 
 // common modules
-import { PrismaModule } from 'src/modules/prisma';
+import { DrizzleModule } from 'src/modules/drizzle';
 
 // local modules
-import { ArticleAccessControlService } from './services/article-access-control.service';
-import { ArticlePublishingService } from './services/article-publishing.service';
+import { ArticleObfuscationService } from './services/article-obfuscation.service';
+import { ArticleRepository } from './repositories/article.repository';
+import { ArticleSerializerService } from './services/article-serializer.service';
+import { ArticleTranslationService } from './services/article-translation.service';
 
 @Module({
-  exports: [ArticleAccessControlService, ArticlePublishingService],
-  imports: [PrismaModule],
-  providers: [ArticleAccessControlService, ArticlePublishingService],
+  exports: [
+    ArticleTranslationService,
+    ArticleObfuscationService,
+    ArticleSerializerService,
+    ArticleRepository,
+  ],
+  imports: [DrizzleModule],
+  providers: [
+    ArticleTranslationService,
+    ArticleObfuscationService,
+    ArticleSerializerService,
+    ArticleRepository,
+  ],
 })
 export class ArticleModule {}

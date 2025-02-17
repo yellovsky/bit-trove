@@ -1,97 +1,86 @@
 // global modules
+import type { DB } from 'src/db';
 import { Effect } from 'effect';
-import type { Prisma } from '@prisma/client';
+import { validate as validateUUID } from 'uuid';
+import { count, eq } from 'drizzle-orm';
 import { Inject, Injectable } from '@nestjs/common';
 
 // common modules
-import type { ItemsWithTotal } from 'src/types/items-with-total';
-import { PrismaService } from 'src/modules/prisma';
-import type { RepositoryContext } from 'src/types/context';
+import { blogPosts } from 'src/db/schema';
+import { DRIZZLE_SRV } from 'src/modules/drizzle';
 
 // local modules
-import type { DBBlogPostFragment } from './blog-post.db-models';
-
-export interface FindUniqueBlogPostRepositroeyParams<
-  TSelect extends Prisma.BlogPostSelect,
-> {
-  select: TSelect;
-  where: Prisma.BlogPostWhereUniqueInput;
-}
-
-export interface FindManyBlogPostRepositroeyParams<
-  TSelect extends Prisma.BlogPostSelect,
-> {
-  select: TSelect;
-  where: Prisma.BlogPostWhereInput;
-  skip: number;
-  take: number;
-  language: string;
-  orderBy: { title: Prisma.SortOrder } | { created_at: Prisma.SortOrder };
-}
+import type { FindManyBlogPostsDTO } from '../dto/find-many-blog-posts.dto';
+import type { DBBlogPost, DBBlogPostShort } from './blog-post.db-types';
 
 @Injectable()
-export class BlogPostRepositoryService {
+export class BlogPostRepository {
   constructor(
-    @Inject()
-    private readonly prismaSrv: PrismaService,
+    @Inject(DRIZZLE_SRV)
+    private readonly db: DB,
   ) {}
 
-  findUnique<TSelect extends Prisma.BlogPostSelect>(
-    ctx: RepositoryContext,
-    params: FindUniqueBlogPostRepositroeyParams<TSelect>,
-  ): Effect.Effect<DBBlogPostFragment<TSelect> | null, Error> {
-    const tx = ctx.tx || this.prismaSrv;
-
+  findOne(
+    db: DB | null,
+    slugOrID: string,
+  ): Effect.Effect<DBBlogPost | undefined, Error> {
     return Effect.tryPromise(() =>
-      tx.blogPost.findUnique({ select: params.select, where: params.where }),
+      (db || this.db).query.blogPosts.findFirst({
+        where: this.#getFindOneWhere(slugOrID),
+        with: {
+          article: { with: { translations: { with: { blocks: true } } } },
+        },
+      }),
     );
   }
 
-  findMany<TSelect extends Prisma.BlogPostSelect>(
-    ctx: RepositoryContext,
-    { orderBy, ...rest }: FindManyBlogPostRepositroeyParams<TSelect>,
-  ): Effect.Effect<ItemsWithTotal<DBBlogPostFragment<TSelect> | null>, Error> {
-    const tx = ctx.tx || this.prismaSrv;
+  findOneShort(
+    db: DB | null,
+    slugOrID: string,
+  ): Effect.Effect<DBBlogPostShort | undefined, Error> {
+    return Effect.tryPromise(() =>
+      (db || this.db).query.blogPosts.findFirst({
+        where: this.#getFindOneWhere(slugOrID),
 
-    if ('title' in orderBy) {
-      return Effect.gen(this, function* () {
-        const where = { article: { blog_post: rest.where } };
-        const select = {
-          article: { select: { blog_post: { select: rest.select } } },
-        };
+        with: {
+          article: { with: { translations: true } },
+        },
+      }),
+    );
+  }
 
-        const { items, total } = yield* Effect.all({
-          items: Effect.tryPromise(() =>
-            tx.articleTranslation.findMany({
-              orderBy: orderBy,
-              select,
-              skip: rest.skip,
-              take: rest.take,
-              where,
-            }),
-          ),
-          total: Effect.tryPromise(() =>
-            tx.articleTranslation.count({ where }),
-          ),
-        });
+  findManyShort(
+    db: DB | null,
+    dto: FindManyBlogPostsDTO,
+  ): Effect.Effect<DBBlogPostShort[], Error> {
+    return Effect.tryPromise(() =>
+      (db || this.db).query.blogPosts.findMany({
+        limit: dto.page.limit,
+        offset: dto.page.offset,
+        orderBy: (blogPosts, { desc }) => [desc(blogPosts.created_at)],
+        with: {
+          article: { with: { translations: true } },
+        },
+      }),
+    );
+  }
 
-        return { items: items.map((item) => item.article.blog_post), total };
-      });
-    } else {
-      return Effect.all({
-        items: Effect.tryPromise(() =>
-          tx.blogPost.findMany({
-            orderBy: orderBy,
-            select: rest.select,
-            skip: rest.skip,
-            take: rest.take,
-            where: rest.where,
-          }),
-        ),
-        total: Effect.tryPromise(() =>
-          tx.blogPost.count({ where: rest.where }),
-        ),
-      });
-    }
+  findTotal(
+    db: DB | null,
+    dto: FindManyBlogPostsDTO,
+  ): Effect.Effect<number, Error> {
+    return Effect.tryPromise(() =>
+      (db || this.db)
+        .select({ count: count() })
+        .from(blogPosts)
+        .limit(dto.page.limit)
+        .offset(dto.page.offset),
+    ).pipe(Effect.map(() => 100));
+  }
+
+  #getFindOneWhere(slugOrID: string) {
+    return validateUUID(slugOrID)
+      ? eq(blogPosts.id, slugOrID)
+      : eq(blogPosts.slug, slugOrID);
   }
 }

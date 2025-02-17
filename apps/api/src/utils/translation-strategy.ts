@@ -1,7 +1,7 @@
 export type GetTranslationsStrategy = <
   TWithTranslations extends {
     original_language_code?: string;
-    translations: Array<{ language_code: string }>;
+    translations: Array<{ language_code: string } | { languageCode: string }>;
   },
 >(
   withTranslations: TWithTranslations,
@@ -13,16 +13,19 @@ export const DEFAULT_LANGUAGE_CODE = 'en';
 const defaultLanguageTranslationStrategy: GetTranslationsStrategy = (
   withTranslations,
 ) =>
-  withTranslations.translations.find(
-    ({ language_code }) => language_code === DEFAULT_LANGUAGE_CODE,
+  withTranslations.translations.find((item) =>
+    'language_code' in item
+      ? item.language_code === DEFAULT_LANGUAGE_CODE
+      : item.languageCode === DEFAULT_LANGUAGE_CODE,
   ) || null;
 
 const originalLanguageTranslationStrategy: GetTranslationsStrategy = (
   withTranslations,
 ) =>
-  withTranslations.translations.find(
-    ({ language_code }) =>
-      language_code === withTranslations.original_language_code,
+  withTranslations.translations.find((item) =>
+    'language_code' in item
+      ? item.language_code === withTranslations.original_language_code
+      : item.languageCode === withTranslations.original_language_code,
   ) || null;
 
 const anyLanguageTranslationStrategy: GetTranslationsStrategy = (
@@ -32,8 +35,10 @@ const anyLanguageTranslationStrategy: GetTranslationsStrategy = (
 const specificLanguageTranslationStratige =
   (languageCode: string): GetTranslationsStrategy =>
   (withTranslations) =>
-    withTranslations.translations.find(
-      ({ language_code }) => language_code === languageCode,
+    withTranslations.translations.find((item) =>
+      'language_code' in item
+        ? item.language_code === languageCode
+        : item.languageCode === languageCode,
     ) || null;
 
 export const fallbackToDefaultTranslationsStrategy =

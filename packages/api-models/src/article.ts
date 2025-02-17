@@ -18,3 +18,18 @@ export interface CodeBlockVariant {
 export type ArticleCodeBlock = ArticleBaseBlock<'code', { variants: CodeBlockVariant[] }>;
 
 export type ArticleBlock = ArticleImageBlock | ArticleTextBlock | ArticleCodeBlock;
+
+export interface CMSArticleTranslations {
+  language_code: string;
+  seo_title: string;
+  seo_keywords: string;
+  seo_description: string;
+  blocks: ArticleBlock[];
+  title: string;
+  short_description: string;
+}
+
+export interface CMSArticle {
+  original_language_code: string;
+  translations: CMSArticleTranslations[];
+}

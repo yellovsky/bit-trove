@@ -1,23 +1,32 @@
 // global modules
 import { Effect } from 'effect';
-import type { Request } from 'express';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Controller, Get, Inject, Param, Query, Req } from '@nestjs/common';
+
+import {
+  Controller,
+  ForbiddenException,
+  Get,
+  Inject,
+  Param,
+  Query,
+} from '@nestjs/common';
 
 // common modules
 import { ApiCommonErrorResponses } from 'src/utils/swagger';
-import type { ApiError } from 'src/exceptions';
+import { defaultTranslationsStrategy } from 'src/utils/translation-strategy';
 import { Public } from 'src/utils/access-control';
-import { RequestContextService } from 'src/modules/request-context';
 import { RuntimeService } from 'src/modules/runtime';
 
 // local modules
 import { FindManyTutorialsDTO } from '../dto/find-many-tutorials.dto';
-import { serializeTutorialListResponse } from '../serializers/tutorial-segment-list-response.serializer';
-import { serializeTutorialResponse } from '../serializers/tutorial-response.serializer';
+import { FindOneTutorialDTO } from '../dto/find-one-tutorial.dto';
+import { TutorialAccessService } from '../services/tutorial-access.service';
 import { TutorialListResponseEntity } from '../entities/tutorial-list-response.entity';
+import { TutorialObfuscationService } from '../services/tutorial-obfuscation.service';
 import { TutorialResponseEntity } from '../entities/tutorial-response.entity';
+import { TutorialSerializerService } from '../services/tutorial-serializer.service';
 import { TutorialService } from '../services/tutorial.service';
+import { TutorialTranslationService } from '../services/tutorial-translation.service';
 
 @ApiTags('Tutorials')
 @Controller({ path: 'tutorials', version: '1' })
@@ -30,7 +39,16 @@ export class TutorialsV1Controller {
     private readonly tutorialSrv: TutorialService,
 
     @Inject()
-    private readonly requestContextSrv: RequestContextService,
+    private readonly tutorialTranslationSrv: TutorialTranslationService,
+
+    @Inject()
+    private readonly tutorialObfuscationSrv: TutorialObfuscationService,
+
+    @Inject()
+    private readonly tutorialSerializerSrv: TutorialSerializerService,
+
+    @Inject()
+    private readonly tutorialAccessSrv: TutorialAccessService,
   ) {}
 
   @Get()
@@ -39,46 +57,83 @@ export class TutorialsV1Controller {
   @ApiOkResponse({ type: TutorialListResponseEntity })
   @ApiCommonErrorResponses('bad_request')
   async getTutorialList(
-    @Req() req: Request,
     @Query() query: FindManyTutorialsDTO,
   ): Promise<TutorialListResponseEntity> {
-    const program = Effect.gen(this, function* () {
-      yield* Effect.logDebug('query', query);
+    const program: Effect.Effect<TutorialListResponseEntity, Error> =
+      Effect.gen(this, function* () {
+        yield* Effect.logDebug('query', query);
 
-      const reqCtx = yield* this.requestContextSrv.get(req);
-      const founded = yield* this.tutorialSrv.getMany(reqCtx, {
-        ...query,
-        publishingFilter: 'published',
-      });
+        const [founded, total] = yield* Effect.all([
+          this.tutorialSrv.getManyShort(null, query),
+          this.tutorialSrv.getTotal(null, query),
+        ]);
 
-      return yield* serializeTutorialListResponse(reqCtx, {
-        ...founded,
-        ...query.page,
+        const accessChecked = yield* this.tutorialAccessSrv.canReadFilter(
+          null,
+          founded,
+        );
+
+        const obfuscated = yield* this.tutorialObfuscationSrv
+          .obfuscateShortList(null, 'published', accessChecked)
+          .pipe(Effect.flatMap(Effect.fromNullable));
+
+        const translationStrategy = defaultTranslationsStrategy(query.locale);
+        const translated = yield* this.tutorialTranslationSrv
+          .translateShortList(translationStrategy, obfuscated)
+          .pipe(Effect.flatMap(Effect.fromNullable));
+
+        const serialized = yield* this.tutorialSerializerSrv
+          .serializeShortList(translated)
+          .pipe(Effect.flatMap(Effect.fromNullable));
+
+        return new TutorialListResponseEntity({
+          data: serialized,
+          meta: {
+            pagination: {
+              limit: query.page.limit,
+              offset: query.page.offset,
+              total,
+            },
+          },
+        });
       });
-    });
 
     return this.runtimeSrv.runPromise(program);
   }
 
+  @Public()
+  @Get(':slugOrID')
   @ApiOperation({ description: 'Get tutorial by slug or id ' })
   @ApiOkResponse({ type: TutorialResponseEntity })
   @ApiCommonErrorResponses('not_found')
-  @Public()
-  @Get(':slugOrID')
-  async getTutorial(
-    @Req() req: Request,
+  async getOneTutorial(
     @Param('slugOrID') slugOrID: string,
+    @Query() query: FindOneTutorialDTO,
   ): Promise<TutorialResponseEntity> {
-    const program: Effect.Effect<TutorialResponseEntity, ApiError> = Effect.gen(
+    const program: Effect.Effect<TutorialResponseEntity, Error> = Effect.gen(
       this,
       function* () {
-        const reqCtx = yield* this.requestContextSrv.get(req);
-        const founded = yield* this.tutorialSrv.getOne(reqCtx, {
-          publishingFilter: 'published',
-          slugOrID,
-        });
+        const founded = yield* this.tutorialSrv.getOne(null, slugOrID);
 
-        return yield* serializeTutorialResponse(reqCtx, founded);
+        if (!(yield* this.tutorialAccessSrv.canRead(null, founded))) {
+          return yield* Effect.fail(new ForbiddenException());
+        }
+
+        const obfuscated = yield* this.tutorialObfuscationSrv.obfuscate(
+          null,
+          'published',
+          founded,
+        );
+
+        const translated = yield* this.tutorialTranslationSrv.translate(
+          defaultTranslationsStrategy(query.locale),
+          obfuscated,
+        );
+
+        const serialized =
+          yield* this.tutorialSerializerSrv.serialize(translated);
+
+        return new TutorialResponseEntity({ data: serialized });
       },
     );
 

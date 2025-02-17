@@ -1,14 +1,6 @@
 // global modules
 import { ApiProperty } from '@nestjs/swagger';
-
-import type {
-  ApiErrorName,
-  FailedResponse,
-  ResponseError,
-} from '@repo/api-models';
-
-// common modules
-import { Entity, type WithoutEntityType } from 'src/common/entities/entity';
+import type { FailedResponse, ResponseError } from '@repo/api-models';
 
 const ERROR_NAME = [
   'bad_request',
@@ -18,27 +10,25 @@ const ERROR_NAME = [
   'unauthorized',
 ] as const;
 
-export class InvalidParamEntity extends Entity {
+export class InvalidParamEntity {
   @ApiProperty({ type: String })
   name: string;
 
   @ApiProperty({ type: String })
   reason: string;
 
-  constructor(data: WithoutEntityType<InvalidParamEntity>) {
-    super();
-
+  constructor(data: InvalidParamEntity) {
     this.name = data.name;
     this.reason = data.reason;
   }
 }
 
-export class ResponseErrorEntity extends Entity implements ResponseError {
+export class ResponseErrorEntity implements ResponseError {
   @ApiProperty({ enum: ERROR_NAME })
-  error_name: ApiErrorName;
+  error_name: ResponseError['error_name'];
 
   @ApiProperty({ type: [InvalidParamEntity] })
-  invalid_params?: InvalidParamEntity[];
+  invalid_params?: ResponseError['invalid_params'];
 
   @ApiProperty({ type: String })
   message?: string | undefined;
@@ -46,9 +36,7 @@ export class ResponseErrorEntity extends Entity implements ResponseError {
   @ApiProperty({ type: Number })
   status_code: number;
 
-  constructor(data: WithoutEntityType<ResponseErrorEntity>) {
-    super();
-
+  constructor(data: ResponseErrorEntity) {
     this.error_name = data.error_name;
     this.invalid_params = data.invalid_params;
     this.message = data.message;
@@ -56,27 +44,23 @@ export class ResponseErrorEntity extends Entity implements ResponseError {
   }
 }
 
-export class FailedResponseMeta extends Entity {
+export class FailedResponseMeta {
   @ApiProperty({ type: Number })
   status: number;
 
-  constructor(data: WithoutEntityType<FailedResponseMeta>) {
-    super();
-
+  constructor(data: FailedResponseMeta) {
     this.status = data.status;
   }
 }
 
-export class FailedResponseEntity extends Entity implements FailedResponse {
+export class FailedResponseEntity implements FailedResponse {
   @ApiProperty({ type: FailedResponseMeta })
   meta: FailedResponseMeta;
 
   @ApiProperty({ type: ResponseErrorEntity })
   error: ResponseErrorEntity;
 
-  constructor(data: WithoutEntityType<FailedResponseEntity>) {
-    super();
-
+  constructor(data: FailedResponseEntity) {
     this.meta = data.meta;
     this.error = data.error;
   }

@@ -2,29 +2,22 @@
 import { ApiProperty } from '@nestjs/swagger';
 import type { ArticleTextBlock } from '@repo/api-models';
 
-// common modules
-import { Entity, type WithoutEntityType } from 'src/common/entities/entity';
-
-export class ArticleTextBlockContentEntity extends Entity {
+export class ArticleTextBlockContentEntity {
   @ApiProperty({ type: String })
   type: 'md' | 'html';
 
   @ApiProperty({ type: String })
   text: string;
 
-  constructor(data: WithoutEntityType<ArticleTextBlockContentEntity>) {
-    super();
+  constructor(data: ArticleTextBlockContentEntity) {
     this.type = data.type;
     this.text = data.text;
   }
 }
 
-export class ArticleTextBlockEntity extends Entity implements ArticleTextBlock {
+export class ArticleTextBlockEntity implements ArticleTextBlock {
   @ApiProperty({ isArray: true, type: ArticleTextBlockContentEntity })
-  content: ArticleTextBlockContentEntity;
-
-  @ApiProperty({ type: Number })
-  order: number;
+  content: ArticleTextBlock['content'];
 
   @ApiProperty({ enum: ['text'] })
   type: 'text' = 'text';
@@ -35,11 +28,8 @@ export class ArticleTextBlockEntity extends Entity implements ArticleTextBlock {
   @ApiProperty({ nullable: true, type: String })
   subtitle: string | null;
 
-  constructor(data: WithoutEntityType<ArticleTextBlockEntity>) {
-    super();
-
+  constructor(data: ArticleTextBlockEntity) {
     this.content = data.content;
-    this.order = data.order;
     this.title = data.title;
     this.subtitle = data.subtitle;
   }

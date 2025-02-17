@@ -2,26 +2,18 @@
 import { ApiProperty } from '@nestjs/swagger';
 import type { ArticleImageBlock } from '@repo/api-models';
 
-// common modules
-import { Entity, type WithoutEntityType } from 'src/common/entities/entity';
-
-export class ArticleImageBlockContentEntity extends Entity {
+export class ArticleImageBlockContentEntity {
   @ApiProperty({ type: String })
   url: string;
 
-  constructor(data: WithoutEntityType<ArticleImageBlockContentEntity>) {
-    super();
-
+  constructor(data: ArticleImageBlockContentEntity) {
     this.url = data.url;
   }
 }
 
-export class ArticleImageBlockEntity
-  extends Entity
-  implements ArticleImageBlock
-{
+export class ArticleImageBlockEntity implements ArticleImageBlock {
   @ApiProperty({ type: ArticleImageBlockContentEntity })
-  content: ArticleImageBlockContentEntity;
+  content: ArticleImageBlock['content'];
 
   @ApiProperty({ enum: ['image'] })
   type: 'image' = 'image';
@@ -32,9 +24,7 @@ export class ArticleImageBlockEntity
   @ApiProperty({ nullable: true, type: String })
   subtitle: string | null;
 
-  constructor(data: WithoutEntityType<ArticleImageBlockEntity>) {
-    super();
-
+  constructor(data: ArticleImageBlockEntity) {
     this.content = data.content;
     this.title = data.title;
     this.subtitle = data.subtitle;

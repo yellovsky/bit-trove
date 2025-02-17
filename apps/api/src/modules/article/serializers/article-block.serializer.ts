@@ -4,7 +4,6 @@ import { Option, pipe, String } from 'effect';
 
 // common modules
 import type { DBArticle } from 'src/modules/article';
-import type { SerializerContext } from 'src/types/context';
 
 // local modules
 import type { ArticleBlockEntity } from '../entities/article-block.entity';
@@ -58,7 +57,6 @@ const isCodeVariant = (
 };
 
 const serializeTextBlock = (
-  _ctx: SerializerContext,
   block: DBArticle['translations'][number]['blocks'][number],
 ): Option.Option<ArticleTextBlockEntity> => {
   const contentText = pipe(
@@ -81,7 +79,6 @@ const serializeTextBlock = (
       (content) =>
         new ArticleTextBlockEntity({
           content,
-          order: block.order,
           subtitle: block.subtitle,
           title: block.title,
           type: 'text',
@@ -91,7 +88,6 @@ const serializeTextBlock = (
 };
 
 const serializeImageBlock = (
-  _ctx: SerializerContext,
   block: DBArticle['translations'][number]['blocks'][number],
 ): Option.Option<ArticleImageBlockEntity> => {
   const maybeContent = pipe(
@@ -127,7 +123,6 @@ const serializeCodeVariant = (
   );
 
 const serializeCodeBlock = (
-  _ctx: SerializerContext,
   block: DBArticle['translations'][number]['blocks'][number],
 ): Option.Option<ArticleCodeBlockEntity> => {
   const maybeVariants = pipe(
@@ -142,7 +137,6 @@ const serializeCodeBlock = (
       ({ variants }) =>
         new ArticleCodeBlockEntity({
           content: new ArticleCodeBlockContentEntity({ variants }),
-          order: block.order,
           subtitle: block.subtitle,
           title: block.title,
           type: 'code',
@@ -152,21 +146,19 @@ const serializeCodeBlock = (
 };
 
 export const serializeArticleBlock = (
-  ctx: SerializerContext,
   block: DBArticle['translations'][number]['blocks'][number],
 ): Option.Option<ArticleBlockEntity | null> =>
   Option.firstSomeOf([
-    serializeImageBlock(ctx, block),
-    serializeTextBlock(ctx, block),
-    serializeCodeBlock(ctx, block),
+    serializeImageBlock(block),
+    serializeTextBlock(block),
+    serializeCodeBlock(block),
   ]).pipe(Option.orElseSome(() => null));
 
 export const serializeArticleBlockList = (
-  ctx: SerializerContext,
   blocks: DBArticle['translations'][number]['blocks'],
 ): Option.Option<ArticleBlockEntity[]> =>
   Option.all(
     blocks
       .sort((b1, b2) => b1.order - b2.order)
-      .map((block) => serializeArticleBlock(ctx, block)),
+      .map((block) => serializeArticleBlock(block)),
   ).pipe(Option.map((arr) => arr.filter((item) => item !== null)));

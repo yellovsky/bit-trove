@@ -1,10 +1,8 @@
 // global modules
-import type { Tutorial } from '@repo/api-models';
 import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
+import type { ArticleBlock, Tutorial } from '@repo/api-models';
 
 // common modules
-import { type WithoutEntityType } from 'src/common/entities/entity';
-
 import {
   type ArticleBlockEntity,
   ArticleCodeBlockEntity,
@@ -13,14 +11,30 @@ import {
 } from 'src/modules/article';
 
 // local modules
-import { TutorialSegmentEntity } from './tutorial-segment.entity';
+import { TutorialShortEntity } from './tutorial-short.entity';
+
+const makeBlockEntity = (block: ArticleBlock): ArticleBlockEntity | null => {
+  switch (block.type) {
+    case 'code':
+      return new ArticleCodeBlockEntity(block);
+
+    case 'text':
+      return new ArticleTextBlockEntity(block);
+
+    case 'image':
+      return new ArticleImageBlockEntity(block);
+
+    default:
+      return null;
+  }
+};
 
 @ApiExtraModels(
   ArticleCodeBlockEntity,
   ArticleTextBlockEntity,
   ArticleImageBlockEntity,
 )
-export class TutorialEntity extends TutorialSegmentEntity implements Tutorial {
+export class TutorialEntity extends TutorialShortEntity implements Tutorial {
   @ApiProperty({
     isArray: true,
 
@@ -30,7 +44,7 @@ export class TutorialEntity extends TutorialSegmentEntity implements Tutorial {
       { $ref: getSchemaPath(ArticleImageBlockEntity) },
     ],
   })
-  blocks: ArticleBlockEntity[];
+  blocks: ArticleBlock[];
 
   @ApiProperty({ nullable: true, type: String })
   seo_description: string;
@@ -41,10 +55,10 @@ export class TutorialEntity extends TutorialSegmentEntity implements Tutorial {
   @ApiProperty({ nullable: true, type: String })
   seo_title: string;
 
-  constructor(data: WithoutEntityType<TutorialEntity>) {
+  constructor(data: TutorialEntity) {
     super(data);
 
-    this.blocks = data.blocks;
+    this.blocks = data.blocks.map(makeBlockEntity).filter((v) => !!v);
     this.seo_description = data.seo_description;
     this.seo_keywords = data.seo_keywords;
     this.seo_title = data.seo_title;

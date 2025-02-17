@@ -34,6 +34,10 @@ export type BlogPostListResponse = ListResponse<BlogPostSegment>;
 // ==========================================================
 //           P B L O G   P O S T   I T E M
 // ==========================================================
+export interface GetOneBlogPostFP {
+  locale: string;
+}
+
 export interface BlogPost extends BlogPostSegment {
   blocks: ArticleBlock[];
   seo_title: string | null;

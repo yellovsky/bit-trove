@@ -13,6 +13,7 @@ import { UpsertTutorialFormTranslations } from './upsert-tutorial.translations';
 import { upsertTutorialFPSchema } from './upsert-tutorial.schema';
 
 export const UPSERT_TUTORIAL_DEFAULT_VALUES: CMSTutorial = {
+  original_language_code: '',
   translations: [],
 } as const;
 

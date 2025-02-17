@@ -16,6 +16,7 @@ const articleImageBlockSchema: zod.ZodType<ArticleImageBlock> = zod.object({
 });
 
 export const upsertTutorialFPSchema: zod.ZodType<CMSTutorial> = zod.object({
+  original_language_code: zod.string(),
   translations: zod
     .object({
       blocks: zod

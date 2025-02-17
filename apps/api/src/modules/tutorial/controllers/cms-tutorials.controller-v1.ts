@@ -6,6 +6,7 @@ import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   Body,
   Controller,
+  ForbiddenException,
   Get,
   Inject,
   Param,
@@ -15,17 +16,19 @@ import {
 } from '@nestjs/common';
 
 // common modules
+import { Account } from 'src/decorators/account.decorator';
 import { ApiCommonErrorResponses } from 'src/utils/swagger';
-import type { ApiError } from 'src/exceptions';
-import { RequestContextService } from 'src/modules/request-context';
+import type { DB } from 'src/db';
+import type { DBAccount } from 'src/modules/account';
+import { DRIZZLE_SRV } from 'src/modules/drizzle';
 import { RuntimeService } from 'src/modules/runtime';
 
 // local modules
 import { CMSTutorialResponseEntity } from '../entities/cms-tutorial-response.entity';
 import { FindManyTutorialsDTO } from '../dto/find-many-tutorials.dto';
-import { serializeCMSTutorialResponse } from '../serializers/cms-tutorial-response.serializer';
-import { serializeTutorialListResponse } from '../serializers/tutorial-segment-list-response.serializer';
+import { TutorialAccessService } from '../services/tutorial-access.service';
 import { TutorialListResponseEntity } from '../entities/tutorial-list-response.entity';
+import { TutorialSerializerService } from '../services/tutorial-serializer.service';
 import { TutorialService } from '../services/tutorial.service';
 import { UpdateCMSTutorialDTO } from '../dto/update-tutorial.dto';
 
@@ -40,7 +43,13 @@ export class CMSTutorialsV1Controller {
     private readonly tutorialSrv: TutorialService,
 
     @Inject()
-    private readonly requestContextSrv: RequestContextService,
+    private readonly tutorialSerializerSrv: TutorialSerializerService,
+
+    @Inject()
+    private readonly tutorialAccessSrv: TutorialAccessService,
+
+    @Inject(DRIZZLE_SRV)
+    private readonly db: DB,
   ) {}
 
   @Get()
@@ -50,20 +59,33 @@ export class CMSTutorialsV1Controller {
   async getTutorialList(
     @Req() req: Request,
     @Query() query: FindManyTutorialsDTO,
+    @Account() account: DBAccount | null,
   ): Promise<TutorialListResponseEntity> {
-    const program: Effect.Effect<TutorialListResponseEntity, ApiError> =
+    const program: Effect.Effect<TutorialListResponseEntity, Error> =
       Effect.gen(this, function* () {
-        yield* Effect.logDebug('query', query);
+        console.log('get MY many');
+        const [founded, total] = yield* Effect.all([
+          this.tutorialSrv.getManyShort(null, query),
+          this.tutorialSrv.getTotal(null, query),
+        ]);
 
-        const reqCtx = yield* this.requestContextSrv.get(req);
-        const founded = yield* this.tutorialSrv.getMany(reqCtx, {
-          ...query,
-          publishingFilter: 'published',
-        });
+        const accessFiltered = yield* this.tutorialAccessSrv.canReadCMSFilter(
+          account,
+          founded,
+        );
 
-        return yield* serializeTutorialListResponse(reqCtx, {
-          ...founded,
-          ...query.page,
+        const serialized =
+          yield* this.tutorialSerializerSrv.serializeShortList(accessFiltered);
+
+        return new TutorialListResponseEntity({
+          data: serialized,
+          meta: {
+            pagination: {
+              limit: query.page.limit,
+              offset: query.page.offset,
+              total,
+            },
+          },
         });
       });
 
@@ -75,22 +97,29 @@ export class CMSTutorialsV1Controller {
   @ApiCommonErrorResponses('not_found')
   @Get(':slugOrID')
   async getTutorial(
-    @Req() req: Request,
     @Param('slugOrID') slugOrID: string,
+    @Account() account: DBAccount | null,
   ): Promise<CMSTutorialResponseEntity> {
-    const program = Effect.gen(this, function* () {
-      const reqCtx = yield* this.requestContextSrv.get(req);
-      const founded = yield* this.tutorialSrv.getOne(reqCtx, {
-        publishingFilter: 'any',
-        slugOrID,
-      });
+    const program: Effect.Effect<CMSTutorialResponseEntity, Error> = Effect.gen(
+      this,
+      function* () {
+        const founded = yield* this.tutorialSrv.getOne(null, slugOrID);
 
-      return yield* serializeCMSTutorialResponse(reqCtx, founded);
-    });
+        if (!(yield* this.tutorialAccessSrv.canReadCMS(account, founded))) {
+          return yield* Effect.fail(new ForbiddenException());
+        }
+
+        const serialized =
+          yield* this.tutorialSerializerSrv.serializeCMS(founded);
+
+        return new CMSTutorialResponseEntity({ data: serialized });
+      },
+    );
 
     return this.runtimeSrv.runPromise(program);
   }
 
+  @Put(':slug')
   @ApiOperation({ description: 'Update CMS tutorial by slug' })
   @ApiOkResponse({ type: CMSTutorialResponseEntity })
   @ApiCommonErrorResponses(
@@ -100,19 +129,27 @@ export class CMSTutorialsV1Controller {
     'not_found',
     'unauthorized',
   )
-  @Put(':slug')
   async updateTutorial(
-    @Req() req: Request,
     @Body() body: UpdateCMSTutorialDTO,
     @Param('slug') slug: string,
+    @Account() account: DBAccount | null,
   ): Promise<CMSTutorialResponseEntity> {
-    const program: Effect.Effect<CMSTutorialResponseEntity, ApiError> =
-      Effect.gen(this, function* () {
-        const reqCtx = yield* this.requestContextSrv.get(req);
-        const updated = yield* this.tutorialSrv.update(reqCtx, slug, body);
-        return yield* serializeCMSTutorialResponse(reqCtx, updated);
-      });
+    return this.db.transaction(async (tx) => {
+      const program: Effect.Effect<CMSTutorialResponseEntity, Error> =
+        Effect.gen(this, function* () {
+          const founded = yield* this.tutorialSrv.getOne(tx, slug);
+          if (!this.tutorialAccessSrv.canUpdate(account, founded)) {
+            return yield* Effect.fail(new ForbiddenException());
+          }
 
-    return this.runtimeSrv.runPromise(program);
+          const updated = yield* this.tutorialSrv.update(tx, slug, body);
+          const serialized =
+            yield* this.tutorialSerializerSrv.serializeCMS(updated);
+
+          return new CMSTutorialResponseEntity({ data: serialized });
+        });
+
+      return this.runtimeSrv.runPromise(program);
+    });
   }
 }

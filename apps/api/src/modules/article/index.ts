@@ -1,7 +1,6 @@
 export { ArticleModule } from './article.module';
 
-export { ArticleAccessControlService } from './services/article-access-control.service';
-export { ArticlePublishingService } from './services/article-publishing.service';
+export { UpdateCMSArticleDTO } from './dto/update-article.dto';
 
 export type { ArticleBlockEntity } from './entities/article-block.entity';
 export { ArticleCodeBlockEntity } from './entities/article-code-block.entity';
@@ -13,14 +12,13 @@ export {
   serializeArticleBlockList,
 } from './serializers/article-block.serializer';
 
-export {
-  type DBArticle,
-  type DBArticleAccessControl,
-  type DBArticleFragment,
-  type DBArticlePublishing,
-  type DBArticleSegment,
-  dbArticleAccessContolSelect,
-  dbArticlePublishingSelect,
-  dbArticleSegmentSelect,
-  dbArticleSelect,
-} from './repositories/article.db-models';
+export type {
+  DBArticle,
+  DBArticleShort,
+} from './repositories/article.db-types';
+
+export { ArticleAccessService } from './services/article-access.service';
+export { ArticleObfuscationService } from './services/article-obfuscation.service';
+export { ArticleTranslationService } from './services/article-translation.service';
+export { ArticleSerializerService } from './services/article-serializer.service';
+export { ArticleRepository } from './repositories/article.repository';

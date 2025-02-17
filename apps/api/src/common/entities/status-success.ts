@@ -1,16 +1,6 @@
 // global modules
 import type { StatusSuccessResponse } from '@repo/api-models';
 
-// common modules
-import { Entity } from 'src/common/entities/entity';
-
-export class StatusSuccessResponseEntity
-  extends Entity
-  implements StatusSuccessResponse
-{
+export class StatusSuccessResponseEntity implements StatusSuccessResponse {
   data: StatusSuccessResponse['data'] = { status: 'success' };
-
-  constructor() {
-    super();
-  }
 }

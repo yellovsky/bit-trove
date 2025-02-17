@@ -12,7 +12,6 @@ import {
 
 // local modules
 import { AppModule } from './app.module';
-import { BadRequestAPIError } from './exceptions';
 import { HttpExceptionFilter } from './http-exception.filter';
 
 const API_PREFIX = 'api';
@@ -52,7 +51,6 @@ async function bootstrap() {
     .use(cookieParser())
     .useGlobalPipes(
       new ValidationPipe({
-        exceptionFactory: () => new BadRequestAPIError({}),
         transform: true,
         whitelist: true,
       }),

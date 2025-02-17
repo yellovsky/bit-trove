@@ -34,6 +34,10 @@ export type TutorialListResponse = ListResponse<TutorialSegment>;
 // ============================================================================
 //                   T U T O R I A L   I T E M
 // ============================================================================
+export interface GetOneTutorialFP {
+  locale: string;
+}
+
 export interface Tutorial extends TutorialSegment {
   blocks: ArticleBlock[];
   seo_title: string;
@@ -58,6 +62,7 @@ export interface CMSTutorialTranslations {
 }
 
 export interface CMSTutorial {
+  original_language_code: string;
   translations: CMSTutorialTranslations[];
 }
 

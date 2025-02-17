@@ -2,13 +2,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import type { ArticleCodeBlock, CodeBlockVariant } from '@repo/api-models';
 
-// common modules
-import { Entity, type WithoutEntityType } from 'src/common/entities/entity';
-
-export class ArticleCodeBlockVariantEntity
-  extends Entity
-  implements CodeBlockVariant
-{
+export class ArticleCodeBlockVariantEntity implements CodeBlockVariant {
   @ApiProperty({ type: String })
   language: string;
 
@@ -21,9 +15,7 @@ export class ArticleCodeBlockVariantEntity
   @ApiProperty({ nullable: true, type: String })
   label: string | null;
 
-  constructor(data: WithoutEntityType<ArticleCodeBlockVariantEntity>) {
-    super();
-
+  constructor(data: ArticleCodeBlockVariantEntity) {
     this.language = data.language;
     this.text = data.text;
     this.filename = data.filename;
@@ -31,23 +23,18 @@ export class ArticleCodeBlockVariantEntity
   }
 }
 
-export class ArticleCodeBlockContentEntity extends Entity {
+export class ArticleCodeBlockContentEntity {
   @ApiProperty({ type: [ArticleCodeBlockVariantEntity] })
   variants: ArticleCodeBlockVariantEntity[];
 
-  constructor(data: WithoutEntityType<ArticleCodeBlockContentEntity>) {
-    super();
-
+  constructor(data: ArticleCodeBlockContentEntity) {
     this.variants = data.variants;
   }
 }
 
-export class ArticleCodeBlockEntity extends Entity implements ArticleCodeBlock {
+export class ArticleCodeBlockEntity implements ArticleCodeBlock {
   @ApiProperty({ type: ArticleCodeBlockContentEntity })
-  content: ArticleCodeBlockContentEntity;
-
-  @ApiProperty({ type: Number })
-  order: number;
+  content: ArticleCodeBlock['content'];
 
   @ApiProperty({ enum: ['code'] })
   type: 'code' = 'code';
@@ -58,11 +45,8 @@ export class ArticleCodeBlockEntity extends Entity implements ArticleCodeBlock {
   @ApiProperty({ nullable: true, type: String })
   subtitle: string | null;
 
-  constructor(data: WithoutEntityType<ArticleCodeBlockEntity>) {
-    super();
-
+  constructor(data: ArticleCodeBlockEntity) {
     this.content = data.content;
-    this.order = data.order;
     this.title = data.title;
     this.subtitle = data.subtitle;
   }

@@ -3,32 +3,37 @@ import { Effect } from 'effect';
 import { Inject, Injectable } from '@nestjs/common';
 
 // common modules
-import { AppConfigService } from 'src/modules/app-config';
-import { PrismaService } from 'src/modules/prisma';
-import type { RepositoryContext } from 'src/types/context';
-
-// local modules
-import type { DBAccount } from './account.db-models';
+import type { DB } from 'src/db';
+import { DRIZZLE_SRV } from 'src/modules/drizzle';
+import type { DBAccount, DBAccountWithPWDHash } from 'src/modules/account';
 
 @Injectable()
 export class AccountRepository {
   constructor(
-    @Inject() private readonly appConfigSrv: AppConfigService,
-    @Inject() private readonly prismaSrv: PrismaService,
+    @Inject(DRIZZLE_SRV)
+    private readonly db: DB,
   ) {}
 
-  findUnique(
-    _ctx: RepositoryContext,
-    params: { email: string },
+  findByEmail(
+    db: DB | null,
+    email: string,
   ): Effect.Effect<DBAccount | null, Error> {
-    return Effect.gen(this, function* () {
-      return this.appConfigSrv.adminEmail === params.email
-        ? {
-            email: params.email,
-            id: 'ae250e41-3623-4a9b-9b7f-2fd730fec085',
-            roles: ['admin'],
-          }
-        : null;
-    });
+    return Effect.tryPromise(() =>
+      (db || this.db).query.accounts.findFirst({
+        columns: { pwd_hash: false },
+        where: (accounts, { eq }) => eq(accounts.email, email),
+      }),
+    ).pipe(Effect.map((val) => val || null));
+  }
+
+  findByEmailWithPWDHash(
+    db: DB | null,
+    email: string,
+  ): Effect.Effect<DBAccountWithPWDHash | null, Error> {
+    return Effect.tryPromise(() =>
+      (db || this.db).query.accounts.findFirst({
+        where: (accounts, { eq }) => eq(accounts.email, email),
+      }),
+    ).pipe(Effect.map((val) => val || null));
   }
 }

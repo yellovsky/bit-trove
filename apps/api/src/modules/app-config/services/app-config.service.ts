@@ -13,12 +13,4 @@ export class AppConfigService {
   get webClientHostname(): string {
     return this.configService.getOrThrow<string>('WEB_CLIENT_HOSTNAME');
   }
-
-  get adminEmail(): string {
-    return this.configService.getOrThrow<string>('ADMIN_EMAIL');
-  }
-
-  get adminPassword(): string {
-    return this.configService.getOrThrow<string>('ADMIN_PASSWORD');
-  }
 }
