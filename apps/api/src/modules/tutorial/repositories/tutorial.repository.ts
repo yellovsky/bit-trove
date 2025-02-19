@@ -3,7 +3,13 @@ import type { DB } from 'src/db';
 import { Effect } from 'effect';
 import { validate as validateUUID } from 'uuid';
 import { count, eq } from 'drizzle-orm';
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+
+import {
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 
 // common modules
 import { ArticleRepository } from 'src/modules/article';
@@ -72,15 +78,18 @@ export class TutorialRepository {
 
   findTotal(
     db: DB | null,
-    dto: FindManyTutorialsDTO,
+    _dto: FindManyTutorialsDTO,
   ): Effect.Effect<number, Error> {
     return Effect.tryPromise(() =>
-      (db || this.db)
-        .select({ count: count() })
-        .from(tutorials)
-        .limit(dto.page.limit)
-        .offset(dto.page.offset),
-    ).pipe(Effect.map(() => 100));
+      (db || this.db).select({ count: count() }).from(tutorials),
+    ).pipe(
+      Effect.flatMap((founded) => {
+        const total = founded.at(0)?.count;
+        return total === undefined
+          ? Effect.fail(new InternalServerErrorException())
+          : Effect.succeed(total);
+      }),
+    );
   }
 
   update(

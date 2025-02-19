@@ -10,13 +10,16 @@ export const makeDateFormatter = (locales: Intl.LocalesArgument) =>
 
 export const useDateFormatter = (locale?: Intl.LocalesArgument) => {
   const currentLocale = useLocale();
+  return useMemo(() => makeDateFormatter(locale || currentLocale), [locale || currentLocale]);
+};
 
-  return useMemo(
-    () =>
-      new Intl.DateTimeFormat(locale || currentLocale, {
-        month: 'long',
-        year: 'numeric',
-      }),
-    [locale || currentLocale],
-  );
+export const makeDateTimeFormatter = (locales: Intl.LocalesArgument) =>
+  new Intl.DateTimeFormat(locales, {
+    dateStyle: 'short',
+    timeStyle: 'medium',
+  });
+
+export const useDateTimeFormatter = (locale?: Intl.LocalesArgument) => {
+  const currentLocale = useLocale();
+  return useMemo(() => makeDateTimeFormatter(locale || currentLocale), [locale || currentLocale]);
 };

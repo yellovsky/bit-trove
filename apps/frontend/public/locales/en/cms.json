@@ -28,5 +28,13 @@
   "Add code variant": "Add code variant",
   "No code variants": "No code variats",
   "Add code block": "Add code block",
-  "Adding code block": "Adding code block"
+  "Adding code block": "Adding code block",
+  "Permission Policies": "Permission Policies",
+  "ID": "ID",
+  "Subject": "Subject",
+  "Action": "Action",
+  "Obj. Type": "Obj. Type",
+  "Condition": "Condition",
+  "Delete": "Delete",
+  "Cancel": "Cancel"
 }

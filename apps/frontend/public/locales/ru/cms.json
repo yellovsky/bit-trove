@@ -28,5 +28,13 @@
   "Add code variant": "Добавить вариант кода",
   "No code variants": "Вариантов кода нет",
   "Add code block": "Добавить блок кода",
-  "Adding code block": "Добавление блока кода"
+  "Adding code block": "Добавление блока кода",
+  "Permission Policies": "Политики доступа",
+  "ID": "ID",
+  "Subject": "Актор",
+  "Action": "Действие",
+  "Obj. Type": "Тип объекта",
+  "Condition": "Условие",
+  "Delete": "Удалить",
+  "Cancel": "Отмена"
 }

@@ -1,5 +1,6 @@
 // global modules
 import { Effect } from 'effect';
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import {
@@ -7,6 +8,7 @@ import {
   ForbiddenException,
   Get,
   Inject,
+  LoggerService,
   Param,
   Query,
 } from '@nestjs/common';
@@ -49,6 +51,9 @@ export class BlogPostsV1Controller {
 
     @Inject()
     private readonly blogPostSerializerSrv: BlogPostSerializerService,
+
+    @Inject(WINSTON_MODULE_NEST_PROVIDER)
+    private readonly logger: LoggerService,
   ) {}
 
   @Get()
@@ -56,12 +61,15 @@ export class BlogPostsV1Controller {
   @ApiOperation({ description: 'Get blog posts list' })
   @ApiOkResponse({ type: BlogPostListResponseEntity })
   @ApiCommonErrorResponses('bad_request')
-  async getBlogPostList(
+  async getList(
     @Query() query: FindManyBlogPostsDTO,
   ): Promise<BlogPostListResponseEntity> {
     const program: Effect.Effect<BlogPostListResponseEntity, Error> =
       Effect.gen(this, function* () {
-        yield* Effect.logDebug('query', query);
+        this.logger.debug?.(
+          `[getBlogPostList] query: ${JSON.stringify(query)}`,
+          `${BlogPostsV1Controller.name}.getList`,
+        );
 
         const [founded, total] = yield* Effect.all([
           this.blogPostSrv.getManyShort(null, query),
@@ -106,13 +114,22 @@ export class BlogPostsV1Controller {
   @ApiCommonErrorResponses('not_found')
   @Public()
   @Get(':slugOrID')
-  async getBlogPost(
+  async getOne(
     @Param('slugOrID') slugOrID: string,
     @Query() query: FindOneTutorialDTO,
   ): Promise<BlogPostResponseEntity> {
     const program: Effect.Effect<BlogPostResponseEntity, Error> = Effect.gen(
       this,
       function* () {
+        this.logger.debug?.(
+          `[getBlogPost] slugOrID: ${slugOrID}`,
+          BlogPostsV1Controller.name,
+        );
+        this.logger.debug?.(
+          `[getBlogPost] query: ${JSON.stringify(query)}`,
+          `${BlogPostsV1Controller.name}.getOne`,
+        );
+
         const founded = yield* this.blogPostSrv.getOne(null, slugOrID);
 
         if (!(yield* this.blogPostAccessSrv.canRead(null, founded))) {

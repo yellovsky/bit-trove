@@ -4,3 +4,4 @@ export * from './auth';
 export * from './tutorial';
 export * from './article';
 export * from './status-success';
+export * from './permission-policy';

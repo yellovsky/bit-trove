@@ -1,9 +1,10 @@
 // global modules
 import clsx from 'clsx';
-import type { FC, HTMLAttributes, TableHTMLAttributes } from 'react';
+import type { FC, HTMLAttributes, PropsWithChildren, TableHTMLAttributes } from 'react';
 
 // local modules
 import {
+  paginationHolder as paginationHolderCn,
   table as tableCn,
   tbody as tbodyCn,
   td as tdCn,
@@ -34,4 +35,11 @@ export const Td: FC<HTMLAttributes<HTMLTableDataCellElement>> = props => (
 
 export const Th: FC<HTMLAttributes<HTMLTableHeaderCellElement>> = props => (
   <th {...props} className={clsx(props.className, thCn)} scope="col" />
+);
+
+interface TablePaginationHolderProps extends PropsWithChildren {
+  className?: string;
+}
+export const TablePaginationHolder: FC<TablePaginationHolderProps> = props => (
+  <div {...props} className={clsx(props.className, paginationHolderCn)} />
 );

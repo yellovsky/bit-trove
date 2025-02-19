@@ -1,10 +1,12 @@
 /// global modules
-import { pgTable, uuid, varchar } from 'drizzle-orm/pg-core';
+import { pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
 
 export const casbinRules = pgTable('casbin_rules', {
   id: uuid('id').primaryKey().defaultRandom(),
   note: varchar('note', { length: 255 }),
   ptype: varchar('ptype', { length: 255 }).notNull(),
+
+  created_at: timestamp('created_at').defaultNow().notNull(),
 
   v0: varchar('v0', { length: 255 }),
   v1: varchar('v1', { length: 255 }),

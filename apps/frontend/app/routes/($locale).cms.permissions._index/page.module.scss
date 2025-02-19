@@ -1,0 +1,7 @@
+.page {
+  @apply page-padding-vertical page-padding-horizontal;
+}
+
+.cell {
+  @apply line-clamp-2;
+}

@@ -30,7 +30,6 @@ import { BlogPostTranslationService } from './services/blog-post-translation.ser
   providers: [
     BlogPostRepository,
     BlogPostService,
-
     BlogPostAccessService,
     BlogPostObfuscationService,
     BlogPostTranslationService,

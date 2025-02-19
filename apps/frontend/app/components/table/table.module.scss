@@ -22,4 +22,16 @@
       @apply flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white;
     }
   }
+
+  .sortable {
+    @apply cursor-pointer hover:text-text;
+
+    &.active {
+      @apply text-text;
+    }
+  }
+}
+
+.paginationHolder {
+  @apply flex justify-end;
 }

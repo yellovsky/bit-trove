@@ -1,6 +1,7 @@
 // global modules
 import cookieParser from 'cookie-parser';
 import type { NestExpressApplication } from '@nestjs/platform-express';
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { NestFactory, Reflector } from '@nestjs/core';
 
@@ -63,6 +64,7 @@ async function bootstrap() {
   SwaggerModule.setup(`${API_PREFIX}/:version/docs`, app, document);
 
   // app.enableShutdownHooks();
+  app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
   await app.listen(3001);
 }
 bootstrap();

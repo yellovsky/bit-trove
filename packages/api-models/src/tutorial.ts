@@ -50,7 +50,6 @@ export type TutorialResponse = ItemResponse<Tutorial>;
 // ============================================================================
 //                                C M S
 // ============================================================================
-
 export interface CMSTutorialTranslations {
   language_code: string;
   seo_title: string;

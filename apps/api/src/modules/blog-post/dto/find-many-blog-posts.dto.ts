@@ -20,7 +20,7 @@ const FIND_MANY_BLOG_POSTS_SORT = [
 
 export class FindManyBlogPostsDTO implements BlogPostListFP {
   @IsNotEmpty()
-  @ApiProperty({ type: Number })
+  @ApiProperty({ type: String })
   @IsEnum(FIND_MANY_BLOG_POSTS_SORT)
   @ApiProperty({ enum: FIND_MANY_BLOG_POSTS_SORT })
   sort!: BlogPostListFP['sort'];

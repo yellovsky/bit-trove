@@ -5,7 +5,11 @@ import { Inject, Injectable } from '@nestjs/common';
 
 export type CasbinSub = string | null | undefined;
 export type CasbinAct = 'read' | 'read_cms' | 'create' | 'update' | 'delete';
-export type CasbinObjType = 'tutorial' | 'article' | 'blog_post';
+export type CasbinObjType =
+  | 'tutorial'
+  | 'article'
+  | 'blog_post'
+  | 'permission_policy';
 
 @Injectable()
 export class CasbinService {

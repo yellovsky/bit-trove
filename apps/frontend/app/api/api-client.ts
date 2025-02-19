@@ -30,6 +30,7 @@ export interface ApiClient extends EventEmitter<'access_token_expired'> {
   updateAuthHeader: (accessToken: string | null) => void;
 
   get<T = any>(url: string, config?: AxiosRequestConfig<any>): Effect.Effect<T, FailedResponse>;
+  delete<T = any>(url: string, config?: AxiosRequestConfig<any>): Effect.Effect<T, FailedResponse>;
   post<T = any>(
     url: string,
     data?: any,
@@ -113,6 +114,17 @@ class ApiClientClass extends EventEmitter<'access_token_expired'> implements Api
           : UNKNOWN_FAILED_RESPONSE,
       try: () =>
         this.axios.put<T, AxiosResponse<T, any>>(url, data, config).then(response => response.data),
+    });
+  }
+
+  delete<T = any>(url: string, config?: AxiosRequestConfig<any>): Effect.Effect<T, FailedResponse> {
+    return Effect.tryPromise({
+      catch: error =>
+        isAxiosError(error) && isFailedResponse(error.response?.data)
+          ? error.response.data
+          : UNKNOWN_FAILED_RESPONSE,
+      try: () =>
+        this.axios.delete<T, AxiosResponse<T, any>>(url, config).then(response => response.data),
     });
   }
 }

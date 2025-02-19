@@ -4,3 +4,6 @@ export const tbody: string;
 export const tr: string;
 export const td: string;
 export const th: string;
+export const paginationHolder: string;
+export const active: string;
+export const sortable: string;
