@@ -4,6 +4,8 @@ import { useLocale } from '@repo/remix-i18n';
 import { type FC, useCallback } from 'react';
 
 // common modules
+import { LoadingScreen } from '~/components/screens/loading';
+import { NotFoundScreen } from '~/components/screens/not-found';
 import { UpsertTutorialForm } from '~/components/forms/upsert-tutorial';
 import { useCMSTutorialQuery, useUpdateTutorialMutation } from '~/api/tutorial';
 
@@ -24,9 +26,13 @@ export const CMSEditTutorialPage: FC<CMSEditTutorialPageProps> = ({ slug }) => {
     [slug, updateMutation.mutateAsync],
   );
 
-  return !cmsTutorialQuery.isFetched ? null : (
+  return !cmsTutorialQuery.isFetched ? (
+    <LoadingScreen />
+  ) : !cmsTutorialQuery.data?.data ? (
+    <NotFoundScreen />
+  ) : (
     <div className={pageCn}>
-      <UpsertTutorialForm defaultValues={cmsTutorialQuery.data?.data} onSubmit={handleSubmit} />
+      <UpsertTutorialForm defaultValues={cmsTutorialQuery.data.data} onSubmit={handleSubmit} />
     </div>
   );
 };
