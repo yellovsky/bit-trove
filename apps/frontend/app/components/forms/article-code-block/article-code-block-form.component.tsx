@@ -12,11 +12,9 @@ import { useReactForm } from '~/utils/react-form';
 // local modules
 import { ArticleCodeBlockFormVariants } from './article-code-block-form.variant';
 import { articleCodeBlockSchema } from './article-code-block-form.schema';
+import type { CommonFormProps } from '../forms.types';
 
-interface ArticleCodeBlockFormProps {
-  defaultValues: ArticleCodeBlock;
-  onSubmit(block: ArticleCodeBlock): void;
-}
+interface ArticleCodeBlockFormProps extends CommonFormProps<ArticleCodeBlock> {}
 
 export const ArticleCodeBlockForm: FC<ArticleCodeBlockFormProps> = props => {
   const { t: cmsT } = useTranslation('cms');

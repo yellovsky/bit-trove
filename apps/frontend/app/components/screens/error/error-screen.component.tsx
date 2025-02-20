@@ -10,7 +10,7 @@ export const ErrorScreen: FC = () => {
 
   return (
     <ScreenLayout
-      code="404"
+      code="500"
       message={t('PAGE_UNKNOWN_ERROR_MESSAGE')}
       title={t('PAGE_UNKNOWN_ERROR_TITLE')}
     />

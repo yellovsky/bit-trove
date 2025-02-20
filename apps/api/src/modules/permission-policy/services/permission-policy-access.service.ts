@@ -26,8 +26,20 @@ export class PermissionPolicyAccessService {
     );
   }
 
+  canDelete(
+    account: DBAccount | null,
+    policy: DBCasbinRule,
+  ): Effect.Effect<boolean, Error> {
+    return this.casbinSrv.checkPermission(
+      account?.id,
+      'delete',
+      'permission_policy',
+      policy,
+    );
+  }
+
   canReadCMSFilter(
-    user: DBAccount | null,
+    account: DBAccount | null,
     policies: Array<DBCasbinRule | null>,
   ): Effect.Effect<Array<DBCasbinRule | null>, Error> {
     return Effect.all(
@@ -35,9 +47,30 @@ export class PermissionPolicyAccessService {
         !policy
           ? Effect.succeed(null)
           : this.casbinSrv
-              .checkPermission(user?.id, 'read_cms', 'tutorial', policy)
+              .checkPermission(account?.id, 'read_cms', 'tutorial', policy)
               .pipe(Effect.map((allowed) => (allowed ? policy : null))),
       ),
+    );
+  }
+
+  canCreate(account: DBAccount | null): Effect.Effect<boolean, Error> {
+    return this.casbinSrv.checkPermission(
+      account?.id,
+      'create',
+      'tutorial',
+      {},
+    );
+  }
+
+  canUpdate(
+    account: DBAccount | null,
+    policy: DBCasbinRule,
+  ): Effect.Effect<boolean, Error> {
+    return this.casbinSrv.checkPermission(
+      account?.id,
+      'update',
+      'tutorial',
+      policy,
     );
   }
 }

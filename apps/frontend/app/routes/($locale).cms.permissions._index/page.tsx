@@ -14,7 +14,8 @@ import {
 } from '@tanstack/react-table';
 
 // common modules
-import { Heading } from '~/components/heading';
+import { CMSPageTitle } from '~/components/cms-page-title';
+import { EmptyText } from '~/components/empty-text';
 import { LinkButton } from '~/components/link';
 import { Modal } from '~/components/modal';
 import { TablePagination } from '~/components/table-pagination';
@@ -24,23 +25,25 @@ import { useSearchSortingState } from '~/utils/sort';
 import { TablePaginationHolder, TableWithData } from '~/components/table';
 
 import {
-  type FetchCMSPermissionPolicyListVariables,
+  type GetCMSPermissionPolicyListVariables,
   useCMSPermissionPolicyListQuery,
 } from '~/api/permission-policy';
 
 // local modules
+import { CreateModalConent } from './create-modal-conent';
+import { EditModalConent } from './edit-modal-conent';
 import { PermissionPolicyDeleteConfirmation } from './delete-confirmation';
 import { cell as cellCn, page as pageCn } from './page.module.scss';
 
-const renderCell = (ctx: CellContext<PermissionPolicy | null, any>) => (
+const renderCell = (ctx: CellContext<PermissionPolicy, any>) => (
   <span className={cellCn}>{ctx.getValue()}</span>
 );
 
-const columnHelper = createColumnHelper<PermissionPolicy | null>();
+const columnHelper = createColumnHelper<PermissionPolicy>();
 const useColumns = (
   onEdit: (id: string) => void,
   onDelete: (id: string) => void,
-): ColumnDef<PermissionPolicy | null, any>[] => {
+): ColumnDef<PermissionPolicy, any>[] => {
   const { t: cmsT } = useTranslation('cms');
   const dateTimeFormatter = useDateTimeFormatter();
 
@@ -101,8 +104,11 @@ const isPermissionPolicySort = (val: string): val is SortWithDirection<'created_
 export const CMSPermissionsPage: FC = () => {
   const [editID, updateEditID] = useState<string | undefined>();
   const [deleteID, updateDeleteID] = useState<string | undefined>();
+  const [showCreateModal, updateShowCreateModal] = useState(false);
   const clearEditID = useCallback(() => updateEditID(undefined), []);
   const clearDeleteID = useCallback(() => updateDeleteID(undefined), []);
+  const openCreateModal = useCallback(() => updateShowCreateModal(true), []);
+  const closeCreateModal = useCallback(() => updateShowCreateModal(false), []);
 
   const columns = useColumns(updateEditID, updateDeleteID);
   const { t: cmsT } = useTranslation('cms');
@@ -113,13 +119,13 @@ export const CMSPermissionsPage: FC = () => {
     isPermissionPolicySort,
   );
 
-  const fp = useMemo<FetchCMSPermissionPolicyListVariables>(
+  const fp = useMemo<GetCMSPermissionPolicyListVariables>(
     () => ({ filter: { ptype: 'p' }, sort }),
     [sort],
   );
 
   const policyListQuery = useCMSPermissionPolicyListQuery(fp, pagination);
-  const data = policyListQuery.data?.data || NO_DATA;
+  const data = (policyListQuery.data?.data || NO_DATA).filter(val => !!val);
 
   const table = useReactTable({
     columns,
@@ -138,11 +144,11 @@ export const CMSPermissionsPage: FC = () => {
   return (
     <>
       <div className={pageCn}>
-        <Heading as="h1" className="mb-4" size="xl">
-          {cmsT('Permission Policies')}
-        </Heading>
+        <CMSPageTitle onCreateClick={openCreateModal}>{cmsT('Permission Policies')}</CMSPageTitle>
 
         <TableWithData className="mb-4" table={table} />
+
+        {data.length ? null : <EmptyText>{cmsT('Nothing is found')}</EmptyText>}
 
         <TablePaginationHolder>
           <TablePagination
@@ -156,15 +162,18 @@ export const CMSPermissionsPage: FC = () => {
           />
         </TablePaginationHolder>
       </div>
-
-      <Modal onClose={clearEditID} opened={!!editID}>
-        Edit
+      <Modal
+        onClose={clearEditID}
+        opened={!!editID}
+        title={cmsT('Edit Permission Policy')}
+        widthType="medium"
+      >
+        {!editID ? null : <EditModalConent id={editID} onSuccess={clearEditID} />}
       </Modal>
-
       <Modal
         onClose={clearDeleteID}
         opened={!!deleteID}
-        title="Confirm deletion"
+        title={cmsT('Confirm deletion')}
         widthType="medium"
       >
         {!deleteID ? null : (
@@ -174,6 +183,15 @@ export const CMSPermissionsPage: FC = () => {
             onSuccess={clearDeleteID}
           />
         )}
+      </Modal>
+
+      <Modal
+        onClose={closeCreateModal}
+        opened={showCreateModal}
+        title={cmsT('Create Privacy Policy')}
+        widthType="medium"
+      >
+        <CreateModalConent onSuccess={closeCreateModal} />
       </Modal>
     </>
   );

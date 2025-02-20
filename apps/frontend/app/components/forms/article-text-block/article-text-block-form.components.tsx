@@ -12,6 +12,7 @@ import { ReactFormTextControl } from '~/components/form-controls/react-form-text
 import { useReactForm } from '~/utils/react-form';
 
 // local modules
+import type { CommonFormProps } from '../forms.types';
 import { types as typesCn } from './article-text-block-form.module.scss';
 
 export const articleTextBlockSchema: zod.ZodType<ArticleTextBlock> = zod.object({
@@ -32,10 +33,7 @@ export const DEFAULT_TEXT_BLOCK: ArticleTextBlock = {
   type: 'text',
 } as const;
 
-interface ArticleTextBlockFormProps {
-  defaultValues: ArticleTextBlock;
-  onSubmit(block: ArticleTextBlock): void;
-}
+interface ArticleTextBlockFormProps extends CommonFormProps<ArticleTextBlock> {}
 
 export const ArticleTextBlockForm: FC<ArticleTextBlockFormProps> = props => {
   const [type, updateType] = useState<'md' | 'html'>('md');

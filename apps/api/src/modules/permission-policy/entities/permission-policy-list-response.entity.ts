@@ -1,6 +1,6 @@
 // global modules
 import { ApiProperty } from '@nestjs/swagger';
-import type { PermissionPolicyListResponse } from '@repo/api-models';
+import type { GetPermissionPolicyListResponse } from '@repo/api-models';
 
 // common modules
 import { ListResponseMetaEntity } from 'src/common/entities/response';
@@ -8,16 +8,16 @@ import { ListResponseMetaEntity } from 'src/common/entities/response';
 // local modules
 import { PermissionPolicyEntity } from './permission-policy.entity';
 
-export class PermissionPolicyListResponseEntity
-  implements PermissionPolicyListResponse
+export class GetPermissionPolicyListResponseEntity
+  implements GetPermissionPolicyListResponse
 {
   @ApiProperty({ type: [PermissionPolicyEntity] })
-  data: PermissionPolicyListResponse['data'];
+  data: GetPermissionPolicyListResponse['data'];
 
   @ApiProperty({ type: [ListResponseMetaEntity] })
-  meta: PermissionPolicyListResponse['meta'];
+  meta: GetPermissionPolicyListResponse['meta'];
 
-  constructor(response: PermissionPolicyListResponseEntity) {
+  constructor(response: GetPermissionPolicyListResponseEntity) {
     this.data = response.data.map((policy) =>
       !policy ? null : new PermissionPolicyEntity(policy),
     );

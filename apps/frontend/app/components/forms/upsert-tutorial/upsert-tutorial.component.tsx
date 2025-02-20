@@ -9,6 +9,7 @@ import { ErrorDivider } from '~/components/controls/error-divider';
 import { useReactForm } from '~/utils/react-form';
 
 // local modules
+import type { CommonFormProps } from '../forms.types';
 import { UpsertTutorialFormTranslations } from './upsert-tutorial.translations';
 import { upsertTutorialFPSchema } from './upsert-tutorial.schema';
 
@@ -17,10 +18,7 @@ export const UPSERT_TUTORIAL_DEFAULT_VALUES: CMSTutorial = {
   translations: [],
 } as const;
 
-interface UpsertTutorialFormProps {
-  defaultValues?: CMSTutorial;
-  onSubmit(cmsTutorial: CMSTutorial): void;
-}
+interface UpsertTutorialFormProps extends CommonFormProps<CMSTutorial> {}
 
 export const UpsertTutorialForm: FC<UpsertTutorialFormProps> = props => {
   const { t: cmsT } = useTranslation('cms');

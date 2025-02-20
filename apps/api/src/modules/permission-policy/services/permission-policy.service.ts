@@ -1,6 +1,11 @@
 // global modules
 import { Effect } from 'effect';
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 
 // common modules
 import type { DB } from 'src/db';
@@ -9,6 +14,7 @@ import type { DBCasbinRule } from 'src/db/schema';
 // local modules
 import type { FindManyPermissionsDTO } from '../dto/find-many-permission-polices.dto';
 import { PermissionPolicyRepository } from '../repositories/permission-policy.repository';
+import type { UpsertPermissionPolicyDTO } from '../dto/upsert-permission-policy.dto';
 
 @Injectable()
 export class PermissionPolicyService {
@@ -42,5 +48,36 @@ export class PermissionPolicyService {
 
   deleteOne(tx: DB | null, id: string): Effect.Effect<void, Error> {
     return this.permissionPolicyRepo.deleteOne(tx, id);
+  }
+
+  update(
+    tx: DB | null,
+    id: string,
+    dto: UpsertPermissionPolicyDTO,
+  ): Effect.Effect<DBCasbinRule, Error> {
+    return this.permissionPolicyRepo
+      .update(tx, id, dto)
+      .pipe(
+        Effect.flatMap((val) =>
+          !val
+            ? Effect.fail(new InternalServerErrorException())
+            : Effect.succeed(val),
+        ),
+      );
+  }
+
+  create(
+    tx: DB | null,
+    dto: UpsertPermissionPolicyDTO,
+  ): Effect.Effect<DBCasbinRule, Error> {
+    return this.permissionPolicyRepo
+      .create(tx, dto)
+      .pipe(
+        Effect.flatMap((val) =>
+          !val
+            ? Effect.fail(new InternalServerErrorException())
+            : Effect.succeed(val),
+        ),
+      );
   }
 }

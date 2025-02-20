@@ -1,6 +1,12 @@
 // global modules
-import type { GetPermissionPolicyResponse } from '@repo/api-models';
-import { keepPreviousData, type QueryFunction, useQuery } from '@tanstack/react-query';
+import type { FailedResponse, GetPermissionPolicyResponse } from '@repo/api-models';
+
+import {
+  keepPreviousData,
+  type QueryFunction,
+  useQuery,
+  type UseQueryOptions,
+} from '@tanstack/react-query';
 
 // common modules
 import { runAsyncEffect } from '~/utils/effect';
@@ -26,10 +32,19 @@ const getCMSPermissionPolicyQFn =
       }),
     );
 
-export const useCMSPermissionPolicyQuery = (id: string) => {
+export const useCMSPermissionPolicyQuery = (
+  id: string,
+  options?: UseQueryOptions<
+    GetPermissionPolicyResponse,
+    FailedResponse,
+    GetPermissionPolicyResponse,
+    GetCMSPermissionPolicyQKey
+  >,
+) => {
   const apiClient = useApiClient();
 
   return useQuery({
+    ...options,
     placeholderData: keepPreviousData,
     queryFn: getCMSPermissionPolicyQFn(apiClient),
     queryKey: [

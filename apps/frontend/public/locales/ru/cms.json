@@ -36,5 +36,10 @@
   "Obj. Type": "Тип объекта",
   "Condition": "Условие",
   "Delete": "Удалить",
-  "Cancel": "Отмена"
+  "Cancel": "Отмена",
+  "Nothing is found": "Ничего не найдено",
+  "Edit Permission Policy": "РедактироваEdit permission policy",
+  "Note": "Примечание",
+  "Confirm deletion": "Подтвердить удаление",
+  "Create Privacy Policy": "Созждать политику безопасности"
 }

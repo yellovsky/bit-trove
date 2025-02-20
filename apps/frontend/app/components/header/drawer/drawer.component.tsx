@@ -2,11 +2,13 @@
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import { animated, useSpring } from 'react-spring';
+
 import {
   type ComponentProps,
   type FC,
   type HTMLAttributes,
   type ReactNode,
+  useCallback,
   useEffect,
   useState,
 } from 'react';
@@ -15,6 +17,7 @@ import {
 import { getTutorialsRouteLink } from '~/utils/links';
 import { NavLink } from '~/components/link';
 import { Icon, type IconType } from '~/components/icon';
+import { useAuthStatus, useLogout } from '~/utils/auth';
 
 // local modules
 import {
@@ -26,7 +29,7 @@ import {
 } from './drawer.module.scss';
 
 interface DrawerItemProps extends ComponentProps<typeof NavLink> {
-  icon: IconType;
+  icon?: IconType;
   text: ReactNode;
 }
 
@@ -34,9 +37,7 @@ const DrawerItem: FC<DrawerItemProps> = ({ text, icon, ...rest }) => (
   <NavLink end {...rest}>
     {nProps => (
       <div className={clsx(rest.className, linkCn, nProps.isActive && activeCn)}>
-        <div>
-          <Icon type={icon} />
-        </div>
+        <div>{!icon ? null : <Icon type={icon} />}</div>
         <div>{text}</div>
       </div>
     )}
@@ -56,8 +57,9 @@ const DURATION = 150;
 
 export const Drawer: FC<DrawerProps> = ({ show, toggle }) => {
   const { t } = useTranslation();
+  const authStatus = useAuthStatus();
   const [isDisplayed, setIsDisplayed] = useState(false);
-
+  const logout = useLogout();
   const drawerStyles = useSpring({
     config: { duration: DURATION },
     drawerLeft: show ? 0 : -18,
@@ -84,6 +86,11 @@ export const Drawer: FC<DrawerProps> = ({ show, toggle }) => {
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
   }, [show, toggle]);
+
+  const handleLogoutClick = useCallback(() => {
+    logout();
+    toggle();
+  }, [logout, toggle]);
 
   return (
     <>
@@ -126,6 +133,13 @@ export const Drawer: FC<DrawerProps> = ({ show, toggle }) => {
             to="/about"
             variant="plain"
           />
+
+          {authStatus !== 'authorized' ? null : (
+            <>
+              <DrawerItem onClick={toggle} text="CMS" to="/cms" variant="plain" />
+              <DrawerItem onClick={handleLogoutClick} text="Logout" to="#" variant="plain" />
+            </>
+          )}
         </div>
       </animated.div>
       {!isDisplayed ? null : <Overlay onClick={toggle} style={{ ...overlayStyles }} />}

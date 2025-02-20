@@ -4,7 +4,14 @@ import { type Effector, Enforcer, type Filter, type Watcher } from 'casbin';
 import { Inject, Injectable } from '@nestjs/common';
 
 export type CasbinSub = string | null | undefined;
-export type CasbinAct = 'read' | 'read_cms' | 'create' | 'update' | 'delete';
+export type CasbinAct =
+  | 'view'
+  | 'read'
+  | 'read_cms'
+  | 'create'
+  | 'update'
+  | 'delete';
+
 export type CasbinObjType =
   | 'tutorial'
   | 'article'

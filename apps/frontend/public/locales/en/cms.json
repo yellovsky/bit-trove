@@ -36,5 +36,10 @@
   "Obj. Type": "Obj. Type",
   "Condition": "Condition",
   "Delete": "Delete",
-  "Cancel": "Cancel"
+  "Cancel": "Cancel",
+  "Nothing is found": "Nothing is found",
+  "Edit Permission Policy": "Редактирование политики доступа",
+  "Note": "Note",
+  "Confirm deletion": "Confirm deletion",
+  "Create Privacy Policy": "Create Privacy Policy"
 }

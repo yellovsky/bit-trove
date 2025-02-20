@@ -34,7 +34,10 @@ const innerMerge = (prev: MetaDescriptor[], current: MetaDescriptor[]): MetaDesc
 export const mergeMeta =
   <TLoader>(fn: MetaFunction<TLoader>): MetaFunction<TLoader> =>
   arg =>
-    R.reverse([...arg.matches.map(match => match.meta), fn(arg)]).reduce(
-      innerMerge,
-      [] as MetaDescriptor[],
+    R.uniqWith(
+      R.equals,
+      R.reverse([...arg.matches.map(match => match.meta), fn(arg)]).reduce(
+        innerMerge,
+        [] as MetaDescriptor[],
+      ),
     );

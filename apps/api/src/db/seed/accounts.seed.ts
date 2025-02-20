@@ -13,7 +13,13 @@ type NewAccount = typeof accounts.$inferInsert & {
 export const adminAccount: NewAccount = {
   email: 'admin@email.com',
   pwd_hash: bcrypt.hashSync('admin', 10),
-  roles: ['admin'],
+  roles: ['admin', 'member'],
+} as const;
+
+export const memberAccount: NewAccount = {
+  email: 'member@email.com',
+  pwd_hash: bcrypt.hashSync('member', 10),
+  roles: ['member'],
 } as const;
 
 const seedAccount = (tx: DB, data: NewAccount): Effect.Effect<void, Error> =>
@@ -38,4 +44,6 @@ const seedAccount = (tx: DB, data: NewAccount): Effect.Effect<void, Error> =>
   });
 
 export const seedAccounts = (tx: DB): Effect.Effect<void, Error> =>
-  Effect.all([adminAccount].map((account) => seedAccount(tx, account)));
+  Effect.all(
+    [adminAccount, memberAccount].map((account) => seedAccount(tx, account)),
+  );

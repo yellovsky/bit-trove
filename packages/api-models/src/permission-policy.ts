@@ -12,9 +12,11 @@ export interface PermissionPolicy {
 }
 
 export type GetPermissionPolicyResponse = ItemResponse<PermissionPolicy>;
-export type PermissionPolicyListResponse = ListResponse<PermissionPolicy>;
+export type GetPermissionPolicyListResponse = ListResponse<PermissionPolicy>;
 
 export interface GetPermissionPolicyListFP {
   page: PaginationFP;
   sort: 'created_at' | '-created_at';
 }
+
+export type UpsertPermissionPolicyFP = Omit<PermissionPolicy, 'id' | 'created_at'>;
