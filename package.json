@@ -18,11 +18,6 @@
     "dev:api": "turbo dev --filter=api...",
     "eslint": "eslint"
   },
-  "husky": {
-    "hooks": {
-      "pre-push": "yarn lint typecheck test"
-    }
-  },
   "config": {
     "commitizen": {
       "path": "cz-conventional-changelog"
