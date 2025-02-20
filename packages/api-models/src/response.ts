@@ -44,3 +44,5 @@ export interface PaginationFP {
 }
 
 export type SortWithDirection<TSort extends string> = TSort | `-${TSort}`;
+export type SortWithoutDirection<TWithDirection extends SortWithDirection<string>> =
+  TWithDirection extends SortWithDirection<infer TField> ? TField : never;

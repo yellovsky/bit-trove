@@ -63,7 +63,6 @@ export class CMSTutorialsV1Controller {
   ): Promise<TutorialListResponseEntity> {
     const program: Effect.Effect<TutorialListResponseEntity, Error> =
       Effect.gen(this, function* () {
-        console.log('get MY many');
         const [founded, total] = yield* Effect.all([
           this.tutorialSrv.getManyShort(null, query),
           this.tutorialSrv.getTotal(null, query),

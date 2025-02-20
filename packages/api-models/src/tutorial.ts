@@ -15,6 +15,9 @@ export interface TutorialListFP {
   page: PaginationFP;
   locale: string;
   sort: SortWithDirection<'created_at'>;
+  filter?: {
+    author_id?: string;
+  };
 }
 
 export interface TutorialSegment {

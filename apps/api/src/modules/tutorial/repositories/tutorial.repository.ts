@@ -2,7 +2,7 @@
 import type { DB } from 'src/db';
 import { Effect } from 'effect';
 import { validate as validateUUID } from 'uuid';
-import { count, eq } from 'drizzle-orm';
+import { and, count, eq, type SQL } from 'drizzle-orm';
 
 import {
   Inject,
@@ -15,6 +15,7 @@ import {
 import { ArticleRepository } from 'src/modules/article';
 import { DRIZZLE_SRV } from 'src/modules/drizzle';
 import { tutorials } from 'src/db/schema';
+import { getSortDirectionFn, removeSortDirection } from 'src/utils/sort';
 
 // local modules
 import type { FindManyTutorialsDTO } from '../dto/find-many-tutorials.dto';
@@ -52,10 +53,7 @@ export class TutorialRepository {
     return Effect.tryPromise(() =>
       (db || this.db).query.tutorials.findFirst({
         where: this.#getFindOneWhere(slugOrID),
-
-        with: {
-          article: { with: { translations: true } },
-        },
+        with: { article: { with: { translations: true } } },
       }),
     );
   }
@@ -68,20 +66,22 @@ export class TutorialRepository {
       (db || this.db).query.tutorials.findMany({
         limit: dto.page.limit,
         offset: dto.page.offset,
-        orderBy: (tutorials, { desc }) => [desc(tutorials.created_at)],
-        with: {
-          article: { with: { translations: true } },
-        },
+        orderBy: this.#getOrderBy(dto.sort),
+        where: this.#getWhere(dto.filter),
+        with: { article: { with: { translations: true } } },
       }),
     );
   }
 
   findTotal(
     db: DB | null,
-    _dto: FindManyTutorialsDTO,
+    dto: FindManyTutorialsDTO,
   ): Effect.Effect<number, Error> {
     return Effect.tryPromise(() =>
-      (db || this.db).select({ count: count() }).from(tutorials),
+      (db || this.db)
+        .select({ count: count() })
+        .from(tutorials)
+        .where(this.#getWhere(dto.filter)),
     ).pipe(
       Effect.flatMap((founded) => {
         const total = founded.at(0)?.count;
@@ -115,5 +115,21 @@ export class TutorialRepository {
     return validateUUID(slugOrID)
       ? eq(tutorials.id, slugOrID)
       : eq(tutorials.slug, slugOrID);
+  }
+
+  #getOrderBy(sort: FindManyTutorialsDTO['sort']) {
+    const direction = getSortDirectionFn(sort);
+    const columnName = removeSortDirection(sort);
+    return direction(tutorials[columnName]);
+  }
+
+  #getWhere(filters: FindManyTutorialsDTO['filter']) {
+    const sqls: SQL[] = [];
+
+    if (filters?.author_id) {
+      sqls.push(eq(tutorials.author_id, filters.author_id));
+    }
+
+    return and(...sqls);
   }
 }
