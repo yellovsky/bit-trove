@@ -1,2 +1,1 @@
-commitlint --edit $1
-yarn typecheck lint test
+yarn lint typecheck test
