@@ -3,6 +3,7 @@ import type { FailedResponse } from '@repo/api-models';
 import { useTranslation } from 'react-i18next';
 import type zod from 'zod';
 import { useCallback, useMemo } from 'react';
+import type { UseMutationOptions, UseMutationResult } from '@tanstack/react-query';
 
 import {
   type DefaultValues,
@@ -14,7 +15,6 @@ import {
 
 // common modules
 import { translateApiError } from '~/utils/translate/error';
-import type { UseEffectMutation } from '~/api/query';
 
 // local modules
 import { getSchemaDefaultValue } from './react-form.defaults';
@@ -55,7 +55,9 @@ interface UseReactFormWithMutationParams<
   TContext = unknown,
 > {
   schema: zod.ZodType<TFieldValues>;
-  useMutation: ReturnType<UseEffectMutation<TResponse, TFieldValues>>;
+  useMutation: (
+    options?: UseMutationOptions<TResponse, FailedResponse, TFieldValues>,
+  ) => UseMutationResult<TResponse, FailedResponse, TFieldValues, unknown>;
   defaultValues: DefaultValues<TFieldValues>;
 
   onMutationError?: (

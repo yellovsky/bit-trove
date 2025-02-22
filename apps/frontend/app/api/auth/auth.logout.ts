@@ -1,29 +1,39 @@
 // global modules
-import type { StatusSuccessResponse } from '@repo/api-models';
+import type { FailedResponse, StatusSuccessResponse } from '@repo/api-models';
+
+import {
+  type MutationFunction,
+  useMutation,
+  type UseMutationOptions,
+  useQueryClient,
+} from '@tanstack/react-query';
 
 // common modules
-import type { EndpointFn } from '~/api/endpoint';
-import { useEffectMutation } from '~/api/query/query.mutation';
+import { runAsyncEffect } from '~/utils/effect';
 
 // local modules
-import { invalidateAuthQueries } from './auth.query-key';
+import { invalidateAuthQueries } from './auth.invalidate';
+import { type ApiClient, useApiClient } from '../api-client';
 
-export type LogoutWithEmailVariables = void;
+const logoutWithEmailMFn =
+  (apiClient: ApiClient): MutationFunction<StatusSuccessResponse, void> =>
+  () =>
+    runAsyncEffect(
+      apiClient.post<StatusSuccessResponse>('/v1/auth/logout', {}, { withCredentials: true }),
+    );
 
-// ============================================================================
-//                           E N D P O I N T
-// ============================================================================
-const logoutWithEmailEP: EndpointFn<StatusSuccessResponse, LogoutWithEmailVariables> =
-  apiClient =>
-  ({ signal }) =>
-    apiClient.post<StatusSuccessResponse>('/v1/auth/logout', {}, { signal, withCredentials: true });
+export const useLogoutMutation = (
+  options?: UseMutationOptions<StatusSuccessResponse, FailedResponse, void>,
+) => {
+  const apiClient = useApiClient();
+  const queryClient = useQueryClient();
 
-// ============================================================================
-//                      U S E   M U T A T I O N
-// ============================================================================
-export const useLogoutMutation = useEffectMutation({
-  endpoint: logoutWithEmailEP,
-  onSuccess: queryClient => {
-    invalidateAuthQueries(queryClient);
-  },
-});
+  return useMutation({
+    ...options,
+    mutationFn: logoutWithEmailMFn(apiClient),
+    async onSuccess(...args) {
+      await invalidateAuthQueries(queryClient);
+      await options?.onSuccess?.(...args);
+    },
+  });
+};

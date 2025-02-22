@@ -1,37 +1,48 @@
 // global modules
-import { Effect } from 'effect';
-import type { CMSTutorial, CMSTutorialResponse } from '@repo/api-models';
+import type { CMSTutorial, CMSTutorialResponse, FailedResponse } from '@repo/api-models';
+
+import {
+  type MutationFunction,
+  useMutation,
+  type UseMutationOptions,
+  useQueryClient,
+} from '@tanstack/react-query';
 
 // common modules
-import type { EndpointFn } from '~/api/endpoint';
-import { useEffectMutation } from '~/api/query';
+import { runAsyncEffect } from '../../utils/effect';
 
-// ============================================================================
-//                         Q U E R Y   K E Y
-// ============================================================================
+// local modules
+import { invalidateTutorialQueries } from './tutorial.invalidate';
+import { type ApiClient, useApiClient } from '../api-client';
+
 export interface UpdateTutorialVariables extends CMSTutorial {
   slug: string;
 }
 
-// ============================================================================
-//                          E N D P O I N T
-// ============================================================================
-export const updateTutorialEP: EndpointFn<CMSTutorialResponse, UpdateTutorialVariables> =
-  apiClient =>
-  ({ variables, signal }) =>
-    Effect.gen(function* () {
-      console.warn('[updateTutorialEP]', variables);
-      const { slug, ...rest } = variables;
-
-      return yield* apiClient.put<CMSTutorialResponse>(`/v1/cms/tutorials/${slug}`, rest, {
-        signal,
+const updateTutorialMFn =
+  (apiClient: ApiClient): MutationFunction<CMSTutorialResponse, UpdateTutorialVariables> =>
+  ({ slug, ...data }) =>
+    runAsyncEffect(
+      apiClient.put<CMSTutorialResponse>(`/v1/cms/tutorials/${slug}`, data, {
         withCredentials: true,
-      });
-    });
+      }),
+    );
 
 // ============================================================================
 //                         U S E   M U T A T I O N
 // ============================================================================
-export const useUpdateTutorialMutation = useEffectMutation({
-  endpoint: updateTutorialEP,
-});
+export const useUpdateTutorialMutation = (
+  options?: UseMutationOptions<CMSTutorialResponse, FailedResponse, UpdateTutorialVariables>,
+) => {
+  const apiClient = useApiClient();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    ...options,
+    mutationFn: updateTutorialMFn(apiClient),
+    async onSuccess(...args) {
+      await invalidateTutorialQueries(queryClient);
+      await options?.onSuccess?.(...args);
+    },
+  });
+};

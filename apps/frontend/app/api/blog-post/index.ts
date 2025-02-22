@@ -1,5 +1,4 @@
 export {
-  fetchBlogPostEP,
   type FetchBlogPostVariables,
   useBlogPostQuery,
   getBlogPostQueryResult,
@@ -11,12 +10,10 @@ export {
   type FetchBlogPostListInfiniteVariables,
   getBlogPostListInfiniteQueryResult,
   prefetchBlogPostListInfiniteQuery,
-  getBlogPostList,
+  fetchAllBlogPosts,
 } from './blog-post.fetch-list-infinite';
 
 export {
-  fetchCMSBlogPostListEP,
   type FetchCMSBlogPostListVariables,
-  useCMSBlogPostListInfiniteQuery,
-  prefetchCMSBlogPostListQuery,
+  useCMSBlogPostListQuery,
 } from './blog-post.cms.fetch-list';

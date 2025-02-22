@@ -21,24 +21,17 @@ import { toPaginationFP } from '~/utils/pagination';
 import { type ApiClient, useApiClient } from '~/api/api-client';
 
 // local modules
-import { PERMISSION_POLICY_QUERY_TOKEN } from './permission-policy.query-key';
-
-// ============================================================================
-//                          Q U E R Y   K E Y
-// ============================================================================
-const GET_CMS_PERMISSION_POLICY_LIST_QUERY_TOKEN = 'cms_permisiion_policy_list';
+import { QueryNamespace, RequestName } from '../constants';
 
 export type GetCMSPermissionPolicyListVariables = Omit<GetPermissionPolicyListFP, 'page'>;
 
 type GetCMSPermissionPolicyListQKey = [
-  typeof PERMISSION_POLICY_QUERY_TOKEN,
-  typeof GET_CMS_PERMISSION_POLICY_LIST_QUERY_TOKEN,
+  QueryNamespace.PERMISSION_POLICY,
+  RequestName.FETCH_LIST,
   GetCMSPermissionPolicyListVariables,
   PaginationFP,
 ];
 
-// ============================================================================
-//                            E N D P O I N T
 // ============================================================================
 const getCMSPermissionPolicyListQFn =
   (
@@ -70,8 +63,8 @@ export const useCMSPermissionPolicyListQuery = (
     placeholderData: keepPreviousData,
     queryFn: getCMSPermissionPolicyListQFn(apiClient),
     queryKey: [
-      PERMISSION_POLICY_QUERY_TOKEN,
-      GET_CMS_PERMISSION_POLICY_LIST_QUERY_TOKEN,
+      QueryNamespace.PERMISSION_POLICY,
+      RequestName.FETCH_LIST,
       fp,
       toPaginationFP(pagination),
     ] as const,

@@ -1,4 +1,5 @@
 // global modules
+import * as R from 'ramda';
 import { Effect } from 'effect';
 
 import type {
@@ -19,7 +20,7 @@ import {
 // common modules
 import { failedResponseToResponse } from '~/utils/response';
 import { runAsyncEffect } from '~/utils/effect';
-import { getNextPageParam, initialPageParam } from '~/api/pagination';
+import { getNextPageParam, getPageParamByIndex, initialPageParam } from '~/api/pagination';
 
 import {
   type ApiClient,
@@ -29,37 +30,62 @@ import {
 } from '~/api/api-client';
 
 // local modules
-import { BLOG_POST_QUERY_TOKEN } from './blog-post.query-key';
-
-const GET_BLOG_POST_LIST_INFINITE_QUERY_TOKEN = 'blog_post_infinite_list';
+import { QueryNamespace, RequestName } from '../constants';
 
 export type FetchBlogPostListInfiniteVariables = Omit<BlogPostListFP, 'page'>;
 
-type GetBlogPostListInfiniteQKey = [
-  typeof BLOG_POST_QUERY_TOKEN,
-  typeof GET_BLOG_POST_LIST_INFINITE_QUERY_TOKEN,
+type FetchBlogPostListInfiniteQKey = [
+  QueryNamespace.BLOG_POST,
+  RequestName.FETCH_LIST_INFINITE,
   FetchBlogPostListInfiniteVariables,
 ];
 
-const makeGetBlogPostListInfiniteQKey = (variables: FetchBlogPostListInfiniteVariables) =>
+const makeFetchBlogPostListInfiniteQKey = (variables: FetchBlogPostListInfiniteVariables) =>
   [
-    BLOG_POST_QUERY_TOKEN,
-    GET_BLOG_POST_LIST_INFINITE_QUERY_TOKEN,
+    QueryNamespace.BLOG_POST,
+    RequestName.FETCH_LIST_INFINITE,
     variables,
-  ] satisfies GetBlogPostListInfiniteQKey;
+  ] satisfies FetchBlogPostListInfiniteQKey;
 
-export const getBlogPostList = (
+const fetchBlogPostList = (apiClient: ApiClient, params: BlogPostListFP, signal?: AbortSignal) =>
+  apiClient.get<BlogPostListResponse>(`/v1/blog-posts`, { params, signal });
+
+export const fetchAllBlogPosts = (
   apiClient: ApiClient,
-  params: BlogPostListFP,
+  params: FetchBlogPostListInfiniteVariables,
   signal?: AbortSignal,
-) => apiClient.get<BlogPostListResponse>(`/v1/blog-posts`, { params, signal });
+) =>
+  Effect.gen(function* () {
+    const firstPage = yield* fetchBlogPostList(
+      apiClient,
+      { ...params, page: initialPageParam },
+      signal,
+    );
 
-const getBlogPostListInfiniteQFn =
+    const total = firstPage.meta.pagination.total;
+    const pageSize = initialPageParam.limit;
+    const pagesToFetchCount = Math.ceil(total / pageSize) - 1;
+
+    const restPages =
+      pagesToFetchCount < 0
+        ? []
+        : yield* Effect.all(
+            R.range(1, pageSize).map(index =>
+              fetchBlogPostList(apiClient, { ...params, page: getPageParamByIndex(index) }, signal),
+            ),
+          );
+
+    return [...firstPage.data, ...restPages.map(response => response.data).flat()].filter(
+      val => !!val,
+    );
+  });
+
+const fetchBlogPostListInfiniteQFn =
   (
     apiClient: ApiClient,
-  ): QueryFunction<BlogPostListResponse, GetBlogPostListInfiniteQKey, PaginationFP> =>
+  ): QueryFunction<BlogPostListResponse, FetchBlogPostListInfiniteQKey, PaginationFP> =>
   ({ queryKey, pageParam, signal }) =>
-    runAsyncEffect(getBlogPostList(apiClient, { ...queryKey[2], page: pageParam }, signal));
+    runAsyncEffect(fetchBlogPostList(apiClient, { ...queryKey[2], page: pageParam }, signal));
 
 export const useBlogPostListInfiniteQuery = (
   variables: FetchBlogPostListInfiniteVariables,
@@ -68,7 +94,7 @@ export const useBlogPostListInfiniteQuery = (
     FailedResponse,
     InfiniteData<BlogPostListResponse>,
     BlogPostListResponse,
-    GetBlogPostListInfiniteQKey,
+    FetchBlogPostListInfiniteQKey,
     PaginationFP
   >,
 ) => {
@@ -78,8 +104,8 @@ export const useBlogPostListInfiniteQuery = (
     ...options,
     getNextPageParam,
     initialPageParam,
-    queryFn: getBlogPostListInfiniteQFn(apiClient),
-    queryKey: makeGetBlogPostListInfiniteQKey(variables),
+    queryFn: fetchBlogPostListInfiniteQFn(apiClient),
+    queryKey: makeFetchBlogPostListInfiniteQKey(variables),
   });
 };
 
@@ -93,7 +119,7 @@ export const getBlogPostListInfiniteQueryResult = (
   Effect.gen(function* () {
     const result:
       | InfiniteData<BlogPostListResponse, FetchBlogPostListInfiniteVariables>
-      | undefined = queryClient.getQueryData(makeGetBlogPostListInfiniteQKey(variables));
+      | undefined = queryClient.getQueryData(makeFetchBlogPostListInfiniteQKey(variables));
 
     if (result) return result;
     else return yield* Effect.fail(UNKNOWN_FAILED_RESPONSE);
@@ -113,8 +139,8 @@ export const prefetchBlogPostListInfiniteQuery = (
       try: () =>
         queryClient.prefetchInfiniteQuery({
           initialPageParam,
-          queryFn: getBlogPostListInfiniteQFn(apiClient),
-          queryKey: makeGetBlogPostListInfiniteQKey(variables),
+          queryFn: fetchBlogPostListInfiniteQFn(apiClient),
+          queryKey: makeFetchBlogPostListInfiniteQKey(variables),
         }),
     });
 

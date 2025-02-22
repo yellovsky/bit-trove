@@ -1,68 +1,62 @@
 // global modules
 import { Effect } from 'effect';
-import type { QueryClient } from '@tanstack/react-query';
-import type { FailedResponse, TutorialResponse } from '@repo/api-models';
+import type { FailedResponse, GetOneTutorialFP, TutorialResponse } from '@repo/api-models';
+
+import {
+  type QueryClient,
+  type QueryFunction,
+  useQuery,
+  type UseQueryOptions,
+} from '@tanstack/react-query';
 
 // common modules
 import { failedResponseToResponse } from '~/utils/response';
 import { runAsyncEffect } from '~/utils/effect';
-import { type ApiClient, isFailedResponse, UNKNOWN_FAILED_RESPONSE } from '~/api/api-client';
-import type { EndpointFn, EndpointQFn } from '~/api/endpoint';
-import { getQueryKeyVariables, makeUseQuery } from '~/api/query';
+
+import {
+  type ApiClient,
+  isFailedResponse,
+  UNKNOWN_FAILED_RESPONSE,
+  useApiClient,
+} from '~/api/api-client';
 
 // local modules
-import { type TokenizedTutorialQKey, tokenizeTutorialQKey } from './tutorial.query-key';
+import { QueryNamespace, RequestName } from '../constants';
 
-// ============================================================================
-//                         Q U E R Y   K E Y
-// ============================================================================
-const FETCH_TUTORIAL_QUERY_TOKEN = 'tutorial';
-
-export interface FetchTutorialVariables {
+export interface FetchTutorialVariables extends GetOneTutorialFP {
   slug: string;
-  locale: string;
 }
 
-type FetcTutorialQKey = TokenizedTutorialQKey<
-  typeof FETCH_TUTORIAL_QUERY_TOKEN,
-  FetchTutorialVariables
->;
+type FetcTutorialQKey = [QueryNamespace.TUTORIAL, RequestName.FETCH_ONE, FetchTutorialVariables];
 
-const makeFetcTutorialListQKey = tokenizeTutorialQKey(
-  FETCH_TUTORIAL_QUERY_TOKEN,
-)<FetchTutorialVariables>;
+const makeFetcTutorialListQKey = (variables: FetchTutorialVariables): FetcTutorialQKey => [
+  QueryNamespace.TUTORIAL,
+  RequestName.FETCH_ONE,
+  variables,
+];
 
-// ============================================================================
-//                          E N D P O I N T
-// ============================================================================
-export const fetchTutorialEP: EndpointFn<TutorialResponse, FetchTutorialVariables> =
-  apiClient =>
-  ({ variables, signal }) =>
-    apiClient.get<TutorialResponse>(`/v1/tutorials/${variables.slug}`, {
-      params: { locale: variables.locale },
-      signal,
-    });
+const fetchTutorialQFn =
+  (apiClient: ApiClient): QueryFunction<TutorialResponse, FetcTutorialQKey> =>
+  ({ queryKey, signal }) => {
+    const { slug, ...params } = queryKey[2];
+    return runAsyncEffect(
+      apiClient.get<TutorialResponse>(`/v1/tutorials/${slug}`, { params, signal }),
+    );
+  };
 
-const fetchTutorialQEP: EndpointQFn<TutorialResponse, FetcTutorialQKey> =
-  apiClient =>
-  ({ queryKey, pageParam, signal }) =>
-    fetchTutorialEP(apiClient)({
-      pageParam,
-      signal,
-      variables: getQueryKeyVariables(queryKey),
-    });
+export const useTutorialQuery = (
+  variables: FetchTutorialVariables,
+  options?: UseQueryOptions<TutorialResponse, FailedResponse, TutorialResponse, FetcTutorialQKey>,
+) => {
+  const apiClient = useApiClient();
 
-// ============================================================================
-//                         U S E   Q U E R Y
-// ============================================================================
-export const useTutorialQuery = makeUseQuery({
-  endpointQFn: fetchTutorialQEP,
-  makeQueryKey: makeFetcTutorialListQKey,
-});
+  return useQuery({
+    ...options,
+    queryFn: fetchTutorialQFn(apiClient),
+    queryKey: makeFetcTutorialListQKey(variables),
+  });
+};
 
-// ============================================================================
-//                        P R E F E T C H
-// ============================================================================
 export const getTutorialQueryResult = (
   queryClient: QueryClient,
   variables: FetchTutorialVariables,
@@ -82,7 +76,7 @@ export const prefetchTutorialQuery = (
   Effect.gen(function* () {
     yield* Effect.tryPromise(() =>
       queryClient.prefetchQuery({
-        queryFn: context => runAsyncEffect(fetchTutorialQEP(apiClient)(context)),
+        queryFn: fetchTutorialQFn(apiClient),
         queryKey: makeFetcTutorialListQKey(variables),
       }),
     );

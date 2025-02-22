@@ -1,74 +1,70 @@
 // global modules
 import { Effect } from 'effect';
-import type { QueryClient } from '@tanstack/react-query';
 import type { BlogPostResponse, FailedResponse } from '@repo/api-models';
+
+import {
+  type QueryClient,
+  type QueryFunction,
+  useQuery,
+  type UseQueryOptions,
+} from '@tanstack/react-query';
 
 // common modules
 import { failedResponseToResponse } from '~/utils/response';
 import { runAsyncEffect } from '~/utils/effect';
-import { type ApiClient, isFailedResponse, UNKNOWN_FAILED_RESPONSE } from '~/api/api-client';
-import type { EndpointFn, EndpointQFn } from '~/api/endpoint';
-import { getQueryKeyVariables, makeUseQuery } from '~/api/query';
+
+import {
+  type ApiClient,
+  isFailedResponse,
+  UNKNOWN_FAILED_RESPONSE,
+  useApiClient,
+} from '~/api/api-client';
 
 // local modules
-import { tokenizeBlogPostQKey, type TokenizedBlogPostQKey } from './blog-post.query-key';
-
-// ============================================================================
-//                         Q U E R Y   K E Y
-// ============================================================================
-const FETCH_BLOG_POST_QUERY_TOKEN = 'blog_post';
+import { QueryNamespace, RequestName } from '../constants';
 
 export interface FetchBlogPostVariables {
   slug: string;
   locale: string;
 }
 
-type FetcBlogPostQKey = TokenizedBlogPostQKey<
-  typeof FETCH_BLOG_POST_QUERY_TOKEN,
-  FetchBlogPostVariables
->;
+type FetcBlogPostQKey = [QueryNamespace.BLOG_POST, RequestName.FETCH_ONE, FetchBlogPostVariables];
 
-const makeFetcBlogPostListQKey = tokenizeBlogPostQKey(
-  FETCH_BLOG_POST_QUERY_TOKEN,
-)<FetchBlogPostVariables>;
+const makeFetcBlogPostQKey = (variables: FetchBlogPostVariables): FetcBlogPostQKey => [
+  QueryNamespace.BLOG_POST,
+  RequestName.FETCH_ONE,
+  variables,
+];
 
-// ============================================================================
-//                          E N D P O I N T
-// ============================================================================
-export const fetchBlogPostEP: EndpointFn<BlogPostResponse, FetchBlogPostVariables> =
-  apiClient =>
-  ({ variables, signal }) =>
-    apiClient.get<BlogPostResponse>(`/v1/blog-posts/${variables.slug}`, {
-      params: { locale: variables.locale },
-      signal,
-    });
+const fetchBlogPostQFn =
+  (apiClient: ApiClient): QueryFunction<BlogPostResponse, FetcBlogPostQKey> =>
+  ({ queryKey, signal }) => {
+    const { slug, ...params } = queryKey[2];
 
-const fetchBlogPostQEP: EndpointQFn<BlogPostResponse, FetcBlogPostQKey> =
-  apiClient =>
-  ({ queryKey, pageParam, signal }) =>
-    fetchBlogPostEP(apiClient)({
-      pageParam,
-      signal,
-      variables: getQueryKeyVariables(queryKey),
-    });
+    return runAsyncEffect(
+      apiClient.get<BlogPostResponse>(`/v1/blog-posts/${slug}`, { params, signal }),
+    );
+  };
 
-// ============================================================================
-//                         U S E   Q U E R Y
-// ============================================================================
-export const useBlogPostQuery = makeUseQuery({
-  endpointQFn: fetchBlogPostQEP,
-  makeQueryKey: makeFetcBlogPostListQKey,
-});
+export const useBlogPostQuery = (
+  variables: FetchBlogPostVariables,
+  options?: UseQueryOptions<BlogPostResponse, FailedResponse, BlogPostResponse, FetcBlogPostQKey>,
+) => {
+  const apiClient = useApiClient();
 
-// ============================================================================
-//                        P R E F E T C H
-// ============================================================================
+  return useQuery({
+    ...options,
+    queryFn: fetchBlogPostQFn(apiClient),
+    queryKey: makeFetcBlogPostQKey(variables),
+  });
+};
+
 export const getBlogPostQueryResult = (
   queryClient: QueryClient,
   variables: FetchBlogPostVariables,
 ): Effect.Effect<BlogPostResponse, FailedResponse> =>
   Effect.gen(function* () {
-    const result = queryClient.getQueryData<BlogPostResponse>(makeFetcBlogPostListQKey(variables));
+    const result = queryClient.getQueryData<BlogPostResponse>(makeFetcBlogPostQKey(variables));
 
     if (result) return result;
     else return yield* Effect.fail(UNKNOWN_FAILED_RESPONSE);
@@ -82,8 +78,8 @@ export const prefetchBlogPostQuery = (
   Effect.gen(function* () {
     yield* Effect.tryPromise(() =>
       queryClient.prefetchQuery({
-        queryFn: context => runAsyncEffect(fetchBlogPostQEP(apiClient)(context)),
-        queryKey: makeFetcBlogPostListQKey(variables),
+        queryFn: fetchBlogPostQFn(apiClient),
+        queryKey: makeFetcBlogPostQKey(variables),
       }),
     );
 

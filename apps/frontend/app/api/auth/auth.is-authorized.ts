@@ -1,35 +1,39 @@
 // global modules
-import type { IsAuthorizedResponse } from '@repo/api-models';
+import type { FailedResponse, IsAuthorizedResponse } from '@repo/api-models';
+import { type QueryFunction, useQuery, type UseQueryOptions } from '@tanstack/react-query';
 
 // common modules
-import type { EndpointQFn } from '~/api/endpoint';
-import { makeUseQuery } from '~/api/query';
+import { runAsyncEffect } from '~/utils/effect';
 
 // local modules
-import { tokenizeAuthQKey, type TokenizedAuthQKey } from './auth.query-key';
+import { type ApiClient, useApiClient } from '../api-client';
+import { QueryNamespace, RequestName } from '../constants';
 
-// ============================================================================
-//                         Q U E R Y   K E Y
-// ============================================================================
-const IS_AUTHORIZED_QUERY_TOKEN = 'is_authorized';
-type IsAuthorizedQKey = TokenizedAuthQKey<typeof IS_AUTHORIZED_QUERY_TOKEN, void>;
-const makeIsAuthorizedQKey = tokenizeAuthQKey(IS_AUTHORIZED_QUERY_TOKEN)<void>;
+type IsAuthorizedQKey = [QueryNamespace.AUTH, RequestName.IS_AUTHORIZED];
 
-// ============================================================================
-//                           E N D P O I N T
-// ============================================================================
-const fetchIsAuthorizedQEP: EndpointQFn<IsAuthorizedResponse, IsAuthorizedQKey> =
-  apiClient =>
+const fetchIsAuthorizedQFn =
+  (apiClient: ApiClient): QueryFunction<IsAuthorizedResponse, IsAuthorizedQKey> =>
   ({ signal }) =>
-    apiClient.get<IsAuthorizedResponse>('/v1/auth/is-authorized', {
-      signal,
-      withCredentials: true,
-    });
+    runAsyncEffect(
+      apiClient.get<IsAuthorizedResponse>('/v1/auth/is-authorized', {
+        signal,
+        withCredentials: true,
+      }),
+    );
 
-// =================================================================
-//                  U S E   Q U E R Y
-// =================================================================
-export const useIsAuthorizedQuery = makeUseQuery({
-  endpointQFn: fetchIsAuthorizedQEP,
-  makeQueryKey: makeIsAuthorizedQKey,
-});
+export const useIsAuthorizedQuery = (
+  options?: UseQueryOptions<
+    IsAuthorizedResponse,
+    FailedResponse,
+    IsAuthorizedResponse,
+    IsAuthorizedQKey
+  >,
+) => {
+  const apiClient = useApiClient();
+
+  return useQuery({
+    ...options,
+    queryFn: fetchIsAuthorizedQFn(apiClient),
+    queryKey: [QueryNamespace.AUTH, RequestName.IS_AUTHORIZED],
+  });
+};

@@ -1,7 +1,6 @@
 // global modules
 import type { QueryClient } from '@tanstack/react-query';
-
-export const PERMISSION_POLICY_QUERY_TOKEN = 'permission_policy';
+import { QueryNamespace } from '../constants';
 
 export const invalidatePermissionPolicyQueries = (queryClient: QueryClient): Promise<void> =>
-  queryClient.invalidateQueries({ queryKey: [PERMISSION_POLICY_QUERY_TOKEN] });
+  queryClient.invalidateQueries({ queryKey: [QueryNamespace.PERMISSION_POLICY] });

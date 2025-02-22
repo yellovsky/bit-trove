@@ -1,32 +1,39 @@
 // global modules
-import type { LoginWithEmailFP, StatusSuccessResponse } from '@repo/api-models';
+import type { FailedResponse, LoginWithEmailFP, StatusSuccessResponse } from '@repo/api-models';
+
+import {
+  type MutationFunction,
+  useMutation,
+  type UseMutationOptions,
+  useQueryClient,
+} from '@tanstack/react-query';
 
 // common modules
-import type { EndpointFn } from '~/api/endpoint';
-import { useEffectMutation } from '~/api/query/query.mutation';
+import { runAsyncEffect } from '~/utils/effect';
 
 // local modules
-import { invalidateAuthQueries } from './auth.query-key';
+import { invalidateAuthQueries } from './auth.invalidate';
+import { type ApiClient, useApiClient } from '../api-client';
 
-export type LoginWithEmailVariables = LoginWithEmailFP;
+const loginWithEmailMFn =
+  (apiClient: ApiClient): MutationFunction<StatusSuccessResponse, LoginWithEmailFP> =>
+  data =>
+    runAsyncEffect(
+      apiClient.post<StatusSuccessResponse>('/v1/auth/login', data, { withCredentials: true }),
+    );
 
-// ============================================================================
-//                           E N D P O I N T
-// ============================================================================
-const loginWithEmailEP: EndpointFn<StatusSuccessResponse, LoginWithEmailVariables> =
-  apiClient =>
-  ({ variables, signal }) =>
-    apiClient.post<StatusSuccessResponse>('/v1/auth/login', variables, {
-      signal,
-      withCredentials: true,
-    });
+export const useLoginWithEmailMutation = (
+  options?: UseMutationOptions<StatusSuccessResponse, FailedResponse, LoginWithEmailFP>,
+) => {
+  const apiClient = useApiClient();
+  const queryClient = useQueryClient();
 
-// ============================================================================
-//                      U S E   M U T A T I O N
-// ============================================================================
-export const useLoginWithEmailMutation = useEffectMutation({
-  endpoint: loginWithEmailEP,
-  onSuccess: queryClient => {
-    invalidateAuthQueries(queryClient);
-  },
-});
+  return useMutation({
+    ...options,
+    mutationFn: loginWithEmailMFn(apiClient),
+    async onSuccess(...args) {
+      await invalidateAuthQueries(queryClient);
+      await options?.onSuccess?.(...args);
+    },
+  });
+};

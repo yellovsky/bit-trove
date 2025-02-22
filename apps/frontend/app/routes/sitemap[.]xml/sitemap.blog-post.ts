@@ -7,8 +7,7 @@ import { Effect } from 'effect';
 import { getApiClient } from '~/api/api-client';
 import { getBlogpostRouteLink } from '~/utils/links';
 import { supportedLngs } from '~/config/i18n';
-import { type FetchBlogPostListInfiniteVariables, getBlogPostList } from '~/api/blog-post';
-import { getPageParamByIndex, initialPageParam } from '~/api/pagination';
+import { fetchAllBlogPosts, type FetchBlogPostListInfiniteVariables } from '~/api/blog-post';
 
 // local modules
 import { generateURLTag } from './sitemap.helpers';
@@ -43,31 +42,7 @@ export const getBlogPostTags = (): Effect.Effect<string | null> =>
     };
 
     const apiClient = getApiClient();
-    const firstPage = yield* getBlogPostList(apiClient, {
-      ...fetchBlogPostVariables,
-      page: initialPageParam,
-    });
-
-    const total = firstPage.meta.pagination.total;
-    const pageSize = initialPageParam.limit;
-    const pagesToFetchCount = Math.ceil(total / pageSize) - 1;
-
-    const restPages =
-      pagesToFetchCount < 0
-        ? []
-        : yield* Effect.all(
-            R.range(1, pageSize).map(index =>
-              getBlogPostList(apiClient, {
-                ...fetchBlogPostVariables,
-                page: getPageParamByIndex(index),
-              }),
-            ),
-          );
-
-    const blogPosts = [
-      ...firstPage.data,
-      ...restPages.map(response => response.data).flat(),
-    ].filter(val => !!val);
+    const blogPosts = yield* fetchAllBlogPosts(apiClient, fetchBlogPostVariables);
 
     return blogPosts.map(getBlogPostUrlTag).filter(Boolean).join('\n') as any;
   }).pipe(Effect.catchAll(() => Effect.succeed(null)));

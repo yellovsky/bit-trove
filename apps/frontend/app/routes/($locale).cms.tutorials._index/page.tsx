@@ -20,11 +20,7 @@ import { Heading } from '~/components/heading';
 import { Link } from '~/components/link';
 import { TableWithData } from '~/components/table';
 import { useDateFormatter } from '~/utils/formatter';
-
-import {
-  type FetchCMSTutorialListVariables,
-  useCMSTutorialListInfiniteQuery,
-} from '~/api/tutorial';
+import { type FetchCMSTutorialListVariables, useCMSTutorialListQuery } from '~/api/tutorial';
 
 const columnHelper = createColumnHelper<BlogPostSegment | null>();
 
@@ -74,12 +70,9 @@ export const CMSTutorialsPage: FC = () => {
     [locale],
   );
 
-  const cmsTutorialListQuery = useCMSTutorialListInfiniteQuery(variables);
+  const cmsTutorialListQuery = useCMSTutorialListQuery(variables, pagination);
 
-  const data = useMemo(
-    () => cmsTutorialListQuery.data?.pages.map(page => page.data).flat() || [],
-    [cmsTutorialListQuery.data],
-  );
+  const data = useMemo(() => cmsTutorialListQuery.data?.data || [], [cmsTutorialListQuery.data]);
 
   const table = useReactTable({
     columns,

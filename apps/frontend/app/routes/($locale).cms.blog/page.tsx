@@ -17,7 +17,7 @@ import {
 import { Heading } from '~/components/heading';
 import { Link } from '~/components/link';
 import { TableWithData } from '~/components/table';
-import { useCMSBlogPostListInfiniteQuery } from '~/api/blog-post';
+import { useCMSBlogPostListQuery } from '~/api/blog-post';
 import { useDateFormatter } from '~/utils/formatter';
 
 const columnHelper = createColumnHelper<BlogPostSegment | null>();
@@ -62,15 +62,12 @@ export const CMSBlogPage: FC = () => {
     pageSize: 10,
   });
 
-  const cmsBlogPostListQuery = useCMSBlogPostListInfiniteQuery({
-    locale: 'en',
-    sort: 'created_at',
-  });
-
-  const data = useMemo(
-    () => cmsBlogPostListQuery.data?.pages.map(page => page.data).flat() || [],
-    [cmsBlogPostListQuery.data],
+  const cmsBlogPostListQuery = useCMSBlogPostListQuery(
+    { locale: 'en', sort: 'created_at' },
+    pagination,
   );
+
+  const data = useMemo(() => cmsBlogPostListQuery.data?.data || [], [cmsBlogPostListQuery.data]);
 
   const table = useReactTable({
     columns,

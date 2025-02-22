@@ -13,14 +13,9 @@ import { runAsyncEffect } from '~/utils/effect';
 import { type ApiClient, useApiClient } from '~/api/api-client';
 
 // local modules
-import { PERMISSION_POLICY_QUERY_TOKEN } from './permission-policy.query-key';
+import { QueryNamespace, RequestName } from '../constants';
 
-const GET_CMS_PERMISSION_POLICY_QUERY_TOKEN = 'cms_permisiion_policy';
-type GetCMSPermissionPolicyQKey = [
-  typeof PERMISSION_POLICY_QUERY_TOKEN,
-  typeof GET_CMS_PERMISSION_POLICY_QUERY_TOKEN,
-  string,
-];
+type GetCMSPermissionPolicyQKey = [QueryNamespace.PERMISSION_POLICY, RequestName.FETCH_ONE, string];
 
 const getCMSPermissionPolicyQFn =
   (apiClient: ApiClient): QueryFunction<GetPermissionPolicyResponse, GetCMSPermissionPolicyQKey> =>
@@ -47,10 +42,6 @@ export const useCMSPermissionPolicyQuery = (
     ...options,
     placeholderData: keepPreviousData,
     queryFn: getCMSPermissionPolicyQFn(apiClient),
-    queryKey: [
-      PERMISSION_POLICY_QUERY_TOKEN,
-      GET_CMS_PERMISSION_POLICY_QUERY_TOKEN,
-      id,
-    ] satisfies GetCMSPermissionPolicyQKey,
+    queryKey: [QueryNamespace.PERMISSION_POLICY, RequestName.FETCH_ONE, id],
   });
 };

@@ -17,7 +17,7 @@ import { runAsyncEffect } from '~/utils/effect';
 import { type ApiClient, useApiClient } from '~/api/api-client';
 
 // local modules
-import { invalidatePermissionPolicyQueries } from './permission-policy.query-key';
+import { invalidatePermissionPolicyQueries } from './permission-policy.invalidate';
 
 export interface UpsertPermissionPolicyVariables extends UpsertPermissionPolicyFP {
   id: string;
@@ -34,11 +34,6 @@ const updatePermissionPolicyMFn =
       }),
     );
 
-/**
- * Delete permission policy mutation hook
- *
- * @returns Delete permission policy mutation
- */
 export const useUpdatePermissionPolicyMutation = (
   options?: UseMutationOptions<
     GetPermissionPolicyResponse,

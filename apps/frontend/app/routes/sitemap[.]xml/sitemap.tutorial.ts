@@ -7,8 +7,7 @@ import type { TutorialSegment } from '@repo/api-models';
 import { getApiClient } from '~/api/api-client';
 import { getTutorialRouteLink } from '~/utils/links';
 import { supportedLngs } from '~/config/i18n';
-import { fetchTutorialListEP, type FetchTutorialListVariables } from '~/api/tutorial';
-import { getPageParamByIndex, initialPageParam } from '~/api/pagination';
+import { fetchAllTutorials, type FetchTutorialListVariables } from '~/api/tutorial';
 
 // local modules
 import { generateURLTag } from './sitemap.helpers';
@@ -43,31 +42,7 @@ export const getTutorialTags = (): Effect.Effect<string | null> =>
     };
 
     const apiClient = getApiClient();
-    const firstPage = yield* fetchTutorialListEP(apiClient)({
-      pageParam: initialPageParam,
-      variables: fetchTutorialVariables,
-    });
-
-    const total = firstPage.meta.pagination.total;
-    const pageSize = initialPageParam.limit;
-    const pagesToFetchCount = Math.ceil(total / pageSize) - 1;
-
-    const restPages =
-      pagesToFetchCount < 0
-        ? []
-        : yield* Effect.all(
-            R.range(1, pageSize).map(index =>
-              fetchTutorialListEP(apiClient)({
-                pageParam: getPageParamByIndex(index),
-                variables: fetchTutorialVariables,
-              }),
-            ),
-          );
-
-    const tutorials = [
-      ...firstPage.data,
-      ...restPages.map(response => response.data).flat(),
-    ].filter(val => !!val);
+    const tutorials = yield* fetchAllTutorials(apiClient, fetchTutorialVariables);
 
     return tutorials.map(getTutorialUrlTag).filter(Boolean).join('\n') as any;
   }).pipe(Effect.catchAll(() => Effect.succeed(null)));

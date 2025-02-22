@@ -11,7 +11,7 @@ import { getQueryClient } from '~/query-client';
 import { mergeMeta } from '~/utils/meta';
 import { runAsyncEffect } from '~/utils/effect';
 import { supportedLngs } from '~/config/i18n';
-import { type FetchTutorialListVariables, prefetchTutorialListQuery } from '~/api/tutorial';
+import { type FetchTutorialListVariables, prefetchTutorialListInfiniteQuery } from '~/api/tutorial';
 import { getFixedT, getRequestLocale } from '~/utils/loader.server';
 import { makeSeoMeta, type SEOMetaParams } from '~/utils/seo';
 
@@ -45,7 +45,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     yield* prefetchBlogPostListInfiniteQuery(apiClient, queryClient, blogPostListVariables);
 
     const tutorialListVariables: FetchTutorialListVariables = { locale, sort: '-created_at' };
-    yield* prefetchTutorialListQuery(apiClient, queryClient, tutorialListVariables);
+    yield* prefetchTutorialListInfiniteQuery(apiClient, queryClient, tutorialListVariables);
 
     return {
       blogPostListVariables,
