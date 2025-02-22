@@ -19,7 +19,7 @@ import {
 } from '@nestjs/common';
 
 // common modules
-import { Account } from 'src/decorators/account.decorator';
+import { Account } from 'src/common/decorators/account';
 import { ApiCommonErrorResponses } from 'src/utils/swagger';
 import { CasbinService } from 'src/modules/casbin';
 import type { DBAccount } from 'src/modules/account';

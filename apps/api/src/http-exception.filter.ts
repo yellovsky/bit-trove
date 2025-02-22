@@ -73,6 +73,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
         meta: { status: HttpStatus.BAD_REQUEST },
       } satisfies FailedResponse);
     } else {
+      console.error(error);
       return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
         error: {
           error_name: 'internal_server_error',

@@ -11,16 +11,20 @@ import { getQueryClient } from '~/query-client';
 import { mergeMeta } from '~/utils/meta';
 import { runAsyncEffect } from '~/utils/effect';
 import { supportedLngs } from '~/config/i18n';
-import { type FetchBlogPostListVariables, prefetchBlogPostListQuery } from '~/api/blog-post';
 import { type FetchTutorialListVariables, prefetchTutorialListQuery } from '~/api/tutorial';
 import { getFixedT, getRequestLocale } from '~/utils/loader.server';
 import { makeSeoMeta, type SEOMetaParams } from '~/utils/seo';
+
+import {
+  type FetchBlogPostListInfiniteVariables,
+  prefetchBlogPostListInfiniteQuery,
+} from '~/api/blog-post';
 
 // local modules
 import { IndexPage } from './page';
 
 interface LoaderData {
-  blogPostListVariables: FetchBlogPostListVariables;
+  blogPostListVariables: FetchBlogPostListInfiniteVariables;
   tutorialListVariables: FetchTutorialListVariables;
   dehydratedState: DehydratedState;
   seo: SEOMetaParams;
@@ -34,8 +38,11 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     const apiClient = getApiClient();
     const queryClient = getQueryClient();
 
-    const blogPostListVariables: FetchBlogPostListVariables = { locale, sort: '-created_at' };
-    yield* prefetchBlogPostListQuery(apiClient, queryClient, blogPostListVariables);
+    const blogPostListVariables: FetchBlogPostListInfiniteVariables = {
+      locale,
+      sort: '-created_at',
+    };
+    yield* prefetchBlogPostListInfiniteQuery(apiClient, queryClient, blogPostListVariables);
 
     const tutorialListVariables: FetchTutorialListVariables = { locale, sort: '-created_at' };
     yield* prefetchTutorialListQuery(apiClient, queryClient, tutorialListVariables);

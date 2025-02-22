@@ -8,10 +8,11 @@ export {
 
 export {
   useBlogPostListInfiniteQuery,
-  prefetchBlogPostListQuery,
-  fetchBlogPostListEP,
-  type FetchBlogPostListVariables,
-} from './blog-post.fetch-list';
+  type FetchBlogPostListInfiniteVariables,
+  getBlogPostListInfiniteQueryResult,
+  prefetchBlogPostListInfiniteQuery,
+  getBlogPostList,
+} from './blog-post.fetch-list-infinite';
 
 export {
   fetchCMSBlogPostListEP,

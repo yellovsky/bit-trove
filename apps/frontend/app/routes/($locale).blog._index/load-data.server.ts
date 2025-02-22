@@ -5,13 +5,17 @@ import { dehydrate, type DehydratedState } from '@tanstack/react-query';
 // common modules
 import { supportedLngs } from '~/config/i18n';
 import { addLocaleToLink, getBlogRouteLink } from '~/utils/links';
-import { type FetchBlogPostListVariables, prefetchBlogPostListQuery } from '~/api/blog-post';
 import { getFixedT, type GetLoaderData, getParamsParam } from '~/utils/loader.server';
 import { makePageMetaTitle, type SEOMetaParams } from '~/utils/seo';
 
+import {
+  type FetchBlogPostListInfiniteVariables,
+  prefetchBlogPostListInfiniteQuery,
+} from '~/api/blog-post';
+
 export interface LoaderData {
   seo: SEOMetaParams;
-  blogPostListVariables: FetchBlogPostListVariables;
+  blogPostListVariables: FetchBlogPostListInfiniteVariables;
   dehydratedState: DehydratedState;
 }
 
@@ -24,12 +28,12 @@ export const getBlogLoaderData: GetLoaderData<LoaderData> = (
     const locale = yield* getParamsParam('locale', params);
     const t = yield* getFixedT(locale);
 
-    const blogPostListVariables: FetchBlogPostListVariables = {
+    const blogPostListVariables: FetchBlogPostListInfiniteVariables = {
       locale,
       sort: 'created_at',
     };
 
-    yield* prefetchBlogPostListQuery(apiClient, queryClient, blogPostListVariables);
+    yield* prefetchBlogPostListInfiniteQuery(apiClient, queryClient, blogPostListVariables);
 
     return {
       blogPostListVariables,

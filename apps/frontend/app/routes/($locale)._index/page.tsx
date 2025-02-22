@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { type FC, useMemo } from 'react';
 
 // common modules
-import type { FetchBlogPostListVariables } from '~/api/blog-post';
+import type { FetchBlogPostListInfiniteVariables } from '~/api/blog-post';
 import { getTutorialsRouteLink } from '~/utils/links';
 import { TutorialsSlider } from '~/components/tutorials-slider';
 import { type FetchTutorialListVariables, useTutorialListInfiniteQuery } from '~/api/tutorial';
@@ -15,7 +15,7 @@ import { description as descriptionCn, page as pageCn, title as titleCn } from '
 
 interface IndexPageProps {
   tutorialListVariables: FetchTutorialListVariables;
-  blogPostListVariables: FetchBlogPostListVariables;
+  blogPostListVariables: FetchBlogPostListInfiniteVariables;
 }
 
 export const IndexPage: FC<IndexPageProps> = ({ blogPostListVariables, tutorialListVariables }) => {

@@ -5,7 +5,6 @@ import { Module } from '@nestjs/common';
 import { ArticleModule } from 'src/modules/article';
 import { CasbinModule } from 'src/modules/casbin';
 import { DrizzleModule } from 'src/modules/drizzle';
-import { PrismaModule } from 'src/modules/prisma';
 import { RuntimeModule } from 'src/modules/runtime';
 
 // local modules
@@ -20,13 +19,7 @@ import { BlogPostTranslationService } from './services/blog-post-translation.ser
 @Module({
   controllers: [BlogPostsV1Controller],
   exports: [BlogPostService],
-  imports: [
-    DrizzleModule,
-    CasbinModule,
-    RuntimeModule,
-    PrismaModule,
-    ArticleModule,
-  ],
+  imports: [DrizzleModule, CasbinModule, RuntimeModule, ArticleModule],
   providers: [
     BlogPostRepository,
     BlogPostService,

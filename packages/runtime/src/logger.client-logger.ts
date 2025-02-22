@@ -51,7 +51,6 @@ export const createClientLogger = () =>
     const srv = getSrv(annotations);
     const label = getLabel(annotations);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const logArgs: any[] = getLoggerArgs({ date, label, message, srv });
 
     switch (logLevel) {

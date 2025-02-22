@@ -7,7 +7,7 @@ import { Effect } from 'effect';
 import { getApiClient } from '~/api/api-client';
 import { getBlogpostRouteLink } from '~/utils/links';
 import { supportedLngs } from '~/config/i18n';
-import { fetchBlogPostListEP, type FetchBlogPostListVariables } from '~/api/blog-post';
+import { type FetchBlogPostListInfiniteVariables, getBlogPostList } from '~/api/blog-post';
 import { getPageParamByIndex, initialPageParam } from '~/api/pagination';
 
 // local modules
@@ -37,15 +37,15 @@ const getBlogPostUrlTag = (blogPost: BlogPostSegment): string | null => {
 
 export const getBlogPostTags = (): Effect.Effect<string | null> =>
   Effect.gen(function* () {
-    const fetchBlogPostVariables: FetchBlogPostListVariables = {
+    const fetchBlogPostVariables: FetchBlogPostListInfiniteVariables = {
       locale: 'en',
       sort: '-created_at',
     };
 
     const apiClient = getApiClient();
-    const firstPage = yield* fetchBlogPostListEP(apiClient)({
-      pageParam: initialPageParam,
-      variables: fetchBlogPostVariables,
+    const firstPage = yield* getBlogPostList(apiClient, {
+      ...fetchBlogPostVariables,
+      page: initialPageParam,
     });
 
     const total = firstPage.meta.pagination.total;
@@ -57,9 +57,9 @@ export const getBlogPostTags = (): Effect.Effect<string | null> =>
         ? []
         : yield* Effect.all(
             R.range(1, pageSize).map(index =>
-              fetchBlogPostListEP(apiClient)({
-                pageParam: getPageParamByIndex(index),
-                variables: fetchBlogPostVariables,
+              getBlogPostList(apiClient, {
+                ...fetchBlogPostVariables,
+                page: getPageParamByIndex(index),
               }),
             ),
           );

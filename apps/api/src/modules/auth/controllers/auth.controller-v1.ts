@@ -16,7 +16,7 @@ import {
 } from '@nestjs/common';
 
 // common modules
-import { Public } from 'src/utils/access-control';
+import { Public } from 'src/common/decorators/public';
 import { RuntimeService } from 'src/modules/runtime';
 import { StatusSuccessResponseEntity } from 'src/common/entities/status-success';
 

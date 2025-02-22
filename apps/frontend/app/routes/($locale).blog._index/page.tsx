@@ -5,13 +5,17 @@ import { type FC, useMemo } from 'react';
 // common modules
 import { BlogPostListCard } from '~/components/blog-post-list-card';
 import { Heading } from '~/components/heading';
-import { type FetchBlogPostListVariables, useBlogPostListInfiniteQuery } from '~/api/blog-post';
+
+import {
+  type FetchBlogPostListInfiniteVariables,
+  useBlogPostListInfiniteQuery,
+} from '~/api/blog-post';
 
 // local modules
 import { cardsGrid as cardsGridCn, page as pageCn } from './page.module.scss';
 
 interface BlogPageProps {
-  blogPostListVariables: FetchBlogPostListVariables;
+  blogPostListVariables: FetchBlogPostListInfiniteVariables;
 }
 
 export const BlogPage: FC<BlogPageProps> = ({ blogPostListVariables }) => {

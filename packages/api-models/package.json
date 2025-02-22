@@ -9,7 +9,7 @@
     "postinstall": "yarn build"
   },
   "devDependencies": {
-    "eslint": "^9.19.0",
+    "eslint": "^9.21.0",
     "tsup": "^8.3.6",
     "typescript": "^5.7.3"
   }

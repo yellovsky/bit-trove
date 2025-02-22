@@ -14,7 +14,6 @@ import { AppConfigModule } from 'src/modules/app-config';
 import { BlogPostModule } from 'src/modules/blog-post';
 import { CasbinModule } from 'src/modules/casbin';
 import { PermissionPolicyModule } from './modules/permission-policy';
-import { PrismaModule } from 'src/modules/prisma';
 import { RuntimeModule } from 'src/modules/runtime';
 import { TutorialModule } from 'src/modules/tutorial';
 import { AuthModule, JwtGuard, JwtStrategy } from 'src/modules/auth';
@@ -38,7 +37,6 @@ import { AuthModule, JwtGuard, JwtStrategy } from 'src/modules/auth';
     PassportModule.register({ session: true }),
     RuntimeModule,
     AppConfigModule,
-    PrismaModule,
     AuthModule,
     TutorialModule,
     BlogPostModule,

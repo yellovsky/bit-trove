@@ -26,6 +26,7 @@ export class FindManyBlogPostsDTO implements BlogPostListFP {
   sort!: BlogPostListFP['sort'];
 
   @ValidateNested()
+  @IsNotEmpty()
   @Type(() => PaginationParamsDTO)
   @ApiProperty({ type: PaginationParamsDTO })
   page!: PaginationParamsDTO;

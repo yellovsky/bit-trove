@@ -46,6 +46,7 @@ async function bootstrap() {
 
   app.enableCors({ credentials: true, origin: 'http://127.0.0.1:5173' });
   app.set('trust proxy', 1);
+  app.set('query parser', 'extended');
 
   app
     .setGlobalPrefix(API_PREFIX)

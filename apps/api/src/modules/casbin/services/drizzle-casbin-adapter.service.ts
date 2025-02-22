@@ -23,10 +23,6 @@ export class DrizzleAdapter implements Adapter {
     this.filtered = enabled;
   }
 
-  /**
-   * @param option It should be PrismaClientOptions or PrismaClient.
-   * You should later call open() to activate it.
-   */
   constructor(private readonly db: DB) {}
 
   async loadPolicy(model: Model): Promise<void> {

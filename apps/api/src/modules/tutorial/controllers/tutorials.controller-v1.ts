@@ -14,7 +14,7 @@ import {
 // common modules
 import { ApiCommonErrorResponses } from 'src/utils/swagger';
 import { defaultTranslationsStrategy } from 'src/utils/translation-strategy';
-import { Public } from 'src/utils/access-control';
+import { Public } from 'src/common/decorators/public';
 import { RuntimeService } from 'src/modules/runtime';
 
 // local modules

@@ -7,8 +7,12 @@ import { type FC, Fragment, useCallback } from 'react';
 import { getBlogRouteLink } from '~/utils/links';
 import { OnIntersectingChange } from '~/components/on-intersecting-change';
 import { useDateFormatter } from '~/utils/formatter';
-import { type FetchBlogPostListVariables, useBlogPostListInfiniteQuery } from '~/api/blog-post';
 import { Timeline, TimelineBlock, TimelineDate, TimelineDatePending } from '~/components/timeline';
+
+import {
+  type FetchBlogPostListInfiniteVariables,
+  useBlogPostListInfiniteQuery,
+} from '~/api/blog-post';
 
 import {
   BlogPostTimelineBlock,
@@ -20,7 +24,7 @@ import { getTimelineData } from './helpers';
 import { SectionLink } from './section-link';
 
 interface TimelineSectionProps {
-  blogPostListVariables: FetchBlogPostListVariables;
+  blogPostListVariables: FetchBlogPostListInfiniteVariables;
 }
 
 export const TimelineSection: FC<TimelineSectionProps> = ({ blogPostListVariables }) => {

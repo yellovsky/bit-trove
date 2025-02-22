@@ -16,7 +16,7 @@ import {
 } from '@nestjs/common';
 
 // common modules
-import { Account } from 'src/decorators/account.decorator';
+import { Account } from 'src/common/decorators/account';
 import { ApiCommonErrorResponses } from 'src/utils/swagger';
 import type { DB } from 'src/db';
 import type { DBAccount } from 'src/modules/account';

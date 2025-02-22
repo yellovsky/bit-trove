@@ -14,9 +14,6 @@ docker-compose up
 
 # 2. Initialize, seed, and start the API
 cd ./apps/api
-yarn prisma:generate
-yarn prisma:dev:push
-yarn prisma:seed
 yarn dev
 
 # 3. Start the frontend
