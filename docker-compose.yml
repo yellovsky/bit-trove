@@ -1,0 +1,44 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres-db-volume:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - postgres-db-network
+
+  s3mock:
+    image: adobe/s3mock:latest
+    environment:
+      - initialBuckets=blog-bucket
+      - retainFilesOnExit=true
+      - root=containers3root
+    ports:
+      - 9090:9090
+    volumes:
+      - ./locals3root:/containers3root
+  redis:
+    image: redis:8-alpine
+    container_name: local-bittrove-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+volumes:
+  postgres-db-volume:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data
+  redis_data:
+networks:
+  postgres-db-network:
+    driver: bridge

@@ -1,0 +1,7 @@
+model Language {
+  code String @id @map("code")
+
+  blogPosts LocalizedBlogPost[]
+
+  @@map("languages")
+}

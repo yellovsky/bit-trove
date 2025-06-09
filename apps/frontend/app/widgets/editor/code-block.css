@@ -1,0 +1,8 @@
+.codeBlock {
+  color: var(--mantine-color-white);
+  background: var(--mantine-color-dark-7);
+
+  code {
+    background: none;
+  }
+}

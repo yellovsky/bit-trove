@@ -1,0 +1,5 @@
+.content {
+  :global(.codeBlock) {
+    background: none;
+  }
+}

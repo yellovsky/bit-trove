@@ -1,0 +1,9 @@
+@reference "../../../root.css";
+
+.pageHeader {
+  @apply flex gap-4 items-center;
+}
+
+.nav {
+  @apply grow flex gap-1;
+}

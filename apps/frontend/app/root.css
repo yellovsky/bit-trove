@@ -1,0 +1,16 @@
+/* see: https://tailwindcss.com/docs/preflight#disabling-preflight */
+@layer theme, base, components, utilities;
+
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+@import "@mantine/core/styles.css" layer(utilities);
+
+@import "./theme.css";
+
+@layer utilities {
+  .invalid-text {
+    --text-color: var(--mantine-color-error);
+  }
+}
+
+@custom-variant dark (&:where([data-mantine-color-scheme=dark], [data-mantine-color-scheme=dark] *));
