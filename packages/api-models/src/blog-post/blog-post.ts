@@ -1,8 +1,7 @@
-// biome-ignore syntax/correctness/noTypeOnlyImportAttributes: it's a type
-import type { JSONContent } from '@tiptap/core' with { 'resolution-mode': 'import' };
 import * as zod from 'zod';
 
 import { isoDateSchema } from '../common/iso-date';
+import { jsonContentSchema } from '../common/json-content';
 import { localeSchema } from '../common/locale';
 import { seoSchema } from '../common/seo';
 import { uuidSchema } from '../common/uuid';
@@ -26,11 +25,8 @@ export const shortBlogPostSchema = zod.object({
 
 export type ShortBlogPost = zod.infer<typeof shortBlogPostSchema>;
 
-const contentJSONSchema: zod.ZodType<JSONContent> = zod.any();
-export type ContentJSON = zod.infer<typeof contentJSONSchema>;
-
 export const blogPostSchema = shortBlogPostSchema.extend({
-  contentJSON: contentJSONSchema.nullable(),
+  contentJSON: jsonContentSchema.nullable(),
   seo: seoSchema,
 });
 

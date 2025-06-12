@@ -1,0 +1,5 @@
+@reference '../../root.css';
+
+.link {
+  @apply font-normal;
+}

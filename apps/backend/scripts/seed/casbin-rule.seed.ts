@@ -1,5 +1,19 @@
 import type { PrismaClient } from '@generated/prisma';
 
+const thoughtPolicies = [
+  // Published thoughts are always readable
+  { act: 'read', cond: 'r.obj.publishedAt != null', sub: 'public' },
+  // Unpublished thoughts are readable by the author
+  { act: 'read', cond: 'r.obj.publishedAt == null && r.obj.author.id == r.sub', sub: 'public' },
+  // Admin can read all thoughts
+  { act: 'read', cond: 'true', sub: 'admin' },
+  // Admin can create thoughts
+  { act: 'create', cond: 'true', sub: 'admin' },
+].map((obj) => ({
+  ...obj,
+  objType: 'thought',
+}));
+
 const blogPostPolicies = [{ act: 'read', cond: 'true', sub: 'public' }].map((obj) => ({
   ...obj,
   objType: 'blog_post',
@@ -30,7 +44,7 @@ const policies: Array<{
   act: string;
   cond: string;
   note?: string;
-}> = [...accountPolicies, ...permissionPolicyPolicies, ...blogPostPolicies].map((obj) => ({
+}> = [...accountPolicies, ...permissionPolicyPolicies, ...blogPostPolicies, ...thoughtPolicies].map((obj) => ({
   ...obj,
   ptype: 'p',
 }));
@@ -46,5 +60,8 @@ const casbinRules = [...policies].map((inp) => ({
 
 export const cabinRulesSeeder = {
   clear: (tx: PrismaClient) => tx.casbinRule.deleteMany(),
-  seed: (tx: PrismaClient) => tx.casbinRule.createMany({ data: casbinRules }),
+  seed: async (tx: PrismaClient) => {
+    await tx.casbinRule.createMany({ data: casbinRules });
+    await tx.casbinRule.createMany({ data: [{ ptype: 'g', v0: 'admin', v1: 'public' }] });
+  },
 };

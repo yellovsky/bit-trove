@@ -1,6 +1,7 @@
 import { Box, Burger, Drawer } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import type { ComponentProps, FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import { type PathPattern, useMatch, useSearchParams } from 'react-router';
 
 import { Link } from '@shared/ui/link';
@@ -41,6 +42,7 @@ const DesktopNavItem: FC<ComponentProps<typeof Link>> = (props) => {
 };
 
 export const PageHeader: FC = () => {
+  const { t } = useTranslation();
   const [menuOpened, { close: closeMenu, open: openMenu }] = useDisclosure();
   const [step, setStep] = useAuthStep();
 
@@ -51,8 +53,8 @@ export const PageHeader: FC = () => {
       <Burger aria-label="Toggle navigation" hiddenFrom="sm" onClick={openMenu} />
       <Logo />
       <nav className={styles.nav}>
-        <DesktopNavItem to="/">Home</DesktopNavItem>
-        <DesktopNavItem to="/blog">Blog</DesktopNavItem>
+        <DesktopNavItem to="/">{t('menu_items.home.title')}</DesktopNavItem>
+        <DesktopNavItem to="/blog">{t('menu_items.blog.title')}</DesktopNavItem>
       </nav>
       <ColorSchemeSwitcher />
       <LanguageSwitcherDesktop />

@@ -2049,6 +2049,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mantine/tiptap@npm:8.1.0":
+  version: 8.1.0
+  resolution: "@mantine/tiptap@npm:8.1.0"
+  peerDependencies:
+    "@mantine/core": 8.1.0
+    "@mantine/hooks": 8.1.0
+    "@tiptap/extension-link": ">=2.1.12"
+    "@tiptap/react": ">=2.1.12"
+    react: ^18.x || ^19.x
+    react-dom: ^18.x || ^19.x
+  checksum: 10c0/2de0ad2f58ab3ea51b88ce40f7c865587734212cc5272b0cf30ed9ccd5989479d183b82266d774cbc56f6326ce0744299713f1979b37ab4217d09f97bbe3d330
+  languageName: node
+  linkType: hard
+
 "@mdx-js/react@npm:^3.0.0":
   version: 3.1.0
   resolution: "@mdx-js/react@npm:3.1.0"
@@ -3764,6 +3778,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tabler/icons-react@npm:3.34.0":
+  version: 3.34.0
+  resolution: "@tabler/icons-react@npm:3.34.0"
+  dependencies:
+    "@tabler/icons": "npm:3.34.0"
+  peerDependencies:
+    react: ">= 16"
+  checksum: 10c0/b2d094c6ae02fc157d9a059e06c65b1dd49a96c7fc77a57bc9acf289899df66504bcab533e7a22d9ec3ca7c3952176c6c916e84aff827b24d2c69ecc7bfc737d
+  languageName: node
+  linkType: hard
+
+"@tabler/icons@npm:3.34.0":
+  version: 3.34.0
+  resolution: "@tabler/icons@npm:3.34.0"
+  checksum: 10c0/7b4bb937e051ece9258ab4321363f284a4c1d53fbe0211c6976bff41d0ca031e8196156595bb30fa2bfb963f1771814d1438aa01a4422df9a6e21a46ebe6cc9b
+  languageName: node
+  linkType: hard
+
 "@tailwindcss/node@npm:4.1.7":
   version: 4.1.7
   resolution: "@tailwindcss/node@npm:4.1.7"
@@ -3980,6 +4012,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/react-table@npm:8.21.3":
+  version: 8.21.3
+  resolution: "@tanstack/react-table@npm:8.21.3"
+  dependencies:
+    "@tanstack/table-core": "npm:8.21.3"
+  peerDependencies:
+    react: ">=16.8"
+    react-dom: ">=16.8"
+  checksum: 10c0/85d1d0fcb690ecc011f68a5a61c96f82142e31a0270dcf9cbc699a6f36715b1653fe6ff1518302a6d08b7093351fc4cabefd055a7db3cd8ac01e068956b0f944
+  languageName: node
+  linkType: hard
+
+"@tanstack/table-core@npm:8.21.3":
+  version: 8.21.3
+  resolution: "@tanstack/table-core@npm:8.21.3"
+  checksum: 10c0/40e3560e6d55e07cc047024aa7f83bd47a9323d21920d4adabba8071fd2d21230c48460b26cedf392588f8265b9edc133abb1b0d6d0adf4dae0970032900a8c9
+  languageName: node
+  linkType: hard
+
 "@testing-library/dom@npm:10.4.0, @testing-library/dom@npm:^10.4.0":
   version: 10.4.0
   resolution: "@testing-library/dom@npm:10.4.0"
@@ -4166,6 +4217,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tiptap/extension-highlight@npm:2.14.0":
+  version: 2.14.0
+  resolution: "@tiptap/extension-highlight@npm:2.14.0"
+  peerDependencies:
+    "@tiptap/core": ^2.7.0
+  checksum: 10c0/0eb368dd2a08395f10fb69aecc1f932cc644940a65ac88223004cb966d729c809c9e1e6b8b57e9c9b480f0c8f0115a8140c6e9fe1ee370ae8b0df4f7a5b16f15
+  languageName: node
+  linkType: hard
+
 "@tiptap/extension-history@npm:^3.0.0":
   version: 3.0.0
   resolution: "@tiptap/extension-history@npm:3.0.0"
@@ -4243,12 +4303,48 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tiptap/extension-subscript@npm:2.14.0":
+  version: 2.14.0
+  resolution: "@tiptap/extension-subscript@npm:2.14.0"
+  peerDependencies:
+    "@tiptap/core": ^2.7.0
+  checksum: 10c0/d3df31f71523ee2ecd6b23325da0d2299e51d4c37cc1f52b5f65de33f708c967532c9b7ac73ceb24de0910165f77cae116daf9cfd0ac1a4265ac20288444a288
+  languageName: node
+  linkType: hard
+
+"@tiptap/extension-superscript@npm:2.14.0":
+  version: 2.14.0
+  resolution: "@tiptap/extension-superscript@npm:2.14.0"
+  peerDependencies:
+    "@tiptap/core": ^2.7.0
+  checksum: 10c0/e3e5a91ced25a3d452d6af40a59db9723195308fec19cd0e7fa8cea5266de03e3f42c43bfe959c8cef90ea15cd8e16c1bfb190624fbe5f702a4f78e9169a8772
+  languageName: node
+  linkType: hard
+
+"@tiptap/extension-text-align@npm:2.14.0":
+  version: 2.14.0
+  resolution: "@tiptap/extension-text-align@npm:2.14.0"
+  peerDependencies:
+    "@tiptap/core": ^2.7.0
+  checksum: 10c0/4634d34ff9f3fa19763f49b9f5419dfbe8e40051398b8ae9ab112a6a378bf265cba73ce91a461e681c343de23694ff8b03db9b6a5da91cd2ab81bd6ba39c9489
+  languageName: node
+  linkType: hard
+
 "@tiptap/extension-text@npm:^3.0.0":
   version: 3.0.0
   resolution: "@tiptap/extension-text@npm:3.0.0"
   peerDependencies:
     "@tiptap/core": ^3.0.0
   checksum: 10c0/695f2efbdd3648cbbba318c7c37c6500ae4da2c6646e7dbcd5be564aabec8f32b127e5d3b58f647a3db675ec4c1dd61aee882f2514ff792d5388b0a30d428d92
+  languageName: node
+  linkType: hard
+
+"@tiptap/extension-underline@npm:2.14.0":
+  version: 2.14.0
+  resolution: "@tiptap/extension-underline@npm:2.14.0"
+  peerDependencies:
+    "@tiptap/core": ^2.7.0
+  checksum: 10c0/34729062682b683e194fea6e7244c854be0a5df32beaf590572ea43faba12524a3c7a85cb96fa8efef67d14200a5aeafd59b731a535cdc70230d663618a2769b
   languageName: node
   linkType: hard
 
@@ -8142,6 +8238,7 @@ __metadata:
     "@fontsource-variable/roboto-mono": "npm:5.2.5"
     "@mantine/core": "npm:8.0.2"
     "@mantine/hooks": "npm:8.0.2"
+    "@mantine/tiptap": "npm:8.1.0"
     "@react-router/dev": "npm:7.6.0"
     "@react-router/node": "npm:7.6.0"
     "@react-router/serve": "npm:7.6.0"
@@ -8151,15 +8248,22 @@ __metadata:
     "@storybook/addon-onboarding": "npm:9.0.2"
     "@storybook/addon-vitest": "npm:9.0.2"
     "@storybook/react-vite": "npm:9.0.2"
+    "@tabler/icons-react": "npm:3.34.0"
     "@tailwindcss/postcss": "npm:4.1.7"
     "@tailwindcss/vite": "npm:4.1.7"
     "@tanstack/query-core": "npm:5.76.0"
     "@tanstack/react-query": "npm:5.76.1"
     "@tanstack/react-query-devtools": "npm:5.76.1"
+    "@tanstack/react-table": "npm:8.21.3"
     "@testing-library/dom": "npm:10.4.0"
     "@testing-library/react": "npm:16.3.0"
     "@tiptap/core": "npm:3.0.0"
+    "@tiptap/extension-highlight": "npm:2.14.0"
     "@tiptap/extension-link": "npm:3.0.0"
+    "@tiptap/extension-subscript": "npm:2.14.0"
+    "@tiptap/extension-superscript": "npm:2.14.0"
+    "@tiptap/extension-text-align": "npm:2.14.0"
+    "@tiptap/extension-underline": "npm:2.14.0"
     "@tiptap/html": "npm:3.0.0"
     "@tiptap/pm": "npm:3.0.0"
     "@tiptap/react": "npm:3.0.0"
@@ -8201,6 +8305,7 @@ __metadata:
     react-router-hono-server: "npm:2.13.0"
     remix-hono: "npm:0.0.18"
     remix-i18next: "npm:7.2.1"
+    remix-utils: "npm:8.7.0"
     shiki: "npm:3.6.0"
     storybook: "npm:9.0.2"
     tailwindcss: "npm:4.1.7"
@@ -12202,6 +12307,47 @@ __metadata:
   languageName: node
   linkType: hard
 
+"remix-utils@npm:8.7.0":
+  version: 8.7.0
+  resolution: "remix-utils@npm:8.7.0"
+  dependencies:
+    type-fest: "npm:^4.37.0"
+  peerDependencies:
+    "@edgefirst-dev/batcher": ^1.0.0
+    "@edgefirst-dev/jwt": ^1.2.0
+    "@edgefirst-dev/server-timing": ^0.0.1
+    "@oslojs/crypto": ^1.0.1
+    "@oslojs/encoding": ^1.1.0
+    intl-parse-accept-language: ^1.0.0
+    is-ip: ^5.0.1
+    react: ^18.0.0 || ^19.0.0
+    react-router: ^7.0.0
+    zod: ^3.22.4
+  peerDependenciesMeta:
+    "@edgefirst-dev/batcher":
+      optional: true
+    "@edgefirst-dev/jwt":
+      optional: true
+    "@edgefirst-dev/server-timing":
+      optional: true
+    "@oslojs/crypto":
+      optional: true
+    "@oslojs/encoding":
+      optional: true
+    intl-parse-accept-language:
+      optional: true
+    is-ip:
+      optional: true
+    react:
+      optional: true
+    react-router:
+      optional: true
+    zod:
+      optional: true
+  checksum: 10c0/138920235327a72444f6209b3963a70e133f01411ff00cc06eb42882531ecb03a1ac45a00cfd00562c4c6f7de4a0fb914c6027f050c0ef337b6f3a93cb1301bf
+  languageName: node
+  linkType: hard
+
 "repeat-string@npm:^1.6.1":
   version: 1.6.1
   resolution: "repeat-string@npm:1.6.1"
@@ -13664,7 +13810,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-fest@npm:^4.27.0":
+"type-fest@npm:^4.27.0, type-fest@npm:^4.37.0":
   version: 4.41.0
   resolution: "type-fest@npm:4.41.0"
   checksum: 10c0/f5ca697797ed5e88d33ac8f1fec21921839871f808dc59345c9cf67345bfb958ce41bd821165dbf3ae591cedec2bf6fe8882098dfdd8dc54320b859711a2c1e4

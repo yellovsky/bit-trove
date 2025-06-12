@@ -1,0 +1,38 @@
+model LocalizedThought {
+  id String @id @default(uuid()) @map("id")
+
+  languageCode String   @map("language_code")
+  language     Language @relation(fields: [languageCode], references: [code])
+
+  publishedAt DateTime? @map("published_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at")
+
+  title            String  @map("title")
+  shortDescription String? @map("short_description")
+  contentJSON      Json?   @map("content_json")
+  seoTitle         String? @map("seo_title")
+  seoDescription   String? @map("seo_description")
+  seoKeywords      String? @map("seo_keywords")
+
+  thoughtId String  @map("thought_id")
+  thought   Thought @relation(fields: [thoughtId], references: [id], onDelete: Cascade)
+
+  @@map("localized_thoughts")
+}
+
+model Thought {
+  id   String @id @default(uuid()) @map("id")
+  slug String @unique @map("slug")
+
+  publishedAt DateTime? @map("published_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at")
+
+  author   Account? @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  authorId String?  @map("author_id")
+
+  localizations LocalizedThought[]
+
+  @@map("thoughts")
+}

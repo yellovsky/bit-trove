@@ -1,6 +1,6 @@
 import { join } from 'node:path';
 
-import { Inject, Injectable, type OnModuleInit } from '@nestjs/common';
+import { Inject, Injectable, Logger, type OnModuleInit } from '@nestjs/common';
 import { type Enforcer, newEnforcer } from 'casbin';
 
 import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
@@ -17,6 +17,7 @@ import { PrismaAdapter } from './prisma-adapter';
 
 @Injectable()
 export class CasbinServiceImpl implements CasbinService, OnModuleInit {
+  #logger = new Logger(CasbinServiceImpl.name);
   #enforcer!: Enforcer;
 
   constructor(
@@ -59,12 +60,15 @@ export class CasbinServiceImpl implements CasbinService, OnModuleInit {
     };
   }
 
-  checkRequestPermission(
+  async checkRequestPermission(
     reqCtx: AuthRequestContext,
     action: CasbinAction,
     objType: CasbinObjectType,
     obj: object
   ): Promise<boolean> {
-    return this.checkPermission(reqCtx.profileId || 'public', action, objType, obj);
+    const subject = reqCtx.accountId || 'public';
+    const result = await this.checkPermission(subject, action, objType, obj);
+    this.#logger.debug(`Check ${subject} can ${action} "${objType}" ${JSON.stringify(obj)} => ${result}`);
+    return result;
   }
 }

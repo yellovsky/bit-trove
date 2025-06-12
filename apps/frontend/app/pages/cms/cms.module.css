@@ -1,0 +1,11 @@
+.centerContent {
+  @apply flex items-center justify-center;
+
+  height: calc(
+    100vh -
+    var(--app-shell-header-offset, 0rem) -
+    var(--app-shell-padding) -
+    var(--app-shell-footer-offset, 0rem) -
+    var(--app-shell-padding)
+  );
+}

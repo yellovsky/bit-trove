@@ -1,4 +1,5 @@
 export default {
+  'Content management': 'Content management',
   error: {
     '403': {
       description: "Looks like you can't access this page.",
@@ -43,6 +44,39 @@ export default {
     unknown_error: {
       description: 'Looks like something unexpected happened on the server.',
       text: 'Something went wrong!',
+    },
+  },
+
+  error_page: {
+    '404': {
+      button_text: 'Go back to the homepage.',
+      subtitle:
+        'The page you’re looking for doesn’t exist. It might have been removed, renamed, or the URL might be incorrect. If you believe this is a mistake, please reach out to support.',
+      title: 'There’s nothing here.',
+    },
+
+    '500': {
+      button_text: 'Return to the homepage.',
+      subtitle:
+        'An unexpected error occurred while processing your request. Please try again later. If the problem persists, contact support.',
+      title: 'Something went wrong on our end.',
+    },
+  },
+  menu_items: {
+    blog: {
+      seoDescription: 'Blog page',
+      title: 'Blog',
+    },
+    cms: {
+      title: 'CMS',
+    },
+    home: {
+      seoDescription: 'Home page',
+      title: 'Home',
+    },
+    thoughts: {
+      seoDescription: 'Thoughts page',
+      title: 'Thoughts',
     },
   },
 };

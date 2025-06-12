@@ -1,0 +1,19 @@
+:root {
+  --color-bg-sec-light: #eaeaea;
+  --color-bg-ter-light: #f1f1f1;
+
+  --color-bg-sec-dark: #1f1f1f;
+  --color-bg-ter-dark: #171717;
+}
+
+.logo {
+  @apply block h-full;
+}
+
+.header {
+  background-color: light-dark(var(--color-bg-ter-light), var(--color-bg-ter-dark));
+}
+
+.navbar {
+  background-color: light-dark(var(--color-bg-sec-light), var(--color-bg-sec-dark));
+}

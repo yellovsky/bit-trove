@@ -1,7 +1,7 @@
 import { Anchor, Button, Divider, Group, PasswordInput, Text, TextInput } from '@mantine/core';
 import { useAtom } from 'jotai';
 import type { FC } from 'react';
-import { Controller, type SubmitHandler, useForm as useReactHookForm, type Validate } from 'react-hook-form';
+import { Controller, type SubmitHandler, useForm, type Validate } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as zod from 'zod';
 
@@ -28,9 +28,8 @@ export const SignInForm: FC<SignInFormProps> = ({ onSuccess, onForgotPassword, o
     handleSubmit,
     control,
     setError,
-
     formState: { errors },
-  } = useReactHookForm<LoginWithEmailBody>({
+  } = useForm<LoginWithEmailBody>({
     defaultValues: { email: '', password: '' },
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -59,20 +58,22 @@ export const SignInForm: FC<SignInFormProps> = ({ onSuccess, onForgotPassword, o
     return undefined;
   };
 
+  const footer = !onSignUpClick ? null : (
+    <Group justify="center" mt="md">
+      <Text size="sm">
+        Don't have an account?{' '}
+        <Anchor component="button" onClick={onSignUpClick}>
+          Create account
+        </Anchor>
+      </Text>
+    </Group>
+  );
+
   return (
     <AuthForm
-      description="Please sign in to continue"
-      footer={
-        <Group justify="center" mt="md">
-          <Text size="sm">
-            Don't have an account?{' '}
-            <Anchor component="button" onClick={onSignUpClick}>
-              Create account
-            </Anchor>
-          </Text>
-        </Group>
-      }
-      title="Welcome back!"
+      description={tAuth('sign_in_form.form_subtitle')}
+      footer={footer}
+      title={tAuth('sign_in_form.form_title')}
     >
       <form noValidate onSubmit={handleSubmit(onSubmit)}>
         <Controller
@@ -119,14 +120,16 @@ export const SignInForm: FC<SignInFormProps> = ({ onSuccess, onForgotPassword, o
         <Divider mt="md" />
 
         <Button fullWidth loaderProps={{ type: 'dots' }} loading={isLoading} mt="md" type="submit">
-          Sign in
+          {tAuth('sign_in_form.submit_button.text')}
         </Button>
 
-        <div className="text-end">
-          <Anchor component="button" mt="md" onClick={onForgotPassword} size="sm">
-            Forgot password?
-          </Anchor>
-        </div>
+        {onForgotPassword && (
+          <div className="text-end">
+            <Anchor component="button" mt="md" onClick={onForgotPassword} size="sm">
+              Forgot password?
+            </Anchor>
+          </div>
+        )}
       </form>
     </AuthForm>
   );

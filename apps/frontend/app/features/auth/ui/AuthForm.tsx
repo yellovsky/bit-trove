@@ -1,5 +1,5 @@
 import { Box, Paper, Stack, Text, Title } from '@mantine/core';
-import type { ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
 
 interface AuthFormProps {
   title: string;
@@ -8,26 +8,24 @@ interface AuthFormProps {
   footer?: ReactNode;
 }
 
-export function AuthForm({ title, description, children, footer }: AuthFormProps) {
-  return (
-    <Paper p="xl" radius="md" withBorder>
-      <Title mb={50} mt="md" order={2} ta="center">
-        {title}
-      </Title>
+export const AuthForm: FC<AuthFormProps> = ({ title, description, children, footer }) => (
+  <Paper p="xl" radius="md" withBorder>
+    <Title mb="md" mt="md" order={2} ta="center">
+      {title}
+    </Title>
 
-      {description && (
-        <Text c="dimmed" mb="xl" size="sm" ta="center">
-          {description}
-        </Text>
-      )}
+    {description && (
+      <Text c="dimmed" mb="xl" size="sm" ta="center">
+        {description}
+      </Text>
+    )}
 
-      <Stack gap="md">{children}</Stack>
+    <Stack gap="md">{children}</Stack>
 
-      {footer && (
-        <Box mt="xl" ta="center">
-          {footer}
-        </Box>
-      )}
-    </Paper>
-  );
-}
+    {footer && (
+      <Box mt="xl" ta="center">
+        {footer}
+      </Box>
+    )}
+  </Paper>
+);

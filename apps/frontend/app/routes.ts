@@ -6,19 +6,27 @@ export default [
     prefix(':locale', [
       index('pages/home/index.tsx'),
 
-      ...prefix(
-        'auth',
-
-        [
-          route('sign-in', 'features/auth/pages/SignInPage.tsx'),
-          route('sign-up', 'features/auth/pages/SignUpPage.tsx'),
-          route('forgot-password', 'features/auth/pages/ForgotPasswordPage.tsx'),
-        ]
-      ),
+      ...prefix('auth', [
+        route('sign-in', 'features/auth/pages/SignInPage.tsx'),
+        route('sign-up', 'features/auth/pages/SignUpPage.tsx'),
+        route('forgot-password', 'features/auth/pages/ForgotPasswordPage.tsx'),
+      ]),
 
       route('editor', 'pages/editor/index.tsx'),
 
+      ...prefix('thoughts', [index('pages/thoughts/index.tsx')]),
+
       ...prefix('blog', [index('pages/blog/index.tsx'), route(':slugOrId', 'pages/blog-post/index.tsx')]),
+
+      layout(
+        'pages/cms/layout.tsx',
+        prefix('cms', [
+          index('pages/cms/index.tsx'),
+          route('thoughts', 'pages/cms.thoughts/index.tsx'),
+          route('thoughts/create', 'pages/cms.thoughts.create/index.tsx'),
+        ])
+      ),
+
       route('*', 'pages/not-found/index.tsx'),
     ])
   ),

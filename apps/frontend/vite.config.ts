@@ -62,6 +62,7 @@ export default defineConfig({
       '@features': resolve('app/features'),
       '@shared': resolve('app/shared'),
       '@widgets': resolve('app/widgets'),
+			'@tabler/icons-react': '@tabler/icons-react/dist/esm/icons/index.mjs',
     },
   },
 

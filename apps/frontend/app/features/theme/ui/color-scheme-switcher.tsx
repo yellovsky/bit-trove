@@ -1,7 +1,6 @@
 import { ActionIcon, useComputedColorScheme, useMantineColorScheme } from '@mantine/core';
+import { IconMoon, IconSun } from '@tabler/icons-react';
 import type { FC } from 'react';
-
-import { Icon } from '@shared/ui/icon';
 
 export const ColorSchemeSwitcher: FC = () => {
   const { colorScheme, setColorScheme } = useMantineColorScheme();
@@ -13,7 +12,7 @@ export const ColorSchemeSwitcher: FC = () => {
 
   return (
     <ActionIcon aria-label="Color scheme" color="gray" onClick={toggleColorScheme} variant="subtle">
-      <Icon className="h-full w-full" name={colorScheme === 'dark' ? 'moon' : 'sun'} />
+      {colorScheme === 'dark' ? <IconMoon /> : <IconSun />}
     </ActionIcon>
   );
 };

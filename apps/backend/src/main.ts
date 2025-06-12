@@ -38,6 +38,7 @@ const getSwaggerOptions = () =>
     .build();
 
 const winstonLogger = WinstonModule.createLogger({
+  level: 'debug',
   transports: [
     new transports.DailyRotateFile({
       datePattern: 'YYYY-MM-DD',

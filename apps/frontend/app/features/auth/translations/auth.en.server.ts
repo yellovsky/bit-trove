@@ -1,5 +1,6 @@
 export default {
   sign_in_form: {
+    form_subtitle: 'Please sign in to continue',
     form_title: 'Sign in',
     password_input: {
       'aria-label': 'Account password',

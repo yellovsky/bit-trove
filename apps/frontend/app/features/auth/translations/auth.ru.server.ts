@@ -1,5 +1,6 @@
 export default {
   sign_in_form: {
+    form_subtitle: 'Пожалуйста, войдите в систему, чтобы продолжить',
     form_title: 'Вход',
     password_input: {
       'aria-label': 'Пароль от аккаунта',

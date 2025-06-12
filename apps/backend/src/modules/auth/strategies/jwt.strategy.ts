@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Either } from 'effect';
 import type { Request } from 'express';
@@ -21,6 +21,8 @@ const ExtractJwtFromCookies = (req: Request): string | null => {
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
+  #logger = new Logger(JwtStrategy.name);
+
   constructor(
     @Inject(AUTH_SRV)
     private readonly authSrv: IdentifierOf<typeof AUTH_SRV>,
@@ -38,6 +40,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(request: Request, payload: JWTTokenPayload): Promise<ProfileEntity> {
     const reqCtx = requestContextFromRequest(request);
+
+    this.#logger.debug('Validating JWT token');
+    this.#logger.debug(`  > payload: ${JSON.stringify(payload)}`);
 
     return Either.getOrThrowWith(
       await this.authSrv.validateProfileByJWTTokenPayload(reqCtx, payload),
