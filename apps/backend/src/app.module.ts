@@ -12,7 +12,7 @@ import { CasbinModule } from 'src/modules/casbin';
 import { I18nModule } from 'src/modules/i18n';
 import { PermissionPoliciesModule } from 'src/modules/permission-policies';
 import { PrismaModule } from 'src/modules/prisma';
-import { ThoughtsModule } from 'src/modules/thoughts';
+import { ShardsModule } from 'src/modules/shards';
 
 import { RequestLoggerMiddleware } from './request-logger.middleware';
 
@@ -35,7 +35,7 @@ import { RequestLoggerMiddleware } from './request-logger.middleware';
     PassportModule.register({ session: true }),
     AppConfigModule,
     BlogPostsModule,
-    ThoughtsModule,
+    ShardsModule,
     I18nModule,
     PrismaModule,
     AuthModule,

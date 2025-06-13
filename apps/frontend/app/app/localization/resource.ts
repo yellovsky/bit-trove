@@ -4,8 +4,8 @@ import { AUTH_NS } from '@features/auth';
 import { authEn, authRu } from '@features/auth/translations';
 import { BLOG_POSTS_NS } from '@features/blog-posts';
 import { blogPostsEn, blogPostsRu } from '@features/blog-posts/translations';
-import { THOUGHTS_NS } from '@features/thoughts';
-import { thoughtsEn, thoughtsRu } from '@features/thoughts/translations';
+import { SHARDS_NS } from '@features/shards';
+import { shardsEn, shardsRu } from '@features/shards/translations';
 
 import commonEn from './common.en.server';
 import commonRu from './common.ru.server';
@@ -23,12 +23,12 @@ type Resource = {
   [COMMON_NS]: typeof commonEn;
   [BLOG_POSTS_NS]: ResourceShape<typeof blogPostsEn>;
   [AUTH_NS]: ResourceShape<typeof authEn>;
-  [THOUGHTS_NS]: ResourceShape<typeof thoughtsEn>;
+  [SHARDS_NS]: ResourceShape<typeof shardsEn>;
 };
 
 export const resources: Record<Locale, Resource> = {
-  en: { [COMMON_NS]: commonEn, [BLOG_POSTS_NS]: blogPostsEn, [AUTH_NS]: authEn, [THOUGHTS_NS]: thoughtsEn },
-  ru: { [COMMON_NS]: commonRu, [BLOG_POSTS_NS]: blogPostsRu, [AUTH_NS]: authRu, [THOUGHTS_NS]: thoughtsRu },
+  en: { [COMMON_NS]: commonEn, [BLOG_POSTS_NS]: blogPostsEn, [AUTH_NS]: authEn, [SHARDS_NS]: shardsEn },
+  ru: { [COMMON_NS]: commonRu, [BLOG_POSTS_NS]: blogPostsRu, [AUTH_NS]: authRu, [SHARDS_NS]: shardsRu },
 };
 
 export const getLocalesResource = async (lng: string, ns: string): Promise<object | null> =>

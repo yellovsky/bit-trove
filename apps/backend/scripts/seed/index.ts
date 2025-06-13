@@ -5,9 +5,9 @@ import { accountsSeeder } from './account.seed';
 import { blogPostsSeeder } from './blog-posts';
 import { cabinRulesSeeder } from './casbin-rule.seed';
 import { languagesSeeder } from './languages.seed';
-import { thoughtsSeeder } from './thoughts';
+import { shardsSeeder } from './shards';
 
-const seeders = [languagesSeeder, cabinRulesSeeder, accountsSeeder, blogPostsSeeder, thoughtsSeeder];
+const seeders = [languagesSeeder, cabinRulesSeeder, accountsSeeder, blogPostsSeeder, shardsSeeder];
 
 const main = async () => {
   const prisma = new PrismaClient();

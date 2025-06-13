@@ -14,7 +14,7 @@ export default [
 
       route('editor', 'pages/editor/index.tsx'),
 
-      ...prefix('thoughts', [index('pages/thoughts/index.tsx')]),
+      ...prefix('shards', [index('pages/shards/index.tsx')]),
 
       ...prefix('blog', [index('pages/blog/index.tsx'), route(':slugOrId', 'pages/blog-post/index.tsx')]),
 
@@ -22,8 +22,8 @@ export default [
         'pages/cms/layout.tsx',
         prefix('cms', [
           index('pages/cms/index.tsx'),
-          route('thoughts', 'pages/cms.thoughts/index.tsx'),
-          route('thoughts/create', 'pages/cms.thoughts.create/index.tsx'),
+          route('shards', 'pages/cms.shards/index.tsx'),
+          route('shards/create', 'pages/cms.shards.create/index.tsx'),
         ])
       ),
 

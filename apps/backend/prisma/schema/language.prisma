@@ -2,7 +2,7 @@ model Language {
   code String @id @map("code")
 
   blogPosts LocalizedBlogPost[]
-  thoughts  LocalizedThought[]
+  shards    LocalizedShard[]
 
   @@map("languages")
 }

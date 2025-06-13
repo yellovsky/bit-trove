@@ -8,4 +8,4 @@ export * from './common/seo';
 export * from './common/success-response';
 export * from './common/uuid';
 export * from './permission-policy';
-export * from './thought';
+export * from './shard';

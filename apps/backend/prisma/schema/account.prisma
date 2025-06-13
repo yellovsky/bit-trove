@@ -7,7 +7,7 @@ model Account {
   profiles      Profile[]
   authProviders AuthProvider[]
   blogPosts     BlogPost[]
-  thoughts      Thought[]
+  shards        Shard[]
 
   @@map("accounts")
 }

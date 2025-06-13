@@ -74,9 +74,9 @@ export default {
       seoDescription: 'Home page',
       title: 'Home',
     },
-    thoughts: {
-      seoDescription: 'Thoughts page',
-      title: 'Thoughts',
+    shards: {
+      seoDescription: 'Shards page',
+      title: 'Shards',
     },
   },
 };

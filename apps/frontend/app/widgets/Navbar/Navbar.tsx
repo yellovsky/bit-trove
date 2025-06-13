@@ -1,5 +1,5 @@
 import { Divider, Text } from '@mantine/core';
-import { IconArticle, IconBulb, IconHome, IconLogout } from '@tabler/icons-react';
+import { IconArticle, IconHome, IconLogout, IconPuzzle } from '@tabler/icons-react';
 import { useAtomValue } from 'jotai';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -17,7 +17,7 @@ const useNavItems = () => {
   return [
     { end: true, icon: IconHome, label: t('menu_items.home.title'), link: '/' },
     { icon: IconArticle, label: t('menu_items.blog.title'), link: '/blog' },
-    { icon: IconBulb, label: t('menu_items.thoughts.title'), link: '/thoughts' },
+    { icon: IconPuzzle, label: t('menu_items.shards.title'), link: '/shards' },
   ];
 };
 
@@ -26,7 +26,7 @@ const useCMSNavItems = () => {
 
   return [
     { end: true, label: t('menu_items.cms.title'), link: '/cms' },
-    { label: t('menu_items.thoughts.title'), link: '/cms/thoughts' },
+    { label: t('menu_items.shards.title'), link: '/cms/shards' },
   ];
 };
 

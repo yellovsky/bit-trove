@@ -73,9 +73,9 @@ export default {
       seoDescription: 'Главная страница',
       title: 'Главная',
     },
-    thoughts: {
-      seoDescription: 'Страница мыслей',
-      title: 'Мысли',
+    shards: {
+      seoDescription: 'Страница фрагментов',
+      title: 'Фрагменты',
     },
   },
 };

@@ -1,17 +1,17 @@
 import type { PrismaClient } from '@generated/prisma';
 
-const thoughtPolicies = [
-  // Published thoughts are always readable
+const shardPolicies = [
+  // Published shards are always readable
   { act: 'read', cond: 'r.obj.publishedAt != null', sub: 'public' },
-  // Unpublished thoughts are readable by the author
+  // Unpublished shards are readable by the author
   { act: 'read', cond: 'r.obj.publishedAt == null && r.obj.author.id == r.sub', sub: 'public' },
-  // Admin can read all thoughts
+  // Admin can read all shards
   { act: 'read', cond: 'true', sub: 'admin' },
-  // Admin can create thoughts
+  // Admin can create shards
   { act: 'create', cond: 'true', sub: 'admin' },
 ].map((obj) => ({
   ...obj,
-  objType: 'thought',
+  objType: 'shard',
 }));
 
 const blogPostPolicies = [{ act: 'read', cond: 'true', sub: 'public' }].map((obj) => ({
@@ -44,7 +44,7 @@ const policies: Array<{
   act: string;
   cond: string;
   note?: string;
-}> = [...accountPolicies, ...permissionPolicyPolicies, ...blogPostPolicies, ...thoughtPolicies].map((obj) => ({
+}> = [...accountPolicies, ...permissionPolicyPolicies, ...blogPostPolicies, ...shardPolicies].map((obj) => ({
   ...obj,
   ptype: 'p',
 }));
