@@ -1,8 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Effect } from 'effect';
 
 import type { ShortShard } from '@repo/api-models';
 
-import type { LocalizedShortShardModel } from '../../domain/models/localized-short-shard.model';
+import type { ExclusionReason } from 'src/shared/excluded';
+
+import type { ShardModel } from '../../domain/models/shard.model';
 import { AlternativeShardDto } from './alternative-shard.dto';
 
 export class ShortShardDto implements ShortShard {
@@ -55,17 +58,19 @@ export class ShortShardDto implements ShortShard {
   })
   readonly alternatives!: AlternativeShardDto[];
 
-  static fromModel(model: LocalizedShortShardModel): ShortShardDto {
-    return new ShortShardDto({
-      alternatives: model.alternatives.map((alternative) => new AlternativeShardDto(alternative)),
-      createdAt: model.createdAt.toISOString(),
-      id: model.id,
-      languageCode: model.languageCode,
-      publishedAt: model.publishedAt?.toISOString() ?? null,
-      shortDescription: model.shortDescription,
-      slug: model.slug,
-      title: model.title,
-    });
+  static fromModel(model: ShardModel): Effect.Effect<ShortShardDto, ExclusionReason> {
+    return Effect.succeed(
+      new ShortShardDto({
+        alternatives: model.alternatives.map((alternative) => new AlternativeShardDto(alternative)),
+        createdAt: model.createdAt.toISOString(),
+        id: model.id,
+        languageCode: model.languageCode,
+        publishedAt: model.publishedAt?.toISOString() ?? null,
+        shortDescription: model.shortDescription,
+        slug: model.slug,
+        title: model.title,
+      })
+    );
   }
 
   constructor(data: ShortShard) {

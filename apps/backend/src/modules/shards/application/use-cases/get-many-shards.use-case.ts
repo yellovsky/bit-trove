@@ -9,7 +9,7 @@ import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
 import type { RequestContext } from 'src/shared/utils/request-context';
 
 import { sortToOrderBy } from '../../../../shared/utils/sort-to-order-by';
-import type { LocalizedShortShardModel } from '../../domain/models/localized-short-shard.model';
+import type { ShardModel } from '../../domain/models/shard.model';
 import { type FindManyShardsParams, SHARDS_REPOSITORY } from '../../domain/repositories/shards.repository';
 import { SHARDS_ACCESS_SRV } from '../services/shards-access.service.interface';
 
@@ -26,10 +26,7 @@ export class GetManyShardsUseCase {
   execute(
     reqCtx: RequestContext,
     query: GetManyShardsQuery
-  ): Effect.Effect<
-    { items: Array<ExclusionReason | LocalizedShortShardModel>; total: number },
-    ExclusionReason | UnknownException
-  > {
+  ): Effect.Effect<{ items: Array<ExclusionReason | ShardModel>; total: number }, ExclusionReason | UnknownException> {
     const params: FindManyShardsParams = {
       filter: {
         languageCodeIn: query.filter?.languageCodeIn,
@@ -42,9 +39,9 @@ export class GetManyShardsUseCase {
 
     return Effect.all({
       items: this.repository
-        .findManyLocalized(reqCtx, params)
-        .pipe(Effect.flatMap((items) => this.accessSrv.filterCanReadLocalizedShortShardList(reqCtx, items))),
-      total: this.repository.findTotalLocalized(reqCtx, params),
+        .findManyShards(reqCtx, params)
+        .pipe(Effect.flatMap((items) => this.accessSrv.filterCanReadShardList(reqCtx, items))),
+      total: this.repository.findTotalShards(reqCtx, params),
     });
   }
 }

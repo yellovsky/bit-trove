@@ -7,12 +7,12 @@ import { shardSchema } from './shard';
 
 export const createShardBodySchema = zod.object({
   contentJSON: jsonContentSchema,
+  entryId: zod.string().nullable(),
   languageCode: localeSchema,
   published: zod.boolean(),
   seoDescription: zod.string().nullable(),
   seoKeywords: zod.string().nullable(),
   seoTitle: zod.string().nullable(),
-  shardId: zod.string().nullable(),
   shortDescription: zod.string().nullable(),
   slug: zod.string().min(1),
   title: zod.string().min(1),

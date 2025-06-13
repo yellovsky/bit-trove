@@ -1,5 +1,6 @@
-model LocalizedShard {
-  id String @id @default(uuid()) @map("id")
+model Shard {
+  id   String @id @default(uuid()) @map("id")
+  slug String @unique @map("slug")
 
   languageCode String   @map("language_code")
   language     Language @relation(fields: [languageCode], references: [code])
@@ -8,6 +9,9 @@ model LocalizedShard {
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at")
 
+  author   Account? @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  authorId String?  @map("author_id")
+
   title            String  @map("title")
   shortDescription String? @map("short_description")
   contentJSON      Json?   @map("content_json")
@@ -15,15 +19,14 @@ model LocalizedShard {
   seoDescription   String? @map("seo_description")
   seoKeywords      String? @map("seo_keywords")
 
-  shardId String @map("shard_id")
-  shard   Shard  @relation(fields: [shardId], references: [id], onDelete: Cascade)
+  entryId String     @map("entry_id")
+  entry   ShardEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
 
-  @@map("localized_shards")
+  @@map("shards")
 }
 
-model Shard {
-  id   String @id @default(uuid()) @map("id")
-  slug String @unique @map("slug")
+model ShardEntry {
+  id String @id @default(uuid()) @map("id")
 
   publishedAt DateTime? @map("published_at")
   createdAt   DateTime  @default(now()) @map("created_at")
@@ -32,7 +35,7 @@ model Shard {
   author   Account? @relation(fields: [authorId], references: [id], onDelete: SetNull)
   authorId String?  @map("author_id")
 
-  localizations LocalizedShard[]
+  shards Shard[]
 
-  @@map("shards")
+  @@map("shard_entries")
 }

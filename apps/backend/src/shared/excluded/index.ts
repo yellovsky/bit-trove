@@ -8,6 +8,7 @@ enum ExclusionReasonKind {
   NOT_PUBLISHED = 'NOT_PUBLISHED',
   INSUFFICIENT_DATA_TO_TRANSLATE = 'INSUFFICIENT_DATA_TO_TRANSLATE',
   UNKNOWN = 'UNKNOWN',
+  NOT_ENOUGH_DATA = 'NOT_ENOUGH_DATA',
 }
 
 interface ReasonMeta {
@@ -91,6 +92,21 @@ export class TranslationDataMissingReason extends ExclusionReason {
       code: 'not_found',
       httpCode: 404,
       message: this.httpMessage || 'Insufficient data to translate',
+      timestamp: Date.now(),
+    });
+  }
+}
+
+export class NotEnoughDataReason extends ExclusionReason {
+  constructor(params?: ReasonMeta) {
+    super({ ...params, reason: ExclusionReasonKind.NOT_ENOUGH_DATA });
+  }
+
+  toFailedResponseDto(): FailedResponseDto {
+    return FailedResponseDto.from({
+      code: 'unknown_error',
+      httpCode: 500,
+      message: this.httpMessage || 'Unknown error',
       timestamp: Date.now(),
     });
   }

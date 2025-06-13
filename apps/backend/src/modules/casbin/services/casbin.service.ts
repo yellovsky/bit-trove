@@ -2,7 +2,10 @@ import { join } from 'node:path';
 
 import { Inject, Injectable, Logger, type OnModuleInit } from '@nestjs/common';
 import { type Enforcer, newEnforcer } from 'casbin';
+import { Effect } from 'effect';
+import type { UnknownException } from 'effect/Cause';
 
+import { AccessDeniedReason, type ExclusionReason } from 'src/shared/excluded';
 import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
 import type { SkippedOr } from 'src/shared/utils/load-result';
 import type { AuthRequestContext, RequestContext } from 'src/shared/utils/request-context';
@@ -60,15 +63,19 @@ export class CasbinServiceImpl implements CasbinService, OnModuleInit {
     };
   }
 
-  async checkRequestPermission(
+  checkRequestPermission(
     reqCtx: AuthRequestContext,
     action: CasbinAction,
     objType: CasbinObjectType,
     obj: object
-  ): Promise<boolean> {
+  ): Effect.Effect<true, ExclusionReason | UnknownException> {
     const subject = reqCtx.accountId || 'public';
-    const result = await this.checkPermission(subject, action, objType, obj);
-    this.#logger.debug(`Check ${subject} can ${action} "${objType}" ${JSON.stringify(obj)} => ${result}`);
-    return result;
+
+    return Effect.tryPromise(() => this.checkPermission(subject, action, objType, obj)).pipe(
+      Effect.tap((result) =>
+        this.#logger.debug(`Check ${subject} can ${action} "${objType}" ${JSON.stringify(obj)} => ${result}`)
+      ),
+      Effect.flatMap((result) => (result ? Effect.succeed(true) : Effect.fail(new AccessDeniedReason())))
+    );
   }
 }

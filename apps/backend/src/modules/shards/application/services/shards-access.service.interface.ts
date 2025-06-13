@@ -5,24 +5,18 @@ import type { ExclusionReason } from 'src/shared/excluded';
 import type { InjectableIdentifier } from 'src/shared/utils/injectable-identifier';
 import type { RequestContext } from 'src/shared/utils/request-context';
 
-import type { LocalizedShardModel } from '../../domain/models/localized-shard.model';
-import type { LocalizedShortShardModel } from '../../domain/models/localized-short-shard.model';
+import type { ShardModel } from '../../domain/models/shard.model';
 
 export interface ShardsAccessService {
-  filterCanReadLocalizedShard(
+  filterCanReadShard(
     reqCtx: RequestContext,
-    shard: LocalizedShardModel
-  ): Effect.Effect<LocalizedShardModel, ExclusionReason | UnknownException>;
+    shard: ShardModel
+  ): Effect.Effect<ShardModel, ExclusionReason | UnknownException>;
 
-  filterCanReadShortLocalizedShard(
+  filterCanReadShardList(
     reqCtx: RequestContext,
-    shard: LocalizedShortShardModel
-  ): Effect.Effect<LocalizedShortShardModel, ExclusionReason | UnknownException>;
-
-  filterCanReadLocalizedShortShardList(
-    reqCtx: RequestContext,
-    shards: LocalizedShortShardModel[]
-  ): Effect.Effect<Array<LocalizedShortShardModel | ExclusionReason>, UnknownException>;
+    shards: ShardModel[]
+  ): Effect.Effect<Array<ShardModel | ExclusionReason>, UnknownException>;
 
   canCreateShard(reqCtx: RequestContext): Effect.Effect<true, ExclusionReason | UnknownException>;
 }

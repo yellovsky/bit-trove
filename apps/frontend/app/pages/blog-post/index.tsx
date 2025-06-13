@@ -20,10 +20,6 @@ export function meta(params: Route.MetaArgs) {
   ];
 }
 
-export function HydrateFallback() {
-  return <p>Loading Game...</p>;
-}
-
 export default function BlogPostRoure(props: Route.ComponentProps) {
   return (
     <HydrationBoundary state={props.loaderData?.dehydratedState}>

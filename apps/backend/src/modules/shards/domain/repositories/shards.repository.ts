@@ -7,8 +7,7 @@ import type { ExclusionReason, UnknownReason } from 'src/shared/excluded';
 import type { InjectableIdentifier } from 'src/shared/utils/injectable-identifier';
 import type { RequestContext } from 'src/shared/utils/request-context';
 
-import type { LocalizedShardModel } from '../models/localized-shard.model';
-import type { LocalizedShortShardModel } from '../models/localized-short-shard.model';
+import type { ShardModel } from '../models/shard.model';
 
 export interface CreateShardParams {
   contentJSON: JSONContent | null;
@@ -20,7 +19,7 @@ export interface CreateShardParams {
   seoTitle: string | null;
   seoDescription: string | null;
   seoKeywords: string | null;
-  shardId: string | null;
+  entryId: string | null;
 }
 
 export type FindManyShardsOrderBy = { title: 'asc' | 'desc' } | { publishedAt: 'asc' | 'desc' };
@@ -39,20 +38,40 @@ export interface FindManyShardsParams {
   filter: FindManyShardsFilter;
 }
 
+export interface FindBySlugParams {
+  slug: string;
+  published?: boolean;
+}
+
+export interface FindByIdParams {
+  id: string;
+  published?: boolean;
+}
+
 export interface ShardsRepository {
   createShard(
     reqCtx: RequestContext,
     params: CreateShardParams
-  ): Effect.Effect<LocalizedShardModel, UnknownReason | UnknownException>;
+  ): Effect.Effect<ShardModel, UnknownReason | UnknownException>;
 
-  checkSlugAvailability(reqCtx: RequestContext, slug: string): Effect.Effect<boolean, UnknownException>;
+  checkShardSlugAvailability(reqCtx: RequestContext, slug: string): Effect.Effect<boolean, UnknownException>;
 
-  findManyLocalized(
+  findManyShards(
     reqCtx: RequestContext,
     params: FindManyShardsParams
-  ): Effect.Effect<LocalizedShortShardModel[], ExclusionReason | UnknownException>;
+  ): Effect.Effect<ShardModel[], ExclusionReason | UnknownException>;
 
-  findTotalLocalized(reqCtx: RequestContext, params: FindManyShardsParams): Effect.Effect<number, UnknownException>;
+  findTotalShards(reqCtx: RequestContext, params: FindManyShardsParams): Effect.Effect<number, UnknownException>;
+
+  findOneShardById(
+    reqCtx: RequestContext,
+    params: FindByIdParams
+  ): Effect.Effect<ShardModel, ExclusionReason | UnknownException>;
+
+  findOneShardBySlug(
+    reqCtx: RequestContext,
+    params: FindBySlugParams
+  ): Effect.Effect<ShardModel, ExclusionReason | UnknownException>;
 }
 
 export const SHARDS_REPOSITORY = 'SHARDS_REPOSITORY' as InjectableIdentifier<ShardsRepository>;

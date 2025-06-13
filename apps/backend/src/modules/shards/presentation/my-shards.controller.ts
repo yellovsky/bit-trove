@@ -11,7 +11,7 @@ import { ReqCtx, type RequestContext } from 'src/shared/utils/request-context';
 import { ZodValidationPipe } from 'src/shared/utils/zod-validation-pipe';
 
 import { GetMyManyShardsUseCase } from '../application/use-cases/get-my-many-shards.use-case';
-import { LocalizedShortShardModel } from '../domain/models/localized-short-shard.model';
+import { ShardModel } from '../domain/models/shard.model';
 import { GetManyShardsResponseDto } from './dtos/get-many-shards-reponse.dto';
 
 @ApiTags('Shards')
@@ -33,12 +33,12 @@ export class MyShardsController {
     const pipeline: Effect.Effect<GetManyShardsResponseDto, ExclusionReason> = this.getMyManyShardsUseCase
       .execute(reqCtx, query)
       .pipe(
-        Effect.map(({ items, total }) => {
-          const filtered: LocalizedShortShardModel[] = [];
+        Effect.flatMap(({ items, total }) => {
+          const filtered: ShardModel[] = [];
           const skipped: number[] = [];
 
           items.forEach((item, index) => {
-            if (item instanceof LocalizedShortShardModel) filtered.push(item);
+            if (item instanceof ShardModel) filtered.push(item);
             else skipped.push(index);
           });
 

@@ -1,9 +1,9 @@
-import { Body, Controller, Get, Inject, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Effect } from 'effect';
 import type * as zod from 'zod';
 
-import { createShardBodySchema, getManyShardsQuerySchema } from '@repo/api-models';
+import { createShardBodySchema, getManyShardsQuerySchema, getOneShardQuerySchema } from '@repo/api-models';
 
 import { Public } from 'src/shared/decorators/public';
 import { ListResponsePaginationDto } from 'src/shared/dto/list-response-pagination.dto';
@@ -13,7 +13,8 @@ import { ZodValidationPipe } from 'src/shared/utils/zod-validation-pipe';
 
 import { CreateShardUseCase } from '../application/use-cases/create-shard.use-case';
 import { GetManyShardsUseCase } from '../application/use-cases/get-many-shards.use-case';
-import { LocalizedShortShardModel } from '../domain/models/localized-short-shard.model';
+import { GetOneShardUseCase } from '../application/use-cases/get-one-shard.use-case';
+import { ShardModel } from '../domain/models/shard.model';
 import { GetManyShardsResponseDto } from './dtos/get-many-shards-reponse.dto';
 import { GetOneShardResponseDto } from './dtos/get-one-shard-reponse.dto';
 
@@ -25,7 +26,10 @@ export class ShardsController {
     private readonly createShardUseCase: CreateShardUseCase,
 
     @Inject(GetManyShardsUseCase)
-    private readonly getManyShardsUseCase: GetManyShardsUseCase
+    private readonly getManyShardsUseCase: GetManyShardsUseCase,
+
+    @Inject(GetOneShardUseCase)
+    private readonly getOneShardUseCase: GetOneShardUseCase
   ) {}
 
   @Get()
@@ -40,12 +44,12 @@ export class ShardsController {
     const pipeline: Effect.Effect<GetManyShardsResponseDto, ExclusionReason> = this.getManyShardsUseCase
       .execute(reqCtx, query)
       .pipe(
-        Effect.map(({ items, total }) => {
-          const filtered: LocalizedShortShardModel[] = [];
+        Effect.flatMap(({ items, total }) => {
+          const filtered: ShardModel[] = [];
           const skipped: number[] = [];
 
           items.forEach((item, index) => {
-            if (item instanceof LocalizedShortShardModel) filtered.push(item);
+            if (item instanceof ShardModel) filtered.push(item);
             else skipped.push(index);
           });
 
@@ -71,9 +75,27 @@ export class ShardsController {
     const pipeline: Effect.Effect<GetOneShardResponseDto, ExclusionReason> = this.createShardUseCase
       .execute(reqCtx, body)
       .pipe(
-        Effect.map((shardModel) => {
-          return GetOneShardResponseDto.fromModel(shardModel);
-        }),
+        Effect.flatMap((shardModel) => GetOneShardResponseDto.fromModel(shardModel)),
+        Effect.mapError((err) => (err instanceof ExclusionReason ? err : new UnknownReason()))
+      );
+
+    return Effect.runPromise(pipeline);
+  }
+
+  @Get(':slugOrId')
+  @Public()
+  @ApiOperation({ summary: 'Get a shard by slug or ID' })
+  @ApiResponse({ description: 'Returns the shard', status: 200 })
+  async getOne(
+    @ReqCtx() reqCtx: RequestContext,
+    @Param('slugOrId') slugOrId: string,
+    @Query(new ZodValidationPipe(getOneShardQuerySchema))
+    query: zod.infer<typeof getOneShardQuerySchema>
+  ): Promise<GetOneShardResponseDto> {
+    const pipeline: Effect.Effect<GetOneShardResponseDto, ExclusionReason> = this.getOneShardUseCase
+      .execute(reqCtx, slugOrId, query)
+      .pipe(
+        Effect.flatMap((shardModel) => GetOneShardResponseDto.fromModel(shardModel)),
         Effect.mapError((err) => (err instanceof ExclusionReason ? err : new UnknownReason()))
       );
 

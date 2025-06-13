@@ -4,7 +4,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Effect } from 'effect';
 import { isUnknownException, type UnknownException } from 'effect/Cause';
 
-import { UnknownReason } from 'src/shared/excluded';
+import { type ExclusionReason, NotFoundReason, UnknownReason } from 'src/shared/excluded';
 import { AuthorModel } from 'src/shared/models/author.model';
 import { SeoModel } from 'src/shared/models/seo.model';
 import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
@@ -13,22 +13,18 @@ import type { RequestContext } from 'src/shared/utils/request-context';
 import { PRISMA_SRV } from 'src/modules/prisma';
 
 import { AlternativeShardModel } from '../../domain/models/alternative-shard.model';
-import { LocalizedShardModel } from '../../domain/models/localized-shard.model';
-import { LocalizedShortShardModel } from '../../domain/models/localized-short-shard.model';
+import { ShardModel } from '../../domain/models/shard.model';
 import type {
   CreateShardParams,
+  FindByIdParams,
+  FindBySlugParams,
   FindManyShardsParams,
   ShardsRepository,
 } from '../../domain/repositories/shards.repository';
-import {
-  type DBLocalizedShard,
-  type DBLocalizedShortShard,
-  dbLocalizedShardSelect,
-  dbLocalizedShortShardSelect,
-} from './shards.repository.types';
+import { type DBShard, type DBShortShard, dbShardSelect, dbShortShardSelect } from './shards.repository.types';
 
-const getWhere = (params: FindManyShardsParams): Prisma.LocalizedShardWhereInput => {
-  const where: Prisma.LocalizedShardWhereInput = {};
+const getWhere = (params: FindManyShardsParams): Prisma.ShardWhereInput => {
+  const where: Prisma.ShardWhereInput = {};
 
   if (params.filter.languageCodeIn?.length) {
     where.languageCode = { in: params.filter.languageCodeIn };
@@ -37,10 +33,7 @@ const getWhere = (params: FindManyShardsParams): Prisma.LocalizedShardWhereInput
   if (params.filter?.published === true) where.publishedAt = { not: null };
   else if (params.filter?.published === false) where.publishedAt = null;
 
-  if (params.filter?.authorId) {
-    where.shard = where.shard ?? {};
-    where.shard.authorId = params.filter.authorId;
-  }
+  if (params.filter?.authorId) where.authorId = params.filter.authorId;
 
   return where;
 };
@@ -57,42 +50,45 @@ export class PrismaShardsRepository implements ShardsRepository {
   createShard(
     reqCtx: RequestContext,
     params: CreateShardParams
-  ): Effect.Effect<LocalizedShardModel, UnknownReason | UnknownException> {
+  ): Effect.Effect<ShardModel, UnknownReason | UnknownException> {
     const tx = reqCtx.tx ?? this.prismaSrv;
 
     return Effect.gen(this, function* () {
       this.#logger.debug('Creating shard');
       this.#logger.debug(`  > params: ${JSON.stringify(params)}`);
 
-      const shardId = params.shardId;
-      const dbShard = shardId
-        ? yield* Effect.tryPromise(() => tx.shard.findUnique({ where: { id: shardId } }))
-        : yield* Effect.tryPromise(() => tx.shard.create({ data: { authorId: reqCtx.accountId, slug: params.slug } }));
+      const publishedAt = params.published ? new Date() : null;
 
-      if (!dbShard) {
-        this.#logger.error('  > no dbShard');
+      const entryId = params.entryId;
+      const dbEntry = entryId
+        ? yield* Effect.tryPromise(() => tx.shard.findUnique({ where: { id: entryId } }))
+        : yield* Effect.tryPromise(() => tx.shardEntry.create({ data: { authorId: reqCtx.accountId, publishedAt } }));
 
+      if (!dbEntry) {
+        this.#logger.error('  > no dbEntry');
         return yield* new UnknownReason();
       }
 
-      const dbLocalized: DBLocalizedShard = yield* Effect.tryPromise(() =>
-        tx.localizedShard.create({
+      const dbshard = yield* Effect.tryPromise(() =>
+        tx.shard.create({
           data: {
+            authorId: reqCtx.accountId,
             contentJSON: params.contentJSON as InputJsonValue,
+            entryId: dbEntry.id,
             languageCode: params.languageCode,
             publishedAt: params.published ? new Date() : null,
             seoDescription: params.seoDescription,
             seoKeywords: params.seoKeywords,
             seoTitle: params.seoTitle,
-            shardId: dbShard.id,
             shortDescription: params.shortDescription,
+            slug: params.slug,
             title: params.title,
           },
-          select: dbLocalizedShardSelect,
+          select: dbShardSelect,
         })
       );
 
-      return this.#mapToModel(dbLocalized);
+      return this.#mapToModel(dbshard);
     }).pipe(
       Effect.tapError((error) => {
         if (isUnknownException(error)) this.#logger.error(`Error creating shard ${error.error}`);
@@ -101,98 +97,115 @@ export class PrismaShardsRepository implements ShardsRepository {
     );
   }
 
-  checkSlugAvailability(reqCtx: RequestContext, slug: string): Effect.Effect<boolean, UnknownException> {
+  checkShardSlugAvailability(reqCtx: RequestContext, slug: string): Effect.Effect<boolean, UnknownException> {
     const tx = reqCtx.tx ?? this.prismaSrv;
     return Effect.tryPromise(() => tx.shard.findUnique({ where: { slug } })).pipe(Effect.map((shard) => !shard));
   }
 
-  findManyLocalized(
-    reqCtx: RequestContext,
-    params: FindManyShardsParams
-  ): Effect.Effect<LocalizedShortShardModel[], UnknownException> {
+  findManyShards(reqCtx: RequestContext, params: FindManyShardsParams): Effect.Effect<ShardModel[], UnknownException> {
     this.#logger.debug(`findManyLocalized ${JSON.stringify(params)}`);
 
     const prisma = reqCtx.tx ?? this.prismaSrv;
 
     return Effect.tryPromise(async () =>
-      prisma.localizedShard.findMany({
+      prisma.shard.findMany({
         orderBy: params.orderBy,
-        select: dbLocalizedShortShardSelect,
+        select: dbShortShardSelect,
         skip: params.skip,
         take: params.take,
         where: getWhere(params),
       })
     ).pipe(
       Effect.tap((shards) => this.#logger.debug(`  > shards: ${JSON.stringify(shards)}`)),
-      Effect.map((shards) => shards.map((t) => this.#mapToShortLocalizedModel(t)))
+      Effect.map((shards) => shards.map((t) => this.#mapToModel(t)))
     );
   }
 
-  findTotalLocalized(reqCtx: RequestContext, params: FindManyShardsParams): Effect.Effect<number, UnknownException> {
+  findTotalShards(reqCtx: RequestContext, params: FindManyShardsParams): Effect.Effect<number, UnknownException> {
     const prisma = reqCtx.tx ?? this.prismaSrv;
-    return Effect.tryPromise(async () => prisma.localizedShard.count({ where: getWhere(params) }));
+    return Effect.tryPromise(async () => prisma.shard.count({ where: getWhere(params) }));
   }
 
-  #getAuthor(dbLocalizedShard: DBLocalizedShortShard): AuthorModel | null {
-    const authorId = dbLocalizedShard.shard.author?.id;
-    const authorName = dbLocalizedShard.shard.author?.profiles.find((p) => p.isRoot)?.name;
+  findOneShardById(
+    reqCtx: RequestContext,
+    params: FindByIdParams
+  ): Effect.Effect<ShardModel, ExclusionReason | UnknownException> {
+    const prisma = reqCtx.tx ?? this.prismaSrv;
+
+    const where: Prisma.ShardWhereUniqueInput = { id: params.id };
+    if (params.published) where.publishedAt = { not: null };
+    else if (params.published === false) where.publishedAt = null;
+
+    return Effect.tryPromise(async () => prisma.shard.findUnique({ select: dbShardSelect, where })).pipe(
+      Effect.flatMap((dbLocalizedShard) =>
+        !dbLocalizedShard ? Effect.fail(new NotFoundReason()) : Effect.succeed(this.#mapToModel(dbLocalizedShard))
+      )
+    );
+  }
+
+  findOneShardBySlug(
+    reqCtx: RequestContext,
+    params: FindBySlugParams
+  ): Effect.Effect<ShardModel, ExclusionReason | UnknownException> {
+    const prisma = reqCtx.tx ?? this.prismaSrv;
+
+    const where: Prisma.ShardWhereInput = { slug: params.slug };
+    if (params.published) where.publishedAt = { not: null };
+    else if (params.published === false) where.publishedAt = null;
+
+    return Effect.tryPromise(async () => prisma.shard.findFirst({ select: dbShardSelect, where })).pipe(
+      Effect.flatMap((dbLocalizedShard) =>
+        !dbLocalizedShard ? Effect.fail(new NotFoundReason()) : Effect.succeed(this.#mapToModel(dbLocalizedShard))
+      )
+    );
+  }
+
+  #getAuthor(dbShard: DBShard | DBShortShard): AuthorModel | null {
+    const authorId = dbShard.author?.id;
+    const authorName = dbShard.author?.profiles.find((p) => p.isRoot)?.name;
     return !authorId || !authorName ? null : AuthorModel.from({ id: authorId, name: authorName });
   }
 
-  #mapToModel(dbLocalizedShard: DBLocalizedShard): LocalizedShardModel {
-    const alternatives = dbLocalizedShard.shard.localizations
-      .filter((bp) => bp.id !== dbLocalizedShard.id)
-      .map((bp) =>
-        AlternativeShardModel.from({
-          id: bp.id,
-          languageCode: bp.languageCode,
-          publishedAt: bp.publishedAt,
-          slug: dbLocalizedShard.shard.slug,
+  #getSeo(dbShard: DBShard | DBShortShard): SeoModel | null {
+    return 'seoDescription' in dbShard
+      ? SeoModel.from({
+          description: dbShard.seoDescription,
+          keywords: dbShard.seoKeywords,
+          title: dbShard.seoTitle,
         })
-      );
-
-    return LocalizedShardModel.from({
-      alternatives,
-      author: this.#getAuthor(dbLocalizedShard),
-      contentJSON: typeof dbLocalizedShard.contentJSON === 'object' ? dbLocalizedShard.contentJSON : null,
-      createdAt: dbLocalizedShard.shard.createdAt,
-      id: dbLocalizedShard.shard.id,
-      languageCode: dbLocalizedShard.languageCode,
-      publishedAt: dbLocalizedShard.shard.publishedAt,
-      seo: SeoModel.from({
-        description: dbLocalizedShard.seoDescription,
-        keywords: dbLocalizedShard.seoKeywords,
-        title: dbLocalizedShard.seoTitle,
-      }),
-      shortDescription: dbLocalizedShard.shortDescription,
-      slug: dbLocalizedShard.shard.slug,
-      title: dbLocalizedShard.title,
-      updatedAt: dbLocalizedShard.shard.updatedAt,
-    });
+      : null;
   }
 
-  #mapToShortLocalizedModel(dbLocalizedShard: DBLocalizedShortShard): LocalizedShortShardModel {
-    const alternatives = dbLocalizedShard.shard.localizations
-      .filter((bp) => bp.id !== dbLocalizedShard.id)
+  #getAlternatives(dbShard: DBShard | DBShortShard): AlternativeShardModel[] {
+    return dbShard.entry.shards
+      .filter((bp) => bp.id !== dbShard.id)
       .map((bp) =>
         AlternativeShardModel.from({
           id: bp.id,
           languageCode: bp.languageCode,
           publishedAt: bp.publishedAt,
-          slug: dbLocalizedShard.shard.slug,
+          slug: dbShard.slug,
         })
       );
+  }
 
-    return LocalizedShortShardModel.from({
-      alternatives,
-      author: this.#getAuthor(dbLocalizedShard),
-      createdAt: dbLocalizedShard.createdAt,
-      id: dbLocalizedShard.id,
-      languageCode: dbLocalizedShard.languageCode,
-      publishedAt: dbLocalizedShard.publishedAt,
-      shortDescription: dbLocalizedShard.shortDescription,
-      slug: dbLocalizedShard.shard.slug,
-      title: dbLocalizedShard.title,
+  #mapToModel(dbShard: DBShard | DBShortShard): ShardModel {
+    const contentJSON =
+      'contentJSON' in dbShard && typeof dbShard.contentJSON === 'object' ? dbShard.contentJSON : null;
+
+    return ShardModel.from({
+      alternatives: this.#getAlternatives(dbShard),
+      author: this.#getAuthor(dbShard),
+      contentJSON,
+      createdAt: dbShard.createdAt,
+      id: dbShard.id,
+      languageCode: dbShard.languageCode,
+      publishedAt: dbShard.publishedAt,
+      seo: this.#getSeo(dbShard),
+      shortDescription: dbShard.shortDescription,
+      slug: dbShard.slug,
+      title: dbShard.title,
+      updatedAt: dbShard.updatedAt,
     });
   }
 }

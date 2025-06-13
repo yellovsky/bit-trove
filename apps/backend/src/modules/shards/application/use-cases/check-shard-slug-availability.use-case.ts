@@ -15,6 +15,6 @@ export class CheckShardSlugAvailabilityUseCase {
   ) {}
 
   execute(reqCtx: RequestContext, slug: string): Effect.Effect<boolean, UnknownException> {
-    return this.repository.checkSlugAvailability(reqCtx, slug);
+    return this.repository.checkShardSlugAvailability(reqCtx, slug);
   }
 }

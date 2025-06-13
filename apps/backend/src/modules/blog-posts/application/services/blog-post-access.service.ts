@@ -22,7 +22,7 @@ export class BlogPostAccessServiceImpl implements BlogPostAccessService {
     reqCtx: RequestContext,
     blogPost: LocalizedBlogPostModel
   ): Effect.Effect<LocalizedBlogPostModel, ExclusionReason | UnknownException> {
-    return Effect.tryPromise(() => this.casbinSrv.checkRequestPermission(reqCtx, 'read', 'blog_post', blogPost)).pipe(
+    return this.casbinSrv.checkRequestPermission(reqCtx, 'read', 'blog_post', blogPost).pipe(
       Effect.flatMap((canRead) => {
         return canRead ? Effect.succeed(blogPost) : Effect.fail(new AccessDeniedReason());
       })
@@ -33,9 +33,9 @@ export class BlogPostAccessServiceImpl implements BlogPostAccessService {
     reqCtx: RequestContext,
     blogPost: LocalizedShortBlogPostModel
   ): Effect.Effect<LocalizedShortBlogPostModel, ExclusionReason | UnknownException> {
-    return Effect.tryPromise(() => this.casbinSrv.checkRequestPermission(reqCtx, 'read', 'blog_post', blogPost)).pipe(
-      Effect.flatMap((canRead) => (canRead ? Effect.succeed(blogPost) : Effect.fail(new AccessDeniedReason())))
-    );
+    return this.casbinSrv
+      .checkRequestPermission(reqCtx, 'read', 'blog_post', blogPost)
+      .pipe(Effect.flatMap((canRead) => (canRead ? Effect.succeed(blogPost) : Effect.fail(new AccessDeniedReason()))));
   }
 
   filterCanReadLocalizedShortBlogPostList(

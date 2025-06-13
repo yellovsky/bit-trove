@@ -1,10 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Effect } from 'effect';
 
 import type { JSONContent, Shard } from '@repo/api-models';
 
 import { SeoDto } from 'src/shared/dto/seo.dto';
+import { type ExclusionReason, NotEnoughDataReason } from 'src/shared/excluded';
 
-import type { LocalizedShardModel } from '../../domain/models/localized-shard.model';
+import type { ShardModel } from '../../domain/models/shard.model';
 import { AlternativeShardDto } from './alternative-shard.dto';
 
 export class ShardDto implements Shard {
@@ -69,19 +71,23 @@ export class ShardDto implements Shard {
   })
   readonly createdAt!: string;
 
-  static fromModel(model: LocalizedShardModel): ShardDto {
-    return new ShardDto({
-      alternatives: model.alternatives.map((alternative) => new AlternativeShardDto(alternative)),
-      contentJSON: model.contentJSON,
-      createdAt: model.createdAt.toISOString(),
-      id: model.id,
-      languageCode: model.languageCode,
-      publishedAt: model.publishedAt?.toISOString() ?? null,
-      seo: SeoDto.fromModel(model.seo),
-      shortDescription: model.shortDescription,
-      slug: model.slug,
-      title: model.title,
-    });
+  static fromModel(model: ShardModel): Effect.Effect<ShardDto, ExclusionReason> {
+    if (!model.seo) return Effect.fail(new NotEnoughDataReason());
+
+    return Effect.succeed(
+      new ShardDto({
+        alternatives: model.alternatives.map((alternative) => new AlternativeShardDto(alternative)),
+        contentJSON: model.contentJSON,
+        createdAt: model.createdAt.toISOString(),
+        id: model.id,
+        languageCode: model.languageCode,
+        publishedAt: model.publishedAt?.toISOString() ?? null,
+        seo: SeoDto.fromModel(model.seo),
+        shortDescription: model.shortDescription,
+        slug: model.slug,
+        title: model.title,
+      })
+    );
   }
 
   constructor(data: Shard) {

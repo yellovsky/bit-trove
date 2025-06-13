@@ -39,6 +39,7 @@ const seedTestUser = async (tx: PrismaClient) => {
     data: [
       { ptype: 'g', v0: testAccountId, v1: 'admin' },
       { ptype: 'g', v0: testProfileId, v1: testAccountId },
+      { ptype: 'g', v0: testAccountId, v1: 'authorized' },
     ],
   });
 };

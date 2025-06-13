@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import * as Either from 'effect/Either';
+import { Effect } from 'effect/index';
 
 import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
 import { SkippedReason, type SkippedResult } from 'src/shared/utils/load-result';
@@ -19,7 +20,8 @@ export class PermissionPoliciesAccessControlServiceImpl implements PermissionPol
 
   async checkCanViewPermissionPololicy(reqCtx: AuthRequestContext): Promise<boolean> {
     if (!reqCtx.isAuthorized()) return false;
-    return this.casbinSrv.checkRequestPermission(reqCtx, 'view', 'permission_policy', {});
+    // TODO make effect
+    return Effect.runPromise(this.casbinSrv.checkRequestPermission(reqCtx, 'view', 'permission_policy', {}));
   }
 
   async filterCanReadPermissionPololicy(

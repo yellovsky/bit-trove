@@ -2,7 +2,7 @@ import { AppShell, Burger, Group } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import type { FC, PropsWithChildren } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Outlet } from 'react-router';
+import { Outlet, useRouteError } from 'react-router';
 
 import { ErrorScreen } from '@shared/ui/error-route';
 import { Logo } from '@shared/ui/Logo';
@@ -60,16 +60,29 @@ export default function HomeLayout() {
 
 export const ErrorBoundary = () => {
   const { t } = useTranslation();
+  const error = useRouteError();
+
+  const notFound = error && typeof error === 'object' && 'status' in error && error.status === 404;
 
   return (
     <Layout>
-      <ErrorScreen
-        buttonText={t('error_page.500.button_text')}
-        code={500}
-        onButtonClick={() => window.location.reload()}
-        subtitle={t('error_page.500.subtitle')}
-        title={t('error_page.500.title')}
-      />
+      {notFound ? (
+        <ErrorScreen
+          buttonText={t('error_page.404.button_text')}
+          code={404}
+          onButtonClick={() => window.location.reload()}
+          subtitle={t('error_page.404.subtitle')}
+          title={t('error_page.404.title')}
+        />
+      ) : (
+        <ErrorScreen
+          buttonText={t('error_page.500.button_text')}
+          code={500}
+          onButtonClick={() => window.location.reload()}
+          subtitle={t('error_page.500.subtitle')}
+          title={t('error_page.500.title')}
+        />
+      )}
     </Layout>
   );
 };

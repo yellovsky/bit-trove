@@ -35,12 +35,12 @@ const useValidateSlug = () => {
 
 const getDefaultValues = (languageCode: string): CreateShardVariables => ({
   contentJSON: {},
+  entryId: '',
   languageCode,
   published: false,
   seoDescription: '',
   seoKeywords: '',
   seoTitle: '',
-  shardId: '',
   shortDescription: '',
   slug: '',
   title: '',

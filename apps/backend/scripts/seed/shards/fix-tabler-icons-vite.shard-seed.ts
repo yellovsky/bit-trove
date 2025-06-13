@@ -2,7 +2,7 @@ import type { PrismaClient } from '@generated/prisma';
 
 import { testAccountId } from '../account.seed';
 
-const contentRu = {
+const contentJSON = {
   content: [
     {
       attrs: { textAlign: null },
@@ -16,7 +16,6 @@ const contentRu = {
       ],
       type: 'paragraph',
     },
-    { attrs: { textAlign: null }, type: 'paragraph' },
     {
       attrs: { textAlign: null },
       content: [
@@ -29,7 +28,6 @@ const contentRu = {
       ],
       type: 'paragraph',
     },
-    { attrs: { textAlign: null }, type: 'paragraph' },
     {
       attrs: { language: 'typescript' },
       content: [
@@ -40,13 +38,11 @@ const contentRu = {
       ],
       type: 'codeBlock',
     },
-    { attrs: { textAlign: null }, type: 'paragraph' },
     {
       attrs: { textAlign: null },
       content: [{ text: 'This reduces the number of requests and can speed things up.', type: 'text' }],
       type: 'paragraph',
     },
-    { attrs: { textAlign: null }, type: 'paragraph' },
     {
       attrs: { textAlign: null },
       content: [
@@ -57,7 +53,6 @@ const contentRu = {
       ],
       type: 'paragraph',
     },
-    { attrs: { textAlign: null }, type: 'paragraph' },
     {
       attrs: { textAlign: null },
       content: [{ text: 'Not perfect, but better than hundreds of small requests.', type: 'text' }],
@@ -67,32 +62,34 @@ const contentRu = {
   type: 'doc',
 };
 
-export const seedFixTablerIconsViteBlogPost = async (tx: PrismaClient) => {
-  const publishedAt = Date.now();
+export const seedFixTablerIconsViteShard = async (tx: PrismaClient) => {
+  const createdAt = new Date('2025-06-12T19:00:32.618Z');
+  const publishedAt = null;
+
+  const entry = await tx.shardEntry.create({
+    data: {
+      authorId: testAccountId,
+      createdAt,
+      publishedAt,
+    },
+  });
 
   await tx.shard.create({
     data: {
       authorId: testAccountId,
-      localizations: {
-        createMany: {
-          data: [
-            {
-              contentJSON: contentRu,
-              languageCode: 'en',
-              publishedAt: new Date(publishedAt + 1000),
-              seoDescription:
-                'Learn how to reduce the number of network requests when using @tabler/icons-react with Vite and React Router.',
-              seoKeywords: 'vite, tabler, icons, react, optimization, alias, tree shaking',
-              seoTitle: 'How to Fix Excessive Requests from Tabler Icons in Vite',
-              shortDescription:
-                'Reduce network requests in Vite when using @tabler/icons-react by aliasing to the static export. Just watch out—it relies on tree shaking to avoid bloating your bundle.',
-              title: 'Too Many Tabler Icons? Here’s a Quick Fix',
-            },
-          ],
-        },
-      },
-      publishedAt: new Date(publishedAt),
+      contentJSON,
+      createdAt,
+      entryId: entry.id,
+      languageCode: 'en',
+      publishedAt,
+      seoDescription:
+        'Learn how to reduce the number of network requests when using @tabler/icons-react with Vite and React Router.',
+      seoKeywords: 'vite, tabler, icons, react, optimization, alias, tree shaking',
+      seoTitle: 'How to Fix Excessive Requests from Tabler Icons in Vite',
+      shortDescription:
+        'Reduce network requests in Vite when using @tabler/icons-react by aliasing to the static export. Just watch out—it relies on tree shaking to avoid bloating your bundle.',
       slug: 'fix-tabler-icons-vite',
+      title: 'Too Many Tabler Icons? Here’s a Quick Fix',
     },
   });
 };

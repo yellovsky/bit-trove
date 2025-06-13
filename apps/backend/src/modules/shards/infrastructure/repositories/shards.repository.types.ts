@@ -1,87 +1,54 @@
 import type { Prisma } from '@generated/prisma';
 
-export const dbLocalizedShortShardSelect = {
-  contentJSON: true,
-  createdAt: true,
-  id: true,
-  languageCode: true,
-  publishedAt: true,
-  seoDescription: true,
-  seoKeywords: true,
-  seoTitle: true,
-  shard: {
+export const dbShortShardSelect = {
+  author: {
     select: {
-      author: {
+      id: true,
+      profiles: {
         select: {
-          id: true,
-          profiles: {
-            select: {
-              isRoot: true,
-              name: true,
-            },
-          },
+          isRoot: true,
+          name: true,
         },
       },
+    },
+  },
+  createdAt: true,
+  entry: {
+    select: {
+      authorId: true,
       createdAt: true,
       id: true,
-
-      localizations: {
+      publishedAt: true,
+      shards: {
         select: {
           id: true,
           languageCode: true,
           publishedAt: true,
-          shard: {
-            select: {
-              slug: true,
-            },
-          },
+          slug: true,
         },
       },
-      publishedAt: true,
-      slug: true,
       updatedAt: true,
     },
   },
-  shortDescription: true,
-  title: true,
-  updatedAt: true,
-} as const satisfies Prisma.LocalizedShardSelect;
-
-export type DBLocalizedShortShard = Prisma.LocalizedShardGetPayload<{
-  select: typeof dbLocalizedShortShardSelect;
-}>;
-
-export const dbLocalizedShardSelect = {
-  ...dbLocalizedShortShardSelect,
-} as const satisfies Prisma.LocalizedShardSelect;
-
-export type DBLocalizedShard = Prisma.LocalizedShardGetPayload<{ select: typeof dbLocalizedShardSelect }>;
-
-export const dbShortShardSelect = {
-  createdAt: true,
   id: true,
-  localizations: {
-    select: {
-      createdAt: true,
-      id: true,
-      languageCode: true,
-      publishedAt: true,
-      seoDescription: true,
-      seoKeywords: true,
-      seoTitle: true,
-      title: true,
-      updatedAt: true,
-    },
-  },
+  languageCode: true,
   publishedAt: true,
+  shortDescription: true,
   slug: true,
+  title: true,
   updatedAt: true,
 } as const satisfies Prisma.ShardSelect;
 
-export type DBShortShard = Prisma.ShardGetPayload<{ select: typeof dbShortShardSelect }>;
+export type DBShortShard = Prisma.ShardGetPayload<{
+  select: typeof dbShortShardSelect;
+}>;
 
 export const dbShardSelect = {
   ...dbShortShardSelect,
+  contentJSON: true,
+  seoDescription: true,
+  seoKeywords: true,
+  seoTitle: true,
 } as const satisfies Prisma.ShardSelect;
 
 export type DBShard = Prisma.ShardGetPayload<{ select: typeof dbShardSelect }>;

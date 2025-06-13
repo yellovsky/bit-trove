@@ -8,7 +8,7 @@ import type { ExclusionReason } from 'src/shared/excluded';
 import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
 import type { RequestContext } from 'src/shared/utils/request-context';
 
-import type { LocalizedShardModel } from '../../domain/models/localized-shard.model';
+import type { ShardModel } from '../../domain/models/shard.model';
 import { SHARDS_REPOSITORY } from '../../domain/repositories/shards.repository';
 import { SHARDS_ACCESS_SRV } from '../services/shards-access.service.interface';
 
@@ -27,7 +27,7 @@ export class CreateShardUseCase {
   execute(
     reqCtx: RequestContext,
     body: CreateShardBody
-  ): Effect.Effect<LocalizedShardModel, ExclusionReason | UnknownException> {
+  ): Effect.Effect<ShardModel, ExclusionReason | UnknownException> {
     return Effect.gen(this, function* () {
       this.#logger.debug('Creating shard');
       this.#logger.debug(`  > body: ${JSON.stringify(body)}`);

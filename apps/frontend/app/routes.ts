@@ -14,7 +14,7 @@ export default [
 
       route('editor', 'pages/editor/index.tsx'),
 
-      ...prefix('shards', [index('pages/shards/index.tsx')]),
+      ...prefix('shards', [index('pages/shards/index.tsx'), route(':slugOrId', 'pages/shard/index.tsx')]),
 
       ...prefix('blog', [index('pages/blog/index.tsx'), route(':slugOrId', 'pages/blog-post/index.tsx')]),
 

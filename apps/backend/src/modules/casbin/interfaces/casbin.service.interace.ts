@@ -1,5 +1,8 @@
 import type { Enforcer } from 'casbin';
+import type { Effect } from 'effect';
+import type { UnknownException } from 'effect/Cause';
 
+import type { ExclusionReason } from 'src/shared/excluded';
 import type { InjectableIdentifier } from 'src/shared/utils/injectable-identifier';
 import type { SkippedOr } from 'src/shared/utils/load-result';
 import type { AuthRequestContext, RequestContext } from 'src/shared/utils/request-context';
@@ -19,7 +22,7 @@ export interface CasbinService {
     action: CasbinAction,
     objType: CasbinObjectType,
     obj: object
-  ): Promise<boolean>;
+  ): Effect.Effect<true, ExclusionReason | UnknownException>;
 
   checkPermission(sub: CasbinSubject, action: CasbinAction, objType: CasbinObjectType, obj: object): Promise<boolean>;
 

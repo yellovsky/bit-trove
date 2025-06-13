@@ -1,8 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Effect } from 'effect';
 
 import type { GetOneShardResponse } from '@repo/api-models';
 
-import type { LocalizedShardModel } from '../../domain/models/localized-shard.model';
+import type { ExclusionReason } from 'src/shared/excluded';
+
+import type { ShardModel } from '../../domain/models/shard.model';
 import { ShardDto } from './shard.dto';
 
 export class GetOneShardResponseDto implements GetOneShardResponse {
@@ -17,8 +20,8 @@ export class GetOneShardResponseDto implements GetOneShardResponse {
   })
   readonly data!: ShardDto;
 
-  static fromModel(model: LocalizedShardModel): GetOneShardResponseDto {
-    return new GetOneShardResponseDto({ data: ShardDto.fromModel(model) });
+  static fromModel(model: ShardModel): Effect.Effect<GetOneShardResponseDto, ExclusionReason> {
+    return ShardDto.fromModel(model).pipe(Effect.map((data) => new GetOneShardResponseDto({ data })));
   }
 
   constructor(data: Omit<GetOneShardResponse, 'status'>) {

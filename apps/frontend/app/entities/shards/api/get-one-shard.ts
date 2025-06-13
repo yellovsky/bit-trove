@@ -23,11 +23,7 @@ const getOneShard =
   ({ queryKey, signal }) => {
     const variables: GetOneShardVariables = queryKey[2];
     const { slugOrId, ...params } = variables;
-
-    return apiClient.get<GetOneShardResponse>(`/v1/shards/${slugOrId}`, {
-      params,
-      signal,
-    });
+    return apiClient.get<GetOneShardResponse>(`/v1/shards/${slugOrId}`, { params, signal });
   };
 
 const getShardQueryResult = (queryClient: QueryClient, variables: GetOneShardVariables): GetOneShardResponse | null => {
@@ -46,7 +42,7 @@ export const prefetchOneShardQuery = async (
   });
 
   const response = getShardQueryResult(queryClient, variables);
-  if (!response) throw new Error('Shard not found');
+  if (!response) throw new Response('Not found', { status: 404 });
 
   return response;
 };
