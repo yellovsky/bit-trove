@@ -18,7 +18,7 @@ const useValidateTitle = () => {
   return async (title: string) => (!title ? t('error.field_is_required.text') : undefined);
 };
 
-const useValidateSlug = () => {
+const useValidateSlug = (id: string | undefined) => {
   const { t } = useTranslation();
 
   return async (slug: string) => {
@@ -26,7 +26,7 @@ const useValidateSlug = () => {
 
     try {
       const response = await checkShardSlugAvailability(getApiClient())(slug);
-      return response.data.available ? undefined : 'Slug is already taken';
+      return response.data.available || response.data.takenBy === id ? undefined : 'Slug is already taken';
     } catch {
       return 'Can not check slug availability';
     }
@@ -52,6 +52,7 @@ interface CreateShardFormProps {
   onSuccess?: (data: Shard) => void;
   defaultValues?: CreateShardVariables;
   mode: 'create' | 'update';
+  id?: string;
 }
 
 const nullableStringTransform = {
@@ -73,6 +74,7 @@ export const CreateShardForm: React.FC<CreateShardFormProps> = (props) => {
   } = useForm<CreateShardVariables>({ defaultValues, mode: 'onChange', reValidateMode: 'onChange' });
 
   const editor = useEditor({
+    content: defaultValues.contentJSON,
     onUpdate: ({ editor }) => setValue('contentJSON', editor.getJSON()),
   });
 
@@ -88,7 +90,7 @@ export const CreateShardForm: React.FC<CreateShardFormProps> = (props) => {
   };
 
   const validateTitle = useValidateTitle();
-  const validateSlug = useValidateSlug();
+  const validateSlug = useValidateSlug(props.id);
 
   return (
     <>
@@ -267,7 +269,7 @@ export const CreateShardForm: React.FC<CreateShardFormProps> = (props) => {
         <Button fullWidth mt="md" type="submit">
           {props.mode === 'create'
             ? tShards('create_shard_form.submit_button.text')
-            : tShards('update_shard_form.submit_button.text')}
+            : tShards('edit_shard_form.submit_button.text')}
         </Button>
       </form>
     </>

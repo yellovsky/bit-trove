@@ -20,6 +20,7 @@ import type {
   FindBySlugParams,
   FindManyShardsParams,
   ShardsRepository,
+  UpdateShardParams,
 } from '../../domain/repositories/shards.repository';
 import { type DBShard, type DBShortShard, dbShardSelect, dbShortShardSelect } from './shards.repository.types';
 
@@ -97,9 +98,50 @@ export class PrismaShardsRepository implements ShardsRepository {
     );
   }
 
-  checkShardSlugAvailability(reqCtx: RequestContext, slug: string): Effect.Effect<boolean, UnknownException> {
+  updateShard(
+    reqCtx: RequestContext,
+    id: string,
+    params: UpdateShardParams
+  ): Effect.Effect<ShardModel, UnknownReason | UnknownException> {
     const tx = reqCtx.tx ?? this.prismaSrv;
-    return Effect.tryPromise(() => tx.shard.findUnique({ where: { slug } })).pipe(Effect.map((shard) => !shard));
+
+    return Effect.gen(this, function* () {
+      this.#logger.debug('Creating shard');
+      this.#logger.debug(`  > params: ${JSON.stringify(params)}`);
+
+      const dbshard = yield* Effect.tryPromise(() =>
+        tx.shard.update({
+          data: {
+            contentJSON: params.contentJSON as InputJsonValue,
+            languageCode: params.languageCode,
+            publishedAt: params.published ? new Date() : null,
+            seoDescription: params.seoDescription,
+            seoKeywords: params.seoKeywords,
+            seoTitle: params.seoTitle,
+            shortDescription: params.shortDescription,
+            slug: params.slug,
+            title: params.title,
+          },
+          select: dbShardSelect,
+          where: { id },
+        })
+      );
+
+      return this.#mapToModel(dbshard);
+    }).pipe(
+      Effect.tapError((error) => {
+        if (isUnknownException(error)) this.#logger.error(`Error creating shard ${error.error}`);
+        return Effect.void;
+      })
+    );
+  }
+
+  getShardIdBySlug(reqCtx: RequestContext, slug: string): Effect.Effect<string | null, UnknownException> {
+    const tx = reqCtx.tx ?? this.prismaSrv;
+
+    return Effect.tryPromise(() => tx.shard.findUnique({ where: { slug } })).pipe(
+      Effect.map((shard) => shard?.id ?? null)
+    );
   }
 
   findManyShards(reqCtx: RequestContext, params: FindManyShardsParams): Effect.Effect<ShardModel[], UnknownException> {
@@ -136,6 +178,8 @@ export class PrismaShardsRepository implements ShardsRepository {
     if (params.published) where.publishedAt = { not: null };
     else if (params.published === false) where.publishedAt = null;
 
+    if (params.authorId) where.authorId = params.authorId;
+
     return Effect.tryPromise(async () => prisma.shard.findUnique({ select: dbShardSelect, where })).pipe(
       Effect.flatMap((dbLocalizedShard) =>
         !dbLocalizedShard ? Effect.fail(new NotFoundReason()) : Effect.succeed(this.#mapToModel(dbLocalizedShard))
@@ -157,6 +201,25 @@ export class PrismaShardsRepository implements ShardsRepository {
       Effect.flatMap((dbLocalizedShard) =>
         !dbLocalizedShard ? Effect.fail(new NotFoundReason()) : Effect.succeed(this.#mapToModel(dbLocalizedShard))
       )
+    );
+  }
+
+  setShardPublished(
+    reqCtx: RequestContext,
+    id: string,
+    published: boolean
+  ): Effect.Effect<ShardModel, ExclusionReason | UnknownException> {
+    const prisma = reqCtx.tx ?? this.prismaSrv;
+    this.#logger.debug(`setShardPublished ${id} ${published}`);
+    return Effect.tryPromise(async () =>
+      prisma.shard.update({
+        data: { publishedAt: published ? new Date() : null },
+        select: dbShardSelect,
+        where: { id },
+      })
+    ).pipe(
+      Effect.tap((dbShard) => this.#logger.debug(`  > dbShard: ${JSON.stringify(dbShard)}`)),
+      Effect.map((dbShard) => this.#mapToModel(dbShard))
     );
   }
 
@@ -198,6 +261,7 @@ export class PrismaShardsRepository implements ShardsRepository {
       author: this.#getAuthor(dbShard),
       contentJSON,
       createdAt: dbShard.createdAt,
+      entryId: dbShard.entry.id,
       id: dbShard.id,
       languageCode: dbShard.languageCode,
       publishedAt: dbShard.publishedAt,

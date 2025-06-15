@@ -4,6 +4,7 @@
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
 @import "@mantine/core/styles.css" layer(utilities);
+@import "@mantine/notifications/styles.css" layer(utilities);
 
 @import "./theme.css";
 

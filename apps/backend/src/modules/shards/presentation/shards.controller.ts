@@ -1,9 +1,9 @@
-import { Body, Controller, Get, Inject, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Patch, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Effect } from 'effect';
 import type * as zod from 'zod';
 
-import { createShardBodySchema, getManyShardsQuerySchema, getOneShardQuerySchema } from '@repo/api-models';
+import { getManyShardsQuerySchema, getOneShardQuerySchema, upsertShardBodySchema } from '@repo/api-models';
 
 import { Public } from 'src/shared/decorators/public';
 import { ListResponsePaginationDto } from 'src/shared/dto/list-response-pagination.dto';
@@ -14,6 +14,7 @@ import { ZodValidationPipe } from 'src/shared/utils/zod-validation-pipe';
 import { CreateShardUseCase } from '../application/use-cases/create-shard.use-case';
 import { GetManyShardsUseCase } from '../application/use-cases/get-many-shards.use-case';
 import { GetOneShardUseCase } from '../application/use-cases/get-one-shard.use-case';
+import { UpdateShardUseCase } from '../application/use-cases/update-shard.use-case';
 import { ShardModel } from '../domain/models/shard.model';
 import { GetManyShardsResponseDto } from './dtos/get-many-shards-reponse.dto';
 import { GetOneShardResponseDto } from './dtos/get-one-shard-reponse.dto';
@@ -29,7 +30,10 @@ export class ShardsController {
     private readonly getManyShardsUseCase: GetManyShardsUseCase,
 
     @Inject(GetOneShardUseCase)
-    private readonly getOneShardUseCase: GetOneShardUseCase
+    private readonly getOneShardUseCase: GetOneShardUseCase,
+
+    @Inject(UpdateShardUseCase)
+    private readonly updateShardUseCase: UpdateShardUseCase
   ) {}
 
   @Get()
@@ -69,11 +73,30 @@ export class ShardsController {
   @ApiResponse({ description: 'Returns the created shard', status: 200 })
   async create(
     @ReqCtx() reqCtx: RequestContext,
-    @Body(new ZodValidationPipe(createShardBodySchema))
-    body: zod.infer<typeof createShardBodySchema>
+    @Body(new ZodValidationPipe(upsertShardBodySchema))
+    body: zod.infer<typeof upsertShardBodySchema>
   ): Promise<GetOneShardResponseDto> {
     const pipeline: Effect.Effect<GetOneShardResponseDto, ExclusionReason> = this.createShardUseCase
       .execute(reqCtx, body)
+      .pipe(
+        Effect.flatMap((shardModel) => GetOneShardResponseDto.fromModel(shardModel)),
+        Effect.mapError((err) => (err instanceof ExclusionReason ? err : new UnknownReason()))
+      );
+
+    return Effect.runPromise(pipeline);
+  }
+
+  @Patch(':id')
+  @ApiOperation({ summary: 'Update a shard' })
+  @ApiResponse({ description: 'Returns the updated shard', status: 200 })
+  async update(
+    @ReqCtx() reqCtx: RequestContext,
+    @Param('id') id: string,
+    @Body(new ZodValidationPipe(upsertShardBodySchema))
+    body: zod.infer<typeof upsertShardBodySchema>
+  ): Promise<GetOneShardResponseDto> {
+    const pipeline: Effect.Effect<GetOneShardResponseDto, ExclusionReason> = this.updateShardUseCase
+      .execute(reqCtx, id, body)
       .pipe(
         Effect.flatMap((shardModel) => GetOneShardResponseDto.fromModel(shardModel)),
         Effect.mapError((err) => (err instanceof ExclusionReason ? err : new UnknownReason()))

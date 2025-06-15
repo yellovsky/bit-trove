@@ -9,6 +9,12 @@ export class ShardSlugAvailabilityDto implements ShardSlugAvailability {
   })
   readonly available!: boolean;
 
+  @ApiProperty({
+    description: 'The ID of the shard that is taking the slug',
+    type: String,
+  })
+  readonly takenBy?: string;
+
   constructor(data: ShardSlugAvailability) {
     Object.assign(this, data);
   }

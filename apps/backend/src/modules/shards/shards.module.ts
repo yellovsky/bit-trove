@@ -10,18 +10,22 @@ import { CheckShardSlugAvailabilityUseCase } from './application/use-cases/check
 import { CreateShardUseCase } from './application/use-cases/create-shard.use-case';
 import { GetManyShardsUseCase } from './application/use-cases/get-many-shards.use-case';
 import { GetMyManyShardsUseCase } from './application/use-cases/get-my-many-shards.use-case';
+import { GetMyShardUseCase } from './application/use-cases/get-my-shard.use-case';
 import { GetOneShardUseCase } from './application/use-cases/get-one-shard.use-case';
+import { PublishShardUseCase } from './application/use-cases/publish-shard.use-case';
+import { UnpublishShardUseCase } from './application/use-cases/unpublish-shard.use-case';
+import { UpdateShardUseCase } from './application/use-cases/update-shard.use-case';
 
 import { PrismaShardsRepository } from './infrastructure/repositories/shards.repository';
 
 import { CasbinModule } from '../casbin';
 import { PrismaModule } from '../prisma';
+import { CmsShardsController } from './presentation/cms-shards.controller';
 import { MyShardsController } from './presentation/my-shards.controller';
-import { ShardSlugAvailabilityController } from './presentation/shard-slug-availability.controller';
 import { ShardsController } from './presentation/shards.controller';
 
 @Module({
-  controllers: [ShardsController, ShardSlugAvailabilityController, MyShardsController],
+  controllers: [ShardsController, CmsShardsController, MyShardsController],
   imports: [PrismaModule, CasbinModule],
   providers: [
     { provide: SHARDS_REPOSITORY, useClass: PrismaShardsRepository },
@@ -32,6 +36,10 @@ import { ShardsController } from './presentation/shards.controller';
     GetMyManyShardsUseCase,
     GetManyShardsUseCase,
     GetOneShardUseCase,
+    PublishShardUseCase,
+    UnpublishShardUseCase,
+    GetMyShardUseCase,
+    UpdateShardUseCase,
   ],
 })
 export class ShardsModule {}

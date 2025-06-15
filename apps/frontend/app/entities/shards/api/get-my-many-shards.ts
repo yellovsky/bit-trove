@@ -21,7 +21,7 @@ const makeGetManyShardsQKey = (variables: GetManyShardsVariables): GetManyShards
   variables,
 ];
 
-const getManyShards =
+const getMyManyShards =
   (apiClient: ApiClient): QueryFunction<GetManyShardsResponse, GetManyShardsQKey> =>
   async ({ queryKey, signal }) => {
     const params: GetManyShardsVariables = queryKey[2];
@@ -33,7 +33,7 @@ export const useMyManyShardsQuery = (variables: GetManyShardsVariables) => {
 
   return useQuery<GetManyShardsResponse, FailedResponse, GetManyShardsResponse, GetManyShardsQKey>({
     placeholderData: keepPreviousData,
-    queryFn: getManyShards(apiClient),
+    queryFn: getMyManyShards(apiClient),
     queryKey: makeGetManyShardsQKey(variables),
   });
 };

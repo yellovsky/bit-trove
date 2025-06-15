@@ -24,6 +24,7 @@ export default [
           index('pages/cms/index.tsx'),
           route('shards', 'pages/cms.shards/index.tsx'),
           route('shards/create', 'pages/cms.shards.create/index.tsx'),
+          route('shards/:id/edit', 'pages/cms.shards.edit/index.tsx'),
         ])
       ),
 

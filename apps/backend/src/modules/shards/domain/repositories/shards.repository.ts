@@ -6,6 +6,7 @@ import type { JSONContent } from '@repo/api-models';
 import type { ExclusionReason, UnknownReason } from 'src/shared/excluded';
 import type { InjectableIdentifier } from 'src/shared/utils/injectable-identifier';
 import type { RequestContext } from 'src/shared/utils/request-context';
+import type { OrderBy } from 'src/shared/utils/sort-to-order-by';
 
 import type { ShardModel } from '../models/shard.model';
 
@@ -21,13 +22,12 @@ export interface CreateShardParams {
   seoKeywords: string | null;
   entryId: string | null;
 }
-
-export type FindManyShardsOrderBy = { title: 'asc' | 'desc' } | { publishedAt: 'asc' | 'desc' };
+export type UpdateShardParams = CreateShardParams;
+export type FindManyShardsOrderBy = OrderBy<'title' | 'publishedAt' | 'createdAt'>;
 
 export interface FindManyShardsFilter {
   published?: boolean;
   authorId?: string | null;
-  languageCode?: string;
   languageCodeIn?: string[];
 }
 
@@ -45,6 +45,7 @@ export interface FindBySlugParams {
 
 export interface FindByIdParams {
   id: string;
+  authorId?: string;
   published?: boolean;
 }
 
@@ -54,7 +55,13 @@ export interface ShardsRepository {
     params: CreateShardParams
   ): Effect.Effect<ShardModel, UnknownReason | UnknownException>;
 
-  checkShardSlugAvailability(reqCtx: RequestContext, slug: string): Effect.Effect<boolean, UnknownException>;
+  updateShard(
+    reqCtx: RequestContext,
+    id: string,
+    params: UpdateShardParams
+  ): Effect.Effect<ShardModel, UnknownReason | UnknownException>;
+
+  getShardIdBySlug(reqCtx: RequestContext, slug: string): Effect.Effect<string | null, UnknownException>;
 
   findManyShards(
     reqCtx: RequestContext,
@@ -71,6 +78,12 @@ export interface ShardsRepository {
   findOneShardBySlug(
     reqCtx: RequestContext,
     params: FindBySlugParams
+  ): Effect.Effect<ShardModel, ExclusionReason | UnknownException>;
+
+  setShardPublished(
+    reqCtx: RequestContext,
+    id: string,
+    published: boolean
   ): Effect.Effect<ShardModel, ExclusionReason | UnknownException>;
 }
 

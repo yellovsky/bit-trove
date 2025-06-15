@@ -1,4 +1,5 @@
 import { Data, type Either } from 'effect';
+import type { UnknownException } from 'effect/Cause';
 
 import { FailedResponseDto } from '../dto/failure-response.dto';
 
@@ -114,3 +115,6 @@ export class NotEnoughDataReason extends ExclusionReason {
 
 // The Either variant
 export type ResultOrExcluded<T> = Either.Either<T, ExclusionReason>;
+
+export const ensureKnownReason = (err: ExclusionReason | UnknownException): ExclusionReason =>
+  err instanceof ExclusionReason ? err : new UnknownReason();

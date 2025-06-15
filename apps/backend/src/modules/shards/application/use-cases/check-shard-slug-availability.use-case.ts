@@ -14,7 +14,7 @@ export class CheckShardSlugAvailabilityUseCase {
     private readonly repository: IdentifierOf<typeof SHARDS_REPOSITORY>
   ) {}
 
-  execute(reqCtx: RequestContext, slug: string): Effect.Effect<boolean, UnknownException> {
-    return this.repository.checkShardSlugAvailability(reqCtx, slug);
+  execute(reqCtx: RequestContext, slug: string): Effect.Effect<string | null, UnknownException> {
+    return this.repository.getShardIdBySlug(reqCtx, slug);
   }
 }

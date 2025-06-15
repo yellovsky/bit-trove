@@ -20,6 +20,7 @@ export interface ApiClient {
 
   get<T = unknown>(url: string, config?: AxiosRequestConfig<unknown>): Promise<T>;
   delete<T = unknown>(url: string, config?: AxiosRequestConfig<unknown>): Promise<T>;
+  patch<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig<unknown>): Promise<T>;
   post<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig<unknown>): Promise<T>;
   put<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig<unknown>): Promise<T>;
 }
@@ -29,6 +30,18 @@ class ApiClientImpl implements ApiClient {
 
   constructor(readonly apiHost: string) {
     this.axios = axios.create({ baseURL: `${apiHost}/api` });
+  }
+
+  async patch<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig<unknown>): Promise<T> {
+    try {
+      const axiosResponse = await this.axios.patch<T>(url, data, config);
+      return axiosResponse.data;
+    } catch (error) {
+      const parsed = isAxiosError(error) ? failedResponseSchema.safeParse(error.response?.data) : undefined;
+
+      const failedResponse: FailedResponse = parsed?.data || unknownFailedResponse;
+      throw failedResponse;
+    }
   }
 
   async get<T = unknown>(url: string, config?: AxiosRequestConfig<unknown>): Promise<T> {

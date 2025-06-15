@@ -1,16 +1,21 @@
 export default {
+  create_shard_button: {
+    text: 'Create shard',
+  },
   create_shard_form: {
     submit_button: {
       text: 'Create shard',
     },
     title: 'Create shard',
   },
-  update_shard_form: {
+  edit_shard_form: {
     submit_button: {
-      text: 'Update shard',
+      text: 'Save shard',
     },
-    title: 'Update shard',
+    title: 'Edit shard',
   },
+  'Update shard failed': 'Update shard failed',
+  'Update shard success': 'Update shard success',
   upsert_shard_form: {
     content: {
       aria_label: 'Content',

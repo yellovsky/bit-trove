@@ -1,16 +1,21 @@
 export default {
+  create_shard_button: {
+    text: 'Создать фрагмент',
+  },
   create_shard_form: {
     submit_button: {
       text: 'Создать фрагмент',
     },
     title: 'Создать фрагмент',
   },
-  update_shard_form: {
+  edit_shard_form: {
     submit_button: {
       text: 'Сохранить фрагмент',
     },
-    title: 'Обновить фрагмент',
+    title: 'Редактировать фрагмент',
   },
+  'Update shard failed': 'Не удалось обновить фрагмент',
+  'Update shard success': 'Фрагмент успешно обновлен',
   upsert_shard_form: {
     content: {
       aria_label: 'Контент',

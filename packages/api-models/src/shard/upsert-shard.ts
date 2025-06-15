@@ -5,7 +5,7 @@ import { localeSchema } from '../common/locale';
 import { getSuccessResponseSchema } from '../common/success-response';
 import { shardSchema } from './shard';
 
-export const createShardBodySchema = zod.object({
+export const upsertShardBodySchema = zod.object({
   contentJSON: jsonContentSchema,
   entryId: zod.string().nullable(),
   languageCode: localeSchema,
@@ -17,7 +17,7 @@ export const createShardBodySchema = zod.object({
   slug: zod.string().min(1),
   title: zod.string().min(1),
 });
-export type CreateShardBody = zod.infer<typeof createShardBodySchema>;
+export type UpsertShardBody = zod.infer<typeof upsertShardBodySchema>;
 
-export const createShardResponseSchema = getSuccessResponseSchema(shardSchema);
-export type CreateShardResponse = zod.infer<typeof createShardResponseSchema>;
+export const upsertShardResponseSchema = getSuccessResponseSchema(shardSchema);
+export type UpsertShardResponse = zod.infer<typeof upsertShardResponseSchema>;

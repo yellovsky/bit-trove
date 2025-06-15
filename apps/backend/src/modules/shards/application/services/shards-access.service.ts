@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { Effect } from 'effect';
+import { Effect, pipe } from 'effect';
 import type { UnknownException } from 'effect/Cause';
 
 import { ExclusionReason } from 'src/shared/excluded';
@@ -25,7 +25,8 @@ export class ShardsAccessServiceImpl implements ShardsAccessService {
     reqCtx: RequestContext,
     shard: ShardModel | ShardModel
   ): Effect.Effect<ShardModel | ShardModel, ExclusionReason | UnknownException> {
-    return Effect.all([this.casbinSrv.checkRequestPermission(reqCtx, 'read', 'shard', shard)]).pipe(
+    return pipe(
+      this.casbinSrv.checkRequestPermission(reqCtx, 'read', 'shard', shard),
       Effect.map(() => shard)
     );
   }
@@ -41,5 +42,9 @@ export class ShardsAccessServiceImpl implements ShardsAccessService {
         )
       )
     );
+  }
+
+  canUpdateShard(reqCtx: RequestContext, shard: ShardModel): Effect.Effect<true, ExclusionReason | UnknownException> {
+    return this.casbinSrv.checkRequestPermission(reqCtx, 'update', 'shard', shard);
   }
 }

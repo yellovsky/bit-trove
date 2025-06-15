@@ -17,7 +17,7 @@ export const SortableTableHeader: FC<SorttableTableHeaderProps> = ({ children, r
   return (
     <Table.Th className={styles.th}>
       <UnstyledButton className={styles.control} onClick={onSort}>
-        <Group justify="space-between">
+        <Group justify="space-between" wrap="nowrap">
           <Text fw="bold" fz="sm">
             {children}
           </Text>

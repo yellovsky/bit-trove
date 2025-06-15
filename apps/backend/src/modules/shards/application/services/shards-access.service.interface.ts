@@ -19,6 +19,7 @@ export interface ShardsAccessService {
   ): Effect.Effect<Array<ShardModel | ExclusionReason>, UnknownException>;
 
   canCreateShard(reqCtx: RequestContext): Effect.Effect<true, ExclusionReason | UnknownException>;
+  canUpdateShard(reqCtx: RequestContext, shard: ShardModel): Effect.Effect<true, ExclusionReason | UnknownException>;
 }
 
 export const SHARDS_ACCESS_SRV = 'SHARDS_ACCESS_SRV' as InjectableIdentifier<ShardsAccessService>;

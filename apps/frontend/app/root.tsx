@@ -2,6 +2,7 @@ import geologicaCss from '@fontsource-variable/geologica/index.css?url';
 import interCss from '@fontsource-variable/inter/index.css?url';
 import robotoMonoCss from '@fontsource-variable/roboto-mono/index.css?url';
 import { MantineProvider } from '@mantine/core';
+import { Notifications } from '@mantine/notifications';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useAtomValue } from 'jotai';
@@ -97,6 +98,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         <Suspense fallback={<AppSuspenseWarning />}>
           <MantineProvider colorSchemeManager={colorSchemeManager} theme={theme}>
             <QueryClientProvider client={queryClient}>
+              <Notifications />
               {children}
               <ReactQueryDevtools />
             </QueryClientProvider>

@@ -16,6 +16,7 @@ export type AlternativeShard = zod.infer<typeof alternativeShardSchema>;
 export const shortShardSchema = zod.object({
   alternatives: alternativeShardSchema.array(),
   createdAt: isoDateSchema,
+  entryId: zod.string().uuid(),
   id: zod.string().uuid(),
   languageCode: localeSchema,
   publishedAt: isoDateSchema.nullable(),
@@ -27,7 +28,7 @@ export const shortShardSchema = zod.object({
 export type ShortShard = zod.infer<typeof shortShardSchema>;
 
 export const shardSchema = shortShardSchema.extend({
-  contentJSON: jsonContentSchema.nullable(),
+  contentJSON: jsonContentSchema,
   seo: seoSchema,
 });
 

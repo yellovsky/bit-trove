@@ -53,6 +53,12 @@ export class ShortShardDto implements ShortShard {
   readonly createdAt!: string;
 
   @ApiProperty({
+    description: 'The entry ID of the blog post',
+    type: String,
+  })
+  readonly entryId!: string;
+
+  @ApiProperty({
     description: 'The alternatives of the blog post',
     type: [AlternativeShardDto],
   })
@@ -63,6 +69,7 @@ export class ShortShardDto implements ShortShard {
       new ShortShardDto({
         alternatives: model.alternatives.map((alternative) => new AlternativeShardDto(alternative)),
         createdAt: model.createdAt.toISOString(),
+        entryId: model.entryId,
         id: model.id,
         languageCode: model.languageCode,
         publishedAt: model.publishedAt?.toISOString() ?? null,

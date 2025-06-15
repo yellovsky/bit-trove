@@ -4,6 +4,7 @@ import type { UnknownException } from 'effect/Cause';
 import type { ExclusionReason } from 'src/shared/excluded';
 import type { InjectableIdentifier } from 'src/shared/utils/injectable-identifier';
 import type { RequestContext } from 'src/shared/utils/request-context';
+import type { OrderBy } from 'src/shared/utils/sort-to-order-by';
 
 import type { LocalizedBlogPostModel } from '../models/localized-blog-post.model';
 import type { LocalizedShortBlogPostModel } from '../models/localized-short-blog-post.model';
@@ -13,7 +14,7 @@ export interface FindBySlugParams {
   languageCode: string;
 }
 
-export type FindManyBlogPostsOrderBy = { title: 'asc' | 'desc' } | { publishedAt: 'asc' | 'desc' };
+export type FindManyBlogPostsOrderBy = OrderBy<'title' | 'publishedAt' | 'createdAt'>;
 
 export interface FindManyBlogPostsFilter {
   published?: boolean;

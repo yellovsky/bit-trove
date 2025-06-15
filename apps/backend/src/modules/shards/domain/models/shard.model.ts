@@ -8,6 +8,7 @@ import type { AlternativeShardModel } from './alternative-shard.model';
 interface ShardModelData {
   id: string;
   slug: string;
+  entryId: string;
 
   languageCode: string;
   publishedAt: Date | null;
@@ -28,6 +29,7 @@ export class ShardModel {
     return new ShardModel(
       data.id,
       data.slug,
+      data.entryId,
 
       data.languageCode,
       data.publishedAt,
@@ -47,6 +49,7 @@ export class ShardModel {
   constructor(
     public readonly id: string,
     public readonly slug: string,
+    public readonly entryId: string,
 
     public readonly languageCode: string,
     public readonly publishedAt: Date | null,

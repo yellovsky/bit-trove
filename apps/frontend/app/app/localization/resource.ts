@@ -1,4 +1,6 @@
 import { isLocale, type Locale, SUPPORTED_LOCALES } from '@shared/config';
+import { CMS_NS } from '@shared/config/translations';
+import { cmsEn, cmsRu } from '@shared/translations/cms';
 
 import { AUTH_NS } from '@features/auth';
 import { authEn, authRu } from '@features/auth/translations';
@@ -24,11 +26,24 @@ type Resource = {
   [BLOG_POSTS_NS]: ResourceShape<typeof blogPostsEn>;
   [AUTH_NS]: ResourceShape<typeof authEn>;
   [SHARDS_NS]: ResourceShape<typeof shardsEn>;
+  [CMS_NS]: ResourceShape<typeof cmsEn>;
 };
 
 export const resources: Record<Locale, Resource> = {
-  en: { [COMMON_NS]: commonEn, [BLOG_POSTS_NS]: blogPostsEn, [AUTH_NS]: authEn, [SHARDS_NS]: shardsEn },
-  ru: { [COMMON_NS]: commonRu, [BLOG_POSTS_NS]: blogPostsRu, [AUTH_NS]: authRu, [SHARDS_NS]: shardsRu },
+  en: {
+    [COMMON_NS]: commonEn,
+    [BLOG_POSTS_NS]: blogPostsEn,
+    [AUTH_NS]: authEn,
+    [SHARDS_NS]: shardsEn,
+    [CMS_NS]: cmsEn,
+  },
+  ru: {
+    [COMMON_NS]: commonRu,
+    [BLOG_POSTS_NS]: blogPostsRu,
+    [AUTH_NS]: authRu,
+    [SHARDS_NS]: shardsRu,
+    [CMS_NS]: cmsRu,
+  },
 };
 
 export const getLocalesResource = async (lng: string, ns: string): Promise<object | null> =>

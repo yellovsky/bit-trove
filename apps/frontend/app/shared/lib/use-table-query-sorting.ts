@@ -19,26 +19,31 @@ const sortingStateToSort = <TSort extends string>(
 };
 
 import type { OnChangeFn, SortingState } from '@tanstack/react-table';
+import { useCallback, useMemo } from 'react';
 
-// TODO add memoization as it is used with 'use no memo' directive;
 export const useTableQuerySorting = <TSort extends string>(schema: zod.ZodSchema<TSort>, defaultSort: TSort) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const urlSorting = searchParams.get('sort');
   const sortingStr: TSort = schema.safeParse(urlSorting).data || defaultSort;
 
-  const sorting: SortingState = [
-    {
-      desc: sortingStr.startsWith('-'),
-      id: removeSortDirection(sortingStr),
+  const sorting: SortingState = useMemo(
+    () => [{ desc: sortingStr.startsWith('-'), id: removeSortDirection(sortingStr) }],
+    [sortingStr]
+  );
+
+  const setSorting: OnChangeFn<SortingState> = useCallback(
+    (updater) => {
+      const updated = (typeof updater === 'function' ? updater(sorting) : updater).at(0);
+      if (!updated) return;
+
+      searchParams.set('sort', [updated.desc ? '-' : '', updated.id].filter(Boolean).join(''));
+      setSearchParams(searchParams, { preventScrollReset: true });
     },
-  ];
+    [setSearchParams, searchParams, sorting]
+  );
 
-  const setSorting: OnChangeFn<SortingState> = (updater) => {
-    const updated = (typeof updater === 'function' ? updater(sorting) : updater).at(0);
-    if (!updated) return;
-
-    searchParams.set('sort', [updated.desc ? '-' : '', updated.id].filter(Boolean).join(''));
-    setSearchParams(searchParams, { preventScrollReset: true });
-  };
-  return { setSorting, sort: sortingStateToSort(sorting, schema, defaultSort), sorting };
+  return useMemo(
+    () => ({ setSorting, sort: sortingStateToSort(sorting, schema, defaultSort), sorting }),
+    [setSorting, sorting, schema, defaultSort]
+  );
 };

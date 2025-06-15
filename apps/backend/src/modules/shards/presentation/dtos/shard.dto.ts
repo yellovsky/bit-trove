@@ -57,7 +57,13 @@ export class ShardDto implements Shard {
     description: 'The content of the blog post',
     type: String,
   })
-  readonly contentJSON!: JSONContent | null;
+  readonly contentJSON!: JSONContent;
+
+  @ApiProperty({
+    description: 'The entry ID of the blog post',
+    type: String,
+  })
+  readonly entryId!: string;
 
   @ApiProperty({
     description: 'The alternatives of the blog post',
@@ -72,13 +78,14 @@ export class ShardDto implements Shard {
   readonly createdAt!: string;
 
   static fromModel(model: ShardModel): Effect.Effect<ShardDto, ExclusionReason> {
-    if (!model.seo) return Effect.fail(new NotEnoughDataReason());
+    if (!model.seo || !model.contentJSON) return Effect.fail(new NotEnoughDataReason());
 
     return Effect.succeed(
       new ShardDto({
         alternatives: model.alternatives.map((alternative) => new AlternativeShardDto(alternative)),
         contentJSON: model.contentJSON,
         createdAt: model.createdAt.toISOString(),
+        entryId: model.entryId,
         id: model.id,
         languageCode: model.languageCode,
         publishedAt: model.publishedAt?.toISOString() ?? null,

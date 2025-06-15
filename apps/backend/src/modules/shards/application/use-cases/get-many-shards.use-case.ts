@@ -11,16 +11,12 @@ import type { RequestContext } from 'src/shared/utils/request-context';
 import { sortToOrderBy } from '../../../../shared/utils/sort-to-order-by';
 import type { ShardModel } from '../../domain/models/shard.model';
 import { type FindManyShardsParams, SHARDS_REPOSITORY } from '../../domain/repositories/shards.repository';
-import { SHARDS_ACCESS_SRV } from '../services/shards-access.service.interface';
 
 @Injectable()
 export class GetManyShardsUseCase {
   constructor(
     @Inject(SHARDS_REPOSITORY)
-    private readonly repository: IdentifierOf<typeof SHARDS_REPOSITORY>,
-
-    @Inject(SHARDS_ACCESS_SRV)
-    private readonly accessSrv: IdentifierOf<typeof SHARDS_ACCESS_SRV>
+    private readonly repository: IdentifierOf<typeof SHARDS_REPOSITORY>
   ) {}
 
   execute(
@@ -38,9 +34,7 @@ export class GetManyShardsUseCase {
     };
 
     return Effect.all({
-      items: this.repository
-        .findManyShards(reqCtx, params)
-        .pipe(Effect.flatMap((items) => this.accessSrv.filterCanReadShardList(reqCtx, items))),
+      items: this.repository.findManyShards(reqCtx, params),
       total: this.repository.findTotalShards(reqCtx, params),
     });
   }

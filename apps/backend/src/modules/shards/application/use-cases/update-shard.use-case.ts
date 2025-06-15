@@ -12,8 +12,8 @@ import type { ShardModel } from '../../domain/models/shard.model';
 import { SHARDS_REPOSITORY } from '../../domain/repositories/shards.repository';
 
 @Injectable()
-export class CreateShardUseCase {
-  #logger = new Logger(CreateShardUseCase.name);
+export class UpdateShardUseCase {
+  #logger = new Logger(UpdateShardUseCase.name);
 
   constructor(
     @Inject(SHARDS_REPOSITORY)
@@ -22,10 +22,11 @@ export class CreateShardUseCase {
 
   execute(
     reqCtx: RequestContext,
+    id: string,
     body: UpsertShardBody
   ): Effect.Effect<ShardModel, ExclusionReason | UnknownException> {
-    this.#logger.debug('Creating shard');
+    this.#logger.debug('Updating shard');
     this.#logger.debug(`  > body: ${JSON.stringify(body)}`);
-    return this.repository.createShard(reqCtx, body);
+    return this.repository.updateShard(reqCtx, id, body);
   }
 }
