@@ -16,21 +16,21 @@ export const ShardPage: FC<{ shardVariables: GetOneShardVariables }> = ({ shardV
 
   return (
     <>
-      <Title mb="sm" order={1}>
-        {shard?.title}
-      </Title>
+      <Title order={1}>{shard?.title}</Title>
 
-      <Text c="dimmed" mb="lg" size="sm">
+      <Text c="dimmed" mt="sm" size="sm">
         {dateFormatter.format(new Date(shard?.createdAt ?? ''))}
       </Text>
 
-      <Flex gap="xs" mb="lg">
-        {shard?.tags.map((tag) => (
-          <TagBadge key={tag.id} tag={tag} />
-        ))}
-      </Flex>
+      {!shard?.tags.length ? null : (
+        <Flex gap="xs" mt="lg">
+          {shard?.tags.map((tag) => (
+            <TagBadge key={tag.id} tag={tag} />
+          ))}
+        </Flex>
+      )}
 
-      <EditorStatic content={shard?.contentJSON ?? ''} />
+      <EditorStatic content={shard?.contentJSON ?? ''} mt="lg" />
     </>
   );
 };

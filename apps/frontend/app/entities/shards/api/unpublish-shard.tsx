@@ -33,6 +33,12 @@ export const useUnpublishShardMutation = () => {
     },
     onSuccess: () => {
       invalidateShardsQuery(getQueryClient());
+
+      notifications.show({
+        color: 'green',
+        icon: <IconX />,
+        message: tShards('Update shard success'),
+      });
     },
   });
 };

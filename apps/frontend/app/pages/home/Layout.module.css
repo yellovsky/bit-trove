@@ -33,6 +33,6 @@
   flex-direction: column;
 
   .content {
-    @apply flex-1 pt-8;
+    @apply flex-1 pt-8 pb-[var(--mantine-spacing-md)];
   }
 }

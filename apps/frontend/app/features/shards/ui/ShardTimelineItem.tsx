@@ -15,7 +15,7 @@ interface ShardTimelineItemProps {
 
 export const ShardTimelineItem: FC<ShardTimelineItemProps> = ({ shard }) => {
   const { i18n } = useTranslation();
-  const dayDiff = differenceInDays(new Date(), new Date(shard.publishedAt ?? shard.createdAt));
+  const dayDiff = differenceInDays(new Date(shard.publishedAt ?? shard.createdAt), new Date());
   const rtf = new Intl.RelativeTimeFormat(i18n.language, { numeric: 'auto' });
 
   return (

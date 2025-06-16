@@ -52,6 +52,7 @@ export default defineConfig({
 
       // this packages are cjs and must be compiled to be used with esm
       'jotai-tanstack-query',
+			'tiptap-extension-code-block-shiki'
     ],
   },
 

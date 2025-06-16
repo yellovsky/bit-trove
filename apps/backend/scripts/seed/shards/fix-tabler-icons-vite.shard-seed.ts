@@ -29,7 +29,7 @@ const contentJSON = {
       type: 'paragraph',
     },
     {
-      attrs: { language: 'typescript' },
+      attrs: { language: 'js' },
       content: [
         {
           text: "export default defineConfig({\n  plugins: [react()],\n  resolve: {\n    alias: {\n      // This version exports all icons statically, so Vite won't create separate chunks for each one\n      '@tabler/icons-react': '@tabler/icons-react/dist/esm/icons/index.mjs',\n    },\n  },\n})",

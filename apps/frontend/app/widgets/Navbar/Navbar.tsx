@@ -50,7 +50,7 @@ export const Navbar: FC = () => {
 
         {isAuthorized && (
           <>
-            <Text c="dimmed" fw={500} mb="xs" size="xs">
+            <Text c="dimmed" fw={500} mb="xs" mt="lg" size="xs">
               {t('Content management')}
             </Text>
             <Divider />
