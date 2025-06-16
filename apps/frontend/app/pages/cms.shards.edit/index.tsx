@@ -38,6 +38,7 @@ export default function CMSShardsEditRoute(props: Route.ComponentProps) {
         seoTitle: myShard.seo.title,
         shortDescription: myShard.shortDescription,
         slug: myShard.slug,
+        tags: myShard.tags.map((tag) => tag.name),
         title: myShard.title,
       };
 

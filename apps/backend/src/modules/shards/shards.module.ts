@@ -20,13 +20,14 @@ import { PrismaShardsRepository } from './infrastructure/repositories/shards.rep
 
 import { CasbinModule } from '../casbin';
 import { PrismaModule } from '../prisma';
+import { TagsModule } from '../tags';
 import { CmsShardsController } from './presentation/cms-shards.controller';
 import { MyShardsController } from './presentation/my-shards.controller';
 import { ShardsController } from './presentation/shards.controller';
 
 @Module({
   controllers: [ShardsController, CmsShardsController, MyShardsController],
-  imports: [PrismaModule, CasbinModule],
+  imports: [PrismaModule, CasbinModule, TagsModule],
   providers: [
     { provide: SHARDS_REPOSITORY, useClass: PrismaShardsRepository },
     { provide: SHARDS_ACCESS_SRV, useClass: ShardsAccessServiceImpl },

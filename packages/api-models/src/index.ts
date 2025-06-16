@@ -9,3 +9,4 @@ export * from './common/success-response';
 export * from './common/uuid';
 export * from './permission-policy';
 export * from './shard';
+export * from './tag';

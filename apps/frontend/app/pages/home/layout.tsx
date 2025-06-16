@@ -1,4 +1,4 @@
-import { AppShell, Burger, Group } from '@mantine/core';
+import { AppShell, Burger, Divider, Group, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import type { FC, PropsWithChildren } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -16,6 +16,7 @@ import styles from './Layout.module.css';
 
 const Layout: FC<PropsWithChildren> = ({ children }) => {
   const [opened, { toggle }] = useDisclosure();
+  const { t } = useTranslation();
 
   return (
     <AppShell
@@ -25,7 +26,7 @@ const Layout: FC<PropsWithChildren> = ({ children }) => {
         collapsed: { mobile: !opened },
         width: { base: 200, md: 300 },
       }}
-      padding="md"
+      padding={{ base: 'md', md: 'lg' }}
     >
       <AppShell.Header className={styles.header}>
         <Group h="100%" justify="space-between" px="md" py="sm">
@@ -45,7 +46,17 @@ const Layout: FC<PropsWithChildren> = ({ children }) => {
         <Navbar />
       </AppShell.Navbar>
 
-      <AppShell.Main>{children}</AppShell.Main>
+      <AppShell.Main>
+        <div className={styles.contentHolder}>
+          <div className={styles.content}>{children}</div>
+          <div>
+            <Divider my="md" />
+            <Text c="dimmed" size="xs" ta="center">
+              {t('{{year}} all rights reserved', { year: new Date().getFullYear() })}
+            </Text>
+          </div>
+        </div>
+      </AppShell.Main>
     </AppShell>
   );
 };

@@ -3,3 +3,13 @@
     background: none;
   }
 }
+
+.editor.editor {
+  border: none;
+
+  .editorContent {
+    :global(.ProseMirror) {
+      padding: 0;
+    }
+  }
+}

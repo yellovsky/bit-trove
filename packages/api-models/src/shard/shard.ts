@@ -5,6 +5,7 @@ import { jsonContentSchema } from '../common/json-content';
 import { localeSchema } from '../common/locale';
 import { seoSchema } from '../common/seo';
 import { uuidSchema } from '../common/uuid';
+import { tagSchema } from '../tag';
 
 export const alternativeShardSchema = zod.object({
   id: uuidSchema,
@@ -22,6 +23,7 @@ export const shortShardSchema = zod.object({
   publishedAt: isoDateSchema.nullable(),
   shortDescription: zod.string().nullable(),
   slug: zod.string(),
+  tags: tagSchema.array(),
   title: zod.string(),
 });
 

@@ -35,6 +35,17 @@ export const dbShortShardSelect = {
   publishedAt: true,
   shortDescription: true,
   slug: true,
+  tags: {
+    select: {
+      order: true,
+      tag: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+    },
+  },
   title: true,
   updatedAt: true,
 } as const satisfies Prisma.ShardSelect;

@@ -19,10 +19,26 @@ model Shard {
   seoDescription   String? @map("seo_description")
   seoKeywords      String? @map("seo_keywords")
 
+  tags ShardTag[]
+
   entryId String     @map("entry_id")
   entry   ShardEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
 
   @@map("shards")
+}
+
+model ShardTag {
+  shardId String @map("shard_id")
+  shard   Shard  @relation(fields: [shardId], references: [id], onDelete: Cascade)
+
+  tagId String @map("tag_id")
+  tag   Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  order Int @map("order")
+
+  @@id([shardId, tagId])
+  @@unique([shardId, order])
+  @@map("shard_tags")
 }
 
 model ShardEntry {

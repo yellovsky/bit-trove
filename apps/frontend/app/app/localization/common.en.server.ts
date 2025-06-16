@@ -1,4 +1,5 @@
 export default {
+  '{{year}} all rights reserved': '© {year}. All rights reserved.',
   'Content management': 'Content management',
   error: {
     '403': {

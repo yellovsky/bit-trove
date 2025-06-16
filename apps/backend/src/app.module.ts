@@ -14,6 +14,7 @@ import { PermissionPoliciesModule } from 'src/modules/permission-policies';
 import { PrismaModule } from 'src/modules/prisma';
 import { ShardsModule } from 'src/modules/shards';
 
+import { TagsModule } from './modules/tags';
 import { RequestLoggerMiddleware } from './request-logger.middleware';
 
 @Module({
@@ -38,6 +39,7 @@ import { RequestLoggerMiddleware } from './request-logger.middleware';
     ShardsModule,
     I18nModule,
     PrismaModule,
+    TagsModule,
     AuthModule,
     CasbinModule,
     PermissionPoliciesModule,

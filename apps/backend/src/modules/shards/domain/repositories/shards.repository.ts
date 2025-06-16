@@ -21,6 +21,7 @@ export interface CreateShardParams {
   seoDescription: string | null;
   seoKeywords: string | null;
   entryId: string | null;
+  tags: string[];
 }
 export type UpdateShardParams = CreateShardParams;
 export type FindManyShardsOrderBy = OrderBy<'title' | 'publishedAt' | 'createdAt'>;

@@ -1,0 +1,9 @@
+model Tag {
+  id String @id @default(uuid()) @map("id")
+
+  name String @unique @map("name")
+
+  shards ShardTag[]
+
+  @@map("tags")
+}

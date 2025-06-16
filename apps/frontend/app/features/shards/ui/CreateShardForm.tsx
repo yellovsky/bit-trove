@@ -10,6 +10,7 @@ import { getApiClient } from '@shared/lib/api-client';
 import { Editor, useEditor } from '@widgets/editor';
 
 import type { CreateShardVariables } from '@entities/shards/api/create-shard';
+import { TagsInput } from '@entities/tags';
 
 import { checkShardSlugAvailability } from '../api/check-shard-slug-availability';
 
@@ -43,6 +44,7 @@ const getDefaultValues = (languageCode: string): CreateShardVariables => ({
   seoTitle: '',
   shortDescription: '',
   slug: '',
+  tags: [],
   title: '',
 });
 
@@ -112,6 +114,26 @@ export const CreateShardForm: React.FC<CreateShardFormProps> = (props) => {
           )}
           rules={{ validate: validateTitle }}
         />
+
+        <Controller control={control} name="tags" render={({ field }) => <TagsInput {...field} mt="md" />} />
+
+        <Fieldset mt="lg" radius="md" variant="filled">
+          <Controller
+            control={control}
+            name="published"
+            render={({ field: { value, ...rest } }) => (
+              <Switch
+                {...rest}
+                aria-label={tShards('upsert_shard_form.published.aria_label')}
+                checked={value}
+                description={tShards('upsert_shard_form.published.description')}
+                disabled={props.isLoading}
+                label={tShards('upsert_shard_form.published.label')}
+                mt="md"
+              />
+            )}
+          />
+        </Fieldset>
 
         <SimpleGrid cols={2}>
           <Controller
@@ -246,23 +268,7 @@ export const CreateShardForm: React.FC<CreateShardFormProps> = (props) => {
           />
         </Fieldset>
 
-        <Controller
-          control={control}
-          name="published"
-          render={({ field: { value, ...rest } }) => (
-            <Switch
-              {...rest}
-              aria-label={tShards('upsert_shard_form.published.aria_label')}
-              checked={value}
-              description={tShards('upsert_shard_form.published.description')}
-              disabled={props.isLoading}
-              label={tShards('upsert_shard_form.published.label')}
-              mt="md"
-            />
-          )}
-        />
-
-        <InputLabel>{tShards('upsert_shard_form.content.label')}</InputLabel>
+        <InputLabel mt="md">{tShards('upsert_shard_form.content.label')}</InputLabel>
         <InputDescription mb="xs">{tShards('upsert_shard_form.content.description')}</InputDescription>
         {!editor ? null : <Editor editor={editor} mih={400} variant="subtle" />}
 

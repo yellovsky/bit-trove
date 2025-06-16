@@ -22,13 +22,14 @@ const config: StorybookConfig = {
     getAbsolutePath('@chromatic-com/storybook'),
     getAbsolutePath('@storybook/addon-docs'),
     getAbsolutePath("@storybook/addon-a11y"),
-    getAbsolutePath("@storybook/addon-vitest")
+    getAbsolutePath("@storybook/addon-vitest"),
+		getAbsolutePath('storybook-dark-mode'),
+		getAbsolutePath('storybook-addon-remix-react-router'),
   ],
   "framework": {
     "name": getAbsolutePath('@storybook/react-vite'),
     "options": {
 			builder: {
-
 				viteConfigPath: require.resolve('../sb-vite.config.ts')
 			},
 		}

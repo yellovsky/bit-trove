@@ -15,6 +15,7 @@ export const upsertShardBodySchema = zod.object({
   seoTitle: zod.string().nullable(),
   shortDescription: zod.string().nullable(),
   slug: zod.string().min(1),
+  tags: zod.string().array(),
   title: zod.string().min(1),
 });
 export type UpsertShardBody = zod.infer<typeof upsertShardBodySchema>;

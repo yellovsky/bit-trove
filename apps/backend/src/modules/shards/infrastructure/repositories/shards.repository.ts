@@ -11,6 +11,7 @@ import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
 import type { RequestContext } from 'src/shared/utils/request-context';
 
 import { PRISMA_SRV } from 'src/modules/prisma';
+import { TAGS_SRV, TagModel } from 'src/modules/tags';
 
 import { AlternativeShardModel } from '../../domain/models/alternative-shard.model';
 import { ShardModel } from '../../domain/models/shard.model';
@@ -45,7 +46,10 @@ export class PrismaShardsRepository implements ShardsRepository {
 
   constructor(
     @Inject(PRISMA_SRV)
-    private readonly prismaSrv: IdentifierOf<typeof PRISMA_SRV>
+    private readonly prismaSrv: IdentifierOf<typeof PRISMA_SRV>,
+
+    @Inject(TAGS_SRV)
+    private readonly tagsSrv: IdentifierOf<typeof TAGS_SRV>
   ) {}
 
   createShard(
@@ -109,6 +113,11 @@ export class PrismaShardsRepository implements ShardsRepository {
       this.#logger.debug('Creating shard');
       this.#logger.debug(`  > params: ${JSON.stringify(params)}`);
 
+      const tags = yield* this.tagsSrv.getOrCreateTagsByNames(reqCtx, params.tags);
+
+      // delete all tags before saving new ones
+      yield* Effect.tryPromise(() => tx.shard.update({ data: { tags: { deleteMany: {} } }, where: { id } }));
+
       const dbshard = yield* Effect.tryPromise(() =>
         tx.shard.update({
           data: {
@@ -120,6 +129,7 @@ export class PrismaShardsRepository implements ShardsRepository {
             seoTitle: params.seoTitle,
             shortDescription: params.shortDescription,
             slug: params.slug,
+            tags: { createMany: { data: tags.map((tag, order) => ({ order, tagId: tag.id })) } },
             title: params.title,
           },
           select: dbShardSelect,
@@ -268,6 +278,9 @@ export class PrismaShardsRepository implements ShardsRepository {
       seo: this.#getSeo(dbShard),
       shortDescription: dbShard.shortDescription,
       slug: dbShard.slug,
+      tags: dbShard.tags
+        .sort((a, b) => a.order - b.order)
+        .map((t) => TagModel.from({ id: t.tag.id, name: t.tag.name })),
       title: dbShard.title,
       updatedAt: dbShard.updatedAt,
     });

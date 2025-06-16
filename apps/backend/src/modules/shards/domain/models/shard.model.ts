@@ -3,6 +3,8 @@ import type { JSONContent } from '@repo/api-models';
 import type { AuthorModel } from 'src/shared/models/author.model';
 import type { SeoModel } from 'src/shared/models/seo.model';
 
+import type { TagModel } from 'src/modules/tags/domain/models/tag.model';
+
 import type { AlternativeShardModel } from './alternative-shard.model';
 
 interface ShardModelData {
@@ -20,6 +22,7 @@ interface ShardModelData {
   contentJSON: JSONContent | null;
 
   seo: SeoModel | null;
+  tags: TagModel[];
   author: AuthorModel | null;
   alternatives: AlternativeShardModel[];
 }
@@ -40,6 +43,7 @@ export class ShardModel {
       data.shortDescription,
       data.contentJSON,
 
+      data.tags,
       data.seo,
       data.author,
       data.alternatives
@@ -60,6 +64,7 @@ export class ShardModel {
     public readonly shortDescription: string | null,
     public readonly contentJSON: JSONContent | null,
 
+    public readonly tags: TagModel[],
     public readonly seo: SeoModel | null,
     public readonly author: AuthorModel | null,
     public readonly alternatives: AlternativeShardModel[]

@@ -1,4 +1,5 @@
 export default {
+  '{{year}} all rights reserved': '© {year}. Все права защищены.',
   'Content management': 'Управление контентом',
   error: {
     '403': {

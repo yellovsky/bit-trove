@@ -1,8 +1,16 @@
 import { RichTextEditor, type RichTextEditorProps } from '@mantine/tiptap';
 import type { FC } from 'react';
 
+import styles from './editor.module.css';
+
 export const Editor: FC<Omit<RichTextEditorProps, 'children'>> = (props) => (
-  <RichTextEditor {...props}>
+  <RichTextEditor
+    {...props}
+    classNames={{
+      content: styles.editorContent,
+      root: styles.editor,
+    }}
+  >
     {props.editor?.isEditable && (
       <RichTextEditor.Toolbar sticky stickyOffset="var(--docs-header-height)">
         <RichTextEditor.ControlsGroup>
@@ -50,6 +58,6 @@ export const Editor: FC<Omit<RichTextEditorProps, 'children'>> = (props) => (
       </RichTextEditor.Toolbar>
     )}
 
-    <RichTextEditor.Content />
+    <RichTextEditor.Content contentEditable={false} p={0} />
   </RichTextEditor>
 );

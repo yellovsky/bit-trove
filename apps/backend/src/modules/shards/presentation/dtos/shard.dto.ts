@@ -1,10 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Effect } from 'effect';
+import { Effect, pipe } from 'effect';
 
 import type { JSONContent, Shard } from '@repo/api-models';
 
 import { SeoDto } from 'src/shared/dto/seo.dto';
 import { type ExclusionReason, NotEnoughDataReason } from 'src/shared/excluded';
+
+import { TagDto } from 'src/modules/tags/presentation/dtos/tag.dto';
 
 import type { ShardModel } from '../../domain/models/shard.model';
 import { AlternativeShardDto } from './alternative-shard.dto';
@@ -60,40 +62,62 @@ export class ShardDto implements Shard {
   readonly contentJSON!: JSONContent;
 
   @ApiProperty({
-    description: 'The entry ID of the blog post',
+    description: 'The entry ID of the shard',
     type: String,
   })
   readonly entryId!: string;
 
   @ApiProperty({
-    description: 'The alternatives of the blog post',
+    description: 'The alternatives of the shard',
     type: [AlternativeShardDto],
   })
   readonly alternatives!: AlternativeShardDto[];
 
   @ApiProperty({
-    description: 'The created date of the blog post',
+    description: 'The tags of the shard',
+    type: [TagDto],
+  })
+  readonly tags!: TagDto[];
+
+  @ApiProperty({
+    description: 'The created date of the shard',
     type: String,
   })
   readonly createdAt!: string;
 
   static fromModel(model: ShardModel): Effect.Effect<ShardDto, ExclusionReason> {
-    if (!model.seo || !model.contentJSON) return Effect.fail(new NotEnoughDataReason());
+    return pipe(
+      Effect.all({
+        contentJSON: pipe(
+          Effect.fromNullable(model.contentJSON),
+          Effect.mapError(() => new NotEnoughDataReason())
+        ),
+        seo: pipe(
+          Effect.fromNullable(model.seo),
+          Effect.map((seoModel) => SeoDto.fromModel(seoModel)),
+          Effect.mapError(() => new NotEnoughDataReason())
+        ),
 
-    return Effect.succeed(
-      new ShardDto({
-        alternatives: model.alternatives.map((alternative) => new AlternativeShardDto(alternative)),
-        contentJSON: model.contentJSON,
-        createdAt: model.createdAt.toISOString(),
-        entryId: model.entryId,
-        id: model.id,
-        languageCode: model.languageCode,
-        publishedAt: model.publishedAt?.toISOString() ?? null,
-        seo: SeoDto.fromModel(model.seo),
-        shortDescription: model.shortDescription,
-        slug: model.slug,
-        title: model.title,
-      })
+        tags: Effect.allSuccesses(model.tags.map((tag) => TagDto.fromModel(tag))),
+      }),
+
+      Effect.map(
+        ({ contentJSON, seo, tags }) =>
+          new ShardDto({
+            alternatives: model.alternatives.map((alternative) => new AlternativeShardDto(alternative)),
+            contentJSON,
+            createdAt: model.createdAt.toISOString(),
+            entryId: model.entryId,
+            id: model.id,
+            languageCode: model.languageCode,
+            publishedAt: model.publishedAt?.toISOString() ?? null,
+            seo,
+            shortDescription: model.shortDescription,
+            slug: model.slug,
+            tags,
+            title: model.title,
+          })
+      )
     );
   }
 

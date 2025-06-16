@@ -1,3 +1,5 @@
+@reference '../../root.css';
+
 :root {
   --color-bg-sec-light: #eaeaea;
   --color-bg-ter-light: #f1f1f1;
@@ -16,4 +18,21 @@
 
 .navbar {
   background-color: light-dark(var(--color-bg-sec-light), var(--color-bg-sec-dark));
+}
+
+.contentHolder {
+  min-height: calc(
+    100dvh -
+    var(--app-shell-header-offset, 0rem) -
+    var(--app-shell-padding) -
+    var(--app-shell-footer-offset, 0rem) -
+    var(--app-shell-padding)
+  );
+
+  display: flex;
+  flex-direction: column;
+
+  .content {
+    @apply flex-1 pt-8;
+  }
 }
