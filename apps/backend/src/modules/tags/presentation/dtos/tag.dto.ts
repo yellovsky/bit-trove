@@ -15,13 +15,19 @@ export class TagDto implements Tag {
   readonly id!: string;
 
   @ApiProperty({
+    description: 'The slug of the tag',
+    type: String,
+  })
+  readonly slug!: string;
+
+  @ApiProperty({
     description: 'The name of the tag',
     type: String,
   })
   readonly name!: string;
 
   static fromModel(model: TagModel): Effect.Effect<TagDto, ExclusionReason> {
-    return Effect.succeed(new TagDto({ id: model.id, name: model.name }));
+    return Effect.succeed(new TagDto({ id: model.id, name: model.name, slug: model.slug }));
   }
 
   constructor(data: Tag) {

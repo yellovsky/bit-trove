@@ -14,6 +14,11 @@ export default {
     },
     title: 'Edit shard',
   },
+  shards_meta_description:
+    'Explore concise programming ideas, tips, and code snippets on Bottrove. Shards are bite-sized thoughts on React, TypeScript, architecture, and more.',
+  shards_meta_keywords:
+    'programming ideas, code snippets, dev notes, React tips, TypeScript, frontend architecture, small articles, JavaScript thoughts, bottrove shards',
+  shards_meta_title: 'Shards – Short Programming Ideas, Notes & Experiments',
   'Update shard failed': 'Update shard failed',
   'Update shard success': 'Update shard success',
   upsert_shard_form: {

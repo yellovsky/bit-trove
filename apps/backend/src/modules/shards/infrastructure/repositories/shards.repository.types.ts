@@ -42,6 +42,7 @@ export const dbShortShardSelect = {
         select: {
           id: true,
           name: true,
+          slug: true,
         },
       },
     },

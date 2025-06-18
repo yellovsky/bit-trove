@@ -280,7 +280,7 @@ export class PrismaShardsRepository implements ShardsRepository {
       slug: dbShard.slug,
       tags: dbShard.tags
         .sort((a, b) => a.order - b.order)
-        .map((t) => TagModel.from({ id: t.tag.id, name: t.tag.name })),
+        .map((t) => TagModel.from({ id: t.tag.id, name: t.tag.name, slug: t.tag.slug })),
       title: dbShard.title,
       updatedAt: dbShard.updatedAt,
     });

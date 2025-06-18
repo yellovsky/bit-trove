@@ -1,5 +1,6 @@
 model Tag {
-  id String @id @default(uuid()) @map("id")
+  id   String @id @default(uuid()) @map("id")
+  slug String @unique @map("slug")
 
   name String @unique @map("name")
 

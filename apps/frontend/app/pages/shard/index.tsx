@@ -1,22 +1,37 @@
 import { HydrationBoundary } from '@tanstack/react-query';
+import i18next from 'i18next';
+import type { MetaDescriptor } from 'react-router';
+
+import appI18next from '@app/localization/i18n.server';
+
+import { getShardJsonJdMeta, getShardOgMeta, getShardTwitterMeta } from '@entities/shards';
 
 import type { Route } from './+types';
 import { loadShardRouteData } from './load-data';
 import { ShardPage } from './page';
 
 export async function loader(args: Route.LoaderArgs) {
-  return loadShardRouteData(args);
+  const t = await appI18next.getFixedT(args.params.locale);
+  return loadShardRouteData(t, args);
 }
 
 export async function clientLoader(args: Route.ClientLoaderArgs) {
-  return loadShardRouteData(args);
+  await i18next.loadNamespaces('common');
+  const t = i18next.getFixedT(args.params.locale);
+  return loadShardRouteData(t, args);
 }
 
-export function meta(params: Route.MetaArgs) {
+export function meta(params: Route.MetaArgs): MetaDescriptor[] {
+  const metaTags: MetaDescriptor[] = [{ title: params.data.metaTitle }];
+
+  if (params.data.metaKeywords) metaTags.push({ content: params.data.metaKeywords, name: 'keywords' });
+  if (params.data.metaDescription) metaTags.push({ content: params.data.metaDescription, name: 'description' });
+
   return [
-    { title: params.data.shard.seo.title || params.data.shard.title },
-    { content: params.data.shard.seo.keywords, name: 'keywords' },
-    { content: params.data.shard.seo.description, name: 'description' },
+    ...metaTags,
+    getShardJsonJdMeta(params.data.shard),
+    ...getShardOgMeta(params.data.shard),
+    ...getShardTwitterMeta(params.data.shard),
   ];
 }
 

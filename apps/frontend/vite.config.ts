@@ -15,7 +15,7 @@ export default defineConfig({
 
     {
       ...babel({
-        filter: /\.tsx?$/,
+        filter: /\.[j|t]sx?$/,
 
         babelConfig: {
           plugins: ['babel-plugin-react-compiler'],

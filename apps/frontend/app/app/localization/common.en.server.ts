@@ -80,4 +80,9 @@ export default {
       title: 'Shards',
     },
   },
+  meta_general_description:
+    'BitTrove is a personal programming blog exploring code, tools, and ideas—from React and MobX to DSLs and architecture. Honest dev notes, no fluff.',
+  meta_general_keywords:
+    'personal programming blog, JavaScript blog, React blog, MobX tutorials, TypeScript tips, functional programming, software architecture, code experiments, developer notes, frontend engineering, web development blog, effect-ts, RxJS state management, custom editors in React',
+  meta_title_suffix: 'BitTrove',
 };

@@ -4,7 +4,7 @@ import { TagBadge } from './TagBadge';
 
 const meta = {
   args: {
-    tag: { id: 'id', name: 'Tag name' },
+    tag: { id: 'id', name: 'Tag name', slug: 'tag-slug' },
   },
   component: TagBadge,
 } satisfies Meta<typeof TagBadge>;

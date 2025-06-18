@@ -1,51 +1,42 @@
-import { Timeline, Title } from '@mantine/core';
-import { useIntersection } from '@mantine/hooks';
-import { useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
+import { HydrationBoundary } from '@tanstack/react-query';
+import i18next from 'i18next';
+import { useLoaderData } from 'react-router';
 
-import { ShardTimelineItem, ShardTimelineItemPending } from '@features/shards';
+import appI18next from '@app/localization/i18n.server';
 
-import { useInfiniteShardsQuery } from '@entities/shards';
+import type { Route } from './+types';
+import { loadShardsRouteData } from './load-data';
+import { ShardsPage } from './page';
+
+export async function loader(args: Route.LoaderArgs) {
+  const t = await appI18next.getFixedT(args.params.locale);
+  const tShards = await appI18next.getFixedT(args.params.locale, 'shards');
+
+  return loadShardsRouteData(t, tShards, args);
+}
+
+export async function clientLoader(args: Route.ClientLoaderArgs) {
+  await i18next.loadNamespaces('shards');
+  const t = i18next.getFixedT(args.params.locale);
+  const tShards = i18next.getFixedT(args.params.locale, 'shards');
+
+  return loadShardsRouteData(t, tShards, args);
+}
+
+export function meta(params: Route.MetaArgs) {
+  return [
+    { title: params.data.metaTitle },
+    { content: params.data.metaKeywords, name: 'keywords' },
+    { content: params.data.metaDescription, name: 'description' },
+  ];
+}
 
 export default function ShardsRoute() {
-  const { i18n } = useTranslation();
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const shardsQuery = useInfiniteShardsQuery({
-    locale: i18n.language,
-    sort: '-createdAt',
-  });
-
-  const { ref, entry } = useIntersection({
-    root: containerRef.current,
-    threshold: 0,
-  });
-
-  useEffect(() => {
-    if (entry?.isIntersecting && !shardsQuery.isFetchingNextPage && shardsQuery.hasNextPage)
-      shardsQuery.fetchNextPage();
-  }, [entry?.isIntersecting, shardsQuery.hasNextPage, shardsQuery.isFetchingNextPage, shardsQuery.fetchNextPage]);
+  const { dehydratedState, shardsVariables } = useLoaderData<typeof loader>();
 
   return (
-    <div>
-      <Title mb="lg" order={1}>
-        Shards
-      </Title>
-
-      <Timeline bulletSize={32} lineWidth={2}>
-        {shardsQuery.data?.pages.map((page) =>
-          page.data.items.map((shard) => <ShardTimelineItem key={shard.id} shard={shard} />)
-        )}
-
-        {shardsQuery.isFetching && (
-          <>
-            <ShardTimelineItemPending />
-            <ShardTimelineItemPending />
-          </>
-        )}
-      </Timeline>
-
-      <div ref={ref} />
-    </div>
+    <HydrationBoundary state={dehydratedState}>
+      <ShardsPage shardsVariables={shardsVariables} />
+    </HydrationBoundary>
   );
 }

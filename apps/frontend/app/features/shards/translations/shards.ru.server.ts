@@ -14,6 +14,11 @@ export default {
     },
     title: 'Редактировать фрагмент',
   },
+  shards_meta_description:
+    'Короткие заметки, идеи и кодовые фрагменты о программировании. Shards — это мысли о React, TypeScript, архитектуре и других темах.',
+  shards_meta_keywords:
+    'идеи о программировании, заметки разработчика, фрагменты кода, советы по React, TypeScript, архитектура фронтенда, маленькие статьи, JavaScript, shards Bottrove',
+  shards_meta_title: 'Shards — Короткие идеи и заметки о программировании',
   'Update shard failed': 'Не удалось обновить фрагмент',
   'Update shard success': 'Фрагмент успешно обновлен',
   upsert_shard_form: {

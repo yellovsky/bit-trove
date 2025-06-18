@@ -39,7 +39,10 @@ export class PrismaTagsRepository implements TagsRepository {
     const tx = reqCtx.tx ?? this.prismaSrv;
     return Effect.gen(this, function* () {
       const dbTags = yield* Effect.tryPromise(() =>
-        tx.tag.createManyAndReturn({ data: names.map((name) => ({ name })), select: dbTagSelect })
+        tx.tag.createManyAndReturn({
+          data: names.map((name) => ({ name, slug: name.toLowerCase() })),
+          select: dbTagSelect,
+        })
       );
       return dbTags.map(this.#mapToModel);
     });
@@ -57,6 +60,6 @@ export class PrismaTagsRepository implements TagsRepository {
   }
 
   #mapToModel(dbTag: DBTag): TagModel {
-    return TagModel.from({ id: dbTag.id, name: dbTag.name });
+    return TagModel.from({ id: dbTag.id, name: dbTag.name, slug: dbTag.slug });
   }
 }
