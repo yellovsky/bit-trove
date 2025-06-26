@@ -3,6 +3,7 @@ import { Effect, pipe } from 'effect';
 
 import type { JSONContent, Shard } from '@repo/api-models';
 
+import { AuthorDto } from 'src/shared/dto/author.dto';
 import { SeoDto } from 'src/shared/dto/seo.dto';
 import { type ExclusionReason, NotEnoughDataReason } from 'src/shared/excluded';
 
@@ -85,9 +86,18 @@ export class ShardDto implements Shard {
   })
   readonly createdAt!: string;
 
+  @ApiProperty({
+    description: 'The author of the shard',
+    nullable: true,
+    type: AuthorDto,
+  })
+  readonly author!: AuthorDto | null;
+
   static fromModel(model: ShardModel): Effect.Effect<ShardDto, ExclusionReason> {
     return pipe(
       Effect.all({
+        author: model.author ? AuthorDto.fromModel(model.author) : Effect.succeed(null),
+
         contentJSON: pipe(
           Effect.fromNullable(model.contentJSON),
           Effect.mapError(() => new NotEnoughDataReason())
@@ -102,9 +112,10 @@ export class ShardDto implements Shard {
       }),
 
       Effect.map(
-        ({ contentJSON, seo, tags }) =>
+        ({ author, contentJSON, seo, tags }) =>
           new ShardDto({
             alternatives: model.alternatives.map((alternative) => new AlternativeShardDto(alternative)),
+            author,
             contentJSON,
             createdAt: model.createdAt.toISOString(),
             entryId: model.entryId,

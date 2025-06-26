@@ -1,0 +1,32 @@
+.primary-green {
+  --color-primary-1: var(--color-green-1);
+  --color-primary-2: var(--color-green-2);
+  --color-primary-3: var(--color-green-3);
+  --color-primary-4: var(--color-green-4);
+  --color-primary-5: var(--color-green-5);
+  --color-primary-6: var(--color-green-6);
+  --color-primary-7: var(--color-green-7);
+  --color-primary-8: var(--color-green-8);
+  --color-primary-9: var(--color-green-9);
+  --color-primary-10: var(--color-green-10);
+  --color-primary-11: var(--color-green-11);
+  --color-primary-12: var(--color-green-12);
+
+  --color-primary-a1: var(--color-green-a1);
+  --color-primary-a2: var(--color-green-a2);
+  --color-primary-a3: var(--color-green-a3);
+  --color-primary-a4: var(--color-green-a4);
+  --color-primary-a5: var(--color-green-a5);
+  --color-primary-a6: var(--color-green-a6);
+  --color-primary-a7: var(--color-green-a7);
+  --color-primary-a8: var(--color-green-a8);
+  --color-primary-a9: var(--color-green-a9);
+  --color-primary-a10: var(--color-green-a10);
+  --color-primary-a11: var(--color-green-a11);
+  --color-primary-a12: var(--color-green-a12);
+
+  --color-primary-contrast: var(--color-green-contrast);
+  --color-primary-surface: var(--color-green-surface);
+  --color-primary-indicator: var(--color-green-indicator);
+  --color-primary-track: var(--color-green-track);
+}

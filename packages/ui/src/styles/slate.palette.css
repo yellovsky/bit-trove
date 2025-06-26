@@ -1,0 +1,68 @@
+:root {
+  &,
+  :where(.light) {
+    --color-slate-1: oklch(99.2% 0.0017 262.3);
+    --color-slate-2: oklch(98.3% 0.0031 262.3);
+    --color-slate-3: oklch(95.6% 0.0057 262.3);
+    --color-slate-4: oklch(93.2% 0.0075 262.3);
+    --color-slate-5: oklch(90.9% 0.0097 262.3);
+    --color-slate-6: oklch(88.6% 0.0111 262.3);
+    --color-slate-7: oklch(85.4% 0.0137 262.3);
+    --color-slate-8: oklch(79.4% 0.0185 262.3);
+    --color-slate-9: oklch(53.7% 0.0153 262.3);
+    --color-slate-10: oklch(49% 0.0153 262.3);
+    --color-slate-11: oklch(50.5% 0.0153 262.3);
+    --color-slate-12: oklch(24.5% 0.0128 262.3);
+
+    --color-slate-a1: color(display-p3 0.0235 0.0235 0.6745 / 0.012);
+    --color-slate-a2: color(display-p3 0.0235 0.1608 0.5804 / 0.028);
+    --color-slate-a3: color(display-p3 0.0078 0.1255 0.3569 / 0.067);
+    --color-slate-a4: color(display-p3 0.0118 0.0902 0.2902 / 0.099);
+    --color-slate-a5: color(display-p3 0.0078 0.098 0.2784 / 0.13);
+    --color-slate-a6: color(display-p3 0.0039 0.102 0.2471 / 0.161);
+    --color-slate-a7: color(display-p3 0.0039 0.0784 0.2314 / 0.204);
+    --color-slate-a8: color(display-p3 0.0039 0.0863 0.2353 / 0.287);
+    --color-slate-a9: color(display-p3 0 0.0275 0.0824 / 0.585);
+    --color-slate-a10: color(display-p3 0 0.0275 0.0706 / 0.636);
+    --color-slate-a11: color(display-p3 0 0.0275 0.0784 / 0.62);
+    --color-slate-a12: color(display-p3 0 0.0078 0.0353 / 0.883);
+
+    --color-slate-contrast: #fff;
+    --color-slate-surface: color(display-p3 0.9647 0.9725 0.9804 / 0.8);
+    --color-slate-indicator: oklch(53.7% 0.0153 262.3);
+    --color-slate-track: oklch(53.7% 0.0153 262.3);
+  }
+
+  :where(.dark) {
+    --color-slate-1: oklch(26% 0.004 262.3);
+    --color-slate-2: oklch(28.7% 0.0041 262.3);
+    --color-slate-3: oklch(32% 0.0058 262.3);
+    --color-slate-4: oklch(34.2% 0.0074 262.3);
+    --color-slate-5: oklch(36.3% 0.0083 262.3);
+    --color-slate-6: oklch(39% 0.01 262.3);
+    --color-slate-7: oklch(43.5% 0.0122 262.3);
+    --color-slate-8: oklch(52% 0.0158 262.3);
+    --color-slate-9: oklch(53.7% 0.0153 262.3);
+    --color-slate-10: oklch(49% 0.0158 262.3);
+    --color-slate-11: oklch(77.5% 0.0105 262.3);
+    --color-slate-12: oklch(94.9% 0.0028 262.3);
+
+    --color-slate-a1: color(display-p3 0 0.1412 0.9255 / 0.01);
+    --color-slate-a2: color(display-p3 0.6118 0.7961 0.9843 / 0.042);
+    --color-slate-a3: color(display-p3 0.7569 0.851 0.9922 / 0.083);
+    --color-slate-a4: color(display-p3 0.7843 0.8549 1 / 0.11);
+    --color-slate-a5: color(display-p3 0.8314 0.8863 1 / 0.137);
+    --color-slate-a6: color(display-p3 0.8431 0.8863 1 / 0.174);
+    --color-slate-a7: color(display-p3 0.8471 0.898 1 / 0.233);
+    --color-slate-a8: color(display-p3 0.8667 0.9137 1 / 0.352);
+    --color-slate-a9: color(display-p3 0.8706 0.9137 0.9961 / 0.375);
+    --color-slate-a10: color(display-p3 0.8471 0.898 0.9961 / 0.316);
+    --color-slate-a11: color(display-p3 0.949 0.9647 1 / 0.695);
+    --color-slate-a12: color(display-p3 0.9882 0.9922 1 / 0.932);
+
+    --color-slate-contrast: #fff;
+    --color-slate-surface: color(display-p3 0.1882 0.1961 0.2039 / 0.5);
+    --color-slate-indicator: oklch(53.7% 0.0153 262.3);
+    --color-slate-track: oklch(53.7% 0.0153 262.3);
+  }
+}

@@ -1,0 +1,68 @@
+:root {
+  &,
+  :where(.light) {
+    --color-amber-1: oklch(99.4% 0.003 84.13);
+    --color-amber-2: oklch(98.7% 0.0224 84.13);
+    --color-amber-3: oklch(97% 0.0664 84.13);
+    --color-amber-4: oklch(94.7% 0.0987 84.13);
+    --color-amber-5: oklch(92% 0.1245 84.13);
+    --color-amber-6: oklch(88.1% 0.1162 84.13);
+    --color-amber-7: oklch(82.9% 0.1122 84.13);
+    --color-amber-8: oklch(76% 0.1284 84.13);
+    --color-amber-9: oklch(87.1% 0.1683 84.13);
+    --color-amber-10: oklch(84% 0.1572 84.13);
+    --color-amber-11: oklch(57% 0.1307 84.13);
+    --color-amber-12: oklch(35.3% 0.0431 84.13);
+
+    --color-amber-a1: color(display-p3 0.7569 0.5137 0.0235 / 0.016);
+    --color-amber-a2: color(display-p3 0.949 0.7412 0.0078 / 0.075);
+    --color-amber-a3: color(display-p3 0.9647 0.7647 0.0039 / 0.216);
+    --color-amber-a4: color(display-p3 0.9569 0.7569 0.0039 / 0.338);
+    --color-amber-a5: color(display-p3 0.9569 0.7255 0.0039 / 0.451);
+    --color-amber-a6: color(display-p3 0.9176 0.6431 0.0039 / 0.471);
+    --color-amber-a7: color(display-p3 0.7922 0.549 0 / 0.522);
+    --color-amber-a8: color(display-p3 0.7216 0.502 0 / 0.663);
+    --color-amber-a9: color(display-p3 0.9529 0.702 0 / 0.675);
+    --color-amber-a10: color(display-p3 0.9176 0.651 0 / 0.671);
+    --color-amber-a11: color(display-p3 0.5137 0.3529 0 / 0.863);
+    --color-amber-a12: color(display-p3 0.1451 0.102 0 / 0.859);
+
+    --color-amber-contrast: #2b2009;
+    --color-amber-surface: color(display-p3 1 0.9765 0.9098 / 0.8);
+    --color-amber-indicator: oklch(87.1% 0.1683 84.13);
+    --color-amber-track: oklch(87.1% 0.1683 84.13);
+  }
+
+  :where(.dark) {
+    --color-amber-1: oklch(26% 0.0111 84.13);
+    --color-amber-2: oklch(28.1% 0.0156 84.13);
+    --color-amber-3: oklch(32.1% 0.0384 84.13);
+    --color-amber-4: oklch(35.2% 0.0623 84.13);
+    --color-amber-5: oklch(38.6% 0.0708 84.13);
+    --color-amber-6: oklch(42.9% 0.0684 84.13);
+    --color-amber-7: oklch(48.8% 0.0714 84.13);
+    --color-amber-8: oklch(56.4% 0.0842 84.13);
+    --color-amber-9: oklch(85.4% 0.1572 84.13);
+    --color-amber-10: oklch(82.2% 0.1572 84.13);
+    --color-amber-11: oklch(88% 0.1528 84.13);
+    --color-amber-12: oklch(93.5% 0.0628 84.13);
+
+    --color-amber-a1: color(display-p3 0.9255 0.1412 0 / 0.01);
+    --color-amber-a2: color(display-p3 0.9922 0.6745 0 / 0.037);
+    --color-amber-a3: color(display-p3 0.9961 0.6471 0 / 0.101);
+    --color-amber-a4: color(display-p3 1 0.6588 0 / 0.16);
+    --color-amber-a5: color(display-p3 1 0.6706 0 / 0.215);
+    --color-amber-a6: color(display-p3 1 0.749 0.1725 / 0.265);
+    --color-amber-a7: color(display-p3 1 0.7922 0.3255 / 0.343);
+    --color-amber-a8: color(display-p3 1 0.8039 0.3804 / 0.462);
+    --color-amber-a9: color(display-p3 1 0.8078 0.3608 / 0.959);
+    --color-amber-a10: color(display-p3 1 0.8039 0.3255 / 0.909);
+    --color-amber-a11: color(display-p3 1 0.8431 0.4118 / 0.964);
+    --color-amber-a12: color(display-p3 1 0.9255 0.7608 / 0.978);
+
+    --color-amber-contrast: #2b2009;
+    --color-amber-surface: color(display-p3 0.2039 0.1804 0.1176 / 0.5);
+    --color-amber-indicator: oklch(85.4% 0.1572 84.13);
+    --color-amber-track: oklch(85.4% 0.1572 84.13);
+  }
+}

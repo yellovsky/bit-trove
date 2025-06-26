@@ -1,8 +1,9 @@
-import { Flex, Text, Title } from '@mantine/core';
+import { Flex, Text } from '@mantine/core';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { EditorStatic } from '@widgets/editor';
+import { Heading } from '@repo/ui/components/Heading';
+import { PoseDocument } from '@repo/ui/components/PoseDocument';
 
 import { type GetOneShardVariables, useShardQuery } from '@entities/shards';
 import { TagBadge } from '@entities/tags';
@@ -16,7 +17,7 @@ export const ShardPage: FC<{ shardVariables: GetOneShardVariables }> = ({ shardV
 
   return (
     <>
-      <Title order={1}>{shard?.title}</Title>
+      <Heading order={1}>{shard?.title}</Heading>
 
       <Text c="dimmed" mt="sm" size="sm">
         {dateFormatter.format(new Date(shard?.createdAt ?? ''))}
@@ -30,7 +31,7 @@ export const ShardPage: FC<{ shardVariables: GetOneShardVariables }> = ({ shardV
         </Flex>
       )}
 
-      <EditorStatic content={shard?.contentJSON ?? ''} mt="lg" />
+      {shard?.contentJSON ? <PoseDocument doc={shard.contentJSON} /> : null}
     </>
   );
 };

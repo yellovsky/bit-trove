@@ -1,6 +1,3 @@
-// global modules
-// global modules
-
 import { Link } from '@mantine/tiptap';
 import Highlight from '@tiptap/extension-highlight';
 import SubScript from '@tiptap/extension-subscript';

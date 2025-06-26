@@ -1,6 +1,9 @@
+import uiConfig from "@repo/ui/postcss.config";
+
 export default {
+	...uiConfig,
   plugins: {
-    '@tailwindcss/postcss': {},
+		...uiConfig.plugins,
 		'postcss-preset-mantine': {},
     'postcss-simple-vars': {
       variables: {

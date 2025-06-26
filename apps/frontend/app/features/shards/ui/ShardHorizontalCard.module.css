@@ -1,0 +1,26 @@
+@reference '../../../root.css';
+
+.card {
+  background-color: var(--mantine-color-body);
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+
+  &:hover {
+    .title {
+      @apply text-link-hover;
+    }
+  }
+
+  .title {
+    @apply font-medium leading-[1.2] font-heading;
+  }
+
+  .image {
+    @apply w-38 bg-border text-center p-md;
+  }
+
+  .body {
+    @apply p-md;
+  }
+}

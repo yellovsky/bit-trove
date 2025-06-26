@@ -1,4 +1,5 @@
 export * from './auth';
+export * from './author';
 export * from './blog-post';
 export * from './common/failure-response';
 export * from './common/iso-date';

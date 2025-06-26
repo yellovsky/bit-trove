@@ -6,6 +6,8 @@
 @import "@mantine/core/styles.css" layer(utilities);
 @import "@mantine/notifications/styles.css" layer(utilities);
 
+@import "@repo/ui/globals.css";
+
 @import "./theme.css";
 
 @layer utilities {
@@ -15,3 +17,9 @@
 }
 
 @custom-variant dark (&:where([data-mantine-color-scheme=dark], [data-mantine-color-scheme=dark] *));
+
+/* TODO move to components */
+/* *:focus-visible {
+  outline: 2px solid var(--color-primary-8);
+  outline-offset: -1px;
+} */

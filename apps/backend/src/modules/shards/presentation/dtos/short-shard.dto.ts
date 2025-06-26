@@ -3,6 +3,7 @@ import { Effect, pipe } from 'effect';
 
 import type { ShortShard } from '@repo/api-models';
 
+import { AuthorDto } from 'src/shared/dto/author.dto';
 import type { ExclusionReason } from 'src/shared/excluded';
 
 import { TagDto } from 'src/modules/tags/presentation/dtos/tag.dto';
@@ -72,13 +73,23 @@ export class ShortShardDto implements ShortShard {
   })
   readonly alternatives!: AlternativeShardDto[];
 
+  @ApiProperty({
+    description: 'The author of the shard',
+    type: AuthorDto,
+  })
+  readonly author!: AuthorDto;
+
   static fromModel(model: ShardModel): Effect.Effect<ShortShardDto, ExclusionReason> {
     return pipe(
-      Effect.allSuccesses(model.tags.map((tag) => TagDto.fromModel(tag))),
+      Effect.all({
+        author: model.author ? AuthorDto.fromModel(model.author) : Effect.succeed(null),
+        tags: Effect.allSuccesses(model.tags.map((tag) => TagDto.fromModel(tag))),
+      }),
       Effect.map(
-        (tags) =>
+        ({ tags, author }) =>
           new ShortShardDto({
             alternatives: model.alternatives.map((alternative) => new AlternativeShardDto(alternative)),
+            author,
             createdAt: model.createdAt.toISOString(),
             entryId: model.entryId,
             id: model.id,

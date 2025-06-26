@@ -1,5 +1,4 @@
-import { Button, Group, Pagination, Table, Text, Title } from '@mantine/core';
-import { IconCirclePlusFilled } from '@tabler/icons-react';
+import { Group, Pagination, Table, Text, Title } from '@mantine/core';
 import {
   createColumnHelper,
   flexRender,
@@ -7,11 +6,13 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import { PlusCircle } from 'lucide-react';
 import { useMemo } from 'react';
 import { Fragment } from 'react/jsx-runtime';
 import { useTranslation } from 'react-i18next';
 
 import { getManyShardsSortSchema, type ShortShard } from '@repo/api-models';
+import { Button } from '@repo/ui/components/button';
 
 import { useTableQueryPagination } from '@shared/lib/use-table-query-pagination';
 import { useTableQuerySorting } from '@shared/lib/use-table-query-sorting';
@@ -121,14 +122,10 @@ const Page = () => {
       <Group justify="space-between" mb="lg">
         <Title>{t('menu_items.shards.title')}</Title>
 
-        <Button
-          component={Link}
-          leftSection={<IconCirclePlusFilled />}
-          to={getCreateShardLink()}
-          underline="never"
-          variant="light"
-        >
-          {tShards('create_shard_button.text')}
+        <Button asChild leftElement={<PlusCircle />}>
+          <Link to={getCreateShardLink()} variant="unstyled">
+            {tShards('create_shard_button.text')}
+          </Link>
         </Button>
       </Group>
 

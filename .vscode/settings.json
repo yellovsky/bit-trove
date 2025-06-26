@@ -55,6 +55,7 @@
   "files.trimTrailingWhitespace": true,
   "files.trimTrailingWhitespaceInRegexAndStrings": true,
   "prettier.enable": false,
+  "tailwindCSS.experimental.classRegex": [["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]],
   "typescript.tsdk": "node_modules/typescript/lib",
   "workbench.colorCustomizations": {
     "editorWhitespace.foreground": "#333"

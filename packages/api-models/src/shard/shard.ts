@@ -1,5 +1,6 @@
 import * as zod from 'zod';
 
+import { authorSchema } from '../author';
 import { isoDateSchema } from '../common/iso-date';
 import { jsonContentSchema } from '../common/json-content';
 import { localeSchema } from '../common/locale';
@@ -16,6 +17,7 @@ export type AlternativeShard = zod.infer<typeof alternativeShardSchema>;
 
 export const shortShardSchema = zod.object({
   alternatives: alternativeShardSchema.array(),
+  author: authorSchema.nullable(),
   createdAt: isoDateSchema,
   entryId: zod.string().uuid(),
   id: zod.string().uuid(),

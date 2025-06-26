@@ -8,6 +8,10 @@ import { CreateShardForm } from '@features/shards';
 import { useCreateShardMutation } from '@entities/shards';
 import type { CreateShardVariables } from '@entities/shards/api/create-shard';
 
+export const handle = {
+  i18n: ['cms', 'shards'],
+};
+
 export default function CMSShardsCreateRoute() {
   const { status, mutateAsync } = useCreateShardMutation();
   const { t } = useTranslation();

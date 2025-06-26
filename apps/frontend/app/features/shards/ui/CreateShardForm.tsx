@@ -1,28 +1,98 @@
-import { Button, Fieldset, InputDescription, InputLabel, Select, SimpleGrid, Switch, TextInput } from '@mantine/core';
-import type { ChangeEvent } from 'react';
-import { Controller, type SubmitHandler, useForm } from 'react-hook-form';
+import type { Editor as TiptapEditor } from '@tiptap/react';
+import type { ChangeEvent, FC } from 'react';
+import { type Control, type SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import { failedResponseSchema, type Shard } from '@repo/api-models';
+import { Button } from '@repo/ui/components/Button';
+import { Fieldset as UiFieldset } from '@repo/ui/components/Fieldset';
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  Form as UiForm,
+} from '@repo/ui/components/Form';
+import { SelectContent, SelectItem, SelectTrigger, SelectValue, Select as UiSelect } from '@repo/ui/components/Select';
+import { Switch as UISwitch } from '@repo/ui/components/Switch';
+import { TextInput as UiTextInput } from '@repo/ui/components/TextInput';
 
 import { getApiClient } from '@shared/lib/api-client';
 
 import { Editor, useEditor } from '@widgets/editor';
 
 import type { CreateShardVariables } from '@entities/shards/api/create-shard';
-import { TagsInput } from '@entities/tags';
 
 import { checkShardSlugAvailability } from '../api/check-shard-slug-availability';
 
-const useValidateTitle = () => {
-  const { t } = useTranslation();
-  return async (title: string) => (!title ? t('error.field_is_required.text') : undefined);
+interface ControlProps {
+  control: Control<CreateShardVariables>;
+}
+
+const PublishController: FC<ControlProps> = ({ control }) => {
+  const { t: tShards } = useTranslation('shards');
+
+  return (
+    <FormField
+      control={control}
+      name="published"
+      render={({ field, formState }) => (
+        <FormItem>
+          <UiFieldset
+            className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm"
+            variant="filled"
+          >
+            <div className="space-y-0.5">
+              <FormLabel>{tShards('upsert_shard_form.published.label')}</FormLabel>
+              <FormDescription>{tShards('upsert_shard_form.published.description')}</FormDescription>
+            </div>
+            <FormControl>
+              <UISwitch checked={field.value} disabled={formState.isSubmitting} onCheckedChange={field.onChange} />
+            </FormControl>
+          </UiFieldset>
+        </FormItem>
+      )}
+    />
+  );
 };
 
-const useValidateSlug = (id: string | undefined) => {
+const TitleController: FC<ControlProps> = ({ control }) => {
   const { t } = useTranslation();
+  const { t: tShards } = useTranslation('shards');
 
-  return async (slug: string) => {
+  const validateTitle = async (title: string) => (!title ? t('error.field_is_required.text') : undefined);
+
+  return (
+    <FormField
+      control={control}
+      name="title"
+      render={({ field, formState }) => (
+        <FormItem>
+          <FormLabel required>{tShards('upsert_shard_form.title.label')}</FormLabel>
+          <FormControl>
+            <UiTextInput
+              aria-label={tShards('upsert_shard_form.title.aria_label')}
+              disabled={formState.isSubmitting}
+              placeholder={tShards('upsert_shard_form.title.placeholder')}
+              {...field}
+            />
+          </FormControl>
+          <FormDescription>{tShards('upsert_shard_form.title.description')}</FormDescription>
+          <FormMessage />
+        </FormItem>
+      )}
+      rules={{ validate: validateTitle }}
+    />
+  );
+};
+
+const SlugController: FC<ControlProps & { id?: string }> = ({ control, id }) => {
+  const { t } = useTranslation();
+  const { t: tShards } = useTranslation('shards');
+
+  const validateSlug = async (slug: string) => {
     if (!slug) return t('error.field_is_required.text');
 
     try {
@@ -32,10 +102,225 @@ const useValidateSlug = (id: string | undefined) => {
       return 'Can not check slug availability';
     }
   };
+
+  return (
+    <FormField
+      control={control}
+      name="slug"
+      render={({ field, formState }) => (
+        <FormItem>
+          <FormLabel required>{tShards('upsert_shard_form.slug.label')}</FormLabel>
+          <FormControl>
+            <UiTextInput
+              aria-label={tShards('upsert_shard_form.slug.aria_label')}
+              disabled={formState.isSubmitting}
+              placeholder={tShards('upsert_shard_form.slug.placeholder')}
+              {...field}
+            />
+          </FormControl>
+          <FormDescription>{tShards('upsert_shard_form.slug.description')}</FormDescription>
+          <FormMessage />
+        </FormItem>
+      )}
+      rules={{ validate: validateSlug }}
+    />
+  );
+};
+
+const LanguageCodeController: FC<ControlProps> = ({ control }) => {
+  const { t: tShards } = useTranslation('shards');
+
+  return (
+    <FormField
+      control={control}
+      name="languageCode"
+      render={({ field, formState }) => (
+        <FormItem>
+          <FormLabel required>{tShards('upsert_shard_form.language_code.label')}</FormLabel>
+          <FormControl>
+            <UiSelect
+              aria-label={tShards('upsert_shard_form.language_code.aria_label')}
+              disabled={formState.isSubmitting}
+              onOpenChange={(open) => {
+                if (!open) field.onBlur();
+              }}
+              onValueChange={field.onChange}
+              {...field}
+            >
+              <SelectTrigger aria-invalid={!!formState.errors.languageCode} className="w-full">
+                <SelectValue placeholder={tShards('upsert_shard_form.language_code.placeholder')} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="en">English</SelectItem>
+                <SelectItem value="ru">Русский</SelectItem>
+              </SelectContent>
+            </UiSelect>
+          </FormControl>
+          <FormDescription>{tShards('upsert_shard_form.language_code.description')}</FormDescription>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  );
+};
+
+const ShortDescriptionController: FC<ControlProps> = ({ control }) => {
+  const { t: tShards } = useTranslation('shards');
+
+  return (
+    <FormField
+      control={control}
+      name="shortDescription"
+      render={({ field, formState }) => (
+        <FormItem>
+          <FormLabel required>{tShards('upsert_shard_form.short_description.label')}</FormLabel>
+          <FormControl>
+            <UiTextInput
+              {...field}
+              aria-label={tShards('upsert_shard_form.short_description.aria_label')}
+              disabled={formState.isSubmitting}
+              onBlur={(e) => {
+                field.onChange(nullableStringTransform.output(e));
+                return field.onBlur();
+              }}
+              placeholder={tShards('upsert_shard_form.short_description.placeholder')}
+              value={nullableStringTransform.input(field.value)}
+            />
+          </FormControl>
+          <FormDescription>{tShards('upsert_shard_form.short_description.description')}</FormDescription>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  );
+};
+
+const TagsController: FC<ControlProps> = ({ control }) => {
+  return (
+    <FormField
+      control={control}
+      name="tags"
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel>Tags</FormLabel>
+          <FormControl>
+            <UiTextInput {...field} />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  );
+};
+
+const SeoController: FC<ControlProps> = ({ control }) => {
+  const { t: tShards } = useTranslation('shards');
+
+  return (
+    <UiFieldset legend="SEO" variant="filled">
+      <FormField
+        control={control}
+        name="seoTitle"
+        render={({ field, formState }) => (
+          <FormItem className="mb-md">
+            <FormLabel required>{tShards('upsert_shard_form.seo_title.label')}</FormLabel>
+            <FormControl>
+              <UiTextInput
+                {...field}
+                aria-label={tShards('upsert_shard_form.seo_title.aria_label')}
+                disabled={formState.isSubmitting}
+                onBlur={(e) => {
+                  field.onChange(nullableStringTransform.output(e));
+                  return field.onBlur();
+                }}
+                placeholder={tShards('upsert_shard_form.seo_title.placeholder')}
+                value={nullableStringTransform.input(field.value)}
+              />
+            </FormControl>
+            <FormDescription>{tShards('upsert_shard_form.seo_title.description')}</FormDescription>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={control}
+        name="seoDescription"
+        render={({ field, formState }) => (
+          <FormItem className="mb-md">
+            <FormLabel required>{tShards('upsert_shard_form.seo_description.label')}</FormLabel>
+            <FormControl>
+              <UiTextInput
+                {...field}
+                aria-label={tShards('upsert_shard_form.seo_description.aria_label')}
+                disabled={formState.isSubmitting}
+                onBlur={(e) => {
+                  field.onChange(nullableStringTransform.output(e));
+                  return field.onBlur();
+                }}
+                placeholder={tShards('upsert_shard_form.seo_description.placeholder')}
+                value={nullableStringTransform.input(field.value)}
+              />
+            </FormControl>
+            <FormDescription>{tShards('upsert_shard_form.seo_description.description')}</FormDescription>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={control}
+        name="seoKeywords"
+        render={({ field, formState }) => (
+          <FormItem>
+            <FormLabel required>{tShards('upsert_shard_form.seo_keywords.label')}</FormLabel>
+            <FormControl>
+              <UiTextInput
+                {...field}
+                aria-label={tShards('upsert_shard_form.seo_keywords.aria_label')}
+                disabled={formState.isSubmitting}
+                onBlur={(e) => {
+                  field.onChange(nullableStringTransform.output(e));
+                  return field.onBlur();
+                }}
+                placeholder={tShards('upsert_shard_form.seo_keywords.placeholder')}
+                value={nullableStringTransform.input(field.value)}
+              />
+            </FormControl>
+            <FormDescription>{tShards('upsert_shard_form.seo_keywords.description')}</FormDescription>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    </UiFieldset>
+  );
+};
+
+const ContentController: FC<ControlProps & { editor: TiptapEditor | null }> = ({ control, editor }) => {
+  const { t: tShards } = useTranslation('shards');
+
+  return (
+    <FormField
+      control={control}
+      name="seoKeywords"
+      render={({ formState }) => (
+        <FormItem>
+          <FormLabel required>{tShards('upsert_shard_form.seo_keywords.label')}</FormLabel>
+          <FormControl>
+            {!editor ? null : (
+              <Editor aria-disabled={formState.isSubmitting} editor={editor} mih={400} variant="subtle" />
+            )}
+          </FormControl>
+          <FormDescription>{tShards('upsert_shard_form.content.description')}</FormDescription>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  );
 };
 
 const getDefaultValues = (languageCode: string): CreateShardVariables => ({
-  contentJSON: {},
+  contentJSON: [],
   entryId: '',
   languageCode,
   published: false,
@@ -65,19 +350,13 @@ const nullableStringTransform = {
 export const CreateShardForm: React.FC<CreateShardFormProps> = (props) => {
   const { t, i18n } = useTranslation();
   const { t: tShards } = useTranslation('shards');
-  const defaultValues = props.defaultValues ?? getDefaultValues(i18n.language);
 
-  const {
-    handleSubmit,
-    control,
-    setError,
-    setValue,
-    formState: { errors },
-  } = useForm<CreateShardVariables>({ defaultValues, mode: 'onChange', reValidateMode: 'onChange' });
+  const defaultValues = props.defaultValues ?? getDefaultValues(i18n.language);
+  const form = useForm<CreateShardVariables>({ defaultValues, mode: 'onChange', reValidateMode: 'onChange' });
 
   const editor = useEditor({
     content: defaultValues.contentJSON,
-    onUpdate: ({ editor }) => setValue('contentJSON', editor.getJSON()),
+    onUpdate: ({ editor }) => form.setValue('contentJSON', editor.getJSON()),
   });
 
   const submitHandler: SubmitHandler<CreateShardVariables> = async (data) => {
@@ -87,197 +366,36 @@ export const CreateShardForm: React.FC<CreateShardFormProps> = (props) => {
     } catch (err) {
       const { data } = await failedResponseSchema.safeParseAsync(err);
       if (!data) return t('error.unknown_error.text');
-      setError('root', { message: data.error.message });
+      form.setError('root', { message: data.error.message });
     }
   };
 
-  const validateTitle = useValidateTitle();
-  const validateSlug = useValidateSlug(props.id);
-
   return (
-    <>
-      <form noValidate onSubmit={handleSubmit(submitHandler)}>
-        <Controller
-          control={control}
-          name="title"
-          render={({ field }) => (
-            <TextInput
-              {...field}
-              aria-label={tShards('upsert_shard_form.title.aria_label')}
-              description={tShards('upsert_shard_form.title.description')}
-              disabled={props.isLoading}
-              error={errors.title?.message}
-              label={tShards('upsert_shard_form.title.label')}
-              placeholder={tShards('upsert_shard_form.title.placeholder')}
-              required
-            />
-          )}
-          rules={{ validate: validateTitle }}
-        />
+    <UiForm {...form}>
+      <form className="space-y-6" onSubmit={form.handleSubmit(submitHandler)}>
+        <TitleController control={form.control} />
+        <TagsController control={form.control} />
+        <PublishController control={form.control} />
 
-        <Controller control={control} name="tags" render={({ field }) => <TagsInput {...field} mt="md" />} />
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <SlugController control={form.control} />
+          </div>
+          <div>
+            <LanguageCodeController control={form.control} />
+          </div>
+        </div>
 
-        <Fieldset mt="lg" radius="md" variant="filled">
-          <Controller
-            control={control}
-            name="published"
-            render={({ field: { value, ...rest } }) => (
-              <Switch
-                {...rest}
-                aria-label={tShards('upsert_shard_form.published.aria_label')}
-                checked={value}
-                description={tShards('upsert_shard_form.published.description')}
-                disabled={props.isLoading}
-                label={tShards('upsert_shard_form.published.label')}
-                mt="md"
-              />
-            )}
-          />
-        </Fieldset>
+        <ShortDescriptionController control={form.control} />
+        <SeoController control={form.control} />
+        <ContentController control={form.control} editor={editor} />
 
-        <SimpleGrid cols={2}>
-          <Controller
-            control={control}
-            name="slug"
-            render={({ field }) => (
-              <TextInput
-                {...field}
-                aria-label={tShards('upsert_shard_form.slug.aria_label')}
-                description={tShards('upsert_shard_form.slug.description')}
-                disabled={props.isLoading}
-                error={errors.slug?.message}
-                label={tShards('upsert_shard_form.slug.label')}
-                mt="md"
-                placeholder="Shard slug"
-                required
-              />
-            )}
-            rules={{ validate: validateSlug }}
-          />
-
-          <Controller
-            control={control}
-            name="languageCode"
-            render={({ field }) => (
-              <Select
-                aria-label={tShards('upsert_shard_form.language_code.aria_label')}
-                data={[
-                  { label: 'English', value: 'en' },
-                  { label: 'Русский', value: 'ru' },
-                ]}
-                description={tShards('upsert_shard_form.language_code.description')}
-                disabled={props.isLoading}
-                error={errors.languageCode?.message}
-                label={tShards('upsert_shard_form.language_code.label')}
-                mt="md"
-                placeholder={tShards('upsert_shard_form.language_code.placeholder')}
-                required
-                {...field}
-              />
-            )}
-          />
-        </SimpleGrid>
-
-        <Controller
-          control={control}
-          name="shortDescription"
-          render={({ field }) => (
-            <TextInput
-              {...field}
-              aria-label={tShards('upsert_shard_form.short_description.aria_label')}
-              description={tShards('upsert_shard_form.short_description.description')}
-              disabled={props.isLoading}
-              error={errors.shortDescription?.message}
-              label={tShards('upsert_shard_form.short_description.label')}
-              mt="md"
-              onBlur={(e) => {
-                field.onChange(nullableStringTransform.output(e));
-                return field.onBlur();
-              }}
-              placeholder={tShards('upsert_shard_form.short_description.placeholder')}
-              required
-              value={nullableStringTransform.input(field.value)}
-            />
-          )}
-        />
-
-        <Fieldset legend="SEO" mt="lg" radius="md" variant="filled">
-          <Controller
-            control={control}
-            name="seoTitle"
-            render={({ field }) => (
-              <TextInput
-                {...field}
-                aria-label={tShards('upsert_shard_form.seo_title.aria_label')}
-                description={tShards('upsert_shard_form.seo_title.description')}
-                disabled={props.isLoading}
-                error={errors.seoTitle?.message}
-                label={tShards('upsert_shard_form.seo_title.label')}
-                onBlur={(e) => {
-                  field.onChange(nullableStringTransform.output(e));
-                  return field.onBlur();
-                }}
-                placeholder={tShards('upsert_shard_form.seo_title.placeholder')}
-                value={nullableStringTransform.input(field.value)}
-              />
-            )}
-          />
-
-          <Controller
-            control={control}
-            name="seoDescription"
-            render={({ field }) => (
-              <TextInput
-                {...field}
-                aria-label={tShards('upsert_shard_form.seo_description.aria_label')}
-                description={tShards('upsert_shard_form.seo_description.description')}
-                disabled={props.isLoading}
-                error={errors.seoDescription?.message}
-                label={tShards('upsert_shard_form.seo_description.label')}
-                mt="md"
-                onBlur={(e) => {
-                  field.onChange(nullableStringTransform.output(e));
-                  return field.onBlur();
-                }}
-                placeholder={tShards('upsert_shard_form.seo_description.placeholder')}
-                value={nullableStringTransform.input(field.value)}
-              />
-            )}
-          />
-
-          <Controller
-            control={control}
-            name="seoKeywords"
-            render={({ field }) => (
-              <TextInput
-                {...field}
-                aria-label={tShards('upsert_shard_form.seo_keywords.aria_label')}
-                description={tShards('upsert_shard_form.seo_keywords.description')}
-                disabled={props.isLoading}
-                error={errors.seoKeywords?.message}
-                label={tShards('upsert_shard_form.seo_keywords.label')}
-                mt="md"
-                onBlur={(e) => {
-                  field.onChange(nullableStringTransform.output(e));
-                  return field.onBlur();
-                }}
-                placeholder={tShards('upsert_shard_form.seo_keywords.placeholder')}
-                value={nullableStringTransform.input(field.value)}
-              />
-            )}
-          />
-        </Fieldset>
-
-        <InputLabel mt="md">{tShards('upsert_shard_form.content.label')}</InputLabel>
-        <InputDescription mb="xs">{tShards('upsert_shard_form.content.description')}</InputDescription>
-        {!editor ? null : <Editor editor={editor} mih={400} variant="subtle" />}
-
-        <Button fullWidth mt="md" type="submit">
+        <Button className="block w-full" type="submit">
           {props.mode === 'create'
             ? tShards('create_shard_form.submit_button.text')
             : tShards('edit_shard_form.submit_button.text')}
         </Button>
       </form>
-    </>
+    </UiForm>
   );
 };

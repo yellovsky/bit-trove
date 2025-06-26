@@ -49,6 +49,7 @@ export default defineConfig({
     noExternal: [
       // these pachkages are internal monorepo packages
       '@repo/api-models',
+      '@repo/ui',
 
       // this packages are cjs and must be compiled to be used with esm
       'jotai-tanstack-query',

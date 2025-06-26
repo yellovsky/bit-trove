@@ -1,3 +1,5 @@
+import '@fontsource-variable/geologica/index.css';
+import {cx}from 'class-variance-authority'
 import * as React from 'react';
 import type { Preview } from '@storybook/react-vite'
 import {addons} from 'storybook/preview-api';
@@ -11,6 +13,7 @@ import ICU from 'i18next-icu';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import Backend from 'i18next-http-backend';
 import {resources } from '../app/app/localization/resource'
+import { getPaletteClassName } from '@repo/ui/lib/palette';
 
 import '../app/root.css'
 
@@ -20,7 +23,7 @@ import i18next from 'i18next';
 const channel = addons.getChannel();
 
 function ColorSchemeWrapper({ children }: { children: React.ReactNode; }) {
-  const { setColorScheme } = useMantineColorScheme();
+  const { setColorScheme, colorScheme } = useMantineColorScheme();
   const handleColorScheme = (value: boolean) => setColorScheme(value ? 'dark' : 'light');
 
   useEffect(() => {
@@ -28,7 +31,14 @@ function ColorSchemeWrapper({ children }: { children: React.ReactNode; }) {
     return () => channel.off(DARK_MODE_EVENT_NAME, handleColorScheme);
   }, [channel]);
 
-  return <>{children}</>;
+	useEffect(() => {
+		document.body.classList.remove('dark', 'light');
+		document.body.classList.add(colorScheme, ...getPaletteClassName('primary').split(' ') );
+	}, [colorScheme]);
+
+	console.log(document.querySelectorAll('.docs-story').forEach(el => el.classList.add('bg-gray-1')))
+
+  return <div className={ cx(getPaletteClassName('primary'), colorScheme)}>{children}</div>;
 }
 
 
@@ -67,7 +77,7 @@ export const decorators = [
 	withI18next,
 	withRouter,
   (renderStory: any) => <ColorSchemeWrapper>{renderStory()}</ColorSchemeWrapper>,
-  (renderStory: any) => <MantineProvider theme={theme}>{renderStory()}</MantineProvider>,
+  (renderStory: any) => <MantineProvider  theme={theme}>{renderStory()}</MantineProvider>,
 ];
 
 const preview: Preview = {

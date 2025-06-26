@@ -5,6 +5,7 @@ import { MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { cx } from 'class-variance-authority';
 import { useAtomValue } from 'jotai';
 import { useHydrateAtoms } from 'jotai/utils';
 import { queryClientAtom } from 'jotai-tanstack-query';
@@ -14,8 +15,12 @@ import type { LinkDescriptor, LinksFunction } from 'react-router';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from 'react-router';
 import { useChangeLanguage } from 'remix-i18next/react';
 
+import { type EnhanceTo, EnhanceToProvider } from '@repo/ui/hooks/enhance-to';
+import { getPaletteClassName } from '@repo/ui/lib/palette';
+
 import { getQueryClient } from '@shared/lib/query-client';
 import { ErrorScreen } from '@shared/ui/error-route';
+import { useMakeEnhancedTo } from '@shared/ui/link/use-enhanced-to';
 
 import { AppSuspenseWarning } from '@app/app-suspense-warning';
 import { ClientHintCheck, getHints } from '@app/client-hints';
@@ -83,6 +88,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
 
   const colorScheme = useAtomValue(colorSchemeAtom);
   const colorSchemeManager = useColorSchemeManager();
+  const enhanceTo: EnhanceTo = useMakeEnhancedTo();
 
   return (
     <html data-mantine-color-scheme={colorScheme} dir={i18n.dir()} lang={i18n.language} style={{ colorScheme }}>
@@ -94,13 +100,15 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         <Links />
       </head>
 
-      <body className="h-full w-full">
+      <body className={cx('h-full w-full', getPaletteClassName('primary'), colorScheme)}>
         <Suspense fallback={<AppSuspenseWarning />}>
           <MantineProvider colorSchemeManager={colorSchemeManager} theme={theme}>
             <QueryClientProvider client={queryClient}>
-              <Notifications />
-              {children}
-              <ReactQueryDevtools />
+              <EnhanceToProvider value={enhanceTo}>
+                <Notifications />
+                {children}
+                <ReactQueryDevtools />
+              </EnhanceToProvider>
             </QueryClientProvider>
           </MantineProvider>
         </Suspense>

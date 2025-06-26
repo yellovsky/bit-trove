@@ -1,6 +1,0 @@
-@reference '../../../root.css';
-
-.tagBadge {
-  @apply cursor-pointer hover:bg-[var(--mantine-primary-color-light-hover)]
-	dark:hover:bg-[var(--mantine-primary-color-filled-hover)];
-}
