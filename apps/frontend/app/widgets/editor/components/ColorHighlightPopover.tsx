@@ -67,7 +67,7 @@ export const DEFAULT_HIGHLIGHT_COLORS: ColorHighlightPopoverColor[] = [
 
 export const ColorHighlightPopoverButton: FC<ComponentProps<typeof ToolbarButton>> = ({ children, ...props }) => (
   <ToolbarButton aria-label="Highlight text" tabIndex={-1} tooltip="Highlight" {...props}>
-    {children || <HighlighterIcon className="tiptap-button-icon" strokeWidth={1} />}
+    {children || <HighlighterIcon strokeWidth={1} />}
   </ToolbarButton>
 );
 
@@ -126,13 +126,12 @@ export const ColorHighlightPopoverContent: FC<ColorHighlightPopoverContentProps>
         <ToolbarButton
           aria-label="Remove highlight"
           data-highlighted={selectedIndex === colors.length}
-          data-style="ghost"
           onClick={removeHighlight}
           role="menuitem"
           tabIndex={selectedIndex === colors.length ? 0 : -1}
           type="button"
         >
-          <BanIcon className="tiptap-button-icon" strokeWidth={1} />
+          <BanIcon strokeWidth={1} />
         </ToolbarButton>
       </div>
     </div>
@@ -211,4 +210,4 @@ export function ColorHighlightPopover({
   );
 }
 
-export default ColorHighlightPopover;
+ColorHighlightPopover.displayName = 'ColorHighlightPopover';

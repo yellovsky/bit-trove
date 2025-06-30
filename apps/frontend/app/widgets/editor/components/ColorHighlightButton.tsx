@@ -10,7 +10,7 @@ import type { ComponentProps, FC } from 'react';
 import { cn } from '@repo/ui/lib/utils';
 
 import { useEditorSync } from '../hooks/use-editor-sync';
-import ToolbarButton from './ToolbarButton';
+import { ToolbarButton } from './ToolbarButton';
 
 export const HIGHLIGHT_COLORS = [
   {
@@ -258,7 +258,7 @@ export const ColorHighlightButton: FC<ColorHighlightButtonProps> = ({
             className={cn('tiptap-button-highlight', 'rounded-full')}
             style={{ '--highlight-color': color } as React.CSSProperties}
           />
-          {text && <span className="tiptap-button-text">{text}</span>}
+          {text && <span>{text}</span>}
         </>
       )}
     </ToolbarButton>
@@ -266,5 +266,3 @@ export const ColorHighlightButton: FC<ColorHighlightButtonProps> = ({
 };
 
 ColorHighlightButton.displayName = 'ColorHighlightButton';
-
-export default ColorHighlightButton;

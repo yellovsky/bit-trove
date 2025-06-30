@@ -18,7 +18,7 @@ import { TextInput } from '@repo/ui/components/TextInput';
 import { useEditorSync } from '../hooks/use-editor-sync';
 import { useTiptapEditor } from '../hooks/use-tiptap-editor';
 import { isMarkInSchema, sanitizeUrl } from '../lib/tiptap-utils';
-import ToolbarButton from './ToolbarButton';
+import { ToolbarButton } from './ToolbarButton';
 
 export interface LinkHandlerProps {
   editor: Editor | null;
@@ -129,24 +129,12 @@ const LinkMain: FC<LinkMainProps> = ({ url, setUrl, setLink, removeLink, isActiv
         value={url}
       />
 
-      <ToolbarButton
-        data-style="ghost"
-        disabled={!url && !isActive}
-        onClick={handleOpenLink}
-        title="Open in new window"
-        type="button"
-      >
-        <ExternalLinkIcon className="tiptap-button-icon" />
+      <ToolbarButton disabled={!url && !isActive} onClick={handleOpenLink} title="Open in new window" type="button">
+        <ExternalLinkIcon />
       </ToolbarButton>
 
-      <ToolbarButton
-        data-style="ghost"
-        disabled={!url && !isActive}
-        onClick={removeLink}
-        title="Remove link"
-        type="button"
-      >
-        <Trash2Icon className="tiptap-button-icon" />
+      <ToolbarButton disabled={!url && !isActive} onClick={removeLink} title="Remove link" type="button">
+        <Trash2Icon />
       </ToolbarButton>
     </>
   );

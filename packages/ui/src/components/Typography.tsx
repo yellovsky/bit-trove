@@ -57,8 +57,8 @@ export const UnorderedList: FC<ComponentProps<'ul'>> = ({ className, ...props })
 );
 UnorderedList.displayName = 'UnorderedList';
 
-export const ListItem: FC<ComponentProps<'li'>> = ({ children, className, ...props }) => (
-  <li {...props} className={cn('typography-list-item', className)}>
+export const ListItem: FC<ComponentProps<'li'>> = ({ children, ...props }) => (
+  <li {...props}>
     <div className="inline-flex">{children}</div>
   </li>
 );

@@ -30,5 +30,3 @@ export const ToolbarButton: FC<ToolbarButtonProps> = ({ children, tooltip, class
 };
 
 ToolbarButton.displayName = 'ToolbarButton';
-
-export default ToolbarButton;

@@ -91,7 +91,7 @@ export const HeadingToolbarSection: FC<SectionOneProps> = ({ editor: providedEdi
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <ToolbarButton aria-label="Text styles" disabled={disabled} size="xs" tooltip="Text styles">
+        <ToolbarButton aria-label="Text styles" disabled={disabled} tooltip="Text styles">
           {
             <ActiveIcon
               className={cn('size-4', { 'text-primary-11': activeLevel })}

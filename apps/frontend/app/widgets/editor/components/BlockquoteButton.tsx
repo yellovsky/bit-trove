@@ -6,7 +6,7 @@ import { useEditorSync } from '../hooks/use-editor-sync';
 import { useTiptapEditor } from '../hooks/use-tiptap-editor';
 import { getShortcutKey } from '../lib/get-shortcut-key';
 import { isNodeInSchema } from '../lib/tiptap-utils';
-import ToolbarButton from './ToolbarButton';
+import { ToolbarButton } from './ToolbarButton';
 
 export interface BlockquoteButtonProps extends ComponentProps<typeof ToolbarButton> {
   /**
@@ -120,8 +120,8 @@ export const BlockquoteButton: FC<BlockquoteButtonProps> = ({
     >
       {children || (
         <>
-          <TextQuoteIcon className="tiptap-button-icon" strokeWidth={isActive ? 2 : 1} />
-          {text && <span className="tiptap-button-text">{text}</span>}
+          <TextQuoteIcon strokeWidth={isActive ? 2 : 1} />
+          {text && <span>{text}</span>}
         </>
       )}
     </ToolbarButton>
@@ -129,5 +129,3 @@ export const BlockquoteButton: FC<BlockquoteButtonProps> = ({
 };
 
 BlockquoteButton.displayName = 'BlockquoteButton';
-
-export default BlockquoteButton;

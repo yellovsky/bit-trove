@@ -115,8 +115,8 @@ export const CodeBlockButton: FC<CodeBlockButtonProps> = ({
     >
       {children || (
         <>
-          <CodeSquareIcon className="tiptap-button-icon" strokeWidth={isActive ? 2 : 1} />
-          {text && <span className="tiptap-button-text">{text}</span>}
+          <CodeSquareIcon strokeWidth={isActive ? 2 : 1} />
+          {text && <span>{text}</span>}
         </>
       )}
     </ToolbarButton>
@@ -124,5 +124,3 @@ export const CodeBlockButton: FC<CodeBlockButtonProps> = ({
 };
 
 CodeBlockButton.displayName = 'CodeBlockButton';
-
-export default CodeBlockButton;

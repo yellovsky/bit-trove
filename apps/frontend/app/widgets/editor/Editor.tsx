@@ -8,16 +8,17 @@ import { useMobile } from '@repo/ui/hooks/use-mobile';
 import { useWindowSize } from '@repo/ui/hooks/use-window-size';
 
 import { BlockquoteButton } from './components/BlockquoteButton';
-import CodeBlockButton from './components/CodeBlockButton';
+import { CodeBlockButton } from './components/CodeBlockButton';
 import { HeadingToolbarSection } from './components/HeadingToolbarSection';
 import { LinkButton, LinkContent, LinkPopover } from './components/LinkPopover';
 import { ListToolbarButton } from './components/ListToolbarButton';
-import MarkButton from './components/MarkButton';
+import { MarkButton } from './components/MarkButton';
 import { Toolbar, ToolbarGroup, ToolbarSeparator } from './components/Toolbar';
 import { UndoRedoButton } from './components/UndoRedoButton';
 import './Editor.css';
 
-import ColorHighlightPopover, {
+import {
+  ColorHighlightPopover,
   ColorHighlightPopoverButton,
   ColorHighlightPopoverContent,
 } from './components/ColorHighlightPopover';
@@ -92,13 +93,9 @@ const MainToolbarContent: FC<MainToolbarContentProps> = ({ onHighlighterClick, o
 const MobileToolbarContent = ({ type, onBack }: { type: 'highlighter' | 'link'; onBack: () => void }) => (
   <>
     <ToolbarGroup>
-      <Button data-style="ghost" onClick={onBack}>
-        <ArrowLeftIcon className="tiptap-button-icon" />
-        {type === 'highlighter' ? (
-          <HighlighterIcon className="tiptap-button-icon" />
-        ) : (
-          <LinkIcon className="tiptap-button-icon" />
-        )}
+      <Button onClick={onBack}>
+        <ArrowLeftIcon />
+        {type === 'highlighter' ? <HighlighterIcon /> : <LinkIcon />}
       </Button>
     </ToolbarGroup>
 
@@ -147,7 +144,7 @@ export const Editor: FC<EditorProps> = ({ editor }) => {
             />
           )}
         </Toolbar>
-        <div className="bg-input-bg p-sm content-wrapper [&_contenteditable]:focus-visible:outline-none">
+        <div className="typography-root bg-input-bg p-sm content-wrapper [&_contenteditable]:focus-visible:outline-none">
           <EditorContent editor={editor} />
         </div>
       </EditorContext.Provider>

@@ -37,7 +37,7 @@ export const ListToolbarButton: FC<{ editor?: Editor | null }> = ({ editor: prov
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <ToolbarButton aria-label="Text styles" disabled={disabled} size="xs" tooltip="Text styles">
+        <ToolbarButton aria-label="Text styles" disabled={disabled} tooltip="Text styles">
           <Icon
             className={cn('size-4', { 'text-primary-11': unorderedListIsActive || orderedListIsActive })}
             strokeWidth={unorderedListIsActive || orderedListIsActive ? 2 : 1}

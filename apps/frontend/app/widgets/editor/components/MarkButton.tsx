@@ -13,7 +13,7 @@ import type { FC } from 'react';
 import { useTiptapEditor } from '../hooks/use-tiptap-editor';
 import { getShortcutKey } from '../lib/get-shortcut-key';
 import { isMarkInSchema } from '../lib/tiptap-utils';
-import ToolbarButton from './ToolbarButton';
+import { ToolbarButton } from './ToolbarButton';
 
 export type Mark = 'bold' | 'italic' | 'strike' | 'code' | 'underline' | 'superscript' | 'subscript';
 
@@ -157,8 +157,8 @@ export const MarkButton: FC<MarkButtonProps> = ({
     >
       {children || (
         <>
-          <Icon className="tiptap-button-icon" strokeWidth={isActive ? 2 : 1} />
-          {text && <span className="tiptap-button-text">{text}</span>}
+          <Icon strokeWidth={isActive ? 2 : 1} />
+          {text && <span>{text}</span>}
         </>
       )}
     </ToolbarButton>
@@ -166,5 +166,3 @@ export const MarkButton: FC<MarkButtonProps> = ({
 };
 
 MarkButton.displayName = 'MarkButton';
-
-export default MarkButton;

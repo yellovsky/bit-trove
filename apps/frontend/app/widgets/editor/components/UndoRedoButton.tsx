@@ -1,11 +1,11 @@
 import type { Editor } from '@tiptap/react';
 import { Redo2Icon, Undo2Icon } from 'lucide-react';
-import { type ComponentProps, forwardRef, type MouseEvent, useCallback } from 'react';
+import type { ComponentProps, FC, MouseEventHandler } from 'react';
 
 import { useEditorSync } from '../hooks/use-editor-sync';
 import { useTiptapEditor } from '../hooks/use-tiptap-editor';
 import { getShortcutKey } from '../lib/get-shortcut-key';
-import ToolbarButton from './ToolbarButton';
+import { ToolbarButton } from './ToolbarButton';
 
 export type HistoryAction = 'undo' | 'redo';
 
@@ -109,52 +109,36 @@ export function useHistoryAction(editor: Editor | null, action: HistoryAction, d
 /**
  * Button component for triggering undo/redo actions in a TipTap editor.
  */
-export const UndoRedoButton = forwardRef<HTMLButtonElement, UndoRedoButtonProps>(
-  ({ editor: providedEditor, action, text, disabled, onClick, children, ...buttonProps }, ref) => {
-    const editor = useTiptapEditor(providedEditor);
+export const UndoRedoButton: FC<UndoRedoButtonProps> = (props) => {
+  const { editor: providedEditor, action, text, disabled, onClick, children, ...buttonProps } = props;
+  const editor = useTiptapEditor(providedEditor);
+  const { isDisabled, handleAction, Icon, actionLabel, shortcutKeys } = useHistoryAction(editor, action, disabled);
+  const tooltip = [actionLabel, shortcutKeys?.map((s) => getShortcutKey(s).symbol).join(' ')].filter(Boolean).join(' ');
 
-    const { isDisabled, handleAction, Icon, actionLabel, shortcutKeys } = useHistoryAction(editor, action, disabled);
+  const handleClick: MouseEventHandler<HTMLButtonElement> = (e) => {
+    onClick?.(e);
+    if (!e.defaultPrevented && !disabled) handleAction();
+  };
 
-    const handleClick = useCallback(
-      (e: MouseEvent<HTMLButtonElement>) => {
-        onClick?.(e);
+  if (!editor || !editor.isEditable) return null;
 
-        if (!e.defaultPrevented && !disabled) {
-          handleAction();
-        }
-      },
-      [onClick, disabled, handleAction]
-    );
-
-    if (!editor || !editor.isEditable) {
-      return null;
-    }
-
-    const tooltip = [actionLabel, shortcutKeys?.map((s) => getShortcutKey(s).symbol).join(' ')]
-      .filter(Boolean)
-      .join(' ');
-
-    return (
-      <ToolbarButton
-        aria-label={actionLabel}
-        disabled={isDisabled}
-        onClick={handleClick}
-        ref={ref}
-        tabIndex={-1}
-        tooltip={tooltip}
-        {...buttonProps}
-      >
-        {children || (
-          <>
-            <Icon className="tiptap-button-icon" strokeWidth={1} />
-            {text && <span className="tiptap-button-text">{text}</span>}
-          </>
-        )}
-      </ToolbarButton>
-    );
-  }
-);
+  return (
+    <ToolbarButton
+      aria-label={actionLabel}
+      disabled={isDisabled}
+      onClick={handleClick}
+      tabIndex={-1}
+      tooltip={tooltip}
+      {...buttonProps}
+    >
+      {children || (
+        <>
+          <Icon strokeWidth={1} />
+          {text && <span>{text}</span>}
+        </>
+      )}
+    </ToolbarButton>
+  );
+};
 
 UndoRedoButton.displayName = 'UndoRedoButton';
-
-export default UndoRedoButton;
