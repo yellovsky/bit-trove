@@ -1,4 +1,4 @@
-import { Link } from '@mantine/tiptap';
+// import { Link } from '@mantine/tiptap';
 import Highlight from '@tiptap/extension-highlight';
 import SubScript from '@tiptap/extension-subscript';
 import Superscript from '@tiptap/extension-superscript';
@@ -9,10 +9,24 @@ import { StarterKit } from '@tiptap/starter-kit';
 import { useMemo } from 'react';
 import CodeBlockShiki from 'tiptap-extension-code-block-shiki';
 
+import { Link } from './extensions/link';
+
 const builtInExtensions = [
-  StarterKit.configure({ codeBlock: false }),
+  StarterKit.configure({
+    blockquote: { HTMLAttributes: { class: 'typography-blockquote' } },
+    bulletList: { HTMLAttributes: { class: 'typography-list type-unordered' } },
+    code: { HTMLAttributes: { class: 'typography-code' } },
+    codeBlock: false,
+    heading: { HTMLAttributes: { class: 'cmp-heading style-by-type' } },
+    horizontalRule: { HTMLAttributes: { class: 'typography-horizontal-rule' } },
+    listItem: { HTMLAttributes: { class: 'typography-list-item' } },
+    orderedList: { HTMLAttributes: { class: 'typography-list type-ordered' } },
+    paragraph: { HTMLAttributes: { class: 'typography-paragraph' } },
+  }),
+  Highlight.configure({ multicolor: true }),
   CodeBlockShiki.configure({
     defaultTheme: 'nord',
+
     HTMLAttributes: {
       class: 'codeBlock',
       'data-mantine-color-scheme': 'dark',
@@ -20,8 +34,7 @@ const builtInExtensions = [
     },
   }),
 
-  Link,
-  Highlight,
+  Link.configure({ HTMLAttributes: { class: 'typography-link' }, openOnClick: false }),
   Underline,
   Superscript,
   SubScript,
@@ -50,6 +63,14 @@ export const useEditor = (options: UseEditorOptions) => {
   return useTipTapEditor({
     ...options,
     content,
+    editorProps: {
+      attributes: {
+        'aria-label': 'Main content area, start typing to enter text.',
+        autocapitalize: 'off',
+        autocomplete: 'off',
+        autocorrect: 'off',
+      },
+    },
     extensions: getExtensions(options.extensions),
   });
 };

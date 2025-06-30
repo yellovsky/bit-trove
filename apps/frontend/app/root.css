@@ -7,6 +7,7 @@
 @import "@mantine/notifications/styles.css" layer(utilities);
 
 @import "@repo/ui/globals.css";
+@import "@repo/ui/typography.css";
 
 @import "./theme.css";
 

@@ -305,11 +305,9 @@ const ContentController: FC<ControlProps & { editor: TiptapEditor | null }> = ({
       name="seoKeywords"
       render={({ formState }) => (
         <FormItem>
-          <FormLabel required>{tShards('upsert_shard_form.seo_keywords.label')}</FormLabel>
+          <FormLabel required>{tShards('upsert_shard_form.content.label')}</FormLabel>
           <FormControl>
-            {!editor ? null : (
-              <Editor aria-disabled={formState.isSubmitting} editor={editor} mih={400} variant="subtle" />
-            )}
+            {!editor ? null : <Editor aria-disabled={formState.isSubmitting} editor={editor} />}
           </FormControl>
           <FormDescription>{tShards('upsert_shard_form.content.description')}</FormDescription>
           <FormMessage />

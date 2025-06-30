@@ -2,7 +2,7 @@ import { Box, Burger, Drawer } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import type { ComponentProps, FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { type PathPattern, useMatch, useSearchParams } from 'react-router';
+import { useSearchParams } from 'react-router';
 
 import { Link } from '@shared/ui/link';
 
@@ -32,13 +32,7 @@ const useAuthStep = (): [step: AuthStep | null, setStep: (step: AuthStep | null)
 };
 
 const DesktopNavItem: FC<ComponentProps<typeof Link>> = (props) => {
-  const pathname = typeof props.to === 'string' ? props.to : props.to.pathname;
-  const pathPattern: PathPattern<string> =
-    pathname === '/' ? { end: true, path: '/:locale' } : { path: `/:locale${pathname}/*` };
-
-  const active = !!useMatch(pathPattern);
-
-  return <Link {...props} c="bg" underline={active ? 'always' : 'hover'} />;
+  return <Link {...props} />;
 };
 
 export const PageHeader: FC = () => {

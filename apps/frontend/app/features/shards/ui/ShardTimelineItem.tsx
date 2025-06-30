@@ -19,14 +19,7 @@ export const ShardTimelineItem: FC<ShardTimelineItemProps> = ({ shard }) => {
   const rtf = new Intl.RelativeTimeFormat(i18n.language, { numeric: 'auto' });
 
   return (
-    <Timeline.Item
-      bullet
-      title={
-        <Link to={getShardLink(shard)} underline="never" variant="text">
-          {shard.title}
-        </Link>
-      }
-    >
+    <Timeline.Item bullet title={<Link to={getShardLink(shard)}>{shard.title}</Link>}>
       <Text c="dimmed" size="sm">
         {shard.shortDescription}
       </Text>

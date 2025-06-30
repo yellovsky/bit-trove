@@ -25,18 +25,10 @@ export default function CMSShardsCreateRoute() {
   return (
     <div>
       <Breadcrumbs mb="xl">
-        <Link size="sm" to="/">
-          {t('menu_items.home.title')}
-        </Link>
-        <Link size="sm" to="/cms">
-          CMS
-        </Link>
-        <Link size="sm" to="/cms/shards">
-          {t('menu_items.shards.title')}
-        </Link>
-        <Text c="dimmed" size="sm">
-          {tShards('create_shard_form.title')}
-        </Text>
+        <Link to="/">{t('menu_items.home.title')}</Link>
+        <Link to="/cms">CMS</Link>
+        <Link to="/cms/shards">{t('menu_items.shards.title')}</Link>
+        <Text c="dimmed">{tShards('create_shard_form.title')}</Text>
       </Breadcrumbs>
 
       <Title mb="lg">{tShards('create_shard_form.title')}</Title>

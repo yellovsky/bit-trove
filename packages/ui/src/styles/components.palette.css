@@ -1,4 +1,7 @@
 .components-palette {
+  --color-primary: var(--color-gray-1);
+  --color-primary-foreground: var(--color-gray-12);
+
   --color-background: var(--color-gray-1);
   --color-foreground: var(--color-gray-12);
   --color-card: var(--color-gray-surface);

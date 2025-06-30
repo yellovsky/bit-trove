@@ -2,8 +2,8 @@ import { Flex, Text } from '@mantine/core';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Heading } from '@repo/ui/components/Heading';
 import { PoseDocument } from '@repo/ui/components/PoseDocument';
+import { Heading } from '@repo/ui/components/Typography';
 
 import { type GetOneShardVariables, useShardQuery } from '@entities/shards';
 import { TagBadge } from '@entities/tags';

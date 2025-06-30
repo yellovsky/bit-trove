@@ -1,10 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Blockquote } from './Blockquote';
-import { Heading } from './Heading';
-import { Link } from './Link';
-import { ListItem, UnorderedList } from './List';
-import { Paragraph } from './Paragraph';
+import { Blockquote, Heading, ListItem, Paragraph, TextLink, UnorderedList } from './Typography';
 
 const render = () => (
   <div>
@@ -15,8 +11,8 @@ const render = () => (
     </Paragraph>
     <Heading order={2}>The King's Plan</Heading>
     <Paragraph>
-      The king thought long and hard, and finally came up with <Link to="#">a brilliant plan</Link>: he would tax the
-      jokes in the kingdom.
+      The king thought long and hard, and finally came up with <TextLink to="#">a brilliant plan</TextLink>: he would
+      tax the jokes in the kingdom.
     </Paragraph>
     <Blockquote>
       "After all," he said, "everyone enjoys a good joke, so it's only fair that they should pay for the privilege."

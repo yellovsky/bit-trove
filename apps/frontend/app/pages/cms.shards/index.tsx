@@ -123,9 +123,7 @@ const Page = () => {
         <Title>{t('menu_items.shards.title')}</Title>
 
         <Button asChild leftElement={<PlusCircle />}>
-          <Link to={getCreateShardLink()} variant="unstyled">
-            {tShards('create_shard_button.text')}
-          </Link>
+          <Link to={getCreateShardLink()}>{tShards('create_shard_button.text')}</Link>
         </Button>
       </Group>
 

@@ -2,15 +2,19 @@ import type { JSONContent } from '@tiptap/core';
 import { cx } from 'class-variance-authority';
 import { type FC, Fragment } from 'react';
 
-import { Blockquote } from '@repo/ui/components/Blockquote';
-import { Code } from '@repo/ui/components/Code';
 import { CodeBlock } from '@repo/ui/components/CodeBlock';
-import { Divider } from '@repo/ui/components/Divider';
-import { Heading } from '@repo/ui/components/Heading';
-import { Kbd } from '@repo/ui/components/Kbd';
-import { Link } from '@repo/ui/components/Link';
-import { ListItem, OrderedList, UnorderedList } from '@repo/ui/components/List';
-import { Paragraph } from '@repo/ui/components/Paragraph';
+import {
+  Blockquote,
+  Code,
+  Heading,
+  HorizontalRule,
+  Kbd,
+  ListItem,
+  OrderedList,
+  Paragraph,
+  TextLink,
+  UnorderedList,
+} from '@repo/ui/components/Typography';
 
 export function renderPoseNode(node: JSONContent): React.ReactNode {
   if (!node) return null;
@@ -35,21 +39,17 @@ export function renderPoseNode(node: JSONContent): React.ReactNode {
         const { href, ...restAttrs } = linkMark.attrs as any;
 
         return (
-          <Link {...restAttrs} className={className} to={href}>
+          <TextLink {...restAttrs} className={className} to={href}>
             {node.text}
-          </Link>
+          </TextLink>
         );
       }
 
       const kbdMark = node.marks?.find((m) => m.type === 'kbd');
-      if (kbdMark) {
-        return <Kbd>{node.text}</Kbd>;
-      }
+      if (kbdMark) return <Kbd>{node.text}</Kbd>;
 
       const codeMark = node.marks?.find((m) => m.type === 'code');
-      if (codeMark) {
-        return <Code>{node.text}</Code>;
-      }
+      if (codeMark) return <Code>{node.text}</Code>;
 
       return className ? <span className={className}>{node.text}</span> : node.text;
     }
@@ -73,7 +73,7 @@ export function renderPoseNode(node: JSONContent): React.ReactNode {
     }
 
     case 'horizontalRule':
-      return <Divider />;
+      return <HorizontalRule />;
 
     case 'doc':
       return renderPoseContent(node.content);

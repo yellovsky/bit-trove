@@ -29,7 +29,6 @@ export const NavItem: FC<NavItemProps> = ({ end, icon, ...rest }) => {
       mb="xs"
       radius="sm"
       size="md"
-      underline="never"
       variant={active ? 'filled' : 'subtle'}
     />
   );
