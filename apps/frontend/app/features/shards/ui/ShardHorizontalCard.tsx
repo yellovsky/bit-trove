@@ -68,3 +68,6 @@ export const ShardHorizontalCard: FC<ShardHorizontalCardProps> = ({ shard, palet
     </Link>
   );
 };
+
+// TODO: add pending state
+export const ShardHorizontalCardPending: FC = () => <div>pending</div>;

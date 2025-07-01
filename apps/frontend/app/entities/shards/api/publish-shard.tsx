@@ -1,7 +1,6 @@
-import { notifications } from '@mantine/notifications';
-import { IconX } from '@tabler/icons-react';
 import { type MutationFunction, useMutation } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 
 import type { FailedResponse, GetOneShardResponse } from '@repo/api-models';
 
@@ -24,21 +23,11 @@ export const usePublishShardMutation = () => {
   return useMutation<GetOneShardResponse, FailedResponse, PublishShardVariables>({
     mutationFn: publishShard(apiClient),
     onError: (error) => {
-      notifications.show({
-        color: 'red',
-        icon: <IconX />,
-        message: error.error.message,
-        title: tShards('Update shard failed'),
-      });
+      toast.error(tShards('Update shard failed'), { description: error.error.message });
     },
     onSuccess: () => {
       invalidateShardsQuery(getQueryClient());
-
-      notifications.show({
-        color: 'green',
-        icon: <IconX />,
-        message: tShards('Update shard success'),
-      });
+      toast.success(tShards('Update shard success'));
     },
   });
 };

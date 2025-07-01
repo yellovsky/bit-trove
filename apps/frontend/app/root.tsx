@@ -2,7 +2,6 @@ import geologicaCss from '@fontsource-variable/geologica/index.css?url';
 import interCss from '@fontsource-variable/inter/index.css?url';
 import robotoMonoCss from '@fontsource-variable/roboto-mono/index.css?url';
 import { MantineProvider } from '@mantine/core';
-import { Notifications } from '@mantine/notifications';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { cx } from 'class-variance-authority';
@@ -15,6 +14,7 @@ import type { LinkDescriptor, LinksFunction } from 'react-router';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from 'react-router';
 import { useChangeLanguage } from 'remix-i18next/react';
 
+import { Toaster } from '@repo/ui/components/Sonner';
 import { type EnhanceTo, EnhanceToProvider } from '@repo/ui/hooks/enhance-to';
 import { getPaletteClassName } from '@repo/ui/lib/palette';
 
@@ -105,8 +105,8 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
           <MantineProvider colorSchemeManager={colorSchemeManager} theme={theme}>
             <QueryClientProvider client={queryClient}>
               <EnhanceToProvider value={enhanceTo}>
-                <Notifications />
                 {children}
+                <Toaster />
                 <ReactQueryDevtools />
               </EnhanceToProvider>
             </QueryClientProvider>
