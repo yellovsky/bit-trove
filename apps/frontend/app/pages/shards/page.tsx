@@ -1,19 +1,26 @@
-import { Timeline, Title } from '@mantine/core';
+import { Timeline } from '@mantine/core';
 import { useIntersection } from '@mantine/hooks';
 import { type FC, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
+import { Heading } from '@repo/ui/components/Typography';
+
+import { PageLayout } from '@widgets/main-layout';
+
+import { type AppBreadcrumb, Breadcrumbs } from '@features/breadcrumbs';
 import { ShardTimelineItem, ShardTimelineItemPending } from '@features/shards';
 
 import { type GetManyShardsVariables, useInfiniteShardsQuery } from '@entities/shards';
 
 interface ShardsPageProps {
+  breadcrumbs: AppBreadcrumb[];
   shardsVariables: GetManyShardsVariables;
 }
 
-export const ShardsPage: FC<ShardsPageProps> = ({ shardsVariables }) => {
+export const ShardsPage: FC<ShardsPageProps> = ({ shardsVariables, breadcrumbs }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const shardsQuery = useInfiniteShardsQuery(shardsVariables);
-
+  const { t } = useTranslation();
   const { ref, entry } = useIntersection({
     root: containerRef.current,
     threshold: 0,
@@ -25,10 +32,10 @@ export const ShardsPage: FC<ShardsPageProps> = ({ shardsVariables }) => {
   }, [entry?.isIntersecting, shardsQuery.hasNextPage, shardsQuery.isFetchingNextPage, shardsQuery.fetchNextPage]);
 
   return (
-    <div>
-      <Title mb="lg" order={1}>
-        Shards
-      </Title>
+    <PageLayout>
+      <Breadcrumbs items={breadcrumbs} />
+
+      <Heading order={1}>{t('menu_items.shards.title')}</Heading>
 
       <Timeline bulletSize={32} lineWidth={2}>
         {shardsQuery.data?.pages.map((page) =>
@@ -44,6 +51,6 @@ export const ShardsPage: FC<ShardsPageProps> = ({ shardsVariables }) => {
       </Timeline>
 
       <div ref={ref} />
-    </div>
+    </PageLayout>
   );
 };

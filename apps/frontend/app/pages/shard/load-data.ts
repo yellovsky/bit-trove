@@ -5,6 +5,9 @@ import { getApiClient } from '@shared/lib/api-client';
 import { combineMetaKeywords, getMetaTitle } from '@shared/lib/meta';
 import { getQueryClient } from '@shared/lib/query-client';
 
+import type { AppBreadcrumb } from '@features/breadcrumbs';
+import { getShardLink, getShardsLink } from '@features/shards';
+
 import { type GetOneShardVariables, prefetchOneShardQuery } from '@entities/shards';
 
 import type { Route } from './+types';
@@ -21,7 +24,14 @@ export const loadShardRouteData = async (t: TFunction, { params }: Route.LoaderA
   const shardResponse = await prefetchOneShardQuery(apiClient, queryClient, getOneShardVars);
   const shard = shardResponse.data;
 
+  const breadcrumbs: AppBreadcrumb[] = [
+    { label: t('menu_items.home.title'), to: '/' },
+    { label: t('menu_items.shards.title'), to: getShardsLink() },
+    { label: shard.title, to: getShardLink(shard) },
+  ];
+
   return {
+    breadcrumbs,
     dehydratedState: dehydrate(queryClient),
     getOneShardVars,
     metaDescription: shard.seo?.description,

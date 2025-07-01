@@ -4,6 +4,8 @@ import type { MetaDescriptor } from 'react-router';
 
 import appI18next from '@app/localization/i18n.server';
 
+import { getMetaBreadcrumbs } from '@features/breadcrumbs';
+
 import { getShardJsonJdMeta, getShardOgMeta, getShardTwitterMeta } from '@entities/shards';
 
 import type { Route } from './+types';
@@ -21,24 +23,25 @@ export async function clientLoader(args: Route.ClientLoaderArgs) {
   return loadShardRouteData(t, args);
 }
 
-export function meta(params: Route.MetaArgs): MetaDescriptor[] {
-  const metaTags: MetaDescriptor[] = [{ title: params.data.metaTitle }];
+export function meta({ data, params }: Route.MetaArgs): MetaDescriptor[] {
+  const metaTags: MetaDescriptor[] = [{ title: data.metaTitle }];
 
-  if (params.data.metaKeywords) metaTags.push({ content: params.data.metaKeywords, name: 'keywords' });
-  if (params.data.metaDescription) metaTags.push({ content: params.data.metaDescription, name: 'description' });
+  if (data.metaKeywords) metaTags.push({ content: data.metaKeywords, name: 'keywords' });
+  if (data.metaDescription) metaTags.push({ content: data.metaDescription, name: 'description' });
 
   return [
     ...metaTags,
-    getShardJsonJdMeta(params.data.shard),
-    ...getShardOgMeta(params.data.shard),
-    ...getShardTwitterMeta(params.data.shard),
+    getShardJsonJdMeta(data.shard),
+    ...getShardOgMeta(data.shard),
+    ...getShardTwitterMeta(data.shard),
+    getMetaBreadcrumbs(data.breadcrumbs, params.locale),
   ];
 }
 
 export default function ShardRoute(props: Route.ComponentProps) {
   return (
     <HydrationBoundary state={props.loaderData?.dehydratedState}>
-      <ShardPage shardVariables={props.loaderData.getOneShardVars} />
+      <ShardPage breadcrumbs={props.loaderData.breadcrumbs} shardVariables={props.loaderData.getOneShardVars} />
     </HydrationBoundary>
   );
 }
