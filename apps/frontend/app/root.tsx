@@ -19,8 +19,8 @@ import { type EnhanceTo, EnhanceToProvider } from '@repo/ui/hooks/enhance-to';
 import { getPaletteClassName } from '@repo/ui/lib/palette';
 
 import { getQueryClient } from '@shared/lib/query-client';
+import { useMakeEnhancedTo } from '@shared/lib/use-make-enhanced-to';
 import { ErrorScreen } from '@shared/ui/error-route';
-import { useMakeEnhancedTo } from '@shared/ui/link/use-enhanced-to';
 
 import { AppSuspenseWarning } from '@app/app-suspense-warning';
 import { ClientHintCheck, getHints } from '@app/client-hints';

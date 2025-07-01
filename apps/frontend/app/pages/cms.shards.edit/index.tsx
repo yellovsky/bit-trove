@@ -2,7 +2,7 @@ import { Breadcrumbs, LoadingOverlay, Text, Title } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { Link } from '@shared/ui/link';
+import { Link } from '@repo/ui/components/link';
 
 import { CreateShardForm, getCmsShardsLink } from '@features/shards';
 

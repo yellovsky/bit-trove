@@ -12,18 +12,18 @@ export const linkVariants = cva('cursor-pointer', {
   },
   variants: {
     variant: {
-      primary:
-        'underline-offset(--spacing) text-primary-a11 decoration-1 decoration-primary-a5 hover:underline active:text-primary-a10',
+      primary: 'typography-link',
       unstyled: 'no-underline',
     },
   },
 });
 
-type LinkProps = ComponentProps<typeof RouterLink> & VariantProps<typeof linkVariants> & { palette?: Palette };
+type LinkProps = ComponentProps<typeof RouterLink> &
+  VariantProps<typeof linkVariants> & { language?: string; palette?: Palette };
 
-export const Link: FC<LinkProps> = ({ palette, className, variant, ...props }) => {
+export const Link: FC<LinkProps> = ({ palette, className, variant, language, ...props }) => {
   const enhanceTo = useEnhanceTo();
-  const echancedLink = enhanceTo ? enhanceTo(props.to) : props.to;
+  const echancedLink = enhanceTo ? enhanceTo(props.to, language) : props.to;
 
   return (
     <RouterLink

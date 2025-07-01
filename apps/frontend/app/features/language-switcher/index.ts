@@ -1,1 +1,1 @@
-export { LanguageSwitcher } from './ui/language-swircher';
+export { LanguageSwitcher } from './ui/LanguageSwitcher';

@@ -2,8 +2,7 @@ import { Card, Text } from '@mantine/core';
 import type { FC } from 'react';
 
 import type { ShortBlogPost } from '@repo/api-models';
-
-import { Link } from '@shared/ui/link';
+import { Link } from '@repo/ui/components/link';
 
 import { getBlogPostLink } from '../lib/links';
 import styles from './BlogPostCard.module.css';

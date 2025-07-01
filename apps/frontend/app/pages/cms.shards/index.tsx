@@ -13,10 +13,10 @@ import { useTranslation } from 'react-i18next';
 
 import { getManyShardsSortSchema, type ShortShard } from '@repo/api-models';
 import { Button } from '@repo/ui/components/button';
+import { Link } from '@repo/ui/components/link';
 
 import { useTableQueryPagination } from '@shared/lib/use-table-query-pagination';
 import { useTableQuerySorting } from '@shared/lib/use-table-query-sorting';
-import { Link } from '@shared/ui/link';
 import { SortableTableHeader } from '@shared/ui/SortableTableHeader';
 
 import { getCreateShardLink } from '@features/shards';

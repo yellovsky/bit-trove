@@ -1,1 +1,0 @@
-export { LanguageSwitcherDesktop } from './LanguageSwitcherDesktop';

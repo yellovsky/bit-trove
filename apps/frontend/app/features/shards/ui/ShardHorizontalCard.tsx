@@ -6,9 +6,8 @@ import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import type { ShortShard } from '@repo/api-models';
+import { Link } from '@repo/ui/components/link';
 import { getPaletteClassName, type Palette } from '@repo/ui/lib/palette';
-
-import { Link } from '@shared/ui/link';
 
 import { TagBadge } from '@entities/tags/ui/TagBadge';
 

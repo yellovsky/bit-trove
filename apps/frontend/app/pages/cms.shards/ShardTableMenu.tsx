@@ -4,8 +4,7 @@ import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import type { ShortShard } from '@repo/api-models';
-
-import { Link } from '@shared/ui/link';
+import { Link } from '@repo/ui/components/link';
 
 import { getEditShardLink } from '@features/shards';
 

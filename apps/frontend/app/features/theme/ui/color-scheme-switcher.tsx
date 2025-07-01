@@ -1,6 +1,8 @@
-import { ActionIcon, useComputedColorScheme, useMantineColorScheme } from '@mantine/core';
-import { IconMoon, IconSun } from '@tabler/icons-react';
+import { useComputedColorScheme, useMantineColorScheme } from '@mantine/core';
+import { MoonIcon, SunIcon } from 'lucide-react';
 import type { FC } from 'react';
+
+import { Toggle } from '@repo/ui/components/Toggle';
 
 export const ColorSchemeSwitcher: FC = () => {
   const { colorScheme, setColorScheme } = useMantineColorScheme();
@@ -11,8 +13,8 @@ export const ColorSchemeSwitcher: FC = () => {
   };
 
   return (
-    <ActionIcon aria-label="Color scheme" color="gray" onClick={toggleColorScheme} variant="subtle">
-      {colorScheme === 'dark' ? <IconMoon /> : <IconSun />}
-    </ActionIcon>
+    <Toggle aria-label="Color scheme" color="gray" onClick={toggleColorScheme}>
+      {colorScheme === 'dark' ? <MoonIcon /> : <SunIcon />}
+    </Toggle>
   );
 };
