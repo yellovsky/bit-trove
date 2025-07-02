@@ -17,16 +17,16 @@
 		}
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.0.0-beta.4",
+		"@biomejs/biome": "2.0.6",
 		"@commitlint/cli": "19.8.1",
 		"@commitlint/config-conventional": "19.8.1",
-		"@types/node": "22.15.18",
+		"@types/node": "24.0.10",
 		"commitizen": "4.3.1",
 		"cz-conventional-changelog": "3.3.0",
-		"knip": "5.56.0",
-		"lefthook": "1.11.12",
-		"postcss": "8.5.3",
-		"turbo": "2.5.3",
+		"knip": "5.61.3",
+		"lefthook": "1.11.14",
+		"postcss": "8.5.6",
+		"turbo": "2.5.4",
 		"typescript": "5.8.3"
 	},
 	"engines": {

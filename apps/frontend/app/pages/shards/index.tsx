@@ -26,6 +26,8 @@ export async function clientLoader(args: Route.ClientLoaderArgs) {
 }
 
 export function meta(params: Route.MetaArgs) {
+  if (!params.data) return [];
+
   return [
     { title: params.data.metaTitle },
     { content: params.data.metaKeywords, name: 'keywords' },

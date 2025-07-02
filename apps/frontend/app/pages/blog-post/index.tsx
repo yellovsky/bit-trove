@@ -13,6 +13,8 @@ export async function clientLoader(args: Route.ClientLoaderArgs) {
 }
 
 export function meta(params: Route.MetaArgs) {
+  if (!params.data) return [];
+
   return [
     { title: params.data.blogPost.seo.title || params.data.blogPost.title },
     { content: params.data.blogPost.seo.keywords, name: 'keywords' },

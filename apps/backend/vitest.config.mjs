@@ -3,7 +3,7 @@ import { defineConfig } from 'vitest/config';
 import { resolve } from 'node:path';
 
 export default defineConfig({
-	plugins: [
+  plugins: [
     swc.vite({
       module: { type: 'es6' },
     }),
@@ -11,7 +11,8 @@ export default defineConfig({
 
   test: {
     globals: true,
-			root: './',
+    environment: 'node',
+    root: './',
 
     coverage: {
       all: false,
@@ -21,7 +22,7 @@ export default defineConfig({
     },
   },
 
-	resolve: {
+  resolve: {
     alias: {
       'src': resolve(__dirname, './src'),
     },

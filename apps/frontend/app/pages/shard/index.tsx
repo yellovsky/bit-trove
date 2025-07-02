@@ -24,6 +24,8 @@ export async function clientLoader(args: Route.ClientLoaderArgs) {
 }
 
 export function meta({ data, params }: Route.MetaArgs): MetaDescriptor[] {
+  if (!data) return [];
+
   const metaTags: MetaDescriptor[] = [{ title: data.metaTitle }];
 
   if (data.metaKeywords) metaTags.push({ content: data.metaKeywords, name: 'keywords' });
