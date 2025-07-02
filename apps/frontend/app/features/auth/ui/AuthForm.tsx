@@ -1,5 +1,7 @@
-import { Box, Paper, Stack, Text, Title } from '@mantine/core';
 import type { FC, ReactNode } from 'react';
+
+import { Paper } from '@repo/ui/components/Paper';
+import { Heading } from '@repo/ui/components/Typography';
 
 interface AuthFormProps {
   title: string;
@@ -9,23 +11,15 @@ interface AuthFormProps {
 }
 
 export const AuthForm: FC<AuthFormProps> = ({ title, description, children, footer }) => (
-  <Paper p="xl" radius="md" withBorder>
-    <Title mb="md" mt="md" order={2} ta="center">
+  <Paper className="min-w-80">
+    <Heading className="mt-4 mb-4 text-center" order={2}>
       {title}
-    </Title>
+    </Heading>
 
-    {description && (
-      <Text c="dimmed" mb="xl" size="sm" ta="center">
-        {description}
-      </Text>
-    )}
+    {description && <div className="mb-4 text-center text-muted-foreground text-sm">{description}</div>}
 
-    <Stack gap="md">{children}</Stack>
+    <div className="mt-4">{children}</div>
 
-    {footer && (
-      <Box mt="xl" ta="center">
-        {footer}
-      </Box>
-    )}
+    {footer && <div className="mt-4 text-center">{footer}</div>}
   </Paper>
 );

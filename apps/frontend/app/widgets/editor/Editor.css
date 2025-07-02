@@ -1,5 +1,7 @@
 @reference '../../root.css';
-:root {
+
+:root,
+[data-theme="light"] {
   --tt-color-highlight-yellow: #fef9c3;
   --tt-color-highlight-green: #dcfce7;
   --tt-color-highlight-blue: #e0f2fe;
@@ -21,7 +23,7 @@
   --tt-color-highlight-pink-contrast: rgba(225, 136, 179, 0.27);
 }
 
-.dark {
+[data-theme="dark"] {
   --tt-color-highlight-yellow: #6b6524;
   --tt-color-highlight-green: #509568;
   --tt-color-highlight-blue: #6e92aa;
@@ -53,7 +55,7 @@
   }
 
   .codeBlock {
-    @apply text-[var(--mantine-color-white)] bg-[var(--mantine-color-dark-8)] rounded-default px-4 py-6 text-sm mb-md;
+    @apply text-gray-11 bg-gray-8 rounded-default px-4 py-6 text-sm mb-4;
 
     code {
       background: none;

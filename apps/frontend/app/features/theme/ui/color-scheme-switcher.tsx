@@ -1,15 +1,21 @@
-import { useComputedColorScheme, useMantineColorScheme } from '@mantine/core';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { MoonIcon, SunIcon } from 'lucide-react';
 import type { FC } from 'react';
 
 import { Toggle } from '@repo/ui/components/Toggle';
+import { colorSchemeAtom, selectedColorSchemeAtom } from '@repo/ui/lib/color-scheme-atom';
+
+import { updateDocumentCookieColorScheme } from '../lib/theme-cookie';
 
 export const ColorSchemeSwitcher: FC = () => {
-  const { colorScheme, setColorScheme } = useMantineColorScheme();
-  const computedColorScheme = useComputedColorScheme('light');
+  const colorScheme = useAtomValue(colorSchemeAtom);
+  const setSelectedColorScheme = useSetAtom(selectedColorSchemeAtom);
 
   const toggleColorScheme = () => {
-    setColorScheme(computedColorScheme === 'dark' ? 'light' : 'dark');
+    const newScheme = colorScheme === 'dark' ? 'light' : 'dark';
+
+    setSelectedColorScheme(newScheme);
+    updateDocumentCookieColorScheme(newScheme);
   };
 
   return (

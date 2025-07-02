@@ -1,10 +1,10 @@
-import { Breadcrumbs, LoadingOverlay, Text, Title } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { Link } from '@repo/ui/components/link';
+import { Heading } from '@repo/ui/components/Typography';
 
-import { CreateShardForm, getCmsShardsLink } from '@features/shards';
+import { type AppBreadcrumb, Breadcrumbs } from '@features/breadcrumbs';
+import { CreateShardForm, getCmsShardsLink, getEditShardLink } from '@features/shards';
 
 import { useUpdateShardMutation } from '@entities/shards';
 import type { CreateShardVariables } from '@entities/shards/api/create-shard';
@@ -43,24 +43,27 @@ export default function CMSShardsEditRoute(props: Route.ComponentProps) {
       };
 
   const handleSuccess = () => navigate(`/${i18n.language}${getCmsShardsLink()}`);
-
-  if (myShardQuery.isLoading) return <LoadingOverlay visible={true} />;
+  const breadcrumbs = [
+    { label: t('menu_items.home.title'), to: '/' },
+    { label: 'CMS', to: '/cms' },
+    { label: t('menu_items.shards.title'), to: '/cms/shards' },
+    myShardQuery.data?.data
+      ? { label: tShards('edit_shard_form.title'), to: getEditShardLink(myShardQuery.data?.data) }
+      : null,
+  ].filter(Boolean) as AppBreadcrumb[];
 
   return (
     <div>
-      <Breadcrumbs mb="xl">
-        <Link to="/">{t('menu_items.home.title')}</Link>
-        <Link to="/cms">CMS</Link>
-        <Link to="/cms/shards">{t('menu_items.shards.title')}</Link>
-        <Text c="dimmed">{tShards('edit_shard_form.title')}</Text>
-      </Breadcrumbs>
+      <Breadcrumbs className="mb-4" items={breadcrumbs} />
 
-      <Title mb="lg">{tShards('edit_shard_form.title')}</Title>
+      <Heading className="mb-4" order={2}>
+        {tShards('edit_shard_form.title')}
+      </Heading>
 
       <CreateShardForm
         defaultValues={defaultValues}
         id={props.params.id}
-        isLoading={status === 'pending'}
+        isLoading={status === 'pending' || myShardQuery.isLoading}
         mode="update"
         onSubmit={handleSubmit}
         onSuccess={handleSuccess}

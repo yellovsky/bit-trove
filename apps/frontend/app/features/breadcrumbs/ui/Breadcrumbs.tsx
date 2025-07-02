@@ -14,11 +14,12 @@ import type { AppBreadcrumb } from '../model/breadcrumb.model';
 
 interface BreadcrumbsProps {
   items: AppBreadcrumb[];
+  className?: string;
 }
 
-export const Breadcrumbs: FC<BreadcrumbsProps> = ({ items }) =>
+export const Breadcrumbs: FC<BreadcrumbsProps> = ({ items, className }) =>
   !items.length ? null : (
-    <Breadcrumb>
+    <Breadcrumb className={className}>
       <BreadcrumbList>
         {items.map((item, index) => (
           <Fragment key={typeof item.to === 'string' ? item.to : index}>

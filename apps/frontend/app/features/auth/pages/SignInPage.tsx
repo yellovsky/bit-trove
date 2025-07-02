@@ -1,4 +1,3 @@
-import { Box, Container } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
@@ -21,14 +20,14 @@ export default function SignInPage() {
   };
 
   return (
-    <Container size="xs">
-      <Box py="xl">
+    <div className="max-w-96">
+      <div className="py-4">
         <SignInForm
           onForgotPassword={handleForgotPassword}
           onSignUpClick={handleSignUpClick}
           onSuccess={handleSuccess}
         />
-      </Box>
-    </Container>
+      </div>
+    </div>
   );
 }

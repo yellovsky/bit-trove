@@ -1,6 +1,7 @@
-import { Center, Group, Table, Text, UnstyledButton } from '@mantine/core';
 import { IconChevronDown, IconChevronUp, IconSelector } from '@tabler/icons-react';
 import type { FC } from 'react';
+
+import { TableHead } from '@repo/ui/components/Table';
 
 import styles from './SortableTableHeader.module.css';
 
@@ -15,17 +16,15 @@ export const SortableTableHeader: FC<SorttableTableHeaderProps> = ({ children, r
   const Icon = sorted ? (reversed ? IconChevronUp : IconChevronDown) : IconSelector;
 
   return (
-    <Table.Th className={styles.th}>
-      <UnstyledButton className={styles.control} onClick={onSort}>
-        <Group justify="space-between" wrap="nowrap">
-          <Text fw="bold" fz="sm">
-            {children}
-          </Text>
-          <Center className={styles.icon}>
+    <TableHead className={styles.th}>
+      <button className={styles.control} onClick={onSort} type="button">
+        <div className="flex flex-nowrap justify-between">
+          <div className="font-bold text-sm">{children}</div>
+          <div className={styles.icon}>
             <Icon size={16} stroke={1.5} />
-          </Center>
-        </Group>
-      </UnstyledButton>
-    </Table.Th>
+          </div>
+        </div>
+      </button>
+    </TableHead>
   );
 };

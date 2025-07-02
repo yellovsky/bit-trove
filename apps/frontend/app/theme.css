@@ -1,14 +1,8 @@
 @theme static {
   --spacing: 0.25rem;
 
-  --spacing-xs: var(--mantine-spacing-xs);
-  --spacing-sm: var(--mantine-spacing-sm);
-  --spacing-md: var(--mantine-spacing-md);
-  --spacing-lg: var(--mantine-spacing-lg);
-  --spacing-xl: var(--mantine-spacing-xl);
-
   --color-bg: #272b34;
-  --color-border: var(--mantine-color-default-border);
+  --color-border: var(--color-border);
   --color-header-bg: #1a1e24;
 
   --spacing-header: calc(var(--spacing) * 10);

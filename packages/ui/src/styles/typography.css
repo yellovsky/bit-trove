@@ -1,4 +1,3 @@
-/* @reference "tailwindcss"; */
 @reference "./globals.css";
 
 @layer components {
@@ -41,13 +40,13 @@
   .typography-root blockquote,
   .typography-root:is(blockquote),
   .typography-blockquote {
-    @apply border-l-4 border-l-primary-a6 pl-3 mt-md;
+    @apply border-l-4 border-l-primary-a6 pl-3 mt-4;
   }
 
   .typography-root p,
   .typography-root:is(p),
   .typography-paragraph {
-    @apply mt-0 mb-md;
+    @apply mt-0 mb-4;
   }
 
   .typography-root :is(ol, ul),

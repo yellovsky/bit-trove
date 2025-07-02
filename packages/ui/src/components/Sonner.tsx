@@ -1,9 +1,10 @@
-import { useTheme } from 'next-themes';
 import type { FC } from 'react';
 import { Toaster as Sonner, type ToasterProps } from 'sonner';
 
+import { useColorScheme } from '@repo/ui/lib/color-scheme-atom';
+
 export const Toaster: FC<ToasterProps> = ({ ...props }) => {
-  const { theme = 'system' } = useTheme();
+  const colorScheme = useColorScheme();
 
   return (
     <Sonner
@@ -15,7 +16,7 @@ export const Toaster: FC<ToasterProps> = ({ ...props }) => {
           '--normal-text': 'var(--popover-foreground)',
         } as React.CSSProperties
       }
-      theme={theme as ToasterProps['theme']}
+      theme={colorScheme}
       {...props}
     />
   );

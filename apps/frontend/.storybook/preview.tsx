@@ -1,13 +1,12 @@
 import '@fontsource-variable/geologica/index.css';
+import { useColorScheme, selectedColorSchemeAtom } from '@repo/ui/lib/color-scheme-atom';
 import {cx}from 'class-variance-authority'
 import * as React from 'react';
 import type { Preview } from '@storybook/react-vite'
 import {addons} from 'storybook/preview-api';
-import { useMantineColorScheme, MantineProvider } from '@mantine/core';
 import { useEffect } from 'react';
 import { DARK_MODE_EVENT_NAME } from 'storybook-dark-mode';
 import { reactRouterParameters, withRouter } from 'storybook-addon-remix-react-router';
-import { theme } from '../app/theme'
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import ICU from 'i18next-icu';
 import LanguageDetector from 'i18next-browser-languagedetector';
@@ -19,11 +18,13 @@ import '../app/root.css'
 
 import i18n from '../app/app/localization/i18n';
 import i18next from 'i18next';
+import { useSetAtom } from 'jotai';
 
 const channel = addons.getChannel();
 
 function ColorSchemeWrapper({ children }: { children: React.ReactNode; }) {
-  const { setColorScheme, colorScheme } = useMantineColorScheme();
+	const colorScheme = useColorScheme()
+	const setColorScheme = useSetAtom(selectedColorSchemeAtom);
   const handleColorScheme = (value: boolean) => setColorScheme(value ? 'dark' : 'light');
 
   useEffect(() => {
@@ -32,13 +33,12 @@ function ColorSchemeWrapper({ children }: { children: React.ReactNode; }) {
   }, [channel]);
 
 	useEffect(() => {
-		document.body.classList.remove('dark', 'light');
-		document.body.classList.add(colorScheme, ...getPaletteClassName('primary').split(' ') );
+		document.body.setAttribute('data-theme', colorScheme) ;
 	}, [colorScheme]);
 
 	console.log(document.querySelectorAll('.docs-story').forEach(el => el.classList.add('bg-gray-1')))
 
-  return <div className={ cx(getPaletteClassName('primary'), colorScheme)}>{children}</div>;
+  return <div className={getPaletteClassName('primary')}>{children}</div>;
 }
 
 
@@ -77,7 +77,6 @@ export const decorators = [
 	withI18next,
 	withRouter,
   (renderStory: any) => <ColorSchemeWrapper>{renderStory()}</ColorSchemeWrapper>,
-  (renderStory: any) => <MantineProvider  theme={theme}>{renderStory()}</MantineProvider>,
 ];
 
 const preview: Preview = {

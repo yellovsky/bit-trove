@@ -1,7 +1,6 @@
 import geologicaCss from '@fontsource-variable/geologica/index.css?url';
 import interCss from '@fontsource-variable/inter/index.css?url';
 import robotoMonoCss from '@fontsource-variable/roboto-mono/index.css?url';
-import { MantineProvider } from '@mantine/core';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { cx } from 'class-variance-authority';
@@ -16,6 +15,8 @@ import { useChangeLanguage } from 'remix-i18next/react';
 
 import { Toaster } from '@repo/ui/components/Sonner';
 import { type EnhanceTo, EnhanceToProvider } from '@repo/ui/hooks/enhance-to';
+import { isColorScheme } from '@repo/ui/lib/color-scheme';
+import { colorSchemeAtom, fallbackColorSchemeAtom, selectedColorSchemeAtom } from '@repo/ui/lib/color-scheme-atom';
 import { getPaletteClassName } from '@repo/ui/lib/palette';
 
 import { getQueryClient } from '@shared/lib/query-client';
@@ -25,18 +26,10 @@ import { ErrorScreen } from '@shared/ui/error-route';
 import { AppSuspenseWarning } from '@app/app-suspense-warning';
 import { ClientHintCheck, getHints } from '@app/client-hints';
 
-import { colorSchemeAtom } from '@features/theme/model/color-scheme-atom';
+import { getCookieStringColorScheme } from '@features/theme';
 
 import type { Route } from './+types/root';
-import {
-  fallbackColorSchemeAtom,
-  getCookieStringColorScheme,
-  isColorScheme,
-  selectedColorSchemeAtom,
-  useColorSchemeManager,
-} from './features/theme';
 import rootCss from './root.css?url';
-import { theme } from './theme';
 
 const cssAssets: LinkDescriptor[] = [rootCss, geologicaCss, interCss, robotoMonoCss]
   .map((href) => href.split('?')[0])
@@ -87,11 +80,10 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
   ]);
 
   const colorScheme = useAtomValue(colorSchemeAtom);
-  const colorSchemeManager = useColorSchemeManager();
   const enhanceTo: EnhanceTo = useMakeEnhancedTo();
 
   return (
-    <html data-mantine-color-scheme={colorScheme} dir={i18n.dir()} lang={i18n.language} style={{ colorScheme }}>
+    <html data-theme={colorScheme} dir={i18n.dir()} lang={i18n.language}>
       <head>
         <ClientHintCheck />
         <meta charSet="utf-8" />
@@ -102,15 +94,13 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
 
       <body className={cx('h-full w-full', getPaletteClassName('primary'), colorScheme)}>
         <Suspense fallback={<AppSuspenseWarning />}>
-          <MantineProvider colorSchemeManager={colorSchemeManager} theme={theme}>
-            <QueryClientProvider client={queryClient}>
-              <EnhanceToProvider value={enhanceTo}>
-                {children}
-                <Toaster />
-                <ReactQueryDevtools />
-              </EnhanceToProvider>
-            </QueryClientProvider>
-          </MantineProvider>
+          <QueryClientProvider client={queryClient}>
+            <EnhanceToProvider value={enhanceTo}>
+              {children}
+              <Toaster />
+              <ReactQueryDevtools />
+            </EnhanceToProvider>
+          </QueryClientProvider>
         </Suspense>
         <ScrollRestoration />
         <Scripts />

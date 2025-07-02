@@ -1,85 +1,223 @@
-import { Anchor, Button, Checkbox, Group, PasswordInput, Text, TextInput } from '@mantine/core';
-import { useForm } from '@mantine/form';
+import type { FC } from 'react';
+import { type Control, type SubmitHandler, useForm, type Validate } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import * as zod from 'zod';
+
+import { Button } from '@repo/ui/components/Button';
+import { Checkbox } from '@repo/ui/components/Checkbox';
+import { Divider } from '@repo/ui/components/Divider';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage, Form as UiForm } from '@repo/ui/components/Form';
+import { Link } from '@repo/ui/components/Link';
+import { PasswordInput } from '@repo/ui/components/PasswordInput';
+import { TextInput } from '@repo/ui/components/TextInput';
 
 import type { SignUpFormData } from '../types';
 import { AuthForm } from './AuthForm';
+
+interface SignUpControlProps {
+  control: Control<SignUpFormData>;
+}
+
+const EmailController: FC<SignUpControlProps> = ({ control }) => {
+  const { t } = useTranslation();
+  const { t: tAuth } = useTranslation('auth');
+
+  const validateEmail: Validate<string, SignUpFormData> = (value) => {
+    if (!value) return t('error.field_is_required.text');
+    if (!zod.string().email().safeParse(value).success) return t('error.invalid_email.text');
+    return undefined;
+  };
+
+  return (
+    <FormField
+      control={control}
+      name="email"
+      render={({ field, formState }) => (
+        <FormItem>
+          <FormLabel required>{tAuth('sign_up_form.email_input.label')}</FormLabel>
+          <FormControl>
+            <TextInput
+              aria-label={tAuth('sign_up_form.email_input.aria-label')}
+              disabled={formState.isSubmitting}
+              placeholder={tAuth('sign_up_form.email_input.placeholder')}
+              {...field}
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+      rules={{ validate: validateEmail }}
+    />
+  );
+};
+
+const PasswordController: FC<SignUpControlProps> = ({ control }) => {
+  const { t } = useTranslation();
+  const { t: tAuth } = useTranslation('auth');
+
+  const validatePassword: Validate<string, SignUpFormData> = (value) => {
+    if (!value) return t('error.field_is_required.text');
+    if (value.length < 6) return 'Password should be at least 6 characters';
+    return undefined;
+  };
+
+  return (
+    <FormField
+      control={control}
+      name="password"
+      render={({ field, formState }) => (
+        <FormItem className="mt-4">
+          <FormLabel required>{tAuth('sign_up_form.password_input.label')}</FormLabel>
+          <FormControl>
+            <PasswordInput
+              aria-label={tAuth('sign_up_form.password_input.aria-label')}
+              disabled={formState.isSubmitting}
+              placeholder={tAuth('sign_up_form.password_input.placeholder')}
+              {...field}
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+      rules={{ validate: validatePassword }}
+    />
+  );
+};
+
+const ConfirmPasswordController: FC<SignUpControlProps> = ({ control }) => {
+  const { t } = useTranslation();
+  const { t: tAuth } = useTranslation('auth');
+
+  const validateConfirmPassword: Validate<string, SignUpFormData> = (value, formValues) => {
+    if (!value) return t('error.field_is_required.text');
+    if (value !== formValues.password) return 'Passwords do not match';
+    return undefined;
+  };
+
+  return (
+    <FormField
+      control={control}
+      name="confirmPassword"
+      render={({ field, formState }) => (
+        <FormItem className="mt-4">
+          <FormLabel required>{tAuth('sign_up_form.confirm_password_input.label')}</FormLabel>
+          <FormControl>
+            <PasswordInput
+              aria-label={tAuth('sign_up_form.confirm_password_input.aria-label')}
+              disabled={formState.isSubmitting}
+              placeholder={tAuth('sign_up_form.confirm_password_input.placeholder')}
+              {...field}
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+      rules={{ validate: validateConfirmPassword }}
+    />
+  );
+};
+
+const AcceptTermsController: FC<SignUpControlProps> = ({ control }) => {
+  const { t: tAuth } = useTranslation('auth');
+
+  const validateAcceptTerms: Validate<boolean, SignUpFormData> = (value) => {
+    if (!value) return tAuth('sign_up_form.accept_terms.error');
+    return undefined;
+  };
+
+  return (
+    <FormField
+      control={control}
+      name="acceptTerms"
+      render={({ field, formState }) => (
+        <FormItem className="mt-6">
+          <FormControl>
+            <Checkbox
+              checked={field.value}
+              disabled={formState.isSubmitting}
+              label={
+                <span className="text-sm">
+                  {tAuth('sign_up_form.accept_terms.label')}{' '}
+                  <Link target="_blank" to="#">
+                    terms and conditions
+                  </Link>
+                </span>
+              }
+              onCheckedChange={field.onChange}
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+      rules={{ validate: validateAcceptTerms }}
+    />
+  );
+};
 
 interface SignUpFormProps {
   onSuccess?: () => void;
   onSignInClick?: () => void;
 }
 
-export function SignUpForm({ onSignInClick }: SignUpFormProps) {
+export const SignUpForm: FC<SignUpFormProps> = ({ onSuccess, onSignInClick }) => {
+  const { t } = useTranslation();
+  const { t: tAuth } = useTranslation('auth');
+
   const form = useForm<SignUpFormData>({
-    initialValues: {
+    defaultValues: {
       acceptTerms: false,
       confirmPassword: '',
       email: '',
       password: '',
     },
-    validate: {
-      acceptTerms: (value) => (!value ? 'You must accept the terms and conditions' : null),
-      confirmPassword: (value, values) => (value !== values.password ? 'Passwords do not match' : null),
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
-      password: (value) => (value.length < 6 ? 'Password should be at least 6 characters' : null),
-    },
+    mode: 'onChange',
+    reValidateMode: 'onChange',
   });
 
-  const handleSubmit = async (_values: SignUpFormData) => {
-    // TODO: Implement sign up
+  const onSubmit: SubmitHandler<SignUpFormData> = async () => {
+    try {
+      // TODO: Implement sign up
+      onSuccess?.();
+    } catch {
+      form.setError('root', { message: t('error.unknown_error.text') });
+    }
   };
+
+  const footer = !onSignInClick ? null : (
+    <div className="mt-2 flex justify-center">
+      <div className="text-sm">
+        Already have an account?{' '}
+        <Link onClick={onSignInClick} to="#">
+          Sign in
+        </Link>
+      </div>
+    </div>
+  );
 
   return (
     <AuthForm
-      description="Please fill in your details to create an account"
-      footer={
-        <Group justify="center" mt="md">
-          <Text size="sm">
-            Already have an account?{' '}
-            <Anchor component="button" onClick={onSignInClick}>
-              Sign in
-            </Anchor>
-          </Text>
-        </Group>
-      }
-      title="Create an account"
+      description={tAuth('sign_up_form.form_subtitle')}
+      footer={footer}
+      title={tAuth('sign_up_form.form_title')}
     >
-      <form onSubmit={form.onSubmit(handleSubmit)}>
-        <TextInput label="Email" placeholder="your@email.com" required {...form.getInputProps('email')} />
+      <UiForm {...form}>
+        <form noValidate onSubmit={form.handleSubmit(onSubmit)}>
+          <EmailController control={form.control} />
+          <PasswordController control={form.control} />
+          <ConfirmPasswordController control={form.control} />
+          <AcceptTermsController control={form.control} />
 
-        <PasswordInput
-          label="Password"
-          mt="md"
-          placeholder="Your password"
-          required
-          {...form.getInputProps('password')}
-        />
+          {form.formState.errors.root && (
+            <div className="mt-2 text-destructive text-sm">{form.formState.errors.root.message}</div>
+          )}
 
-        <PasswordInput
-          label="Confirm Password"
-          mt="md"
-          placeholder="Confirm your password"
-          required
-          {...form.getInputProps('confirmPassword')}
-        />
+          <Divider className="mt-4" />
 
-        <Checkbox
-          label={
-            <Text size="sm">
-              I accept the{' '}
-              <Anchor href="#" target="_blank">
-                terms and conditions
-              </Anchor>
-            </Text>
-          }
-          mt="xl"
-          {...form.getInputProps('acceptTerms', { type: 'checkbox' })}
-        />
-
-        <Button fullWidth mt="xl" type="submit">
-          Create account
-        </Button>
-      </form>
+          <Button className="mt-4 w-full" type="submit">
+            {tAuth('sign_up_form.submit_button.text')}
+          </Button>
+        </form>
+      </UiForm>
     </AuthForm>
   );
-}
+};

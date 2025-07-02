@@ -1,7 +1,7 @@
 @reference '../../root.css';
 
 .codeBlock {
-  @apply text-[var(--mantine-color-white)] bg-[var(--mantine-color-dark-8)];
+  @apply text-gray-11 bg-gray-8;
 
   code {
     background: none;

@@ -53,7 +53,7 @@ export const prefetchOneBlogPostQuery = async (
   });
 
   const response = getBlogPostQueryResult(queryClient, variables);
-  if (!response) throw new Error('BlogPost not found');
+  if (!response) throw new Response('Not found', { status: 404 });
 
   return response;
 };

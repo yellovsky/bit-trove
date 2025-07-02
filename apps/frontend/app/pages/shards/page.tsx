@@ -4,8 +4,6 @@ import { useIntersectionObserver } from 'usehooks-ts';
 
 import { Heading } from '@repo/ui/components/Typography';
 
-import { PageLayout } from '@widgets/main-layout';
-
 import { type AppBreadcrumb, Breadcrumbs } from '@features/breadcrumbs';
 import { ShardHorizontalCard, ShardHorizontalCardPending } from '@features/shards';
 
@@ -28,7 +26,7 @@ export const ShardsPage: FC<ShardsPageProps> = ({ shardsVariables, breadcrumbs }
   }, [entry?.isIntersecting, shardsQuery.hasNextPage, shardsQuery.isFetchingNextPage, shardsQuery.fetchNextPage]);
 
   return (
-    <PageLayout>
+    <>
       <Breadcrumbs items={breadcrumbs} />
 
       <Heading order={1}>{t('menu_items.shards.title')}</Heading>
@@ -45,6 +43,6 @@ export const ShardsPage: FC<ShardsPageProps> = ({ shardsVariables, breadcrumbs }
       )}
 
       <div ref={ref} />
-    </PageLayout>
+    </>
   );
 };

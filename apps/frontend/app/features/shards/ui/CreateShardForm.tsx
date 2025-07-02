@@ -222,7 +222,7 @@ const SeoController: FC<ControlProps> = ({ control }) => {
         control={control}
         name="seoTitle"
         render={({ field, formState }) => (
-          <FormItem className="mb-md">
+          <FormItem className="mb-4">
             <FormLabel required>{tShards('upsert_shard_form.seo_title.label')}</FormLabel>
             <FormControl>
               <UiTextInput
@@ -247,7 +247,7 @@ const SeoController: FC<ControlProps> = ({ control }) => {
         control={control}
         name="seoDescription"
         render={({ field, formState }) => (
-          <FormItem className="mb-md">
+          <FormItem className="mb-4">
             <FormLabel required>{tShards('upsert_shard_form.seo_description.label')}</FormLabel>
             <FormControl>
               <UiTextInput

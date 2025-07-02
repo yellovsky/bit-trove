@@ -36,8 +36,5 @@
 	"workspaces": [
 		"apps/*",
 		"packages/*"
-	],
-	"dependencies": {
-		"@mantine/form": "8.0.2"
-	}
+	]
 }

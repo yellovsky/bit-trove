@@ -1,4 +1,4 @@
-import { atom } from 'jotai';
+import { atom, useAtomValue } from 'jotai';
 
 import type { ColorScheme } from './color-scheme';
 
@@ -7,3 +7,4 @@ export const selectedColorSchemeAtom = atom<ColorScheme | null>(null);
 export const fallbackColorSchemeAtom = atom<ColorScheme>('light');
 
 export const colorSchemeAtom = atom<ColorScheme>((get) => get(selectedColorSchemeAtom) || get(fallbackColorSchemeAtom));
+export const useColorScheme = () => useAtomValue(colorSchemeAtom);

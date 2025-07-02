@@ -1,7 +1,7 @@
-import { Title } from '@mantine/core';
 import type { FC } from 'react';
 
 import { PoseDocument } from '@repo/ui/components/PoseDocument';
+import { Heading } from '@repo/ui/components/Typography';
 
 import { type GetOneBlogPostVariables, useBlogPostQuery } from '@entities/blog-posts';
 
@@ -11,7 +11,7 @@ export const BlogPostPage: FC<{ blogPostVariables: GetOneBlogPostVariables }> = 
 
   return (
     <div>
-      <Title order={1}>{blogPost?.title}</Title>
+      <Heading order={1}>{blogPost?.title}</Heading>
       {blogPost?.contentJSON ? <PoseDocument doc={blogPost?.contentJSON} /> : null}
     </div>
   );

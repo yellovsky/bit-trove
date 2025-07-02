@@ -24,7 +24,7 @@
 @source "../../../components/**/*.{ts,tsx}";
 @source "../**/*.{ts,tsx}";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:where([data-mode=dark], [data-mode=dark] *));
 
 @theme static {
   --spacing: 0.25rem;
@@ -285,7 +285,8 @@ body {
   @apply bg-gray-1 text-gray-12;
 }
 
-:root {
+:root,
+[data-theme="light"] {
   --sidebar: hsl(0 0% 98%);
   --sidebar-foreground: hsl(240 5.3% 26.1%);
   --sidebar-primary: hsl(240 5.9% 10%);
@@ -296,7 +297,7 @@ body {
   --sidebar-ring: hsl(217.2 91.2% 59.8%);
 }
 
-.dark {
+[data-theme="dark"] {
   --sidebar: #1d1d1d;
   --sidebar-foreground: var(--color-gray-a11);
   --sidebar-primary: var(--color-primary-9);

@@ -1,25 +1,20 @@
 @reference '../../../root.css';
 
 .blogpostCard {
-  @apply relative bg-[var(--mantine-color-body)];
+  @apply relative bg-gray-2;
 
   .rating {
-    @apply absolute top-[var(--mantine-spacing-xs)] right-3;
+    @apply absolute top-4 right-3;
   }
 
   .title {
-    @apply block mt-[var(--mantine-spacing-md)]  mb-4;
+    @apply block mt-4  mb-4;
   }
 
   .action {
-    /* background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-5));
-
-    @mixin hover {
-      background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
-    } */
   }
 
   .footer {
-    margin-top: var(--mantine-spacing-md);
+    @apply mt-4;
   }
 }

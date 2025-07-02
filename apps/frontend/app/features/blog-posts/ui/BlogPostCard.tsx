@@ -1,8 +1,8 @@
-import { Card, Text } from '@mantine/core';
 import type { FC } from 'react';
 
 import type { ShortBlogPost } from '@repo/api-models';
 import { Link } from '@repo/ui/components/link';
+import { cn } from '@repo/ui/lib/utils';
 
 import { getBlogPostLink } from '../lib/links';
 import styles from './BlogPostCard.module.css';
@@ -13,14 +13,12 @@ interface BlogPostCardProps {
 
 export const BlogPostCard: FC<BlogPostCardProps> = ({ blogPost }) => {
   return (
-    <Card className={styles.blogpostCard} radius="sm" withBorder>
-      <Text className={styles.title} component={Link} fw={500} to={getBlogPostLink(blogPost)}>
+    <div className={styles.blogpostCard}>
+      <Link className={cn(styles.title, 'font-medium')} to={getBlogPostLink(blogPost)}>
         {blogPost.title}
-      </Text>
+      </Link>
 
-      <Text c="dimmed" fz="sm" lineClamp={4}>
-        {blogPost.shortDescription}
-      </Text>
-    </Card>
+      <div className="text-muted-foreground text-sm">{blogPost.shortDescription}</div>
+    </div>
   );
 };

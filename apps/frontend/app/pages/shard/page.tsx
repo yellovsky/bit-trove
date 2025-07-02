@@ -4,8 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { PoseDocument } from '@repo/ui/components/PoseDocument';
 import { Heading } from '@repo/ui/components/Typography';
 
-import { PageLayout } from '@widgets/main-layout';
-
 import { type AppBreadcrumb, Breadcrumbs } from '@features/breadcrumbs';
 
 import { type GetOneShardVariables, useShardQuery } from '@entities/shards';
@@ -24,7 +22,7 @@ export const ShardPage: FC<ShardPageProps> = ({ shardVariables, breadcrumbs }) =
   const dateFormatter = new Intl.DateTimeFormat(i18n.language, { dateStyle: 'long' });
 
   return (
-    <PageLayout>
+    <>
       <Breadcrumbs items={breadcrumbs} />
       <Heading order={1}>{shard?.title}</Heading>
 
@@ -41,6 +39,6 @@ export const ShardPage: FC<ShardPageProps> = ({ shardVariables, breadcrumbs }) =
       )}
 
       {shard?.contentJSON ? <PoseDocument doc={shard.contentJSON} /> : null}
-    </PageLayout>
+    </>
   );
 };

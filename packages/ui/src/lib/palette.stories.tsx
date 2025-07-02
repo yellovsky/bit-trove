@@ -1,8 +1,11 @@
-import { ColorSwatch } from '@mantine/core';
 import type { Meta, StoryObj } from '@storybook/react';
 import type { FC } from 'react';
 
 import { getPaletteClassName, PALETTES } from './palette';
+
+const ColorSwatch: FC<{ color: string }> = ({ color }) => (
+  <div className="h-7 w-7 rounded-full border border-border" style={{ backgroundColor: color }} />
+);
 
 interface RowProps {
   title: string;

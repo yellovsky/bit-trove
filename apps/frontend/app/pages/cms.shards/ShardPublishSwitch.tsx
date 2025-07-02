@@ -1,7 +1,7 @@
-import { Switch } from '@mantine/core';
 import type { FC } from 'react';
 
 import type { ShortShard } from '@repo/api-models';
+import { Switch } from '@repo/ui/components/Switch';
 
 import { usePublishShardMutation, useUnpublishShardMutation } from '@entities/shards';
 

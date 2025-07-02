@@ -1,10 +1,18 @@
-import { ActionIcon, Loader, Menu } from '@mantine/core';
-import { IconDots, IconEye, IconEyeX, IconPencil, IconTrash } from '@tabler/icons-react';
+import { IconEye, IconEyeX, IconPencil, IconTrash } from '@tabler/icons-react';
+import { EllipsisIcon, LoaderIcon } from 'lucide-react';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import type { ShortShard } from '@repo/api-models';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@repo/ui/components/DropdownMenu';
 import { Link } from '@repo/ui/components/link';
+import { Toggle } from '@repo/ui/components/Toggle';
 
 import { getEditShardLink } from '@features/shards';
 
@@ -22,36 +30,39 @@ export const ShardTableMenu: FC<ShardTableMenuProps> = ({ shard }) => {
   const pending = isPublishPending || isUnpublishPending;
 
   return (
-    <Menu shadow="md">
-      <Menu.Target>
-        <ActionIcon variant="subtle">
-          <IconDots stroke={1.5} style={{ height: '70%', width: '70%' }} />
-        </ActionIcon>
-      </Menu.Target>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Toggle variant="dimmed">
+          <EllipsisIcon />
+        </Toggle>
+      </DropdownMenuTrigger>
 
-      <Menu.Dropdown>
-        <Menu.Item component={Link} leftSection={<IconPencil size={14} />} to={getEditShardLink(shard)}>
-          {tCms('edit_action')}
-        </Menu.Item>
+      <DropdownMenuContent>
+        <DropdownMenuItem asChild>
+          <Link to={getEditShardLink(shard)} variant="unstyled">
+            <IconPencil size={14} />
+            {tCms('edit_action')}
+          </Link>
+        </DropdownMenuItem>
 
-        <Menu.Item
-          leftSection={
-            pending ? <Loader size={14} /> : shard.publishedAt ? <IconEyeX size={14} /> : <IconEye size={14} />
-          }
+        <DropdownMenuItem
           onClick={() => {
             if (shard.publishedAt) unpublishShard(shard.id);
             else publishShard(shard.id);
           }}
         >
+          {/* TODO make spinner */}
+          {pending ? <LoaderIcon size={14} /> : shard.publishedAt ? <IconEyeX size={14} /> : <IconEye size={14} />}
           {shard.publishedAt ? tCms('unpublish_action') : tCms('publish_action')}
-        </Menu.Item>
+        </DropdownMenuItem>
 
-        <Menu.Divider />
+        <DropdownMenuSeparator />
 
-        <Menu.Item color="red" leftSection={<IconTrash size={14} />}>
+        <DropdownMenuItem variant="destructive">
+          <IconTrash size={14} />
           {tCms('delete_action')}
-        </Menu.Item>
-      </Menu.Dropdown>
-    </Menu>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };

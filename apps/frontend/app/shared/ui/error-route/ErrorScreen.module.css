@@ -11,10 +11,10 @@
   position: absolute;
   inset: 0;
   opacity: 0.75;
-  color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
-	font-size: 15rem;
-    text-align: center;
-    font-weight: bold;
+  color: light-dark(var(--color-gray-0), var(--color-dark-6));
+  font-size: 15rem;
+  text-align: center;
+  font-weight: bold;
 }
 
 .content {
@@ -22,18 +22,20 @@
   position: relative;
   z-index: 1;
 
-	@media (max-width: $mantine-breakpoint-sm) {
+  /* sm */
+  @media (max-width: 640px) {
     padding-top: 120px;
   }
 }
 
 .title {
-  font-family: Outfit, var(--mantine-font-family);
+  /* font-family: Outfit */
   text-align: center;
   font-weight: 500;
   font-size: 38px;
 
-  @media (max-width: $mantine-breakpoint-sm) {
+  /* sm */
+  @media (max-width: 640px) {
     font-size: 32px;
   }
 }
@@ -41,6 +43,6 @@
 .description {
   max-width: 540px;
   margin: auto;
-  margin-top: var(--mantine-spacing-xl);
-  margin-bottom: calc(var(--mantine-spacing-xl) * 1.5);
+  margin-top: 24px;
+  margin-bottom: 36px;
 }

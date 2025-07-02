@@ -17,12 +17,7 @@ const builtInExtensions = [
   Highlight.configure({ multicolor: true }),
   CodeBlockShiki.configure({
     defaultTheme: 'nord',
-
-    HTMLAttributes: {
-      class: 'codeBlock',
-      'data-mantine-color-scheme': 'dark',
-      style: 'color-scheme: dark',
-    },
+    HTMLAttributes: { class: 'codeBlock', style: 'color-scheme: dark' },
   }),
 
   Link.configure({ HTMLAttributes: { class: 'typography-link' }, openOnClick: false }),

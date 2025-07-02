@@ -1,4 +1,3 @@
-import { Box, Card, Group, Text } from '@mantine/core';
 import { IconPuzzle } from '@tabler/icons-react';
 import { cx } from 'class-variance-authority';
 import { differenceInDays } from 'date-fns';
@@ -8,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import type { ShortShard } from '@repo/api-models';
 import { Link } from '@repo/ui/components/link';
 import { getPaletteClassName, type Palette } from '@repo/ui/lib/palette';
+import { cn } from '@repo/ui/lib/utils';
 
 import { TagBadge } from '@entities/tags/ui/TagBadge';
 
@@ -27,44 +27,38 @@ export const ShardHorizontalCard: FC<ShardHorizontalCardProps> = ({ shard, palet
 
   return (
     <Link className={cx(palette && getPaletteClassName(palette))} to={getShardLink(shard)}>
-      <Card className={styles.card} p={0} radius="md" withBorder>
-        <Box bg="default" c="dimmed" className={styles.image} visibleFrom="xs">
+      <div className={cn('flex flex-wrap rounded-default border border-border bg-gray-2', styles.card)}>
+        <div className={cn('hidden bg-gray-3 text-gray-a11 sm:block', styles.image)}>
           <IconPuzzle size={100} />
-        </Box>
+        </div>
 
         <div className={styles.body}>
-          <Group gap="xs" mb="md" wrap="nowrap">
+          <div className="mb-2 flex flex-wrap gap-1">
             {shard.tags.map((tag) => (
               <TagBadge key={tag.id} nonInteractive tag={tag} />
             ))}
-          </Group>
+          </div>
 
-          <Text className={styles.title} mb="sm">
-            {shard.title}
-          </Text>
+          <div className={cn('mb-2', styles.title)}>{shard.title}</div>
+          <div className="mb-4 line-clamp-2 text-muted-foreground text-sm">{shard.shortDescription}</div>
 
-          <Text c="dimmed" lineClamp={2} mb="md" size="sm">
-            {shard.shortDescription}
-          </Text>
-          <Group gap="xs" wrap="nowrap">
+          <div className="flex flex-wrap gap-1">
             {shard.author && (
               <>
-                <Group gap="xs" wrap="nowrap">
-                  <Text size="xs">by {shard.author.name}</Text>
-                </Group>
-                <Text c="dimmed" size="xs">
-                  •
-                </Text>
+                <div className="flex flex-wrap gap-1">
+                  <div className="text-xs">by {shard.author.name}</div>
+                </div>
+                <div className="text-muted-foreground text-xs">•</div>
               </>
             )}
-            <Text c="dimmed" size="xs">
+            <div className="text-muted-foreground text-xs">
               {Math.abs(dayDiff) < 7
                 ? rtf.format(dayDiff, 'day')
                 : dateFormatter.format(new Date(shard.publishedAt ?? shard.createdAt))}
-            </Text>
-          </Group>
+            </div>
+          </div>
         </div>
-      </Card>
+      </div>
     </Link>
   );
 };

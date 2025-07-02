@@ -3,38 +3,32 @@ import type { ComponentProps, FC } from 'react';
 
 import { cn } from '@repo/ui/lib/utils';
 
-export const ScrollArea: FC<ComponentProps<typeof ScrollAreaPrimitive.Root>> = ({ className, children, ...props }) => (
-  <ScrollAreaPrimitive.Root className={cn('relative', className)} data-slot="scroll-area" {...props}>
-    <ScrollAreaPrimitive.Viewport
-      className="size-full rounded-[inherit] outline-none transition-[color,box-shadow] focus-visible:outline-1 focus-visible:ring-[3px] focus-visible:ring-ring/50"
-      data-slot="scroll-area-viewport"
-    >
-      {children}
-    </ScrollAreaPrimitive.Viewport>
-    <ScrollBar />
-    <ScrollAreaPrimitive.Corner />
-  </ScrollAreaPrimitive.Root>
-);
+interface ScrollAreaProps extends ComponentProps<typeof ScrollAreaPrimitive.Root> {
+  orientation?: 'horizontal' | 'vertical';
+}
 
-export const ScrollBar: FC<ComponentProps<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>> = ({
-  className,
-  orientation = 'vertical',
-  ...props
-}) => (
-  <ScrollAreaPrimitive.ScrollAreaScrollbar
+export const ScrollArea: FC<ScrollAreaProps> = ({ children, orientation = 'vertical', className }) => (
+  <ScrollAreaPrimitive.Root
     className={cn(
-      'flex touch-none select-none p-px transition-colors',
-      orientation === 'vertical' && 'h-full w-2.5 border-l border-l-transparent',
-      orientation === 'horizontal' && 'h-2.5 flex-col border-t border-t-transparent',
+      'overflow-hidden',
+      orientation === 'horizontal' && 'w-full',
+      orientation === 'vertical' && 'h-full',
       className
     )}
-    data-slot="scroll-area-scrollbar"
-    orientation={orientation}
-    {...props}
   >
-    <ScrollAreaPrimitive.ScrollAreaThumb
-      className="relative flex-1 rounded-full bg-border"
-      data-slot="scroll-area-thumb"
-    />
-  </ScrollAreaPrimitive.ScrollAreaScrollbar>
+    <ScrollAreaPrimitive.Viewport className="size-full rounded">{children}</ScrollAreaPrimitive.Viewport>
+    <ScrollAreaPrimitive.Scrollbar
+      className="flex touch-none select-none bg-gray-surface p-0.5 transition-colors duration-[160ms] ease-out hover:bg-blackA5 data-[orientation=horizontal]:h-2.5 data-[orientation=vertical]:w-2.5 data-[orientation=horizontal]:flex-col"
+      orientation="vertical"
+    >
+      <ScrollAreaPrimitive.Thumb className="before:-translate-x-1/2 before:-translate-y-1/2 relative flex-1 rounded-[10px] bg-gray-10 before:absolute before:top-1/2 before:left-1/2 before:size-full before:min-h-11 before:min-w-11" />
+    </ScrollAreaPrimitive.Scrollbar>
+    <ScrollAreaPrimitive.Scrollbar
+      className="flex touch-none select-none bg-gray-surface p-0.5 transition-colors duration-[160ms] ease-out hover:bg-blackA5 data-[orientation=horizontal]:h-2.5 data-[orientation=vertical]:w-2.5 data-[orientation=horizontal]:flex-col"
+      orientation="horizontal"
+    >
+      <ScrollAreaPrimitive.Thumb className="before:-translate-x-1/2 before:-translate-y-1/2 relative flex-1 rounded-[10px] bg-gray-10 before:absolute before:top-1/2 before:left-1/2 before:size-full before:min-h-[44px] before:min-w-[44px]" />
+    </ScrollAreaPrimitive.Scrollbar>
+    <ScrollAreaPrimitive.Corner className="bg-blackA5" />
+  </ScrollAreaPrimitive.Root>
 );

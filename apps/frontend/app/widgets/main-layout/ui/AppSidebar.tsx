@@ -45,7 +45,7 @@ const useNavItemsCms = (): NavigationItem[] => {
 export const AppSidebar: React.FC<ComponentProps<typeof Sidebar>> = ({ ...props }) => {
   const { t } = useTranslation();
   const { t: tAuth } = useTranslation('auth');
-  const isAuthorized = useIsAuthorized();
+  const { isAuthorized } = useIsAuthorized();
   const navItems = useNavItems();
   const signOutMutation = useAtomValue(signOutMutationAtom);
   const navItemsCms = useNavItemsCms();
@@ -67,7 +67,7 @@ export const AppSidebar: React.FC<ComponentProps<typeof Sidebar>> = ({ ...props 
 
       <SidebarContent>
         <NavSection items={navItems} label="Navigation" />
-        <NavSection items={navItemsCms} label="CMS" />
+        {isAuthorized && <NavSection items={navItemsCms} label="CMS" />}
       </SidebarContent>
 
       <SidebarFooter>

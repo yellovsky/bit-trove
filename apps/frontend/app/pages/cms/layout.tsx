@@ -1,6 +1,5 @@
-import { Loader } from '@mantine/core';
+import { LoaderIcon } from 'lucide-react';
 import { Outlet } from 'react-router';
-import '@mantine/tiptap/styles.css';
 
 import { SignInForm, useIsAuthorized } from '@features/auth';
 
@@ -13,7 +12,7 @@ export default function CmsPageLayout() {
   if (status !== 'success') {
     return (
       <div className={styles.centerContent}>
-        <Loader size="xl" type="dots" />
+        <LoaderIcon className="size-10 animate-spin" />
       </div>
     );
   }
