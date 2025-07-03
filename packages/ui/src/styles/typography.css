@@ -69,9 +69,9 @@
     @apply rounded-sm bg-gray-3 px-1.5 py-0.5 font-mono text-gray-11 text-sm;
   }
 
-	.typography-root pre {
-		@apply overflow-x-scroll
-	}
+  .typography-root pre {
+    @apply overflow-x-scroll;
+  }
 
   .typography-root pre code,
   .typography-root pre :is(code),

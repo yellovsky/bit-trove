@@ -50,5 +50,5 @@ export const WithLongDescription: Story = {
 };
 
 export const RedPalette: Story = {
-  args: { palette: 'red', shard: makeFakeShard() },
+  args: { shard: makeFakeShard() },
 };

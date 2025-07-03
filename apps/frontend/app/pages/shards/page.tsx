@@ -31,17 +31,18 @@ export const ShardsPage: FC<ShardsPageProps> = ({ shardsVariables, breadcrumbs }
 
       <Heading order={1}>{t('menu_items.shards.title')}</Heading>
 
-      {shardsQuery.data?.pages.map((page) =>
-        page.data.items.map((shard) => <ShardHorizontalCard key={shard.id} shard={shard} />)
-      )}
+      <div className="flex flex-col gap-2">
+        {shardsQuery.data?.pages.map((page) =>
+          page.data.items.map((shard) => <ShardHorizontalCard key={shard.id} shard={shard} />)
+        )}
 
-      {shardsQuery.isFetching && (
-        <>
-          <ShardHorizontalCardPending />
-          <ShardHorizontalCardPending />
-        </>
-      )}
-
+        {shardsQuery.isPending && (
+          <>
+            <ShardHorizontalCardPending />
+            <ShardHorizontalCardPending />
+          </>
+        )}
+      </div>
       <div ref={ref} />
     </>
   );

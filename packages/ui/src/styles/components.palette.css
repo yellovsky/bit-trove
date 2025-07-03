@@ -1,23 +1,38 @@
 .components-palette {
-  --color-primary: var(--color-gray-1);
-  --color-primary-foreground: var(--color-gray-12);
+  /* colored */
+  --color-primary: var(--color-primary-9);
+  --color-primary-foreground: var(--color-primary-contrast);
 
+  --color-accent: var(--color-primary-5);
+  --color-accent-foreground: var(--color-primary-contrast);
+
+  --color-focus-ring: var(--color-primary-9);
+
+  /* neutral */
   --color-background: var(--color-gray-1);
   --color-foreground: var(--color-gray-12);
-  --color-card: var(--color-gray-surface);
+
+  --color-muted: var(--color-gray-4);
+  --color-muted-foreground: var(--color-gray-11);
+
+  --color-card: var(--color-gray-2);
   --color-card-foreground: var(--color-gray-12);
-  --color-popover: var(--color-gray-3);
+
+  --color-popover: var(--color-gray-4);
   --color-popover-foreground: var(--color-gray-12);
-  --color-secondary: var(--color-primary-a3);
+
+  --color-input: var(--color-gray-6);
+  /* TODO Remove */
+  --color-input-bg: var(--color-gray-6);
+
+  --color-border: var(--color-gray-7);
+
+  --color-secondary: var(--color-gray-8);
   --color-secondary-foreground: var(--color-gray-12);
-  --color-muted: var(--color-gray-a2);
-  --color-muted-foreground: var(--color-gray-a11);
+
   --color-destructive: var(--color-red-10);
-  --color-destructive-foreground: var(--color-red-a12);
-  --color-accent: var(--color-primary-9);
-  --color-accent-foreground: var(--color-primary-contrast);
-  --color-input-bg: var(--color-gray-surface);
-  --color-border: var(--color-gray-a5);
+  --color-destructive-foreground: var(--color-red-12);
+
+  /* Custom */
   --color-input-border: var(--color-gray-a5);
-  --color-focus-ring: var(--color-primary-8);
 }
