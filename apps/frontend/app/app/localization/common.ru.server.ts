@@ -1,5 +1,6 @@
 export default {
   '{{year}} all rights reserved': '© {year}. Все права защищены.',
+  '{number} min read': '{number} мин. чтения',
   'Content management': 'Управление контентом',
   error: {
     '403': {

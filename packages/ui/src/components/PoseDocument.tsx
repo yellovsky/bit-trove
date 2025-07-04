@@ -1,6 +1,6 @@
 import type { JSONContent } from '@tiptap/core';
 import { cx } from 'class-variance-authority';
-import { type FC, Fragment } from 'react';
+import { type ComponentProps, type FC, Fragment } from 'react';
 
 import { CodeBlock } from '@repo/ui/components/CodeBlock';
 import {
@@ -91,10 +91,10 @@ export function renderPoseContent(content: JSONContent[] | undefined): React.Rea
   return content.map((child, index) => <Fragment key={index}>{renderPoseNode(child)}</Fragment>);
 }
 
-export interface PoseDocumentProps {
+export interface PoseDocumentProps extends ComponentProps<'div'> {
   doc: JSONContent;
 }
 
-export const PoseDocument: FC<PoseDocumentProps> = ({ doc }) => {
-  return <div>{renderPoseNode(doc)}</div>;
+export const PoseDocument: FC<PoseDocumentProps> = ({ doc, ...rest }) => {
+  return <div {...rest}>{renderPoseNode(doc)}</div>;
 };

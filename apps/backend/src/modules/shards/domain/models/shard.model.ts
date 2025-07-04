@@ -20,6 +20,7 @@ export interface ShardModelData {
   title: string;
   shortDescription: string | null;
   contentJSON: JSONContent | null;
+  readingTime: number;
 
   seo: SeoModel | null;
   tags: TagModel[];
@@ -42,6 +43,7 @@ export class ShardModel {
       data.title,
       data.shortDescription,
       data.contentJSON,
+      data.readingTime,
 
       data.tags,
       data.seo,
@@ -63,6 +65,7 @@ export class ShardModel {
     public readonly title: string,
     public readonly shortDescription: string | null,
     public readonly contentJSON: JSONContent | null,
+    public readonly readingTime: number,
 
     public readonly tags: TagModel[],
     public readonly seo: SeoModel | null,

@@ -1,4 +1,6 @@
+import { ClockIcon } from 'lucide-react';
 import type { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import type { ShortShard } from '@repo/api-models';
 import * as ListCardPrimitive from '@repo/ui/components/ListCard';
@@ -13,8 +15,8 @@ interface ShardHorizontalCardProps {
   shard: ShortShard;
 }
 
-// TODO add time to read
 export const ShardHorizontalCard: FC<ShardHorizontalCardProps> = ({ shard }) => {
+  const { t } = useTranslation();
   const relativeDate = useRelativeDate(shard.publishedAt ?? shard.createdAt);
 
   return (
@@ -29,6 +31,9 @@ export const ShardHorizontalCard: FC<ShardHorizontalCardProps> = ({ shard }) => 
           <ListCardPrimitive.ListCardFooter>
             {shard.author && <ListCardPrimitive.ListCardAuthor>{shard.author.name}</ListCardPrimitive.ListCardAuthor>}
             <ListCardPrimitive.ListCardDate>{relativeDate}</ListCardPrimitive.ListCardDate>
+            <ListCardPrimitive.CardTextWithIcon icon={<ClockIcon size={14} strokeWidth={1.5} />}>
+              <span>{t('{number} min read', { number: shard.readingTime })}</span>
+            </ListCardPrimitive.CardTextWithIcon>
           </ListCardPrimitive.ListCardFooter>
         </ListCardPrimitive.CardContent>
 

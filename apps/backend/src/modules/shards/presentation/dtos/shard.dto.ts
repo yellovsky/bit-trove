@@ -57,6 +57,14 @@ export class ShardDto implements Shard {
   readonly shortDescription!: string | null;
 
   @ApiProperty({
+    description: 'The estimated reading time in minutes',
+    maximum: 999,
+    minimum: 1,
+    type: Number,
+  })
+  readonly readingTime!: number;
+
+  @ApiProperty({
     description: 'The content of the blog post',
     type: String,
   })
@@ -122,6 +130,7 @@ export class ShardDto implements Shard {
             id: model.id,
             languageCode: model.languageCode,
             publishedAt: model.publishedAt?.toISOString() ?? null,
+            readingTime: model.readingTime,
             seo,
             shortDescription: model.shortDescription,
             slug: model.slug,

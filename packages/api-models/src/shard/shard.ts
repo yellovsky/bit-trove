@@ -23,6 +23,7 @@ export const shortShardSchema = zod.object({
   id: zod.string().uuid(),
   languageCode: localeSchema,
   publishedAt: isoDateSchema.nullable(),
+  readingTime: zod.number().int().min(1).max(999),
   shortDescription: zod.string().nullable(),
   slug: zod.string(),
   tags: tagSchema.array(),

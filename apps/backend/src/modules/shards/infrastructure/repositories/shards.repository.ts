@@ -8,6 +8,7 @@ import { type ExclusionReason, NotFoundReason, UnknownReason } from 'src/shared/
 import { AuthorModel } from 'src/shared/models/author.model';
 import { SeoModel } from 'src/shared/models/seo.model';
 import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
+import { calculateReadingTime } from 'src/shared/utils/reading-time';
 import type { RequestContext } from 'src/shared/utils/request-context';
 
 import { PRISMA_SRV } from 'src/modules/prisma';
@@ -74,6 +75,9 @@ export class PrismaShardsRepository implements ShardsRepository {
         return yield* new UnknownReason();
       }
 
+      // Calculate reading time
+      const readingTime = calculateReadingTime(params.contentJSON, params.title, params.shortDescription);
+
       const dbshard = yield* Effect.tryPromise(() =>
         tx.shard.create({
           data: {
@@ -82,6 +86,7 @@ export class PrismaShardsRepository implements ShardsRepository {
             entryId: dbEntry.id,
             languageCode: params.languageCode,
             publishedAt: params.published ? new Date() : null,
+            readingTime,
             seoDescription: params.seoDescription,
             seoKeywords: params.seoKeywords,
             seoTitle: params.seoTitle,
@@ -118,12 +123,16 @@ export class PrismaShardsRepository implements ShardsRepository {
       // delete all tags before saving new ones
       yield* Effect.tryPromise(() => tx.shard.update({ data: { tags: { deleteMany: {} } }, where: { id } }));
 
+      // Calculate reading time
+      const readingTime = calculateReadingTime(params.contentJSON, params.title, params.shortDescription);
+
       const dbshard = yield* Effect.tryPromise(() =>
         tx.shard.update({
           data: {
             contentJSON: params.contentJSON as InputJsonValue,
             languageCode: params.languageCode,
             publishedAt: params.published ? new Date() : null,
+            readingTime,
             seoDescription: params.seoDescription,
             seoKeywords: params.seoKeywords,
             seoTitle: params.seoTitle,
@@ -275,6 +284,7 @@ export class PrismaShardsRepository implements ShardsRepository {
       id: dbShard.id,
       languageCode: dbShard.languageCode,
       publishedAt: dbShard.publishedAt,
+      readingTime: dbShard.readingTime,
       seo: this.#getSeo(dbShard),
       shortDescription: dbShard.shortDescription,
       slug: dbShard.slug,

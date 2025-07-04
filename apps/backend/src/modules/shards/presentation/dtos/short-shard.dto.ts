@@ -50,6 +50,14 @@ export class ShortShardDto implements ShortShard {
   readonly shortDescription!: string | null;
 
   @ApiProperty({
+    description: 'The estimated reading time in minutes',
+    maximum: 999,
+    minimum: 1,
+    type: Number,
+  })
+  readonly readingTime!: number;
+
+  @ApiProperty({
     description: 'The created date of the shard',
     type: String,
   })
@@ -95,6 +103,7 @@ export class ShortShardDto implements ShortShard {
             id: model.id,
             languageCode: model.languageCode,
             publishedAt: model.publishedAt?.toISOString() ?? null,
+            readingTime: model.readingTime,
             shortDescription: model.shortDescription,
             slug: model.slug,
             tags,

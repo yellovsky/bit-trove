@@ -33,6 +33,7 @@ export const dbShortShardSelect = {
   id: true,
   languageCode: true,
   publishedAt: true,
+  readingTime: true,
   shortDescription: true,
   slug: true,
   tags: {

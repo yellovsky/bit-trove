@@ -1,5 +1,6 @@
 export default {
   '{{year}} all rights reserved': '© {year}. All rights reserved.',
+  '{number} min read': '{number, plural, one {# min read} other {# mins read}}',
   'Content management': 'Content management',
   error: {
     '403': {
