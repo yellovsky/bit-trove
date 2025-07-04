@@ -1,0 +1,64 @@
+import { Meta, Title, Primary, Controls, Stories } from '@storybook/addon-docs/blocks';
+
+{/*
+	* 👇 The isTemplate property is required to tell Storybook that this is a template
+	* See https://storybook.js.org/docs/api/doc-blocks/doc-block-meta
+	* to learn how to use
+*/}
+
+<Meta isTemplate />
+
+<Title />
+
+Button component for user interactions and form submissions.
+
+The Button component is the primary interactive element in the UI, supporting various visual styles, sizes, and interactive states. It can be rendered as different HTML elements using the `asChild` prop.
+
+## Features
+- Multiple visual variants (default, destructive, dimmed, ghost, link, outline, secondary)
+- Size variations (icon, sm, default, lg)
+- Border radius options (xs, sm, md, lg, xl, full)
+- Color palette support for theming
+- Interactive capabilities with `asChild` prop
+- Icon support with proper spacing
+- Accessible focus states and keyboard navigation
+
+## Usage
+```tsx
+import { Button } from '@repo/ui/components/Button';
+
+// Basic button
+<Button>Click me</Button>
+
+// With icon
+<Button>
+	<MailIcon />
+	Send Email
+</Button>
+
+// As link
+<Button asChild>
+	<Link to="/dashboard">Go to Dashboard</Link>
+</Button>
+
+// Icon only button
+<Button size="icon">
+	<Settings />
+</Button>
+```
+
+<Primary />
+
+## Inputs
+
+The component accepts the following inputs (props):
+
+<Controls />
+
+---
+
+## Additional variations
+
+Listed below are additional variations of the component.
+
+<Stories />

@@ -1,4 +1,4 @@
-import { IconHash } from '@tabler/icons-react';
+import { HashIcon } from 'lucide-react';
 import type { FC } from 'react';
 
 import type { Tag } from '@repo/api-models';
@@ -11,17 +11,17 @@ interface TagBadgeProps extends BadgeProps {
 }
 
 export const TagBadge: FC<TagBadgeProps> = ({ tag, nonInteractive, ...props }) => {
-  const badgeProps: BadgeProps = { ...props, size: 'sm' };
+  const badgeProps: BadgeProps = { ...props };
 
   return nonInteractive ? (
     <Badge {...badgeProps}>
-      <IconHash size={12} />
+      <HashIcon />
       {tag.name}
     </Badge>
   ) : (
     <Badge {...badgeProps} asChild>
       <Link to="/" variant="unstyled">
-        <IconHash size={12} />
+        <HashIcon />
         {tag.name}
       </Link>
     </Badge>

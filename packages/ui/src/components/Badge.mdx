@@ -1,0 +1,57 @@
+import { Meta, Title, Primary, Controls, Stories } from '@storybook/addon-docs/blocks';
+
+{/*
+	* 👇 The isTemplate property is required to tell Storybook that this is a template
+	* See https://storybook.js.org/docs/api/doc-blocks/doc-block-meta
+	* to learn how to use
+*/}
+
+<Meta isTemplate />
+
+<Title />
+
+Badge component for displaying short status text, labels, or counts.
+
+The Badge component is designed to highlight important information such as status, notifications, or categories. It supports various visual styles and can be used as interactive elements when combined with `asChild`.
+
+## Features
+- Multiple visual variants (filled, outline, destructive, secondary)
+- Color palette support for theming
+- Interactive capabilities with `asChild` prop
+- Icon support with proper spacing
+- Accessible focus states
+
+## Usage
+```tsx
+import { Badge } from '@repo/ui/components/Badge';
+
+// Basic badge
+<Badge>New</Badge>
+
+// With icon
+<Badge>
+	<Tag />
+	Category
+</Badge>
+
+// As interactive element
+<Badge asChild>
+	<Link to="/tags">View Tags</Link>
+</Badge>
+```
+
+<Primary />
+
+## Inputs
+
+The component accepts the following inputs (props):
+
+<Controls />
+
+---
+
+## Additional variations
+
+Listed below are additional variations of the component.
+
+<Stories />

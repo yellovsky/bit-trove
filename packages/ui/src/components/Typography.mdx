@@ -1,0 +1,58 @@
+import { Meta, Title, Primary, Controls, Stories } from '@storybook/addon-docs/blocks';
+
+{/*
+	* 👇 The isTemplate property is required to tell Storybook that this is a template
+	* See https://storybook.js.org/docs/api/doc-blocks/doc-block-meta
+	* to learn how to use
+*/}
+
+<Meta isTemplate />
+
+<Title />
+
+Typography components for consistent text styling and hierarchy.
+
+The Typography components provide a comprehensive set of text elements that maintain consistent styling and proper semantic structure across the application. Each component is designed with accessibility in mind.
+
+## Features
+- Semantic HTML elements with proper ARIA attributes
+- Consistent spacing and typography scale
+- Responsive design considerations
+- Accessibility-focused implementation
+- Flexible styling with className support
+
+## Usage
+```tsx
+import { Heading, Paragraph, TextLink } from '@repo/ui/components/Typography';
+
+// Basic typography
+<Heading order={1}>Main Title</Heading>
+<Paragraph>This is a paragraph of text.</Paragraph>
+
+// With links
+<Paragraph>
+	Read more about <TextLink to="/docs">our documentation</TextLink>.
+</Paragraph>
+
+// Lists
+<UnorderedList>
+	<ListItem>First item</ListItem>
+	<ListItem>Second item</ListItem>
+</UnorderedList>
+```
+
+<Primary />
+
+## Inputs
+
+The component accepts the following inputs (props):
+
+<Controls />
+
+---
+
+## Additional variations
+
+Listed below are additional variations of the component.
+
+<Stories />

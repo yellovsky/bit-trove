@@ -29,7 +29,7 @@
   "biome.enabled": true,
   "css.customData": [".vscode/tailwind.json"],
   "editor.codeActionsOnSave": {
-    "quickfix.biome": "always",
+    "quickfix.biome": "never",
     "source.fixAll": "always",
     "source.organizeImports": "never",
     "source.organizeImports.biome": "always"
@@ -62,5 +62,8 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "workbench.colorCustomizations": {
     "editorWhitespace.foreground": "#333"
+  },
+  "[mdx]": {
+    "editor.defaultFormatter": "unifiedjs.vscode-mdx"
   }
 }

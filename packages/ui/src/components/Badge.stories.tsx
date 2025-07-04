@@ -1,96 +1,224 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Hash } from 'lucide-react';
+import { Hash, Tag, User } from 'lucide-react';
 import { Link } from 'react-router';
 
 import { PALETTES } from '@repo/ui/lib/palette';
 
-import { Badge, type BadgeProps } from './Badge';
-
-const render = (args: BadgeProps) => (
-  <>
-    <div style={{ display: 'inline-grid', gap: '0.5rem', gridTemplateColumns: `repeat(${PALETTES.length}, 1fr)` }}>
-      {PALETTES.map((palette) => (
-        <div className="text-center capitalize" key={palette}>
-          {palette}
-        </div>
-      ))}
-
-      {PALETTES.map((palette) => (
-        <div key={palette}>
-          <Badge {...args} palette={palette}>
-            {args.children}
-          </Badge>
-        </div>
-      ))}
-    </div>
-  </>
-);
+import { Badge } from './Badge';
+import BadgeMdx from './Badge.mdx';
 
 const meta = {
   args: {
     children: 'Badge',
-    radius: 'sm',
-    round: false,
-    size: 'md',
-    variant: 'filled',
+    variant: 'default',
   },
   argTypes: {
-    radius: {
-      control: 'select',
-      options: ['sm', 'md', 'lg', 'xl', 'xs', 'full'],
+    children: {
+      control: 'text',
+      description: 'The content to display in the badge',
+      table: {
+        category: 'Content',
+        type: { summary: 'ReactNode' },
+      },
     },
-    round: {
-      control: 'boolean',
+    className: {
+      control: 'text',
+      description: 'Additional CSS classes',
+      table: {
+        category: 'Styling',
+        type: { summary: 'string' },
+      },
     },
-    size: {
+    palette: {
       control: 'select',
-      options: ['xs', 'sm', 'md', 'lg', 'xl'],
+      description: 'Color palette for theming',
+      options: ['default', ...PALETTES],
+      table: {
+        category: 'Appearance',
+        defaultValue: { summary: 'default' },
+        type: { summary: 'Palette' },
+      },
     },
     variant: {
       control: 'select',
-      options: ['filled', 'outline'],
+      description: 'The visual style variant of the badge',
+      options: ['default', 'destructive', 'outline', 'secondary'],
+      table: {
+        category: 'Appearance',
+        defaultValue: { summary: 'default' },
+        type: { summary: 'BadgeVariant' },
+      },
     },
   },
   component: Badge,
-  render,
+  parameters: {
+    docs: {
+      page: BadgeMdx,
+    },
+  },
+  tags: ['autodocs'],
   title: 'UI/Badge',
 } satisfies Meta<typeof Badge>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {};
+/**
+ * Default badge with basic styling. This is the most common usage pattern.
+ */
+export const Default: Story = {
+  args: {
+    children: 'Badge',
+    variant: 'default',
+  },
+};
+
+/**
+ * Badge with destructive styling for error states or warnings.
+ */
+export const Destructive: Story = {
+  args: {
+    children: 'Error',
+    variant: 'destructive',
+  },
+};
+
+/**
+ * Outline variant for subtle emphasis without strong background colors.
+ */
+export const Outline: Story = {
+  args: {
+    children: 'Draft',
+    variant: 'outline',
+  },
+};
+
+/**
+ * Secondary variant for less prominent badges.
+ */
+export const Secondary: Story = {
+  args: {
+    children: 'Info',
+    variant: 'secondary',
+  },
+};
+
+/**
+ * Badge with an icon for better visual communication.
+ */
 export const WithIcon: Story = {
   args: {
     children: (
       <>
-        <Hash />
-        Badge
+        <Tag className="size-3" />
+        Category
       </>
     ),
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Badge with an icon to provide additional visual context. Icons are automatically sized and spaced.',
+      },
+    },
+  },
 };
 
+/**
+ * Badge rendered as a button for interactive functionality.
+ */
 export const AsButton: Story = {
   args: {
     asChild: true,
     children: (
       <button type="button">
-        <Hash />
-        Badge
+        <Hash className="size-3" />
+        Interactive Badge
       </button>
     ),
   },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Badge rendered as a button element for interactive functionality. Use `asChild` prop to render as any element.',
+      },
+    },
+  },
 };
 
+/**
+ * Badge rendered as a link for navigation.
+ */
 export const AsLink: Story = {
   args: {
     asChild: true,
     children: (
       <Link to="#">
-        <Hash />
-        Badge
+        <User className="size-3" />
+        View Profile
       </Link>
     ),
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Badge rendered as a link for navigation purposes. Maintains accessibility and keyboard navigation.',
+      },
+    },
+  },
+};
+
+/**
+ * Showcase of all palette variations for the default variant.
+ */
+export const PaletteVariations: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Demonstration of all available color palettes applied to the badge component.',
+      },
+    },
+  },
+  render: (args) => (
+    <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+      {PALETTES.map((palette) => (
+        <div className="flex flex-col items-center gap-2" key={palette}>
+          <span className="font-medium text-xs capitalize">{palette}</span>
+          <Badge {...args} palette={palette}>
+            {args.children}
+          </Badge>
+        </div>
+      ))}
+    </div>
+  ),
+};
+
+/**
+ * Interactive test story for accessibility and functionality testing.
+ */
+export const InteractiveTest: Story = {
+  args: {
+    children: 'Click me',
+    variant: 'default',
+  },
+  parameters: {
+    a11y: {
+      config: {
+        rules: [
+          {
+            enabled: true,
+            id: 'color-contrast',
+          },
+        ],
+      },
+    },
+    chromatic: { disableSnapshot: false },
+    docs: {
+      description: {
+        story:
+          'Interactive test story for accessibility and functionality testing. Use Storybook interactions to test keyboard navigation and focus states.',
+      },
+    },
   },
 };
