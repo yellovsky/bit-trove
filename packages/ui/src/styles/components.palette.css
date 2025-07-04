@@ -3,8 +3,11 @@
   --color-primary: var(--color-primary-9);
   --color-primary-foreground: var(--color-primary-contrast);
 
+  --color-secondary: var(--color-primary-4);
+  --color-secondary-foreground: var(--color-gray-12);
+
   --color-accent: var(--color-primary-5);
-  --color-accent-foreground: var(--color-primary-contrast);
+  --color-accent-foreground: var(--color-gray-12);
 
   --color-focus-ring: var(--color-primary-9);
 
@@ -26,9 +29,6 @@
   --color-input-bg: var(--color-gray-6);
 
   --color-border: var(--color-gray-7);
-
-  --color-secondary: var(--color-gray-8);
-  --color-secondary-foreground: var(--color-gray-12);
 
   --color-destructive: var(--color-red-10);
   --color-destructive-foreground: var(--color-red-12);

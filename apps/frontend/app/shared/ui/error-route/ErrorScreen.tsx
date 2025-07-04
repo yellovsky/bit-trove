@@ -24,9 +24,7 @@ export const ErrorScreen: FC<ErrorScreenProps> = ({ code, title, subtitle, butto
         </Heading>
         <div className={cn(styles.description, 'text-center text-lg text-muted-foreground')}>{subtitle}</div>
         <div className="flex justify-center">
-          <Button onClick={onButtonClick} size="md">
-            {buttonText}
-          </Button>
+          <Button onClick={onButtonClick}>{buttonText}</Button>
         </div>
       </div>
     </div>
