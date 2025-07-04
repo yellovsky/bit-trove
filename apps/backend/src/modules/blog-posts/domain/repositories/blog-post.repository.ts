@@ -14,9 +14,9 @@ export interface FindBySlugParams {
   languageCode: string;
 }
 
-export type FindManyBlogPostsOrderBy = OrderBy<'title' | 'publishedAt' | 'createdAt'>;
+type FindManyBlogPostsOrderBy = OrderBy<'title' | 'publishedAt' | 'createdAt'>;
 
-export interface FindManyBlogPostsFilter {
+interface FindManyBlogPostsFilter {
   published?: boolean;
   authorId?: string;
   languageCode?: string;

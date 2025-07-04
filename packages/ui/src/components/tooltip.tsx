@@ -47,3 +47,5 @@ export const TooltipContent: FC<ComponentProps<typeof TooltipPrimitive.Content>>
 );
 
 TooltipContent.displayName = 'TooltipContent';
+
+export type { TooltipContentProps } from '@radix-ui/react-tooltip';

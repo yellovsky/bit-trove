@@ -1,6 +1,7 @@
 import type { O } from 'ts-toolbelt';
 
-export type SortBy<TKey extends string> = TKey | `-${TKey}`;
+import type { SortBy } from '@repo/api-models';
+
 export type OrderBy<TKey extends string> = O.AtLeast<Record<TKey, 'asc' | 'desc'>>;
 
 export const sortToOrderBy = <TKey extends string>(sort: SortBy<TKey>): OrderBy<TKey> => {

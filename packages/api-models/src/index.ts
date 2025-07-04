@@ -6,6 +6,7 @@ export * from './common/iso-date';
 export * from './common/json-content';
 export * from './common/page-request';
 export * from './common/seo';
+export * from './common/sort-by';
 export * from './common/success-response';
 export * from './common/uuid';
 export * from './permission-policy';

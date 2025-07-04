@@ -24,9 +24,9 @@ export interface CreateShardParams {
   tags: string[];
 }
 export type UpdateShardParams = CreateShardParams;
-export type FindManyShardsOrderBy = OrderBy<'title' | 'publishedAt' | 'createdAt'>;
+type FindManyShardsOrderBy = OrderBy<'title' | 'publishedAt' | 'createdAt'>;
 
-export interface FindManyShardsFilter {
+interface FindManyShardsFilter {
   published?: boolean;
   authorId?: string | null;
   languageCodeIn?: string[];

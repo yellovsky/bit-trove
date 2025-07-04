@@ -7,7 +7,7 @@ import type { TagModel } from 'src/modules/tags/domain/models/tag.model';
 
 import type { AlternativeShardModel } from './alternative-shard.model';
 
-interface ShardModelData {
+export interface ShardModelData {
   id: string;
   slug: string;
   entryId: string;

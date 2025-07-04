@@ -11,7 +11,7 @@
 		"biome": "biome check",
 		"lint": "biome check",
 		"build:libs": "tsup src/index.ts --format cjs,esm --dts --sourcemap",
-		"postinstall": "yarn build"
+		"postinstall": "yarn build:libs"
 	},
 	"dependencies": {
 		"uuid": "11.1.0",

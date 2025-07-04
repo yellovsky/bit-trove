@@ -49,5 +49,3 @@ export const Link = TiptapLink.extend({
     return [{ tag: 'a[href]:not([data-type="button"]):not([href *= "javascript:" i])' }];
   },
 });
-
-export default Link;

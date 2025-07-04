@@ -83,21 +83,6 @@ export class NotPublishedReason extends ExclusionReason {
   }
 }
 
-export class TranslationDataMissingReason extends ExclusionReason {
-  constructor(params?: ReasonMeta) {
-    super({ ...params, reason: ExclusionReasonKind.INSUFFICIENT_DATA_TO_TRANSLATE });
-  }
-
-  toFailedResponseDto(): FailedResponseDto {
-    return FailedResponseDto.from({
-      code: 'not_found',
-      httpCode: 404,
-      message: this.httpMessage || 'Insufficient data to translate',
-      timestamp: Date.now(),
-    });
-  }
-}
-
 export class NotEnoughDataReason extends ExclusionReason {
   constructor(params?: ReasonMeta) {
     super({ ...params, reason: ExclusionReasonKind.NOT_ENOUGH_DATA });

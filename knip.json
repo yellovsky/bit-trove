@@ -2,12 +2,27 @@
 	"$schema": "https://unpkg.com/knip@5/schema.json",
 	"commitlint": true,
 	"ignoreDependencies": [
-		"postcss",
-		"@biomejs/biome",
 		"@commitlint/cli"
+	],
+	"ignoreWorkspaces": [
+		"packages/typescript-config"
 	],
 	"workspaces": {
 		"apps/backend": {
+			"entry": [
+				"src/main.ts",
+				"src/**/*.module.ts",
+				"src/**/*.controller.ts",
+				"src/**/*.service.ts",
+				"src/**/*.entity.ts",
+				"src/**/*.dto.ts",
+				"src/**/*.interface.ts",
+				"src/**/*.guard.ts",
+				"src/**/*.strategy.ts",
+				"scripts/**/*.ts",
+				"src/modules/*/index.ts",
+				"nest-cli.json"
+			],
 			"ignoreDependencies": [
 				"@prisma/client",
 				"@generated/prisma",
@@ -19,27 +34,50 @@
 		},
 		"apps/frontend": {
 			"entry": [
-				"app/server/index.ts"
+				"app/**/*.ts",
+				"app/**/*.tsx",
+				"app/**/*.css",
+				"app/**/*.stories.tsx",
+				"app/**/*.test.ts",
+				"tests/**/*.tsx",
+				".storybook/**/*.ts",
+				".storybook/**/*.tsx"
 			],
 			"ignoreDependencies": [
 				"tailwindcss",
 				"autoprefixer",
-				"babel-plugin-react-compiler"
+				"babel-plugin-react-compiler",
+				"@babel/preset-typescript",
+				"@storybook/preview-api",
+				"@storybook/types",
+				"postcss-simple-vars"
 			],
 			"remix": true,
-			"tailwind": true
+			"tailwind": true,
+			"storybook": true,
+			"vite": true,
+			"vitest": true
 		},
-		"packages/theme": {
-			"ignoreDependencies": [
-				"tailwindcss"
+		"packages/api-models": {
+			"entry": [
+				"src/index.ts"
 			],
-			"tailwind": true
+			"vitest": true
 		},
 		"packages/ui": {
-			"ignoreDependencies": [
-				"tailwindcss"
+			"entry": [
+				"src/**/*.ts",
+				"src/**/*.tsx",
+				"src/**/*.css",
+				"src/**/*.mdx",
+				"src/**/*.stories.tsx"
 			],
-			"tailwind": true
+			"ignoreDependencies": [
+				"tailwindcss",
+				"tw-animate-css"
+			],
+			"tailwind": true,
+			"storybook": true
 		}
 	}
 }

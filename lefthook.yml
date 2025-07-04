@@ -6,5 +6,5 @@ pre-commit:
       run: yarn lint
     test:
       run: yarn test
-    # unused-code:
-    #   run: yarn check:unused
+    unused-code:
+      run: yarn check:unused
