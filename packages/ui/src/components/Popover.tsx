@@ -1,17 +1,34 @@
 import * as PopoverPrimitive from '@radix-ui/react-popover';
-import type { ComponentProps, FC } from 'react';
+import type { FC } from 'react';
 
 import { cn } from '@repo/ui/lib/utils';
 
-export const Popover: FC<ComponentProps<typeof PopoverPrimitive.Root>> = (props) => (
-  <PopoverPrimitive.Root data-slot="popover" {...props} />
-);
+/* -------------------------------------------------------------------------------------------------
+ * Popover
+ * -----------------------------------------------------------------------------------------------*/
+const POPOVER_NAME = 'Popover';
 
-export const PopoverTrigger: FC<ComponentProps<typeof PopoverPrimitive.Trigger>> = (props) => (
+const Popover: FC<PopoverPrimitive.PopoverProps> = (props) => <PopoverPrimitive.Root data-slot="popover" {...props} />;
+
+Popover.displayName = POPOVER_NAME;
+
+/* -------------------------------------------------------------------------------------------------
+ * PopoverTrigger
+ * -----------------------------------------------------------------------------------------------*/
+const TRIGGER_NAME = 'PopoverTrigger';
+
+const PopoverTrigger: FC<PopoverPrimitive.PopoverTriggerProps> = (props) => (
   <PopoverPrimitive.Trigger data-slot="popover-trigger" {...props} />
 );
 
-export const PopoverContent: FC<ComponentProps<typeof PopoverPrimitive.Content>> = ({
+PopoverTrigger.displayName = TRIGGER_NAME;
+
+/* -------------------------------------------------------------------------------------------------
+ * PopoverContent
+ * -----------------------------------------------------------------------------------------------*/
+const CONTENT_NAME = 'PopoverContent';
+
+const PopoverContent: FC<PopoverPrimitive.PopoverContentProps> = ({
   className,
   align = 'center',
   sideOffset = 4,
@@ -31,6 +48,40 @@ export const PopoverContent: FC<ComponentProps<typeof PopoverPrimitive.Content>>
   </PopoverPrimitive.Portal>
 );
 
-export const PopoverAnchor: FC<ComponentProps<typeof PopoverPrimitive.Anchor>> = (props) => (
+PopoverContent.displayName = CONTENT_NAME;
+
+/* -------------------------------------------------------------------------------------------------
+ * PopoverAnchor
+ * -----------------------------------------------------------------------------------------------*/
+const ANCHOR_NAME = 'PopoverAnchor';
+
+const PopoverAnchor: FC<PopoverPrimitive.PopoverAnchorProps> = (props) => (
   <PopoverPrimitive.Anchor data-slot="popover-anchor" {...props} />
 );
+PopoverAnchor.displayName = ANCHOR_NAME;
+
+/* -----------------------------------------------------------------------------------------------*/
+
+const Root = Popover;
+const Trigger = PopoverTrigger;
+const Content = PopoverContent;
+const Anchor = PopoverAnchor;
+
+export {
+  Root,
+  Trigger,
+  Content,
+  Anchor,
+  //
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverAnchor,
+};
+
+export type {
+  PopoverAnchorProps,
+  PopoverContentProps,
+  PopoverProps,
+  PopoverTriggerProps,
+} from '@radix-ui/react-popover';

@@ -33,12 +33,13 @@ function ColorSchemeWrapper({ children }: { children: React.ReactNode; }) {
   }, [channel]);
 
 	useEffect(() => {
-		document.body.setAttribute('data-theme', colorScheme) ;
+		document.body.setAttribute('data-theme', colorScheme);
+		document.body.classList.add(...getPaletteClassName('primary').split(' '));
 	}, [colorScheme]);
 
 	console.log(document.querySelectorAll('.docs-story').forEach(el => el.classList.add('bg-gray-1')))
 
-  return <div className={getPaletteClassName('primary')}>{children}</div>;
+  return <div data-tmp className={getPaletteClassName('primary')}>{children}</div>;
 }
 
 

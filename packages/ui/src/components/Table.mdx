@@ -1,0 +1,67 @@
+import { Meta, Title, Primary, Controls, Stories } from '@storybook/addon-docs/blocks';
+
+<Meta isTemplate />
+
+<Title />
+
+Table component for displaying structured data in rows and columns.
+
+The Table component provides a flexible, accessible, and composable way to display tabular data. It supports custom headers, footers, selectable and expandable rows, sorting, and compact layouts.
+
+## Features
+- **Accessible**: Semantic HTML and keyboard navigation
+- **Composable**: Modular subcomponents for header, body, rows, cells, etc.
+- **Customizable**: Easily style and extend with Tailwind CSS
+- **Responsive**: Horizontal scrolling for wide tables
+- **Rich Interactions**: Supports sorting, selection, and expandable rows
+
+## Usage
+```tsx
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableCaption,
+} from '@repo/ui/components/Table';
+
+<Table>
+  <TableCaption>A list of your recent invoices.</TableCaption>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Invoice</TableHead>
+      <TableHead>Status</TableHead>
+      <TableHead>Method</TableHead>
+      <TableHead className="text-right">Amount</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell className="font-medium">INV001</TableCell>
+      <TableCell>Paid</TableCell>
+      <TableCell>Credit Card</TableCell>
+      <TableCell className="text-right">$250.00</TableCell>
+    </TableRow>
+    {/* ...more rows */}
+  </TableBody>
+</Table>
+```
+
+<Primary />
+
+## Inputs
+
+The component accepts the following inputs (props):
+
+<Controls />
+
+---
+
+## Additional variations
+
+Listed below are additional variations of the component.
+
+<Stories />

@@ -1,0 +1,65 @@
+import { Meta, Title, Primary, Controls, Stories } from '@storybook/addon-docs/blocks';
+
+<Meta isTemplate />
+
+<Title />
+
+Checkbox component for binary input selection.
+
+The Checkbox component provides a way for users to make binary selections. It supports checked, unchecked, and indeterminate states, with optional labels and descriptions. Built on top of Radix UI primitives, it ensures accessibility and proper keyboard navigation.
+
+## Features
+- **Three States**: Checked, unchecked, and indeterminate
+- **Accessible**: Built with proper ARIA attributes and keyboard navigation
+- **Customizable**: Flexible styling with Tailwind CSS
+- **Labels & Descriptions**: Optional text content for better UX
+- **Controlled & Uncontrolled**: Support for both controlled and uncontrolled usage
+- **Form Integration**: Works seamlessly with form libraries
+
+## Usage
+```tsx
+import { Checkbox } from '@repo/ui/components/Checkbox';
+
+// Basic checkbox
+<Checkbox />
+
+// With label
+<Checkbox label="Accept terms and conditions" />
+
+// With description
+<Checkbox
+  label="Subscribe to newsletter"
+  description="Receive updates about new features and releases."
+/>
+
+// Controlled checkbox
+const [checked, setChecked] = useState(false);
+
+<Checkbox
+  checked={checked}
+  onCheckedChange={(checked) => setChecked(checked as boolean)}
+  label="Controlled checkbox"
+/>
+
+// Indeterminate state
+<Checkbox
+  indeterminate={true}
+  label="Select all items"
+/>
+```
+
+<Primary />
+
+## Inputs
+
+The component accepts the following inputs (props):
+
+<Controls />
+
+---
+
+## Additional variations
+
+Listed below are additional variations of the component.
+
+<Stories />
