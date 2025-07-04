@@ -1,24 +1,43 @@
 import type { FC } from 'react';
 
 import type { ShortBlogPost } from '@repo/api-models';
+import * as GridCardPrimitive from '@repo/ui/components/GridCard';
 import { Link } from '@repo/ui/components/link';
-import { cn } from '@repo/ui/lib/utils';
+
+import { useRelativeDate } from '@shared/lib/use-relative-date';
 
 import { getBlogPostLink } from '../lib/links';
-import styles from './BlogPostCard.module.css';
 
 interface BlogPostCardProps {
   blogPost: ShortBlogPost;
 }
 
 export const BlogPostCard: FC<BlogPostCardProps> = ({ blogPost }) => {
-  return (
-    <div className={styles.blogpostCard}>
-      <Link className={cn(styles.title, 'font-medium')} to={getBlogPostLink(blogPost)}>
-        {blogPost.title}
-      </Link>
+  const filename = [blogPost.title.replace(/ /g, '-').toLowerCase(), '.md'].join('');
+  const relativeDate = useRelativeDate(blogPost.publishedAt ?? '');
 
-      <div className="text-muted-foreground text-sm">{blogPost.shortDescription}</div>
-    </div>
+  return (
+    <GridCardPrimitive.Root asChild>
+      <Link to={getBlogPostLink(blogPost)} variant="unstyled">
+        <GridCardPrimitive.CardHeader>
+          <GridCardPrimitive.CardHeaderContent>
+            <GridCardPrimitive.CardIcon generateOn={filename} />
+            <GridCardPrimitive.CardHeaderText>{filename}</GridCardPrimitive.CardHeaderText>
+          </GridCardPrimitive.CardHeaderContent>
+          <GridCardPrimitive.CardHeaderBullet generateOn={filename} />
+        </GridCardPrimitive.CardHeader>
+
+        <GridCardPrimitive.CardContent>
+          <GridCardPrimitive.CardTitle>{blogPost.title}</GridCardPrimitive.CardTitle>
+          <GridCardPrimitive.CardDescription>{blogPost.shortDescription}</GridCardPrimitive.CardDescription>
+
+          <GridCardPrimitive.CardFooter>
+            <GridCardPrimitive.CardFooterGroup>
+              <GridCardPrimitive.CardDate>{relativeDate}</GridCardPrimitive.CardDate>
+            </GridCardPrimitive.CardFooterGroup>
+          </GridCardPrimitive.CardFooter>
+        </GridCardPrimitive.CardContent>
+      </Link>
+    </GridCardPrimitive.Root>
   );
 };

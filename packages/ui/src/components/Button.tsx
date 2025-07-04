@@ -5,6 +5,11 @@ import type { ComponentProps, FC } from 'react';
 import { getPaletteClassName, type WithPalette } from '@repo/ui/lib/palette';
 import { cn } from '@repo/ui/lib/utils';
 
+/* -------------------------------------------------------------------------------------------------
+ * Button
+ * -----------------------------------------------------------------------------------------------*/
+const NAME = 'Button';
+
 const buttonVariants = cva(
   "inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap font-medium text-sm outline-none transition-all focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
   {
@@ -44,7 +49,23 @@ const buttonVariants = cva(
   }
 );
 
-type ButtonProps = ComponentProps<'button'> & VariantProps<typeof buttonVariants> & WithPalette & { asChild?: boolean };
+type CommonButtonProps = Omit<ComponentProps<'button'>, 'aria-label'> &
+  Omit<VariantProps<typeof buttonVariants>, 'size'> &
+  WithPalette & {
+    asChild?: boolean;
+  };
+
+type IconButtonProps = CommonButtonProps & {
+  size: 'icon';
+  'aria-label': string;
+};
+
+type RegularButtonProps = CommonButtonProps & {
+  size?: Exclude<VariantProps<typeof buttonVariants>['size'], 'icon'>;
+  'aria-label'?: string;
+};
+
+type ButtonProps = IconButtonProps | RegularButtonProps;
 
 const Button: FC<ButtonProps> = ({ className, variant, size, palette, asChild = false, ...props }) => {
   const Comp = asChild ? Slot : 'button';
@@ -57,4 +78,17 @@ const Button: FC<ButtonProps> = ({ className, variant, size, palette, asChild = 
   );
 };
 
-export { Button, buttonVariants, type ButtonProps };
+Button.displayName = NAME;
+
+/* -----------------------------------------------------------------------------------------------*/
+
+const Root = Button;
+
+export {
+  Root,
+  //
+  Button,
+};
+
+export { buttonVariants };
+export type { ButtonProps };

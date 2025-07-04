@@ -252,6 +252,7 @@ export const AsLink: Story = {
  */
 export const IconOnly: Story = {
   args: {
+    'aria-label': 'Mail',
     children: <MailIcon />,
     size: 'icon',
   },

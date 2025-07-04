@@ -1,27 +1,22 @@
-import { resolve } from 'node:path';
+import { resolve, join} from 'node:path';
 
-import { reactRouter } from '@react-router/dev/vite';
 import tailwindcss from '@tailwindcss/vite';
-import { reactRouterDevTools } from 'react-router-devtools';
-import { reactRouterHonoServer } from 'react-router-hono-server/dev';
 import { defineConfig } from 'vite';
 import babel from 'vite-plugin-babel';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
+import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 export default defineConfig({
   plugins: [
-    tailwindcss(),
+		babel({
+			filter: /\.[j|t]sx?$/,
 
-    {
-      ...babel({
-        filter: /\.tsx?$/,
-
-        babelConfig: {
-          plugins: ['babel-plugin-react-compiler'],
-          presets: ['@babel/preset-typescript'],
-        },
-      }),
-    },
+			babelConfig: {
+				plugins: ['babel-plugin-react-compiler'],
+				presets: ['@babel/preset-typescript'],
+			},
+		}),
+		tailwindcss(),
     tsconfigPaths(),
   ],
 
@@ -47,4 +42,33 @@ export default defineConfig({
       '@widgets': resolve('app/widgets'),
     },
   },
+
+
+	test: {
+		projects: [
+			{
+				extends: true,
+				plugins: [
+					storybookTest({
+						configDir: join(__dirname, '.storybook'),
+						storybookScript: 'pnpm storybook --no-open'
+					})
+				],
+				test: {
+					name: 'storybook/test', // This is where you specify the name of your project and this is what storybook expects
+					browser: {
+						enabled: true,
+						headless: true,
+						provider: 'playwright',
+						instances: [
+							{
+								browser: 'chromium'
+							}
+						]
+					},
+					setupFiles: ['.storybook/vitest.setup.ts']
+				}
+			}
+		]
+	}
 });

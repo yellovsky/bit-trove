@@ -6,6 +6,11 @@ import { cn } from '@repo/ui/lib/utils';
 
 import { getPaletteClassName, type WithPalette } from '../lib/palette';
 
+/* -------------------------------------------------------------------------------------------------
+ * Badge
+ * -----------------------------------------------------------------------------------------------*/
+const NAME = 'Badge';
+
 const badgeVariants = cva(
   'inline-flex w-fit shrink-0 items-center justify-center gap-1 overflow-hidden whitespace-nowrap rounded-md border px-2 py-0.5 font-medium text-xs transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&>svg]:pointer-events-none [&>svg]:size-3 [a&,button&]:cursor-pointer',
   {
@@ -28,6 +33,7 @@ type BadgeProps = ComponentProps<'span'> & VariantProps<typeof badgeVariants> & 
 
 const Badge: FC<BadgeProps> = ({ className, variant, palette, asChild = false, ...props }) => {
   const Comp = asChild ? Slot : 'span';
+
   return (
     <Comp
       className={cn(badgeVariants({ variant }), palette && getPaletteClassName(palette), className)}
@@ -37,4 +43,16 @@ const Badge: FC<BadgeProps> = ({ className, variant, palette, asChild = false, .
   );
 };
 
-export { Badge, badgeVariants, type BadgeProps };
+Badge.displayName = NAME;
+
+/* -----------------------------------------------------------------------------------------------*/
+
+const Root = Badge;
+
+export {
+  Root,
+  //
+  Badge,
+};
+
+export type { BadgeProps };

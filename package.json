@@ -24,7 +24,7 @@
 		"commitizen": "4.3.1",
 		"cz-conventional-changelog": "3.3.0",
 		"knip": "5.61.3",
-		"lefthook": "1.11.14",
+		"lefthook": "1.11.16",
 		"postcss": "8.5.6",
 		"turbo": "2.5.4",
 		"typescript": "5.8.3"

@@ -10,18 +10,15 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   plugins: [
-    tailwindcss(),
+		 babel({
+			filter: /\.[j|t]sx?$/,
+			babelConfig: {
+				plugins: ['babel-plugin-react-compiler', {}],
+				presets: ['@babel/preset-typescript'],
+			},
+		}),
 
-    {
-      ...babel({
-        filter: /\.[j|t]sx?$/,
-        babelConfig: {
-          plugins: ['babel-plugin-react-compiler'],
-          presets: ['@babel/preset-typescript'],
-        },
-      }),
-    },
-
+		tailwindcss(),
     reactRouterDevTools({ client: { position: 'middle-right' } }),
     reactRouter(),
     reactRouterHonoServer({ dev: { exclude: [/^\/(resources)\/.+/], },}),

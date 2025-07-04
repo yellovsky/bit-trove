@@ -4,11 +4,27 @@ import type { ComponentProps, FC } from 'react';
 
 import { cn } from '@repo/ui/lib/utils';
 
-export const Breadcrumb: FC<ComponentProps<'nav'>> = ({ ...props }) => (
-  <nav aria-label="breadcrumb" data-slot="breadcrumb" {...props} />
+/* -------------------------------------------------------------------------------------------------
+ * Breadcrumb
+ * -----------------------------------------------------------------------------------------------*/
+const NAME = 'Breadcrumb';
+
+type BreadcrumbProps = ComponentProps<'nav'>;
+
+const Breadcrumb: FC<BreadcrumbProps> = ({ className, ...props }) => (
+  <nav aria-label="breadcrumb" className={cn(className)} data-slot="breadcrumb" {...props} />
 );
 
-export const BreadcrumbList: FC<ComponentProps<'ol'>> = ({ className, ...props }) => (
+Breadcrumb.displayName = NAME;
+
+/* -------------------------------------------------------------------------------------------------
+ * BreadcrumbList
+ * -----------------------------------------------------------------------------------------------*/
+const LIST_NAME = 'BreadcrumbList';
+
+type BreadcrumbListProps = ComponentProps<'ol'>;
+
+const BreadcrumbList: FC<BreadcrumbListProps> = ({ className, ...props }) => (
   <ol
     className={cn('flex flex-wrap items-center gap-1 break-words text-muted-foreground text-sm sm:gap-1.5', className)}
     data-slot="breadcrumb-list"
@@ -16,17 +32,44 @@ export const BreadcrumbList: FC<ComponentProps<'ol'>> = ({ className, ...props }
   />
 );
 
-export const BreadcrumbItem: FC<ComponentProps<'li'>> = ({ className, ...props }) => (
+BreadcrumbList.displayName = LIST_NAME;
+
+/* -------------------------------------------------------------------------------------------------
+ * BreadcrumbItem
+ * -----------------------------------------------------------------------------------------------*/
+const ITEM_NAME = 'BreadcrumbItem';
+
+type BreadcrumbItemProps = ComponentProps<'li'>;
+
+const BreadcrumbItem: FC<BreadcrumbItemProps> = ({ className, ...props }) => (
   <li className={cn('inline-flex items-center gap-1.5', className)} data-slot="breadcrumb-item" {...props} />
 );
 
-export const BreadcrumbLink: FC<ComponentProps<'a'> & { asChild?: boolean }> = ({ asChild, className, ...props }) => {
+BreadcrumbItem.displayName = ITEM_NAME;
+
+/* -------------------------------------------------------------------------------------------------
+ * BreadcrumbLink
+ * -----------------------------------------------------------------------------------------------*/
+const LINK_NAME = 'BreadcrumbLink';
+
+type BreadcrumbLinkProps = ComponentProps<'a'> & { asChild?: boolean };
+
+const BreadcrumbLink: FC<BreadcrumbLinkProps> = ({ asChild, className, ...props }) => {
   const Comp = asChild ? Slot : 'a';
 
   return <Comp className={cn('transition-colors', className)} data-slot="breadcrumb-link" {...props} />;
 };
 
-export const BreadcrumbPage: FC<ComponentProps<'span'>> = ({ className, ...props }) => (
+BreadcrumbLink.displayName = LINK_NAME;
+
+/* -------------------------------------------------------------------------------------------------
+ * BreadcrumbPage
+ * -----------------------------------------------------------------------------------------------*/
+const PAGE_NAME = 'BreadcrumbPage';
+
+type BreadcrumbPageProps = ComponentProps<'span'>;
+
+const BreadcrumbPage: FC<BreadcrumbPageProps> = ({ className, ...props }) => (
   <span
     aria-current="page"
     aria-disabled="true"
@@ -36,7 +79,16 @@ export const BreadcrumbPage: FC<ComponentProps<'span'>> = ({ className, ...props
   />
 );
 
-export const BreadcrumbSeparator: FC<ComponentProps<'li'>> = ({ children, className, ...props }) => (
+BreadcrumbPage.displayName = PAGE_NAME;
+
+/* -------------------------------------------------------------------------------------------------
+ * BreadcrumbSeparator
+ * -----------------------------------------------------------------------------------------------*/
+const SEPARATOR_NAME = 'BreadcrumbSeparator';
+
+type BreadcrumbSeparatorProps = ComponentProps<'li'>;
+
+const BreadcrumbSeparator: FC<BreadcrumbSeparatorProps> = ({ children, className, ...props }) => (
   <li
     aria-hidden="true"
     className={cn('[&>svg]:size-3', className)}
@@ -48,7 +100,16 @@ export const BreadcrumbSeparator: FC<ComponentProps<'li'>> = ({ children, classN
   </li>
 );
 
-export const BreadcrumbEllipsis: FC<ComponentProps<'span'>> = ({ className, ...props }) => (
+BreadcrumbSeparator.displayName = SEPARATOR_NAME;
+
+/* -------------------------------------------------------------------------------------------------
+ * BreadcrumbEllipsis
+ * -----------------------------------------------------------------------------------------------*/
+const ELLIPSIS_NAME = 'BreadcrumbEllipsis';
+
+type BreadcrumbEllipsisProps = ComponentProps<'span'>;
+
+const BreadcrumbEllipsis: FC<BreadcrumbEllipsisProps> = ({ className, ...props }) => (
   <span
     aria-hidden="true"
     className={cn('flex size-9 items-center justify-center', className)}
@@ -60,3 +121,43 @@ export const BreadcrumbEllipsis: FC<ComponentProps<'span'>> = ({ className, ...p
     <span className="sr-only">More</span>
   </span>
 );
+
+BreadcrumbEllipsis.displayName = ELLIPSIS_NAME;
+
+/* -----------------------------------------------------------------------------------------------*/
+
+const Root = Breadcrumb;
+const List = BreadcrumbList;
+const Item = BreadcrumbItem;
+const Link = BreadcrumbLink;
+const Page = BreadcrumbPage;
+const Separator = BreadcrumbSeparator;
+const Ellipsis = BreadcrumbEllipsis;
+
+export {
+  Root,
+  List,
+  Item,
+  Link,
+  Page,
+  Separator,
+  Ellipsis,
+  //
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+  BreadcrumbEllipsis,
+};
+
+export type {
+  BreadcrumbProps,
+  BreadcrumbListProps,
+  BreadcrumbItemProps,
+  BreadcrumbLinkProps,
+  BreadcrumbPageProps,
+  BreadcrumbSeparatorProps,
+  BreadcrumbEllipsisProps,
+};

@@ -1,0 +1,65 @@
+import { Meta, Title, Primary, Controls, Stories } from '@storybook/addon-docs/blocks';
+
+<Meta isTemplate />
+
+# Breadcrumb
+
+A navigation component that displays a hierarchical trail of links, showing the user's current location within a website or application.
+
+## Features
+
+- **Accessible**: Built with proper ARIA attributes and semantic HTML
+- **Customizable**: Support for custom separators and icons
+- **Responsive**: Adapts to different screen sizes
+- **Composable**: Modular components for flexible layouts
+- **TypeScript**: Full TypeScript support with proper type definitions
+
+## Usage
+
+```tsx
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+  BreadcrumbEllipsis,
+} from '@repo/ui/components/Breadcrumb';
+
+function MyBreadcrumb() {
+  return (
+    <Breadcrumb>
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink href="/">Home</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbLink href="/docs">Documentation</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbPage>Getting Started</BreadcrumbPage>
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
+  );
+}
+```
+
+<Primary />
+
+## Inputs
+
+The component accepts the following inputs (props):
+
+<Controls />
+
+---
+
+## Additional variations
+
+Listed below are additional variations of the component.
+
+<Stories />
