@@ -1,23 +1,90 @@
 {
-  "$schema": "https://turbo.build/schema.json",
-  "ui": "tui",
-  "tasks": {
-    "build": {
-      "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**"]
-    },
-    "lint": {
-      "dependsOn": ["^lint"]
-    },
-    "test": {},
-    "check:unused": {},
-    "check-types": {
-      "dependsOn": ["^check-types"]
-    },
-    "dev": {
-      "cache": false,
-      "persistent": true
-    }
-  }
+	"$schema": "https://turbo.build/schema.json",
+	"ui": "tui",
+	"tasks": {
+		"build": {
+			"dependsOn": [
+				"$TURBO_DEFAULT$",
+				"^build:libs",
+				"^build"
+			],
+			"inputs": [
+				"src/**",
+				"package.json",
+				"tsconfig.json",
+				"vite.config.ts",
+				"eslint.config.js"
+			],
+			"outputs": [
+				"dist/**",
+				"build/**"
+			]
+		},
+		"build:exports": {
+			"cache": true,
+			"inputs": [
+				"src/**/*.ts",
+				"src/**/*.tsx",
+				".barrelsby.json",
+				"barrelsby.json",
+				"package.json"
+			],
+			"outputs": [
+				"src/index.ts"
+			]
+		},
+		"build:libs": {
+			"cache": true,
+			"dependsOn": [
+				"^build:exports"
+			],
+			"inputs": [
+				"src/**",
+				"package.json",
+				"tsconfig.json",
+				"vite.config.ts",
+				"eslint.config.js"
+			],
+			"outputs": [
+				"dist/**"
+			]
+		},
+		"dev": {
+			"cache": false,
+			"dependsOn": [
+				"^build:libs"
+			],
+			"persistent": true
+		},
+		"lint": {
+			"cache": true,
+			"inputs": [
+				"src/**",
+				"eslint.config.js",
+				".eslintrc.*",
+				"package.json",
+				"tsconfig.json"
+			],
+			"outputs": []
+		},
+		"test": {
+			"cache": true,
+			"inputs": [
+				"src/**",
+				"test/**",
+				"vitest.config.ts",
+				"package.json",
+				"tsconfig.json"
+			],
+			"outputs": [
+				"coverage/**"
+			]
+		},
+		"check:unused": {},
+		"check-types": {
+			"dependsOn": [
+				"^check-types"
+			]
+		}
+	}
 }

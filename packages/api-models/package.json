@@ -10,7 +10,7 @@
 	"scripts": {
 		"biome": "biome check",
 		"lint": "biome check",
-		"build": "tsup src/index.ts --format cjs,esm --dts --sourcemap",
+		"build:libs": "tsup src/index.ts --format cjs,esm --dts --sourcemap",
 		"postinstall": "yarn build"
 	},
 	"dependencies": {
