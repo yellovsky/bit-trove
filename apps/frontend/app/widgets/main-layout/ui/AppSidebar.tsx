@@ -20,6 +20,8 @@ import { Logo } from '@shared/ui/Logo';
 
 import { useIsAuthorized } from '@features/auth';
 import { signOutMutationAtom } from '@features/auth/model/sign-out-atom';
+import { getCmsBlogPostsLink } from '@features/blog-posts';
+import { getCmsShardsLink } from '@features/shards';
 
 import { type NavigationItem, NavSection } from './NavSection';
 
@@ -38,7 +40,8 @@ const useNavItemsCms = (): NavigationItem[] => {
 
   return [
     { end: true, title: t('menu_items.cms.title'), to: '/cms' },
-    { title: t('menu_items.shards.title'), to: '/cms/shards' },
+    { title: t('menu_items.blog.title'), to: getCmsBlogPostsLink() },
+    { title: t('menu_items.shards.title'), to: getCmsShardsLink() },
   ];
 };
 

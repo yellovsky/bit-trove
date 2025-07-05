@@ -1,9 +1,12 @@
 export default {
+  'Blog post not found': 'Blog post not found',
   blog_posts_meta_description:
     'Explore comprehensive articles, tutorials, and insights on programming, development, and technology. In-depth content on React, TypeScript, architecture, and more.',
   blog_posts_meta_keywords:
     'programming articles, development tutorials, React guides, TypeScript tips, software architecture, web development, coding tutorials, technical articles',
   blog_posts_meta_title: 'Blog Posts – Comprehensive Programming Articles & Tutorials',
+  'Create blog post failed': 'Create blog post failed',
+  'Create blog post success': 'Create blog post success',
   create_blog_post_button: {
     text: 'Create blog post',
   },
@@ -13,12 +16,15 @@ export default {
     },
     title: 'Create blog post',
   },
+  'Edit blog post': 'Edit Blog Post',
+  'Error loading blog post': 'Error loading blog post',
   edit_blog_post_form: {
     submit_button: {
       text: 'Save blog post',
     },
     title: 'Edit blog post',
   },
+  'Loading blog post': 'Loading blog post...',
   'Update blog post failed': 'Update blog post failed',
   'Update blog post success': 'Update blog post success',
   upsert_blog_post_form: {

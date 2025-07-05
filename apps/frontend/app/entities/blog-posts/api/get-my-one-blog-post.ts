@@ -24,10 +24,20 @@ const makeGetMyOneBlogPostQKey = (variables: GetMyOneBlogPostVariables): GetMyOn
 
 const getMyOneBlogPost =
   (apiClient: ApiClient): QueryFunction<GetOneBlogPostResponse, GetMyOneBlogPostQKey> =>
-  ({ queryKey, signal }) => {
+  async ({ queryKey, signal }) => {
     const variables: GetMyOneBlogPostVariables = queryKey[2];
     const { id } = variables;
-    return apiClient.get<GetOneBlogPostResponse>(`/v1/my/blog-posts/${id}`, { signal });
+
+    try {
+      return await apiClient.get<GetOneBlogPostResponse>(`/v1/my/blog-posts/${id}`, {
+        signal,
+        withCredentials: true,
+      });
+    } catch (error) {
+      // Log error for debugging
+      console.error('Failed to fetch my blog post:', error);
+      throw error;
+    }
   };
 
 const getMyBlogPostQueryResult = (
@@ -46,6 +56,7 @@ export const prefetchMyOneBlogPostQuery = async (
   await queryClient.prefetchQuery({
     queryFn: getMyOneBlogPost(apiClient),
     queryKey: makeGetMyOneBlogPostQKey(variables),
+    staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
   const response = getMyBlogPostQueryResult(queryClient, variables);
@@ -58,7 +69,18 @@ export const useMyBlogPostQuery = (variables: GetMyOneBlogPostVariables) => {
   const apiClient = useApiClient();
 
   return useQuery<GetOneBlogPostResponse, FailedResponse, GetOneBlogPostResponse, GetMyOneBlogPostQKey>({
+    gcTime: 10 * 60 * 1000,
     queryFn: getMyOneBlogPost(apiClient),
-    queryKey: makeGetMyOneBlogPostQKey(variables),
+    queryKey: makeGetMyOneBlogPostQKey(variables), // 5 minutes
+    retry: (failureCount, error) => {
+      // Don't retry on 404 (not found) or 403 (forbidden)
+      if (error.error.httpCode === 404 || error.error.httpCode === 403) {
+        return false;
+      }
+      // Retry up to 3 times for other errors
+      return failureCount < 3;
+    }, // 10 minutes
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+    staleTime: 5 * 60 * 1000, // Exponential backoff
   });
 };

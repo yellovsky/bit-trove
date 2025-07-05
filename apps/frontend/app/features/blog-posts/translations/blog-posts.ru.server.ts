@@ -1,9 +1,12 @@
 export default {
+  'Blog post not found': 'Статья не найдена',
   blog_posts_meta_description:
     'Подробные статьи, руководства и обзоры по программированию, разработке и технологиям. Глубокий контент о React, TypeScript, архитектуре и многом другом.',
   blog_posts_meta_keywords:
     'статьи о программировании, руководства по разработке, React гайды, TypeScript советы, архитектура ПО, веб-разработка, учебники по кодингу, технические статьи',
   blog_posts_meta_title: 'Статьи – Подробные руководства и статьи о программировании',
+  'Create blog post failed': 'Не удалось создать статью',
+  'Create blog post success': 'Статья успешно создана',
   create_blog_post_button: {
     text: 'Создать статью',
   },
@@ -13,12 +16,15 @@ export default {
     },
     title: 'Создать статью',
   },
+  'Edit blog post': 'Редактировать статью',
+  'Error loading blog post': 'Ошибка загрузки статьи',
   edit_blog_post_form: {
     submit_button: {
       text: 'Сохранить статью',
     },
     title: 'Редактировать статью',
   },
+  'Loading blog post': 'Загрузка статьи...',
   'Update blog post failed': 'Не удалось обновить статью',
   'Update blog post success': 'Статья успешно обновлена',
   upsert_blog_post_form: {
