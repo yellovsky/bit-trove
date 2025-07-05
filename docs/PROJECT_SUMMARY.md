@@ -44,8 +44,8 @@ bit-trove/
 - **Styling**: TailwindCSS 4.x with custom design system
 - **State Management**: Jotai + TanStack Query
 - **UI Components**: Radix UI + Shadcn/ui
-- **Rich Text**: TipTap editor
-- **Testing**: Vitest + Playwright + Storybook
+- **Rich Text**: TipTap editor with JSON content storage
+- **Testing**: Vitest + Playwright + Storybook with browser/server test environments
 - **Code Quality**: Biome
 - **Internationalization**: i18next
 
@@ -54,8 +54,10 @@ bit-trove/
 - Client-side navigation with enhanced routing
 - Real-time theme switching (light/dark mode)
 - Responsive design with mobile-first approach
-- Rich text editing capabilities
-- Comprehensive testing setup
+- Rich text editing capabilities with TipTap
+- Blog post management with multilingual support and workflow
+- Reading time calculation and display for all content
+- Comprehensive testing setup with browser/server environments
 
 **Project Structure:**
 ```
@@ -111,6 +113,14 @@ Each module follows DDD layers:
 - **Application**: Use cases, application services
 - **Infrastructure**: Repositories, external services
 - **Presentation**: Controllers, DTOs
+
+**Blog Post Module Features:**
+- Complete CRUD operations with multilingual support
+- Draft/published/archived workflow management
+- Slug generation and availability checking
+- SEO optimization with meta titles and descriptions
+- Reading time calculation and display
+- Role-based access control and content ownership
 
 ## Shared Packages
 
@@ -173,6 +183,9 @@ src/
 - **Naming**: PascalCase for components, camelCase for functions
 - **Imports**: Absolute imports with path aliases
 - **Testing**: Comprehensive test coverage with Vitest
+- **Test Patterns**: Browser tests for components, server tests for backend code
+- **Test Setup**: Global test context with i18n and router providers
+- **Component Testing**: DOM-based testing with Playwright and JSDOM
 
 ### File Organization
 - **Components**: One component per file with named exports
@@ -207,10 +220,18 @@ src/
 - **Session Management**: HTTP-only cookies for security
 
 ### Content Management
-- **Rich Text**: TipTap editor with custom extensions
+- **Blog Posts**: Complete CRUD operations with multilingual support, draft/published/archived workflow, and SEO optimization
+- **Rich Text**: TipTap editor with custom extensions and JSON content storage
 - **Markdown**: Support for markdown content
 - **Media**: Image and video embedding
-- **SEO**: Structured data and meta tags
+- **SEO**: Structured data, meta tags, and reading time metadata
+
+### Reading Time Features
+- **Automatic Calculation**: Reading time calculated at 200 words per minute for all content
+- **Shard Reading Time**: Display reading time on shard cards and detail pages with filtering capabilities
+- **Blog Post Reading Time**: Consistent reading time display on blog post cards and pages
+- **Range Support**: Reading time range from 1 minute (minimum) to 999 minutes (maximum)
+- **Content Extraction**: Reading time calculated from TipTap JSON content, titles, and descriptions
 
 ### Internationalization
 - **Multi-language**: Support for multiple locales
@@ -254,6 +275,14 @@ cd apps/backend
 yarn test             # Unit tests
 yarn test:cov         # Coverage report
 ```
+
+**Testing Architecture:**
+- **Browser Tests**: Component tests using Playwright with JSDOM environment
+- **Server Tests**: Backend and server-side code tests using Node.js environment
+- **Test Setup**: `setup.browser.tsx` provides i18n and router context for component testing
+- **Test Files**: `.browser.test.tsx` files run in browser environment, `.server.test.tsx` files run in server environment
+- **Component Testing**: Components should be tested using browser config as they require DOM access
+- **Test Helpers**: Global test context provides `TestWrapper` component and i18n instance for consistent testing
 
 ### Building
 ```bash
