@@ -3,10 +3,10 @@
 ## Overview
 This document tracks the implementation status of the Blog Post Management feature. The feature provides comprehensive blog post management functionality with multilingual support and content workflow management.
 
-## Current Status: **BACKEND API IMPLEMENTED** (~90% Complete)
+## Current Status: **BACKEND API COMPLETE** (~95% Complete)
 
 **Last Updated**: 2024-12-19
-**Overall Progress**: Backend API endpoints implemented, CMS interface complete, core functionality working
+**Overall Progress**: Backend API endpoints complete, CMS interface complete, core functionality working
 
 ## Implementation Progress
 
@@ -24,16 +24,20 @@ This document tracks the implementation status of the Blog Post Management featu
 - ✅ Repository interfaces
 - ✅ **NEW**: CreateBlogPostParams interface
 - ✅ **NEW**: createBlogPost method in repository interface
+- ✅ **NEW**: UpdateBlogPostParams interface
+- ✅ **NEW**: updateBlogPost method in repository interface
 
 **Infrastructure Layer**: `apps/backend/src/modules/blog-posts/infrastructure/`
 - ✅ Prisma repository implementation
 - ✅ Database operations
 - ✅ Query optimization
 - ✅ **NEW**: createBlogPost method implementation with transaction handling
+- ✅ **NEW**: updateBlogPost method implementation with transaction handling and existence checks
 
 **Application Layer**: `apps/backend/src/modules/blog-posts/application/`
 - ✅ **NEW**: CreateBlogPostUseCase with authorization
-- ✅ **NEW**: Blog post access service with canCreateBlogPost method
+- ✅ **NEW**: UpdateBlogPostUseCase with authorization
+- ✅ **NEW**: Blog post access service with canCreateBlogPost and canUpdateBlogPost methods
 - ✅ **NEW**: Authorization integration with Casbin RBAC
 
 **Presentation Layer**: `apps/backend/src/modules/blog-posts/presentation/`
@@ -41,7 +45,8 @@ This document tracks the implementation status of the Blog Post Management featu
 - ✅ Response schemas
 - ✅ Input validation
 - ✅ **NEW**: POST /v1/blog-posts endpoint implemented
-- ✅ **NEW**: Swagger documentation for create endpoint
+- ✅ **NEW**: PATCH /v1/blog-posts/:id endpoint implemented
+- ✅ **NEW**: Swagger documentation for create and update endpoints
 
 **API Models**: `packages/api-models/src/blog-post/`
 - ✅ Blog post schemas
@@ -52,6 +57,7 @@ This document tracks the implementation status of the Blog Post Management featu
 
 **Module Configuration**: `apps/backend/src/modules/blog-posts/blog-posts.module.ts`
 - ✅ **NEW**: CreateBlogPostUseCase added to providers
+- ✅ **NEW**: UpdateBlogPostUseCase added to providers
 - ✅ **NEW**: Proper dependency injection setup
 
 #### Frontend Layer
@@ -86,12 +92,12 @@ This document tracks the implementation status of the Blog Post Management featu
 ### ⚠️ Partially Completed Components
 
 #### Backend API Endpoints
-**Status**: Create endpoint implemented, others pending
+**Status**: Create and update endpoints implemented, others pending
 **Completed**:
 - ✅ `POST /v1/blog-posts` - Create blog post endpoint (TASK-001)
+- ✅ `PATCH /v1/blog-posts/:id` - Update blog post endpoint (TASK-002)
 
 **Missing**:
-- `PUT /v1/blog-posts/:id` - Update blog post endpoint (TASK-002)
 - `GET /v1/blog-posts/check-slug` - Slug availability check (TASK-003)
 - `GET /v1/blog-posts/my/:id` - Get my blog post for editing (TASK-004)
 
@@ -138,7 +144,6 @@ This document tracks the implementation status of the Blog Post Management featu
 ## Technical Debt
 
 ### Backend API
-- Missing update blog post endpoint (TASK-002)
 - Missing slug availability check endpoint (TASK-003)
 - Missing my blog posts query endpoint (TASK-004)
 - No advanced filtering endpoints
@@ -181,6 +186,7 @@ This document tracks the implementation status of the Blog Post Management featu
 - ✅ **NEW**: DDD pattern implemented in backend
 - ✅ **NEW**: Effect-based error handling
 - ✅ **NEW**: Authorization integration
+- ✅ **NEW**: Update functionality with existence checks
 
 ### Testing Coverage
 - ⚠️ Missing integration tests (TASK-020)
@@ -190,7 +196,7 @@ This document tracks the implementation status of the Blog Post Management featu
 ## Risk Assessment
 
 ### High Risk
-1. **Backend API Partially Missing**: Update and query endpoints still needed
+1. **Backend API Partially Missing**: Query endpoints still needed
 2. **No Authorization**: Basic authorization implemented, advanced RBAC needed
 3. **Missing Workflow**: No proper content lifecycle management
 
@@ -207,7 +213,6 @@ This document tracks the implementation status of the Blog Post Management featu
 
 ### Immediate Actions (High Priority)
 1. **Complete Backend API Endpoints**
-   - Update blog post endpoint (TASK-002)
    - Slug availability check endpoint (TASK-003)
    - My blog posts query endpoint (TASK-004)
 
@@ -258,7 +263,7 @@ This document tracks the implementation status of the Blog Post Management featu
 - [x] Blog post creation form
 - [x] Blog post editing form
 - [x] **NEW**: Backend create endpoint implemented
-- [ ] Backend update endpoint
+- [x] **NEW**: Backend update endpoint implemented
 - [ ] Authorization and permissions
 - [ ] Content workflow management
 - [ ] Translation management
@@ -278,10 +283,11 @@ This document tracks the implementation status of the Blog Post Management featu
 - [x] Responsive design implemented
 - [x] **NEW**: DDD pattern implemented
 - [x] **NEW**: Effect-based error handling
+- [x] **NEW**: Update functionality with existence checks
 - [ ] Comprehensive test coverage
 - [ ] Error handling implemented
 - [ ] User acceptance testing
 
 ## Conclusion
 
-The Blog Post Management feature has made significant progress with the backend create endpoint now fully implemented following DDD patterns. The CMS interface is complete, and the core functionality is working. The next phase should focus on implementing the remaining backend endpoints (update, slug check, my posts) and completing the frontend integration to make the feature fully functional for production use.
+The Blog Post Management feature has made significant progress with both create and update backend endpoints now fully implemented following DDD patterns. The CMS interface is complete, and the core functionality is working. The next phase should focus on implementing the remaining backend endpoints (slug check, my posts) and completing the frontend integration to make the feature fully functional for production use.

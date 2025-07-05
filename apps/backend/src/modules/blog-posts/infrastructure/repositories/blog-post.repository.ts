@@ -18,6 +18,7 @@ import type {
   CreateBlogPostParams,
   FindBySlugParams,
   FindManyBlogPostsParams,
+  UpdateBlogPostParams,
 } from '../../domain/repositories/blog-post.repository';
 import {
   type DBLocalizedBlogPost,
@@ -96,6 +97,70 @@ export class PrismaBlogPostRepository implements BlogPostRepository {
     }).pipe(
       Effect.tapError((error) => {
         if (error instanceof UnknownException) this.#logger.error(`Error creating blog post: ${error.error}`);
+        return Effect.void;
+      })
+    );
+  }
+
+  updateBlogPost(
+    reqCtx: RequestContext,
+    id: string,
+    params: UpdateBlogPostParams
+  ): Effect.Effect<LocalizedBlogPostModel, ExclusionReason | UnknownException> {
+    const tx = reqCtx.tx ?? this.prismaSrv;
+
+    return Effect.gen(this, function* () {
+      this.#logger.debug('Updating blog post');
+      this.#logger.debug(`  > id: ${id}`);
+      this.#logger.debug(`  > params: ${JSON.stringify(params)}`);
+
+      const publishedAt = params.published ? new Date() : null;
+
+      // Check if the blog post exists
+      const existingBlogPost = yield* Effect.tryPromise(() =>
+        tx.localizedBlogPost.findUnique({
+          select: { blogPostId: true },
+          where: { id },
+        })
+      );
+
+      if (!existingBlogPost) {
+        return yield* Effect.fail(new NotFoundReason());
+      }
+
+      // Update the blog post entry
+      yield* Effect.tryPromise(() =>
+        tx.blogPost.update({
+          data: {
+            publishedAt,
+            slug: params.slug,
+          },
+          where: { id: existingBlogPost.blogPostId },
+        })
+      );
+
+      // Update the localized blog post
+      const dbLocalizedBlogPost = yield* Effect.tryPromise(() =>
+        tx.localizedBlogPost.update({
+          data: {
+            contentJSON: params.contentJSON as Prisma.InputJsonValue,
+            languageCode: params.languageCode,
+            publishedAt,
+            seoDescription: params.seoDescription,
+            seoKeywords: params.seoKeywords,
+            seoTitle: params.seoTitle,
+            shortDescription: params.shortDescription,
+            title: params.title,
+          },
+          select: dbLocalizedBlogPostSelect,
+          where: { id },
+        })
+      );
+
+      return this.#mapToModel(dbLocalizedBlogPost);
+    }).pipe(
+      Effect.tapError((error) => {
+        if (error instanceof UnknownException) this.#logger.error(`Error updating blog post: ${error.error}`);
         return Effect.void;
       })
     );

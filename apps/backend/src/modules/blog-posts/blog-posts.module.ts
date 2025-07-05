@@ -7,6 +7,7 @@ import { BLOG_POST_ACCESS_SRV } from './application/services/blog-post-access.se
 import { CreateBlogPostUseCase } from './application/use-cases/create-blog-post.use-case';
 import { GetManyBlogPosstUseCase } from './application/use-cases/get-many-blog-posts.use-case';
 import { GetOneBlogPostUseCase } from './application/use-cases/get-one-blog-post.use-case';
+import { UpdateBlogPostUseCase } from './application/use-cases/update-blog-post.use-case';
 
 import { PrismaBlogPostRepository } from './infrastructure/repositories/blog-post.repository';
 
@@ -21,6 +22,7 @@ import { BlogPostController } from './presentation/blog-post.controller';
     { provide: BLOG_POST_REPOSITORY, useClass: PrismaBlogPostRepository },
     { provide: BLOG_POST_ACCESS_SRV, useClass: BlogPostAccessServiceImpl },
     CreateBlogPostUseCase,
+    UpdateBlogPostUseCase,
     GetOneBlogPostUseCase,
     GetManyBlogPosstUseCase,
   ],

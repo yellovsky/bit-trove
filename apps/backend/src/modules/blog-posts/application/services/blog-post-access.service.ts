@@ -26,6 +26,14 @@ export class BlogPostAccessServiceImpl implements BlogPostAccessService {
     );
   }
 
+  canUpdateBlogPost(reqCtx: RequestContext, id: string): Effect.Effect<void, ExclusionReason | UnknownException> {
+    return this.casbinSrv.checkRequestPermission(reqCtx, 'update', 'blog_post', { id }).pipe(
+      Effect.flatMap((canUpdate) => {
+        return canUpdate ? Effect.succeed(undefined) : Effect.fail(new AccessDeniedReason());
+      })
+    );
+  }
+
   filterCanReadLocalizedBlogPost(
     reqCtx: RequestContext,
     blogPost: LocalizedBlogPostModel

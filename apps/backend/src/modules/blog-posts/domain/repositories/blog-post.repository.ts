@@ -23,6 +23,18 @@ export interface CreateBlogPostParams {
   title: string;
 }
 
+export interface UpdateBlogPostParams {
+  contentJSON: JSONContent | null;
+  languageCode: string;
+  published: boolean;
+  seoDescription: string | null;
+  seoKeywords: string | null;
+  seoTitle: string | null;
+  shortDescription: string;
+  slug: string;
+  title: string;
+}
+
 export interface FindBySlugParams {
   slug: string;
   languageCode: string;
@@ -48,6 +60,12 @@ export interface BlogPostRepository {
   createBlogPost(
     reqCtx: RequestContext,
     params: CreateBlogPostParams
+  ): Effect.Effect<LocalizedBlogPostModel, ExclusionReason | UnknownException>;
+
+  updateBlogPost(
+    reqCtx: RequestContext,
+    id: string,
+    params: UpdateBlogPostParams
   ): Effect.Effect<LocalizedBlogPostModel, ExclusionReason | UnknownException>;
 
   findOneLocalizedById(

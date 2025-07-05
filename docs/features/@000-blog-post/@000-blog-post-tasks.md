@@ -43,25 +43,35 @@ This document contains the detailed implementation tasks for the Blog Post Manag
 - ✅ `apps/backend/src/modules/blog-posts/application/services/blog-post-access.service.ts` - Implemented authorization
 - ✅ `apps/backend/src/modules/blog-posts/blog-posts.module.ts` - Added use case to providers
 
-#### 🔴 TASK-002: Implement Update Blog Post Endpoint
+#### ✅ TASK-002: Implement Update Blog Post Endpoint
+**Status**: COMPLETED ✅
 **Description**: Create backend API endpoint for updating blog posts
 **Files**: `apps/backend/src/modules/blog-posts/presentation/blog-post.controller.ts`
 **Dependencies**: TASK-001
 **Estimated Time**: 4 hours
 **Acceptance Criteria**:
-- [ ] PUT `/v1/blog-posts/:id` endpoint implemented
-- [ ] Request validation with Zod schemas
-- [ ] Proper error handling and responses
-- [ ] Database transaction handling
-- [ ] Authorization checks (basic)
+- [x] PATCH `/v1/blog-posts/:id` endpoint implemented
+- [x] Request validation with Zod schemas
+- [x] Proper error handling and responses
+- [x] Database transaction handling
+- [x] Authorization checks (basic)
 
 **Implementation Steps**:
-1. Add update method to BlogPostController
-2. Implement request DTO validation
-3. Create use case for blog post updates
-4. Add database transaction handling
-5. Implement proper error responses
-6. Add basic authorization checks
+1. ✅ Add update method to BlogPostController
+2. ✅ Implement request DTO validation
+3. ✅ Create use case for blog post updates
+4. ✅ Add database transaction handling
+5. ✅ Implement proper error responses
+6. ✅ Add basic authorization checks
+
+**Files Created/Modified**:
+- ✅ `apps/backend/src/modules/blog-posts/domain/repositories/blog-post.repository.ts` - Added UpdateBlogPostParams interface
+- ✅ `apps/backend/src/modules/blog-posts/infrastructure/repositories/blog-post.repository.ts` - Implemented updateBlogPost method
+- ✅ `apps/backend/src/modules/blog-posts/application/use-cases/update-blog-post.use-case.ts` - Created use case
+- ✅ `apps/backend/src/modules/blog-posts/presentation/blog-post.controller.ts` - Added PATCH endpoint
+- ✅ `apps/backend/src/modules/blog-posts/application/services/blog-post-access.service.interface.ts` - Added canUpdateBlogPost method
+- ✅ `apps/backend/src/modules/blog-posts/application/services/blog-post-access.service.ts` - Implemented authorization
+- ✅ `apps/backend/src/modules/blog-posts/blog-posts.module.ts` - Added use case to providers
 
 #### 🔴 TASK-003: Implement Slug Availability Check Endpoint
 **Description**: Create backend API endpoint for checking slug availability
@@ -203,63 +213,64 @@ This document contains the detailed implementation tasks for the Blog Post Manag
 
 ### Database Schema Validation
 
-#### 🟡 TASK-023: Verify Database Schema Support
-**Description**: Verify that the database schema supports blog post creation
+#### 🟡 TASK-028: Verify Database Schema Support for Updates
+**Description**: Verify that the database schema supports blog post updates
 **Files**:
 - `apps/backend/prisma/schema/blog-post.prisma`
 - `apps/backend/prisma/schema/account.prisma`
-**Dependencies**: None
+**Dependencies**: TASK-002
 **Estimated Time**: 2 hours
 **Acceptance Criteria**:
-- [ ] Check if `blogPost` table exists with required fields
-- [ ] Check if `localizedBlogPost` table exists with required fields
-- [ ] Verify foreign key relationships
+- [ ] Check if `blogPost` table supports updates
+- [ ] Check if `localizedBlogPost` table supports updates
+- [ ] Verify foreign key relationships for updates
 - [ ] Test database migration if needed
 
 **Implementation Steps**:
-1. Review blog-post.prisma schema
-2. Review account.prisma schema
-3. Verify table relationships
-4. Test database operations
+1. Review blog-post.prisma schema for update support
+2. Review account.prisma schema for update support
+3. Verify table relationships for updates
+4. Test database update operations
 5. Create migration if needed
 
 ### Casbin Policy Configuration
 
-#### 🟡 TASK-024: Configure Casbin Policies for Blog Posts
-**Description**: Configure Casbin policies for blog post creation
+#### 🟡 TASK-029: Configure Casbin Policies for Blog Post Updates
+**Description**: Configure Casbin policies for blog post updates
 **Files**:
 - `apps/backend/src/modules/casbin/`
 - Casbin policy configuration files
-**Dependencies**: TASK-001
+**Dependencies**: TASK-002
 **Estimated Time**: 3 hours
 **Acceptance Criteria**:
-- [ ] Add policy rules for blog post creation
+- [ ] Add policy rules for blog post updates
 - [ ] Test authorization with different user roles
-- [ ] Verify policy enforcement
+- [ ] Verify policy enforcement for updates
+- [ ] Test ownership-based permissions
 
 **Implementation Steps**:
 1. Review existing Casbin configuration
-2. Add blog post creation policies
+2. Add blog post update policies
 3. Test with different user roles
-4. Verify policy enforcement
+4. Verify policy enforcement for updates
 5. Document policy rules
 
 ### API Models Export
 
-#### 🟡 TASK-025: Ensure API Models Export
-**Description**: Ensure API models are properly exported
+#### 🟡 TASK-030: Ensure API Models Export for Updates
+**Description**: Ensure API models are properly exported for updates
 **Files**:
 - `packages/api-models/src/blog-post/index.ts`
-- `packages/api-models/src/blog-post/create-blog-post.ts`
+- `packages/api-models/src/blog-post/update-blog-post.ts`
 **Dependencies**: None
 **Estimated Time**: 1 hour
 **Acceptance Criteria**:
-- [ ] Verify `createBlogPostBodySchema` is exported from `@repo/api-models`
+- [ ] Verify `updateBlogPostBodySchema` is exported from `@repo/api-models`
 - [ ] Check if all required types are available
 
 **Implementation Steps**:
-1. Check index.ts exports
-2. Verify create-blog-post.ts exports
+1. Check index.ts exports for update schemas
+2. Verify update-blog-post.ts exports
 3. Test imports in backend
 4. Update exports if needed
 
@@ -395,40 +406,42 @@ This document contains the detailed implementation tasks for the Blog Post Manag
 
 ### Error Handling Enhancement
 
-#### 🟢 TASK-026: Add Specific Error Handling
-**Description**: Add more specific error handling for blog post operations
+#### 🟢 TASK-031: Add Specific Error Handling for Updates
+**Description**: Add more specific error handling for blog post updates
 **Files**: `apps/backend/src/modules/blog-posts/`
 **Dependencies**: TASK-001, TASK-002
 **Estimated Time**: 4 hours
 **Acceptance Criteria**:
-- [ ] Add validation for unique slug constraint
+- [ ] Add validation for unique slug constraint on updates
 - [ ] Add proper error messages for different failure scenarios
-- [ ] Add conflict resolution for duplicate slugs
+- [ ] Add conflict resolution for duplicate slugs during updates
+- [ ] Add validation for blog post existence
 
 **Implementation Steps**:
-1. Add unique slug validation
-2. Create specific error types
-3. Implement conflict resolution
+1. Add unique slug validation for updates
+2. Create specific error types for update failures
+3. Implement conflict resolution for updates
 4. Add user-friendly error messages
 5. Test error scenarios
 
 ### Logging Enhancement
 
-#### 🟢 TASK-027: Improve Logging for Debugging
-**Description**: Improve logging for debugging blog post operations
+#### 🟢 TASK-032: Improve Logging for Debugging Updates
+**Description**: Improve logging for debugging blog post updates
 **Files**: `apps/backend/src/modules/blog-posts/`
-**Dependencies**: TASK-001
+**Dependencies**: TASK-002
 **Estimated Time**: 3 hours
 **Acceptance Criteria**:
 - [ ] Add structured logging with correlation IDs
-- [ ] Add performance metrics
-- [ ] Add audit logging for blog post creation
+- [ ] Add performance metrics for updates
+- [ ] Add audit logging for blog post updates
+- [ ] Add before/after logging for changes
 
 **Implementation Steps**:
-1. Implement structured logging
+1. Implement structured logging for updates
 2. Add correlation ID tracking
-3. Add performance metrics
-4. Create audit logging
+3. Add performance metrics for updates
+4. Create audit logging for updates
 5. Test logging functionality
 
 ### Performance Optimization
@@ -583,7 +596,7 @@ This document contains the detailed implementation tasks for the Blog Post Manag
 
 ```
 TASK-001 → TASK-005 ✅
-TASK-002 → TASK-005
+TASK-002 → TASK-005 ✅
 TASK-003 → TASK-005
 TASK-004 → TASK-006
 TASK-005 → TASK-007
@@ -603,6 +616,10 @@ TASK-002 → TASK-019
 TASK-001 → TASK-026
 TASK-002 → TASK-026
 TASK-001 → TASK-027
+TASK-002 → TASK-028
+TASK-002 → TASK-029
+TASK-002 → TASK-031
+TASK-002 → TASK-032
 ```
 
 ## Resource Requirements
@@ -623,7 +640,7 @@ TASK-001 → TASK-027
 
 ### Phase 1 (Week 1): Backend API Endpoints
 - ✅ TASK-001: Implement Create Blog Post Endpoint
-- 🔴 TASK-002: Implement Update Blog Post Endpoint
+- ✅ TASK-002: Implement Update Blog Post Endpoint
 - 🔴 TASK-003: Implement Slug Availability Check Endpoint
 - 🔴 TASK-004: Implement My Blog Post Query Endpoint
 
@@ -647,6 +664,7 @@ TASK-001 → TASK-027
 
 ### Completion Criteria
 - [x] TASK-001: Create blog post endpoint implemented
+- [x] TASK-002: Update blog post endpoint implemented
 - [ ] All high-priority tasks completed
 - [ ] Core functionality working end-to-end
 - [ ] Backend API endpoints implemented

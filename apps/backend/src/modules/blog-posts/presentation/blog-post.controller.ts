@@ -1,9 +1,14 @@
-import { Body, Controller, Get, Inject, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Patch, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Effect } from 'effect';
 import type * as zod from 'zod';
 
-import { createBlogPostBodySchema, getManyBlogPostsQuerySchema, getOneBlogPostQuerySchema } from '@repo/api-models';
+import {
+  createBlogPostBodySchema,
+  getManyBlogPostsQuerySchema,
+  getOneBlogPostQuerySchema,
+  updateBlogPostBodySchema,
+} from '@repo/api-models';
 
 import { Public } from 'src/shared/decorators/public';
 import { ListResponsePaginationDto } from 'src/shared/dto/list-response-pagination.dto';
@@ -14,6 +19,7 @@ import { ZodValidationPipe } from 'src/shared/utils/zod-validation-pipe';
 import { CreateBlogPostUseCase } from '../application/use-cases/create-blog-post.use-case';
 import { GetManyBlogPosstUseCase } from '../application/use-cases/get-many-blog-posts.use-case';
 import { GetOneBlogPostUseCase } from '../application/use-cases/get-one-blog-post.use-case';
+import { UpdateBlogPostUseCase } from '../application/use-cases/update-blog-post.use-case';
 import { LocalizedShortBlogPostModel } from '../domain/models/localized-short-blog-post.model';
 import { GetManyBlogPostsResponseDto } from './dtos/get-many-blog-posts-reponse.dto';
 import { GetOneBlogPostResponseDto } from './dtos/get-one-blog-post-reponse.dto';
@@ -24,6 +30,9 @@ export class BlogPostController {
   constructor(
     @Inject(CreateBlogPostUseCase)
     private readonly createBlogPostUseCase: CreateBlogPostUseCase,
+
+    @Inject(UpdateBlogPostUseCase)
+    private readonly updateBlogPostUseCase: UpdateBlogPostUseCase,
 
     @Inject(GetOneBlogPostUseCase)
     private readonly getOneBlogPostUseCase: GetOneBlogPostUseCase,
@@ -42,6 +51,25 @@ export class BlogPostController {
   ): Promise<GetOneBlogPostResponseDto> {
     const pipeline: Effect.Effect<GetOneBlogPostResponseDto, ExclusionReason> = this.createBlogPostUseCase
       .execute(reqCtx, body)
+      .pipe(
+        Effect.map((blogPostModel) => GetOneBlogPostResponseDto.fromModel(blogPostModel)),
+        Effect.mapError((err) => (err instanceof ExclusionReason ? err : new UnknownReason()))
+      );
+
+    return Effect.runPromise(pipeline);
+  }
+
+  @Patch(':id')
+  @ApiOperation({ summary: 'Update a blog post' })
+  @ApiResponse({ description: 'Returns the updated blog post', status: 200 })
+  async update(
+    @ReqCtx() reqCtx: RequestContext,
+    @Param('id') id: string,
+    @Body(new ZodValidationPipe(updateBlogPostBodySchema))
+    body: zod.infer<typeof updateBlogPostBodySchema>
+  ): Promise<GetOneBlogPostResponseDto> {
+    const pipeline: Effect.Effect<GetOneBlogPostResponseDto, ExclusionReason> = this.updateBlogPostUseCase
+      .execute(reqCtx, id, body)
       .pipe(
         Effect.map((blogPostModel) => GetOneBlogPostResponseDto.fromModel(blogPostModel)),
         Effect.mapError((err) => (err instanceof ExclusionReason ? err : new UnknownReason()))

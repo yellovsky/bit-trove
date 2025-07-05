@@ -11,6 +11,8 @@ import type { LocalizedShortBlogPostModel } from '../../domain/models/localized-
 export interface BlogPostAccessService {
   canCreateBlogPost(reqCtx: RequestContext): Effect.Effect<void, ExclusionReason | UnknownException>;
 
+  canUpdateBlogPost(reqCtx: RequestContext, id: string): Effect.Effect<void, ExclusionReason | UnknownException>;
+
   filterCanReadLocalizedBlogPost(
     reqCtx: RequestContext,
     blogPost: LocalizedBlogPostModel
