@@ -1,10 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Effect } from 'effect';
 
 import type { GetManyBlogPostsResponse, ItemsWithPagination } from '@repo/api-models';
 
 import { ListResponsePaginationDto } from 'src/shared/dto/list-response-pagination.dto';
+import type { ExclusionReason } from 'src/shared/excluded';
 
-import type { LocalizedShortBlogPostModel } from '../../domain/models/localized-short-blog-post.model';
+import type { BlogPostModel } from '../../domain/models/blog-post.model';
 import { ShortBlogPostDto } from './short-blog-post.dto';
 
 class ShortBlogPostItemsWithPaginationDto implements ItemsWithPagination<ShortBlogPostDto> {
@@ -19,6 +21,10 @@ class ShortBlogPostItemsWithPaginationDto implements ItemsWithPagination<ShortBl
     type: ListResponsePaginationDto,
   })
   readonly pagination!: ListResponsePaginationDto;
+
+  constructor(data: ShortBlogPostItemsWithPaginationDto) {
+    Object.assign(this, data);
+  }
 }
 
 export class GetManyBlogPostsResponseDto implements GetManyBlogPostsResponse {
@@ -34,16 +40,34 @@ export class GetManyBlogPostsResponseDto implements GetManyBlogPostsResponse {
   readonly data!: ShortBlogPostItemsWithPaginationDto;
 
   static fromModel(
-    models: LocalizedShortBlogPostModel[],
+    models: BlogPostModel[],
     pagination: ListResponsePaginationDto
-  ): GetManyBlogPostsResponseDto {
-    return new GetManyBlogPostsResponseDto(models, pagination);
+  ): Effect.Effect<GetManyBlogPostsResponseDto, ExclusionReason> {
+    const skipped: number[] = [];
+
+    return Effect.allSuccesses(
+      models.map((model, index) =>
+        ShortBlogPostDto.fromModel(model).pipe(
+          Effect.tapError(() => {
+            skipped.push(index);
+            return Effect.void;
+          })
+        )
+      )
+    ).pipe(
+      Effect.map(
+        (items) =>
+          new GetManyBlogPostsResponseDto({
+            data: new ShortBlogPostItemsWithPaginationDto({
+              items,
+              pagination: ListResponsePaginationDto.from({ ...pagination, skipped }),
+            }),
+          })
+      )
+    );
   }
 
-  constructor(models: LocalizedShortBlogPostModel[], pagination: ListResponsePaginationDto) {
-    this.data = {
-      items: models.map((model) => ShortBlogPostDto.fromModel(model)),
-      pagination,
-    };
+  constructor(data: Omit<GetManyBlogPostsResponseDto, 'status'>) {
+    Object.assign(this, data);
   }
 }

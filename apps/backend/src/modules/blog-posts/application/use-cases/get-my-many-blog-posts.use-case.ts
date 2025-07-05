@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Effect } from 'effect';
 import type { UnknownException } from 'effect/Cause';
 
@@ -13,7 +13,9 @@ import type { BlogPostModel } from '../../domain/models/blog-post.model';
 import { BLOG_POSTS_REPOSITORY, type FindManyBlogPostsParams } from '../../domain/repositories/blog-posts.repository';
 
 @Injectable()
-export class GetManyBlogPostsUseCase {
+export class GetMyManyBlogPostsUseCase {
+  #logger = new Logger(GetMyManyBlogPostsUseCase.name);
+
   constructor(
     @Inject(BLOG_POSTS_REPOSITORY)
     private readonly repository: IdentifierOf<typeof BLOG_POSTS_REPOSITORY>
@@ -26,11 +28,10 @@ export class GetManyBlogPostsUseCase {
     { items: Array<ExclusionReason | BlogPostModel>; total: number },
     ExclusionReason | UnknownException
   > {
+    this.#logger.log(` > query ${JSON.stringify(query)}`);
+
     const params: FindManyBlogPostsParams = {
-      filter: {
-        languageCodeIn: query.filter?.languageCodeIn,
-        published: true,
-      },
+      filter: { authorId: reqCtx.accountId, languageCodeIn: query.filter?.languageCodeIn },
       orderBy: sortToOrderBy(query.sort),
       skip: query.page.offset,
       take: query.page.limit,

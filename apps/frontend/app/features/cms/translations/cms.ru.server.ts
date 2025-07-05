@@ -1,0 +1,15 @@
+export default {
+  all_languages: 'Все языки',
+  all_statuses: 'Все статусы',
+  created_at: 'Дата создания',
+  delete_action: 'Удалить',
+  draft: 'Черновик',
+  edit_action: 'Редактировать',
+  error_loading_data: 'Ошибка загрузки данных',
+  loading: 'Загрузка...',
+  no_results_found: 'Результаты не найдены',
+  publish_action: 'Опубликовать',
+  published: 'Опубликовано',
+  search_placeholder: 'Поиск статей...',
+  unpublish_action: 'Снять с публикации',
+} as const;

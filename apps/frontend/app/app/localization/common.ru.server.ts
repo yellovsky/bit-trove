@@ -48,6 +48,7 @@ export default {
       text: 'Что-то пошло не так!',
     },
   },
+  error_loading_data: 'Ошибка загрузки данных',
 
   error_page: {
     '404': {
@@ -63,6 +64,13 @@ export default {
       title: 'Что-то пошло не так на нашей стороне.',
     },
   },
+
+  language: {
+    all: 'Все',
+    en: 'English',
+    ru: 'Русский',
+  },
+  loading: 'Загрузка...',
   menu_items: {
     blog: {
       seoDescription: 'Страница блога',
@@ -85,4 +93,8 @@ export default {
   meta_general_keywords:
     'личный блог о программировании, блог про JavaScript, блог про React, статьи про MobX, советы по TypeScript, функциональное программирование, архитектура ПО, эксперименты с кодом, заметки разработчика, фронтенд разработка, блог веб-разработчика, effect-ts на практике, управление состоянием с RxJS, собственные редакторы на React	,',
   meta_title_suffix: 'BitTrove',
+  no_results_found: 'Ничего не найдено',
+  search: {
+    placeholder: 'Поиск',
+  },
 };

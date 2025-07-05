@@ -5,20 +5,20 @@ import { localeSchema } from '../common/locale';
 import { getSuccessResponseSchema } from '../common/success-response';
 import { blogPostSchema } from './blog-post';
 
-export const updateBlogPostBodySchema = zod.object({
-  contentJSON: jsonContentSchema.nullable(),
+export const upsertBlogPostBodySchema = zod.object({
+  contentJSON: jsonContentSchema,
+  entryId: zod.string().nullable(),
   languageCode: localeSchema,
   published: zod.boolean(),
   seoDescription: zod.string().nullable(),
   seoKeywords: zod.string().nullable(),
   seoTitle: zod.string().nullable(),
-  shortDescription: zod.string().min(1),
+  shortDescription: zod.string().nullable(),
   slug: zod.string().min(1),
+  tags: zod.string().array(),
   title: zod.string().min(1),
 });
+export type UpsertBlogPostBody = zod.infer<typeof upsertBlogPostBodySchema>;
 
-export type UpdateBlogPostBody = zod.infer<typeof updateBlogPostBodySchema>;
-
-export const updateBlogPostResponseSchema = getSuccessResponseSchema(blogPostSchema);
-
-export type UpdateBlogPostResponse = zod.infer<typeof updateBlogPostResponseSchema>;
+export const upsertBlogPostResponseSchema = getSuccessResponseSchema(blogPostSchema);
+export type UpsertBlogPostResponse = zod.infer<typeof upsertBlogPostResponseSchema>;

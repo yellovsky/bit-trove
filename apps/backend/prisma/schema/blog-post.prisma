@@ -1,5 +1,6 @@
-model LocalizedBlogPost {
-  id String @id @default(uuid()) @map("id")
+model BlogPost {
+  id   String @id @default(uuid()) @map("id")
+  slug String @unique @map("slug")
 
   languageCode String   @map("language_code")
   language     Language @relation(fields: [languageCode], references: [code])
@@ -8,22 +9,41 @@ model LocalizedBlogPost {
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at")
 
+  author   Account? @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  authorId String?  @map("author_id")
+
   title            String  @map("title")
-  shortDescription String  @map("short_description")
+  shortDescription String? @map("short_description")
   contentJSON      Json?   @map("content_json")
+  readingTime      Int     @default(1) @map("reading_time")
   seoTitle         String? @map("seo_title")
   seoDescription   String? @map("seo_description")
   seoKeywords      String? @map("seo_keywords")
 
+  tags BlogPostTag[]
+
+  entryId String        @map("entry_id")
+  entry   BlogPostEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+
+  @@map("blog_posts")
+}
+
+model BlogPostTag {
   blogPostId String   @map("blog_post_id")
   blogPost   BlogPost @relation(fields: [blogPostId], references: [id], onDelete: Cascade)
 
-  @@map("localized_blog_posts")
+  tagId String @map("tag_id")
+  tag   Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  order Int @map("order")
+
+  @@id([blogPostId, tagId])
+  @@unique([blogPostId, order])
+  @@map("blog_post_tags")
 }
 
-model BlogPost {
-  id   String @id @default(uuid()) @map("id")
-  slug String @unique @map("slug")
+model BlogPostEntry {
+  id String @id @default(uuid()) @map("id")
 
   publishedAt DateTime? @map("published_at")
   createdAt   DateTime  @default(now()) @map("created_at")
@@ -32,7 +52,7 @@ model BlogPost {
   author   Account? @relation(fields: [authorId], references: [id], onDelete: SetNull)
   authorId String?  @map("author_id")
 
-  localizations LocalizedBlogPost[]
+  blogPosts BlogPost[]
 
-  @@map("blog_posts")
+  @@map("blog_post_entries")
 }

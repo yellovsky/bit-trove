@@ -3,7 +3,7 @@ import type { ChangeEvent, FC } from 'react';
 import { type Control, type SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { type BlogPost, type CreateBlogPostBody, failedResponseSchema } from '@repo/api-models';
+import { type BlogPost, failedResponseSchema, type UpsertBlogPostBody } from '@repo/api-models';
 import { Button } from '@repo/ui/components/Button';
 import { Fieldset as UiFieldset } from '@repo/ui/components/Fieldset';
 import {
@@ -26,7 +26,7 @@ import { Editor, useEditor } from '@widgets/editor';
 import { checkBlogPostSlugAvailability } from '../api/check-blog-post-slug-availability';
 
 interface ControlProps {
-  control: Control<CreateBlogPostBody>;
+  control: Control<UpsertBlogPostBody>;
 }
 
 const PublishController: FC<ControlProps> = ({ control }) => {
@@ -297,8 +297,9 @@ const ContentController: FC<ControlProps & { editor: TiptapEditor | null }> = ({
   );
 };
 
-const getDefaultValues = (languageCode: string): CreateBlogPostBody => ({
-  contentJSON: null,
+const getDefaultValues = (languageCode: string): UpsertBlogPostBody => ({
+  contentJSON: [],
+  entryId: null,
   languageCode,
   published: false,
   seoDescription: '',
@@ -306,14 +307,15 @@ const getDefaultValues = (languageCode: string): CreateBlogPostBody => ({
   seoTitle: '',
   shortDescription: '',
   slug: '',
+  tags: [],
   title: '',
 });
 
 interface CreateBlogPostFormProps {
   isLoading?: boolean;
-  onSubmit: (data: CreateBlogPostBody) => Promise<BlogPost>;
+  onSubmit: (data: UpsertBlogPostBody) => Promise<BlogPost>;
   onSuccess?: (data: BlogPost) => void;
-  defaultValues?: CreateBlogPostBody;
+  defaultValues?: UpsertBlogPostBody;
   mode: 'create' | 'update';
   id?: string;
 }
@@ -328,14 +330,14 @@ export const CreateBlogPostForm: React.FC<CreateBlogPostFormProps> = (props) => 
   const { t: tBlogPosts } = useTranslation('blog_posts');
 
   const defaultValues = props.defaultValues ?? getDefaultValues(i18n.language);
-  const form = useForm<CreateBlogPostBody>({ defaultValues, mode: 'onChange', reValidateMode: 'onChange' });
+  const form = useForm<UpsertBlogPostBody>({ defaultValues, mode: 'onChange', reValidateMode: 'onChange' });
 
   const editor = useEditor({
     content: defaultValues.contentJSON,
     onUpdate: ({ editor }) => form.setValue('contentJSON', editor.getJSON()),
   });
 
-  const submitHandler: SubmitHandler<CreateBlogPostBody> = async (data) => {
+  const submitHandler: SubmitHandler<UpsertBlogPostBody> = async (data) => {
     try {
       const blogPost = await props.onSubmit(data);
       props.onSuccess?.(blogPost);

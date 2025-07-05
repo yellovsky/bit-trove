@@ -48,6 +48,7 @@ export default {
       text: 'Something went wrong!',
     },
   },
+  error_loading_data: 'Error loading data',
 
   error_page: {
     '404': {
@@ -64,6 +65,12 @@ export default {
       title: 'Something went wrong on our end.',
     },
   },
+  language: {
+    all: 'All',
+    en: 'English',
+    ru: 'Русский',
+  },
+  loading: 'Loading...',
   menu_items: {
     blog: {
       seoDescription: 'Blog page',
@@ -86,4 +93,8 @@ export default {
   meta_general_keywords:
     'personal programming blog, JavaScript blog, React blog, MobX tutorials, TypeScript tips, functional programming, software architecture, code experiments, developer notes, frontend engineering, web development blog, effect-ts, RxJS state management, custom editors in React',
   meta_title_suffix: 'BitTrove',
+  no_results_found: 'No results found',
+  search: {
+    placeholder: 'Search',
+  },
 };

@@ -3,12 +3,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Effect } from 'effect';
 import type * as zod from 'zod';
 
-import {
-  createBlogPostBodySchema,
-  getManyBlogPostsQuerySchema,
-  getOneBlogPostQuerySchema,
-  updateBlogPostBodySchema,
-} from '@repo/api-models';
+import { getManyBlogPostsQuerySchema, getOneBlogPostQuerySchema, upsertBlogPostBodySchema } from '@repo/api-models';
 
 import { Public } from 'src/shared/decorators/public';
 import { ListResponsePaginationDto } from 'src/shared/dto/list-response-pagination.dto';
@@ -18,10 +13,10 @@ import { ZodValidationPipe } from 'src/shared/utils/zod-validation-pipe';
 
 import { CheckBlogPostSlugAvailabilityUseCase } from '../application/use-cases/check-blog-post-slug-availability.use-case';
 import { CreateBlogPostUseCase } from '../application/use-cases/create-blog-post.use-case';
-import { GetManyBlogPosstUseCase } from '../application/use-cases/get-many-blog-posts.use-case';
+import { GetManyBlogPostsUseCase } from '../application/use-cases/get-many-blog-posts.use-case';
 import { GetOneBlogPostUseCase } from '../application/use-cases/get-one-blog-post.use-case';
 import { UpdateBlogPostUseCase } from '../application/use-cases/update-blog-post.use-case';
-import { LocalizedShortBlogPostModel } from '../domain/models/localized-short-blog-post.model';
+import { BlogPostModel } from '../domain/models/blog-post.model';
 import {
   BlogPostSlugAvailabilityDto,
   CheckBlogPostSlugAvailabilityResponseDto,
@@ -42,8 +37,8 @@ export class BlogPostController {
     @Inject(GetOneBlogPostUseCase)
     private readonly getOneBlogPostUseCase: GetOneBlogPostUseCase,
 
-    @Inject(GetManyBlogPosstUseCase)
-    private readonly getManyBlogPosstUseCase: GetManyBlogPosstUseCase,
+    @Inject(GetManyBlogPostsUseCase)
+    private readonly getManyBlogPostsUseCase: GetManyBlogPostsUseCase,
 
     @Inject(CheckBlogPostSlugAvailabilityUseCase)
     private readonly checkBlogPostSlugAvailabilityUseCase: CheckBlogPostSlugAvailabilityUseCase
@@ -54,13 +49,13 @@ export class BlogPostController {
   @ApiResponse({ description: 'Returns the created blog post', status: 200 })
   async create(
     @ReqCtx() reqCtx: RequestContext,
-    @Body(new ZodValidationPipe(createBlogPostBodySchema))
-    body: zod.infer<typeof createBlogPostBodySchema>
+    @Body(new ZodValidationPipe(upsertBlogPostBodySchema))
+    body: zod.infer<typeof upsertBlogPostBodySchema>
   ): Promise<GetOneBlogPostResponseDto> {
     const pipeline: Effect.Effect<GetOneBlogPostResponseDto, ExclusionReason> = this.createBlogPostUseCase
       .execute(reqCtx, body)
       .pipe(
-        Effect.map((blogPostModel) => GetOneBlogPostResponseDto.fromModel(blogPostModel)),
+        Effect.flatMap((blogPostModel) => GetOneBlogPostResponseDto.fromModel(blogPostModel)),
         Effect.mapError((err) => (err instanceof ExclusionReason ? err : new UnknownReason()))
       );
 
@@ -73,13 +68,13 @@ export class BlogPostController {
   async update(
     @ReqCtx() reqCtx: RequestContext,
     @Param('id') id: string,
-    @Body(new ZodValidationPipe(updateBlogPostBodySchema))
-    body: zod.infer<typeof updateBlogPostBodySchema>
+    @Body(new ZodValidationPipe(upsertBlogPostBodySchema))
+    body: zod.infer<typeof upsertBlogPostBodySchema>
   ): Promise<GetOneBlogPostResponseDto> {
     const pipeline: Effect.Effect<GetOneBlogPostResponseDto, ExclusionReason> = this.updateBlogPostUseCase
       .execute(reqCtx, id, body)
       .pipe(
-        Effect.map((blogPostModel) => GetOneBlogPostResponseDto.fromModel(blogPostModel)),
+        Effect.flatMap((blogPostModel) => GetOneBlogPostResponseDto.fromModel(blogPostModel)),
         Effect.mapError((err) => (err instanceof ExclusionReason ? err : new UnknownReason()))
       );
 
@@ -115,15 +110,15 @@ export class BlogPostController {
     @Query(new ZodValidationPipe(getManyBlogPostsQuerySchema))
     query: zod.infer<typeof getManyBlogPostsQuerySchema>
   ): Promise<GetManyBlogPostsResponseDto> {
-    const pipeline: Effect.Effect<GetManyBlogPostsResponseDto, ExclusionReason> = this.getManyBlogPosstUseCase
+    const pipeline: Effect.Effect<GetManyBlogPostsResponseDto, ExclusionReason> = this.getManyBlogPostsUseCase
       .execute(reqCtx, query)
       .pipe(
-        Effect.map(({ items, total }) => {
-          const filtered: LocalizedShortBlogPostModel[] = [];
+        Effect.flatMap(({ items, total }) => {
+          const filtered: BlogPostModel[] = [];
           const skipped: number[] = [];
 
           items.forEach((item, index) => {
-            if (item instanceof LocalizedShortBlogPostModel) filtered.push(item);
+            if (item instanceof BlogPostModel) filtered.push(item);
             else skipped.push(index);
           });
 
@@ -151,7 +146,7 @@ export class BlogPostController {
     const pipeline: Effect.Effect<GetOneBlogPostResponseDto, ExclusionReason> = this.getOneBlogPostUseCase
       .execute(reqCtx, slugOrId, query)
       .pipe(
-        Effect.map((blogPostModel) => GetOneBlogPostResponseDto.fromModel(blogPostModel)),
+        Effect.flatMap((blogPostModel) => GetOneBlogPostResponseDto.fromModel(blogPostModel)),
         Effect.mapError((err) => (err instanceof ExclusionReason ? err : new UnknownReason()))
       );
 

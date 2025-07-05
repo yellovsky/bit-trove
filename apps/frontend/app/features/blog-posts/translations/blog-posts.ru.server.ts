@@ -25,6 +25,10 @@ export default {
     title: 'Редактировать статью',
   },
   'Loading blog post': 'Загрузка статьи...',
+  'Publish blog post failed': 'Не удалось опубликовать статью',
+  'Publish blog post success': 'Статья успешно опубликована',
+  'Unpublish blog post failed': 'Не удалось снять с публикации статью',
+  'Unpublish blog post success': 'Статья успешно снята с публикации',
   'Update blog post failed': 'Не удалось обновить статью',
   'Update blog post success': 'Статья успешно обновлена',
   upsert_blog_post_form: {

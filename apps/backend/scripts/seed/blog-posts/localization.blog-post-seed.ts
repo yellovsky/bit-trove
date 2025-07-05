@@ -1,6 +1,8 @@
 import type { PrismaClient } from '@generated/prisma';
 
-const contentRu = {
+import { testAccountId } from '../account.seed';
+
+const contentJSON = {
   content: [
     {
       content: [
@@ -101,31 +103,34 @@ const contentRu = {
 };
 
 export const seedLocalizationBlogPost = async (tx: PrismaClient) => {
-  const publishedAt = Date.now();
+  const createdAt = new Date('Fri, 13 Jun 2025 07:46:51 GMT');
+  const publishedAt = createdAt;
+
+  const entry = await tx.blogPostEntry.create({
+    data: {
+      authorId: testAccountId,
+      createdAt,
+      publishedAt,
+    },
+  });
 
   await tx.blogPost.create({
     data: {
-      localizations: {
-        createMany: {
-          data: [
-            {
-              contentJSON: contentRu,
-              languageCode: 'ru',
-              publishedAt: new Date(publishedAt + 1000),
-              seoDescription:
-                'Узнайте, как добавить локализацию в Remix-приложение с помощью remix-i18next. Подробный гайд по настройке переводов, определению локали, работе с ICU-форматом и смене языка. Улучшите UX и accessibility вашего проекта.',
-              seoKeywords:
-                'Remix локализация, Remix i18n, remix-i18next, перевод в Remix, ICU формат, i18next Remix, смена языка Remix, интернационализация Remix, локализация приложения, перевод UI Remix',
-              seoTitle: 'Как локализовать приложение на Remix',
-              shortDescription:
-                'Узнайте, как добавить локализацию в Remix-приложение с помощью remix-i18next. Подробный гайд по настройке переводов, определению локали, работе с ICU-форматом и смене языка. Улучшите UX и accessibility вашего проекта.',
-              title: 'Как локализовать приложение на Remix',
-            },
-          ],
-        },
-      },
-      publishedAt: new Date(publishedAt),
+      authorId: testAccountId,
+      contentJSON,
+      createdAt,
+      entryId: entry.id,
+      languageCode: 'ru',
+      publishedAt,
+      seoDescription:
+        'Узнайте, как добавить локализацию в Remix-приложение с помощью remix-i18next. Подробный гайд по настройке переводов, определению локали, работе с ICU-форматом и смене языка. Улучшите UX и accessibility вашего проекта.',
+      seoKeywords:
+        'Remix локализация, Remix i18n, remix-i18next, перевод в Remix, ICU формат, i18next Remix, смена языка Remix, интернационализация Remix, локализация приложения, перевод UI Remix',
+      seoTitle: 'Как локализовать приложение на Remix',
+      shortDescription:
+        'Узнайте, как добавить локализацию в Remix-приложение с помощью remix-i18next. Подробный гайд по настройке переводов, определению локали, работе с ICU-форматом и смене языка. Улучшите UX и accessibility вашего проекта.',
       slug: 'how-to-localize-remix-app',
+      title: 'Как локализовать приложение на Remix',
     },
   });
 };

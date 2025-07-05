@@ -5,30 +5,24 @@ import type { ExclusionReason } from 'src/shared/excluded';
 import type { InjectableIdentifier } from 'src/shared/utils/injectable-identifier';
 import type { RequestContext } from 'src/shared/utils/request-context';
 
-import type { LocalizedBlogPostModel } from '../../domain/models/localized-blog-post.model';
-import type { LocalizedShortBlogPostModel } from '../../domain/models/localized-short-blog-post.model';
+import type { BlogPostModel } from '../../domain/models/blog-post.model';
 
 export interface BlogPostAccessService {
-  canCreateBlogPost(reqCtx: RequestContext): Effect.Effect<void, ExclusionReason | UnknownException>;
-
-  canUpdateBlogPost(reqCtx: RequestContext, id: string): Effect.Effect<void, ExclusionReason | UnknownException>;
-
-  canReadMyBlogPost(reqCtx: RequestContext, id: string): Effect.Effect<void, ExclusionReason | UnknownException>;
-
-  filterCanReadLocalizedBlogPost(
+  filterCanReadBlogPost(
     reqCtx: RequestContext,
-    blogPost: LocalizedBlogPostModel
-  ): Effect.Effect<LocalizedBlogPostModel, ExclusionReason | UnknownException>;
+    blogPost: BlogPostModel
+  ): Effect.Effect<BlogPostModel, ExclusionReason | UnknownException>;
 
-  filterCanReadShortLocalizedBlogPost(
+  filterCanReadBlogPostList(
     reqCtx: RequestContext,
-    blogPost: LocalizedShortBlogPostModel
-  ): Effect.Effect<LocalizedShortBlogPostModel, ExclusionReason | UnknownException>;
+    blogPosts: BlogPostModel[]
+  ): Effect.Effect<Array<BlogPostModel | ExclusionReason>, UnknownException>;
 
-  filterCanReadLocalizedShortBlogPostList(
+  canCreateBlogPost(reqCtx: RequestContext): Effect.Effect<true, ExclusionReason | UnknownException>;
+  canUpdateBlogPost(
     reqCtx: RequestContext,
-    blogPosts: LocalizedShortBlogPostModel[]
-  ): Effect.Effect<Array<LocalizedShortBlogPostModel | ExclusionReason>, UnknownException>;
+    blogPost: BlogPostModel
+  ): Effect.Effect<true, ExclusionReason | UnknownException>;
 }
 
 export const BLOG_POST_ACCESS_SRV = 'BLOG_POST_ACCESS_SRV' as InjectableIdentifier<BlogPostAccessService>;

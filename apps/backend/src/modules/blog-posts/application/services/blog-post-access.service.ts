@@ -1,15 +1,14 @@
 import { Inject } from '@nestjs/common';
-import { Effect } from 'effect';
+import { Effect, pipe } from 'effect';
 import type { UnknownException } from 'effect/Cause';
 
-import { AccessDeniedReason, ExclusionReason } from 'src/shared/excluded';
+import { ExclusionReason } from 'src/shared/excluded';
 import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
 import type { RequestContext } from 'src/shared/utils/request-context';
 
 import { CASBIN_SRV } from 'src/modules/casbin';
 
-import type { LocalizedBlogPostModel } from '../../domain/models/localized-blog-post.model';
-import type { LocalizedShortBlogPostModel } from '../../domain/models/localized-short-blog-post.model';
+import type { BlogPostModel } from '../../domain/models/blog-post.model';
 import type { BlogPostAccessService } from './blog-post-access.service.interface';
 
 export class BlogPostAccessServiceImpl implements BlogPostAccessService {
@@ -18,60 +17,37 @@ export class BlogPostAccessServiceImpl implements BlogPostAccessService {
     private readonly casbinSrv: IdentifierOf<typeof CASBIN_SRV>
   ) {}
 
-  canCreateBlogPost(reqCtx: RequestContext): Effect.Effect<void, ExclusionReason | UnknownException> {
-    return this.casbinSrv.checkRequestPermission(reqCtx, 'create', 'blog_post', {}).pipe(
-      Effect.flatMap((canCreate) => {
-        return canCreate ? Effect.succeed(undefined) : Effect.fail(new AccessDeniedReason());
-      })
-    );
+  canCreateBlogPost(reqCtx: RequestContext): Effect.Effect<true, ExclusionReason | UnknownException> {
+    return this.casbinSrv.checkRequestPermission(reqCtx, 'create', 'blogPost', {});
   }
 
-  canUpdateBlogPost(reqCtx: RequestContext, id: string): Effect.Effect<void, ExclusionReason | UnknownException> {
-    return this.casbinSrv.checkRequestPermission(reqCtx, 'update', 'blog_post', { id }).pipe(
-      Effect.flatMap((canUpdate) => {
-        return canUpdate ? Effect.succeed(undefined) : Effect.fail(new AccessDeniedReason());
-      })
-    );
-  }
-
-  canReadMyBlogPost(reqCtx: RequestContext, id: string): Effect.Effect<void, ExclusionReason | UnknownException> {
-    return this.casbinSrv.checkRequestPermission(reqCtx, 'read', 'blog_post', { id }).pipe(
-      Effect.flatMap((canRead) => {
-        return canRead ? Effect.succeed(undefined) : Effect.fail(new AccessDeniedReason());
-      })
-    );
-  }
-
-  filterCanReadLocalizedBlogPost(
+  filterCanReadBlogPost(
     reqCtx: RequestContext,
-    blogPost: LocalizedBlogPostModel
-  ): Effect.Effect<LocalizedBlogPostModel, ExclusionReason | UnknownException> {
-    return this.casbinSrv.checkRequestPermission(reqCtx, 'read', 'blog_post', blogPost).pipe(
-      Effect.flatMap((canRead) => {
-        return canRead ? Effect.succeed(blogPost) : Effect.fail(new AccessDeniedReason());
-      })
+    blogPost: BlogPostModel | BlogPostModel
+  ): Effect.Effect<BlogPostModel | BlogPostModel, ExclusionReason | UnknownException> {
+    return pipe(
+      this.casbinSrv.checkRequestPermission(reqCtx, 'read', 'blogPost', blogPost),
+      Effect.map(() => blogPost)
     );
   }
 
-  filterCanReadShortLocalizedBlogPost(
+  filterCanReadBlogPostList(
     reqCtx: RequestContext,
-    blogPost: LocalizedShortBlogPostModel
-  ): Effect.Effect<LocalizedShortBlogPostModel, ExclusionReason | UnknownException> {
-    return this.casbinSrv
-      .checkRequestPermission(reqCtx, 'read', 'blog_post', blogPost)
-      .pipe(Effect.flatMap((canRead) => (canRead ? Effect.succeed(blogPost) : Effect.fail(new AccessDeniedReason()))));
-  }
-
-  filterCanReadLocalizedShortBlogPostList(
-    reqCtx: RequestContext,
-    blogPosts: LocalizedShortBlogPostModel[]
-  ): Effect.Effect<Array<LocalizedShortBlogPostModel | ExclusionReason>, UnknownException> {
+    blogPosts: BlogPostModel[]
+  ): Effect.Effect<Array<BlogPostModel | ExclusionReason>, UnknownException> {
     return Effect.all(
       blogPosts.map((blogPost) =>
-        this.filterCanReadShortLocalizedBlogPost(reqCtx, blogPost).pipe(
+        this.filterCanReadBlogPost(reqCtx, blogPost).pipe(
           Effect.catchAll((err) => (err instanceof ExclusionReason ? Effect.succeed(err) : Effect.fail(err)))
         )
       )
     );
+  }
+
+  canUpdateBlogPost(
+    reqCtx: RequestContext,
+    blogPost: BlogPostModel
+  ): Effect.Effect<true, ExclusionReason | UnknownException> {
+    return this.casbinSrv.checkRequestPermission(reqCtx, 'update', 'blogPost', blogPost);
   }
 }

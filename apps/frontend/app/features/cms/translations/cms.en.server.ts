@@ -1,0 +1,15 @@
+export default {
+  all_languages: 'All Languages',
+  all_statuses: 'All Statuses',
+  created_at: 'Created At',
+  delete_action: 'Delete',
+  draft: 'Draft',
+  edit_action: 'Edit',
+  error_loading_data: 'Error loading data',
+  loading: 'Loading...',
+  no_results_found: 'No results found',
+  publish_action: 'Publish',
+  published: 'Published',
+  search_placeholder: 'Search blog posts...',
+  unpublish_action: 'Unpublish',
+} as const;

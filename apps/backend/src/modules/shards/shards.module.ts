@@ -1,5 +1,9 @@
 import { Module } from '@nestjs/common';
 
+import { CasbinModule } from 'src/modules/casbin';
+import { PrismaModule } from 'src/modules/prisma';
+import { TagsModule } from 'src/modules/tags';
+
 import { SHARDS_REPOSITORY } from './domain/repositories/shards.repository';
 
 import { ShardsServiceImpl } from './application/services/shards.service';
@@ -18,9 +22,6 @@ import { UpdateShardUseCase } from './application/use-cases/update-shard.use-cas
 
 import { PrismaShardsRepository } from './infrastructure/repositories/shards.repository';
 
-import { CasbinModule } from '../casbin';
-import { PrismaModule } from '../prisma';
-import { TagsModule } from '../tags';
 import { CmsShardsController } from './presentation/cms-shards.controller';
 import { MyShardsController } from './presentation/my-shards.controller';
 import { ShardsController } from './presentation/shards.controller';

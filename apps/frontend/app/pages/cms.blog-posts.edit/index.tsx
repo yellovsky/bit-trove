@@ -7,7 +7,12 @@ import { Heading } from '@repo/ui/components/Typography';
 import { CreateBlogPostForm, getCmsBlogPostsLink } from '@features/blog-posts';
 import { type AppBreadcrumb, Breadcrumbs } from '@features/breadcrumbs';
 
-import { type UpdateBlogPostVariables, useMyBlogPostQuery, useUpdateBlogPostMutation } from '@entities/blog-posts';
+import {
+  type CreateBlogPostVariables,
+  type UpdateBlogPostVariables,
+  useMyBlogPostQuery,
+  useUpdateBlogPostMutation,
+} from '@entities/blog-posts';
 
 export default function CMSBlogPostsEditRoute(props: { params: { id: string } }) {
   const navigate = useNavigate();
@@ -35,6 +40,22 @@ export default function CMSBlogPostsEditRoute(props: { params: { id: string } })
     { label: t('menu_items.blog.title'), to: '/cms/blog-posts' },
     { label: tBlogPosts('Edit blog post'), to: `/cms/blog-posts/edit/${props.params.id}` },
   ].filter(Boolean) as AppBreadcrumb[];
+
+  const defaultValues: CreateBlogPostVariables | undefined = !blogPost
+    ? undefined
+    : {
+        contentJSON: blogPost.data.contentJSON ?? [],
+        entryId: blogPost.data.entryId,
+        languageCode: blogPost.data.languageCode,
+        published: blogPost.data.publishedAt !== null,
+        seoDescription: blogPost.data.seo.description,
+        seoKeywords: blogPost.data.seo.keywords,
+        seoTitle: blogPost.data.seo.title,
+        shortDescription: blogPost.data.shortDescription,
+        slug: blogPost.data.slug,
+        tags: blogPost.data.tags.map((tag) => tag.name),
+        title: blogPost.data.title,
+      };
 
   if (isLoadingBlogPost) {
     return (
@@ -85,17 +106,7 @@ export default function CMSBlogPostsEditRoute(props: { params: { id: string } })
       </Heading>
 
       <CreateBlogPostForm
-        defaultValues={{
-          contentJSON: blogPost.data.contentJSON,
-          languageCode: blogPost.data.languageCode,
-          published: blogPost.data.publishedAt !== null,
-          seoDescription: blogPost.data.seo.description,
-          seoKeywords: blogPost.data.seo.keywords,
-          seoTitle: blogPost.data.seo.title,
-          shortDescription: blogPost.data.shortDescription,
-          slug: blogPost.data.slug,
-          title: blogPost.data.title,
-        }}
+        defaultValues={defaultValues}
         id={props.params.id}
         isLoading={status === 'pending'}
         mode="update"

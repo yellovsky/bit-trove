@@ -5,7 +5,7 @@ import { pageRequestSchema } from '../common/page-request';
 import { getItemsWithPaginationSchema, getSuccessResponseSchema } from '../common/success-response';
 import { shortBlogPostSchema } from './blog-post';
 
-const getManyBlogPostsSortSchema = zod.union([
+export const getManyBlogPostsSortSchema = zod.union([
   zod.literal('createdAt'),
   zod.literal('-createdAt'),
 

@@ -25,6 +25,10 @@ export default {
     title: 'Edit blog post',
   },
   'Loading blog post': 'Loading blog post...',
+  'Publish blog post failed': 'Publish blog post failed',
+  'Publish blog post success': 'Publish blog post success',
+  'Unpublish blog post failed': 'Unpublish blog post failed',
+  'Unpublish blog post success': 'Unpublish blog post success',
   'Update blog post failed': 'Update blog post failed',
   'Update blog post success': 'Update blog post success',
   upsert_blog_post_form: {

@@ -14,6 +14,7 @@ const makeFakeShard = (): ShortShard => {
     id: faker.string.uuid(),
     languageCode: 'en',
     publishedAt: faker.date.past().toUTCString(),
+    readingTime: 1,
     shortDescription: faker.lorem.sentence(),
     slug: faker.lorem.slug(),
     tags: [

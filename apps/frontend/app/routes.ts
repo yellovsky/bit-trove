@@ -26,6 +26,8 @@ export default [
           route('shards/create', 'pages/cms.shards.create/index.tsx'),
           route('shards/:id/edit', 'pages/cms.shards.edit/index.tsx'),
           route('blog-posts', 'pages/cms.blog-posts/index.tsx'),
+          route('blog-posts/create', 'pages/cms.blog-posts.create/index.tsx'),
+          route('blog-posts/:id/edit', 'pages/cms.blog-posts.edit/index.tsx'),
         ])
       ),
 
