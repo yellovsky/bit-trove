@@ -68,6 +68,8 @@ export interface BlogPostRepository {
     params: UpdateBlogPostParams
   ): Effect.Effect<LocalizedBlogPostModel, ExclusionReason | UnknownException>;
 
+  getBlogPostIdBySlug(reqCtx: RequestContext, slug: string): Effect.Effect<string | null, UnknownException>;
+
   findOneLocalizedById(
     reqCtx: RequestContext,
     id: string

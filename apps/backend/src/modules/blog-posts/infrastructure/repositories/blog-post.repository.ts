@@ -166,6 +166,14 @@ export class PrismaBlogPostRepository implements BlogPostRepository {
     );
   }
 
+  getBlogPostIdBySlug(reqCtx: RequestContext, slug: string): Effect.Effect<string | null, UnknownException> {
+    const tx = reqCtx.tx ?? this.prismaSrv;
+
+    return Effect.tryPromise(() => tx.blogPost.findUnique({ where: { slug } })).pipe(
+      Effect.map((blogPost) => blogPost?.id ?? null)
+    );
+  }
+
   findManyLocalized(
     reqCtx: RequestContext,
     params: FindManyBlogPostsParams

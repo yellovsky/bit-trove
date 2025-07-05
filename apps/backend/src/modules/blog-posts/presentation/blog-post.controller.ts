@@ -16,11 +16,16 @@ import { ExclusionReason, UnknownReason } from 'src/shared/excluded';
 import { ReqCtx, type RequestContext } from 'src/shared/utils/request-context';
 import { ZodValidationPipe } from 'src/shared/utils/zod-validation-pipe';
 
+import { CheckBlogPostSlugAvailabilityUseCase } from '../application/use-cases/check-blog-post-slug-availability.use-case';
 import { CreateBlogPostUseCase } from '../application/use-cases/create-blog-post.use-case';
 import { GetManyBlogPosstUseCase } from '../application/use-cases/get-many-blog-posts.use-case';
 import { GetOneBlogPostUseCase } from '../application/use-cases/get-one-blog-post.use-case';
 import { UpdateBlogPostUseCase } from '../application/use-cases/update-blog-post.use-case';
 import { LocalizedShortBlogPostModel } from '../domain/models/localized-short-blog-post.model';
+import {
+  BlogPostSlugAvailabilityDto,
+  CheckBlogPostSlugAvailabilityResponseDto,
+} from './dtos/blog-post-slug-availability-response.dto';
 import { GetManyBlogPostsResponseDto } from './dtos/get-many-blog-posts-reponse.dto';
 import { GetOneBlogPostResponseDto } from './dtos/get-one-blog-post-reponse.dto';
 
@@ -38,7 +43,10 @@ export class BlogPostController {
     private readonly getOneBlogPostUseCase: GetOneBlogPostUseCase,
 
     @Inject(GetManyBlogPosstUseCase)
-    private readonly getManyBlogPosstUseCase: GetManyBlogPosstUseCase
+    private readonly getManyBlogPosstUseCase: GetManyBlogPosstUseCase,
+
+    @Inject(CheckBlogPostSlugAvailabilityUseCase)
+    private readonly checkBlogPostSlugAvailabilityUseCase: CheckBlogPostSlugAvailabilityUseCase
   ) {}
 
   @Post()
@@ -78,10 +86,30 @@ export class BlogPostController {
     return Effect.runPromise(pipeline);
   }
 
+  @Get('check-slug-availability/:slug')
+  @ApiOperation({ summary: 'Check if a blog post slug is available' })
+  @ApiResponse({ description: 'Returns the availability of the blog post slug', status: 200 })
+  async checkSlugAvailability(
+    @ReqCtx() reqCtx: RequestContext,
+    @Param('slug') slug: string
+  ): Promise<CheckBlogPostSlugAvailabilityResponseDto> {
+    const pipeline: Effect.Effect<CheckBlogPostSlugAvailabilityResponseDto, ExclusionReason> =
+      this.checkBlogPostSlugAvailabilityUseCase.execute(reqCtx, slug).pipe(
+        Effect.map((takenBy) => {
+          return new CheckBlogPostSlugAvailabilityResponseDto({
+            data: new BlogPostSlugAvailabilityDto(takenBy ? { available: false, takenBy } : { available: true }),
+          });
+        }),
+        Effect.mapError((err) => (err instanceof ExclusionReason ? err : new UnknownReason()))
+      );
+
+    return Effect.runPromise(pipeline);
+  }
+
   @Get()
   @Public()
-  @ApiOperation({ summary: 'Get a blog post by slug or ID' })
-  @ApiResponse({ description: 'Returns the blog post', status: 200 })
+  @ApiOperation({ summary: 'Get many blog posts' })
+  @ApiResponse({ description: 'Returns the blog posts', status: 200 })
   async getMany(
     @ReqCtx() reqCtx: RequestContext,
     @Query(new ZodValidationPipe(getManyBlogPostsQuerySchema))
