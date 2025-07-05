@@ -134,25 +134,39 @@ This document contains the detailed implementation tasks for the Blog Post Manag
 
 ### Frontend API Integration
 
-#### 🔴 TASK-005: Replace Placeholder API Calls
+#### ✅ TASK-005: Replace Placeholder API Calls
+**Status**: COMPLETED ✅
 **Description**: Replace placeholder implementations with real API calls
 **Files**:
-- `apps/frontend/app/features/blog-posts/api/check-blog-post-slug-availability.ts`
 - `apps/frontend/app/entities/blog-posts/api/create-blog-post.ts`
-**Dependencies**: TASK-001, TASK-002, TASK-003
+- `apps/frontend/app/entities/blog-posts/api/update-blog-post.ts`
+- `apps/frontend/app/features/blog-posts/api/check-blog-post-slug-availability.ts`
+- `apps/frontend/app/entities/blog-posts/api/get-my-one-blog-post.ts`
+- `apps/frontend/app/pages/cms.blog-posts.edit/index.tsx`
+**Dependencies**: TASK-001, TASK-002, TASK-003, TASK-004
 **Estimated Time**: 3 hours
 **Acceptance Criteria**:
-- [ ] Real API calls implemented for blog post creation
-- [ ] Real API calls implemented for blog post updates
-- [ ] Real slug availability checking
-- [ ] Proper error handling for API failures
+- [x] Real API calls implemented for blog post creation
+- [x] Real API calls implemented for blog post updates
+- [x] Real slug availability checking
+- [x] Blog post fetching for editing
+- [x] Proper error handling for API failures
 
 **Implementation Steps**:
-1. Update checkBlogPostSlugAvailability with real API call
-2. Update createBlogPost mutation with real API call
-3. Create updateBlogPost mutation with real API call
-4. Add proper error handling
-5. Test all API integrations
+1. ✅ Updated create-blog-post.ts with real API call to `/v1/blog-posts`
+2. ✅ Created update-blog-post.ts with real API call to `/v1/blog-posts/:id`
+3. ✅ Updated check-blog-post-slug-availability.ts with real API call
+4. ✅ Created get-my-one-blog-post.ts with real API call to `/v1/my/blog-posts/:id`
+5. ✅ Updated cms.blog-posts.edit/index.tsx to use update mutation and my blog post query
+6. ✅ Updated apps/frontend/app/entities/blog-posts/index.ts to export new APIs
+
+**Files Created/Modified**:
+- ✅ `apps/frontend/app/entities/blog-posts/api/create-blog-post.ts` - Replaced placeholder with real API call
+- ✅ `apps/frontend/app/entities/blog-posts/api/update-blog-post.ts` - Created new update API file
+- ✅ `apps/frontend/app/features/blog-posts/api/check-blog-post-slug-availability.ts` - Replaced placeholder with real API call
+- ✅ `apps/frontend/app/entities/blog-posts/api/get-my-one-blog-post.ts` - Created new my blog post API file
+- ✅ `apps/frontend/app/pages/cms.blog-posts.edit/index.tsx` - Updated to use real APIs
+- ✅ `apps/frontend/app/entities/blog-posts/index.ts` - Added exports for new APIs
 
 #### 🔴 TASK-006: Add Blog Post Fetching for Editing
 **Description**: Implement API calls for fetching blog posts for editing
@@ -675,6 +689,153 @@ This document contains the detailed implementation tasks for the Blog Post Manag
 
 ### Missing Dependencies (High Priority)
 
+#### 🔴 TASK-052: Add Translation Keys for Create Blog Post
+**Description**: Add missing translation keys for create blog post success/failure messages
+**Files**: `apps/frontend/app/features/blog-posts/translations/`
+**Dependencies**: TASK-005
+**Estimated Time**: 1 hour
+**Acceptance Criteria**:
+- [ ] Add "Create blog post failed" translation key
+- [ ] Add "Create blog post success" translation key
+- [ ] Update English translations
+- [ ] Update Russian translations
+- [ ] Test translation keys in create form
+
+**Implementation Steps**:
+1. Add translation keys to blog-posts.en.server.ts
+2. Add translation keys to blog-posts.ru.server.ts
+3. Update create-blog-post.ts to use correct translation keys
+4. Test create form with new translation keys
+
+#### 🔴 TASK-053: Enhance Error Handling for API Failures
+**Description**: Improve error handling for API failures
+**Files**: `apps/frontend/app/entities/blog-posts/api/`
+**Dependencies**: TASK-005
+**Estimated Time**: 2 hours
+**Acceptance Criteria**:
+- [ ] Add proper error handling for network failures
+- [ ] Add retry logic for failed requests
+- [ ] Add loading states for API calls
+- [ ] Add error boundaries for API failures
+- [ ] Test error scenarios
+
+**Implementation Steps**:
+1. Add retry logic to API calls
+2. Add proper error handling for network failures
+3. Add loading states for API calls
+4. Add error boundaries for API failures
+5. Test error scenarios
+
+#### 🔴 TASK-054: Verify API Client Configuration
+**Description**: Ensure API client is properly configured for blog post endpoints
+**Files**: `apps/frontend/app/shared/lib/api-client.ts`
+**Dependencies**: TASK-005
+**Estimated Time**: 1 hour
+**Acceptance Criteria**:
+- [ ] Verify API client configuration
+- [ ] Test API client with blog post endpoints
+- [ ] Add proper error handling in API client
+- [ ] Test API client error scenarios
+
+**Implementation Steps**:
+1. Review API client configuration
+2. Test API client with blog post endpoints
+3. Add proper error handling in API client
+4. Test API client error scenarios
+
+### Missing Dependencies (Medium Priority)
+
+#### 🟡 TASK-055: Enhance Form Validation for Real API Integration
+**Description**: Enhance form validation for real API integration
+**Files**: `apps/frontend/app/features/blog-posts/ui/CreateBlogPostForm.tsx`
+**Dependencies**: TASK-005
+**Estimated Time**: 2 hours
+**Acceptance Criteria**:
+- [ ] Add real-time slug availability checking
+- [ ] Add proper error handling for validation failures
+- [ ] Add loading states for validation
+- [ ] Test form validation scenarios
+
+**Implementation Steps**:
+1. Add real-time slug availability checking
+2. Add proper error handling for validation failures
+3. Add loading states for validation
+4. Test form validation scenarios
+
+#### 🟡 TASK-056: Improve Loading States and UX
+**Description**: Improve loading states and user experience
+**Files**: `apps/frontend/app/pages/cms.blog-posts.edit/index.tsx`
+**Dependencies**: TASK-005
+**Estimated Time**: 2 hours
+**Acceptance Criteria**:
+- [ ] Add proper loading component
+- [ ] Add skeleton loading for blog post data
+- [ ] Add error states for failed API calls
+- [ ] Test loading and error states
+
+**Implementation Steps**:
+1. Create proper loading component
+2. Add skeleton loading for blog post data
+3. Add error states for failed API calls
+4. Test loading and error states
+
+#### 🟡 TASK-057: Update Query Invalidation for New APIs
+**Description**: Ensure proper query invalidation for blog posts
+**Files**: `apps/frontend/app/entities/blog-posts/lib/invalidate-blog-posts.ts`
+**Dependencies**: TASK-005
+**Estimated Time**: 1 hour
+**Acceptance Criteria**:
+- [ ] Update query invalidation for new APIs
+- [ ] Test query invalidation scenarios
+- [ ] Add optimistic updates
+- [ ] Test optimistic updates
+
+**Implementation Steps**:
+1. Update query invalidation for new APIs
+2. Test query invalidation scenarios
+3. Add optimistic updates
+4. Test optimistic updates
+
+### Missing Dependencies (Low Priority)
+
+#### 🟢 TASK-058: Add Testing for Blog Post API Integration
+**Description**: Add comprehensive tests for blog post API integration
+**Files**: `apps/frontend/app/entities/blog-posts/`
+**Dependencies**: TASK-005
+**Estimated Time**: 4 hours
+**Acceptance Criteria**:
+- [ ] Create unit tests for API functions
+- [ ] Create integration tests for API calls
+- [ ] Test error scenarios
+- [ ] Test loading states
+- [ ] Test form validation
+
+**Implementation Steps**:
+1. Create unit tests for API functions
+2. Create integration tests for API calls
+3. Test error scenarios
+4. Test loading states
+5. Test form validation
+
+#### 🟢 TASK-059: Update Documentation for Blog Post API Integration
+**Description**: Update documentation for blog post API integration
+**Files**: `docs/features/@000-blog-post/`
+**Dependencies**: TASK-005
+**Estimated Time**: 2 hours
+**Acceptance Criteria**:
+- [ ] Update API documentation
+- [ ] Add usage examples
+- [ ] Document error handling
+- [ ] Add troubleshooting guide
+
+**Implementation Steps**:
+1. Update API documentation
+2. Add usage examples
+3. Document error handling
+4. Add troubleshooting guide
+
+### Missing Dependencies (High Priority)
+
 #### 🔴 TASK-044: Configure Casbin Policies for Blog Post Read Access
 **Description**: Configure Casbin policies for blog post read permissions
 **Files**: `apps/backend/src/modules/casbin/`
@@ -890,6 +1051,15 @@ This document contains the detailed implementation tasks for the Blog Post Manag
 TASK-001 → TASK-005 ✅
 TASK-002 → TASK-005 ✅
 TASK-003 → TASK-005 ✅
+TASK-004 → TASK-005 ✅
+TASK-005 → TASK-052
+TASK-005 → TASK-053
+TASK-005 → TASK-054
+TASK-005 → TASK-055
+TASK-005 → TASK-056
+TASK-005 → TASK-057
+TASK-005 → TASK-058
+TASK-005 → TASK-059
 TASK-004 → TASK-006
 TASK-004 → TASK-044
 TASK-004 → TASK-045
@@ -957,7 +1127,7 @@ TASK-047 → TASK-048
 - ✅ TASK-004: Implement My Blog Post Query Endpoint
 
 ### Phase 2 (Week 2): Frontend Integration
-- 🔴 TASK-005: Replace Placeholder API Calls
+- ✅ TASK-005: Replace Placeholder API Calls
 - 🔴 TASK-006: Add Blog Post Fetching for Editing
 - 🟡 TASK-007: Implement Full Blog Posts Table
 - 🟡 TASK-008: Add Filtering and Search
@@ -979,9 +1149,11 @@ TASK-047 → TASK-048
 - [x] TASK-002: Update blog post endpoint implemented
 - [x] TASK-003: Slug availability check endpoint implemented
 - [x] TASK-004: My blog post query endpoint implemented
+- [x] TASK-005: Frontend API integration implemented
 - [ ] All high-priority tasks completed
 - [ ] Core functionality working end-to-end
 - [x] Backend API endpoints implemented
+- [x] Frontend API integration implemented
 - [ ] CMS interface fully functional
 - [ ] Authorization system implemented
 

@@ -6,17 +6,18 @@ import { Heading } from '@repo/ui/components/Typography';
 import { CreateBlogPostForm, getCmsBlogPostsLink } from '@features/blog-posts';
 import { type AppBreadcrumb, Breadcrumbs } from '@features/breadcrumbs';
 
-import { type CreateBlogPostVariables, useCreateBlogPostMutation } from '@entities/blog-posts';
+import { type UpdateBlogPostVariables, useMyBlogPostQuery, useUpdateBlogPostMutation } from '@entities/blog-posts';
 
 export default function CMSBlogPostsEditRoute(props: { params: { id: string } }) {
   const navigate = useNavigate();
 
-  const { status, mutateAsync } = useCreateBlogPostMutation();
+  const { status, mutateAsync } = useUpdateBlogPostMutation();
   const { t, i18n } = useTranslation();
 
-  const handleSubmit = async (data: CreateBlogPostVariables) => {
-    // TODO: Replace with actual update mutation when implemented
-    const blogPost = await mutateAsync(data);
+  const { data: blogPost, isLoading: isLoadingBlogPost } = useMyBlogPostQuery({ id: props.params.id });
+
+  const handleSubmit = async (data: Omit<UpdateBlogPostVariables, 'id'>) => {
+    const blogPost = await mutateAsync({ ...data, id: props.params.id });
     return blogPost.data;
   };
 
@@ -28,6 +29,14 @@ export default function CMSBlogPostsEditRoute(props: { params: { id: string } })
     { label: 'Edit Blog Post', to: `/cms/blog-posts/edit/${props.params.id}` },
   ].filter(Boolean) as AppBreadcrumb[];
 
+  if (isLoadingBlogPost) {
+    return <div>Loading...</div>;
+  }
+
+  if (!blogPost) {
+    return <div>Blog post not found</div>;
+  }
+
   return (
     <div>
       <Breadcrumbs className="mb-4" items={breadcrumbs} />
@@ -37,6 +46,17 @@ export default function CMSBlogPostsEditRoute(props: { params: { id: string } })
       </Heading>
 
       <CreateBlogPostForm
+        defaultValues={{
+          contentJSON: blogPost.data.contentJSON,
+          languageCode: blogPost.data.languageCode,
+          published: blogPost.data.publishedAt !== null,
+          seoDescription: blogPost.data.seo.description,
+          seoKeywords: blogPost.data.seo.keywords,
+          seoTitle: blogPost.data.seo.title,
+          shortDescription: blogPost.data.shortDescription,
+          slug: blogPost.data.slug,
+          title: blogPost.data.title,
+        }}
         id={props.params.id}
         isLoading={status === 'pending'}
         mode="update"
