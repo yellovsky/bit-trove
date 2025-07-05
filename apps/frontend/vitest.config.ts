@@ -1,9 +1,12 @@
+import babel from 'vite-plugin-babel';
 import path from "node:path";
+import { reactRouter } from '@react-router/dev/vite';
 import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
 import { defineConfig } from "vitest/config";
 import tsconfigPaths from "vite-tsconfig-paths";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
+
 
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
@@ -35,9 +38,16 @@ export default defineConfig({
 			},
 			{
 				extends: true,
-				optimizeDeps: { include: ['react/jsx-dev-runtime'] },
+				optimizeDeps: { include: ['react/jsx-dev-runtime', 'react-router'] },
 				plugins: [
-					react(),
+					babel({
+						filter: /\.[j|t]sx?$/,
+						babelConfig: {
+							plugins: ['babel-plugin-react-compiler', {}],
+							presets: ['@babel/preset-typescript'],
+						},
+					}),
+
 					tailwindcss(),
 					tsconfigPaths(),
 				],
@@ -49,16 +59,20 @@ export default defineConfig({
 					includeTaskLocation: true,
 					name: 'browser',
 					setupFiles: [path.join('./tests/setup.browser.tsx')],
-					browser: {
+    environment: 'jsdom',
+		browser: {
             enabled: true,
             headless: true,
             provider: "playwright",
             instances: [{ browser: "chromium" }],
           },
+
+					alias:{
+						'react-router': 'react-router'
+					}
 				}
 			},
       {
-
         extends: true,
         optimizeDeps: {
           include: ["react/jsx-dev-runtime"],
@@ -67,6 +81,7 @@ export default defineConfig({
           react(),
           tailwindcss(),
           tsconfigPaths(),
+					!process.env.VITEST && reactRouter(),
           storybookTest({ configDir: path.join(__dirname, ".storybook") }),
         ],
         test: {

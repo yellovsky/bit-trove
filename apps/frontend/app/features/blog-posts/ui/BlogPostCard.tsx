@@ -1,4 +1,6 @@
+import { ClockIcon } from 'lucide-react';
 import type { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import type { ShortBlogPost } from '@repo/api-models';
 import * as GridCardPrimitive from '@repo/ui/components/GridCard';
@@ -13,6 +15,7 @@ interface BlogPostCardProps {
 }
 
 export const BlogPostCard: FC<BlogPostCardProps> = ({ blogPost }) => {
+  const { t } = useTranslation();
   const filename = [blogPost.title.replace(/ /g, '-').toLowerCase(), '.md'].join('');
   const relativeDate = useRelativeDate(blogPost.publishedAt ?? '');
 
@@ -35,6 +38,12 @@ export const BlogPostCard: FC<BlogPostCardProps> = ({ blogPost }) => {
             <GridCardPrimitive.CardFooterGroup>
               <GridCardPrimitive.CardDate>{relativeDate}</GridCardPrimitive.CardDate>
             </GridCardPrimitive.CardFooterGroup>
+
+            {!blogPost.readingTime ? null : (
+              <GridCardPrimitive.CardTextWithIcon icon={<ClockIcon size={14} strokeWidth={1.5} />}>
+                {t('{{number}} min read', { number: blogPost.readingTime })}
+              </GridCardPrimitive.CardTextWithIcon>
+            )}
           </GridCardPrimitive.CardFooter>
         </GridCardPrimitive.CardContent>
       </Link>

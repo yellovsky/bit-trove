@@ -36,7 +36,7 @@ const ReadingTimeLabelIcon: FC<ReadingTimeLabelIconProps> = ({ minutes, classNam
 
   return (
     <LabeledIcon {...rest} icon={ClockIcon}>
-      {t('{number} min read', { number: minutes })}
+      {t('{{number}} min read', { number: minutes })}
     </LabeledIcon>
   );
 };

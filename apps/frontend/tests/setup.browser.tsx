@@ -1,78 +1,40 @@
 import '../app/root.css';
 
-import { renderHook as renderReactHook } from '@testing-library/react';
-import { createInstance } from 'i18next';
+import ICU from 'i18next-icu';
+import { createInstance, i18n } from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
-import { createRoutesStub, Outlet, type RoutesTestStubProps } from 'react-router';
-import { render } from 'vitest-browser-react';
+import {  MemoryRouter } from 'react-router';
+import { PropsWithChildren, ComponentType, FC } from 'react';
 
-import type { Locale } from '@shared/config';
-
-import { i18n, type Namespace, resources } from '@app/localization';
-
-export type StubRouteEntry = Parameters<typeof createRoutesStub>[0][0];
-
-const renderStub = async (args?: {
-  props?: RoutesTestStubProps;
-  entries?: StubRouteEntry[];
-  i18n?: {
-    lng?: Locale;
-    ns?: Namespace | Namespace[];
-  };
-}) => {
-  const instance = createInstance();
-  // Initialize the i18next instance
-  await instance
-    .use(initReactI18next) // Tell our instance to use react-i18next
-    .init({
-      ...i18n, // spread the configuration
-      lng: args?.i18n?.lng ?? 'en', // The locale can be set per test or defaults to english
-      ns: args?.i18n?.ns ?? 'common', // The namespaces can be set in the test or defaults to common
-      resources,
-    });
-
-  // We create the entries array to be rendered by react-router
-  const entries: StubRouteEntry[] = [
-    {
-      children: args?.entries ?? [],
-      id: 'root',
-      path: '/',
-
-      Component: () => (
-        <div data-testid="root">
-          <I18nextProvider i18n={instance}>
-            <Outlet />
-          </I18nextProvider>
-        </div>
-      ),
-    },
-  ];
-  // We generate the props to be passed into the react-router stub
-  const props: RoutesTestStubProps = {
-    ...args?.props,
-    initialEntries: args?.props?.initialEntries ?? ['/'],
-  };
-  // We generate the stub using the entries and props
-  const Stub = createRoutesStub(entries);
-  // We render the container so it can be used in tests
-  const renderedScreen = render(<Stub {...props} />);
-
-  return renderedScreen;
-};
-
-const renderHook = renderReactHook;
+import { i18n as i18nParams, resources } from '@app/localization';
 
 // We extend the global test context with our custom functions that we pass into the context in beforeEach
 declare module 'vitest' {
   export interface TestContext {
-    renderStub: typeof renderStub;
-    renderHook: typeof renderHook;
+		instance: i18n
+		TestWrapper: ComponentType<PropsWithChildren>;
   }
 }
+
 // We pass in our custom functions to the test context
-beforeEach((ctx) => {
-  ctx.renderStub = renderStub;
-  ctx.renderHook = renderHook;
+beforeEach(async (ctx) => {
+	const instance = createInstance();
+
+	await instance
+		.use(ICU)
+		.use(initReactI18next)
+		.init({ ...i18nParams, resources });
+
+	const TestWrapper: FC<PropsWithChildren> = ({ children } ) => (
+		<MemoryRouter>
+			<I18nextProvider i18n={instance}>
+				{children}
+			</I18nextProvider>
+		</MemoryRouter>
+	);
+
+	ctx.TestWrapper=TestWrapper
+  ctx.instance = instance;
 });
 
 // We clear all mocks after each test (optional, feel free to remove it)

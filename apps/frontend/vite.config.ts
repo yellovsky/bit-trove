@@ -8,6 +8,7 @@ import { defineConfig } from 'vite';
 import babel from 'vite-plugin-babel';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
+
 export default defineConfig({
   plugins: [
 		 babel({
@@ -19,8 +20,8 @@ export default defineConfig({
 		}),
 
 		tailwindcss(),
-    reactRouterDevTools({ client: { position: 'middle-right' } }),
-    reactRouter(),
+    !process.env.VITEST && reactRouterDevTools({ client: { position: 'middle-right' } }),
+    !process.env.VITEST && reactRouter(),
     reactRouterHonoServer({ dev: { exclude: [/^\/(resources)\/.+/], },}),
     tsconfigPaths(),
   ],
@@ -44,7 +45,6 @@ export default defineConfig({
       '@features': resolve('app/features'),
       '@shared': resolve('app/shared'),
       '@widgets': resolve('app/widgets'),
-			'@tabler/icons-react': '@tabler/icons-react/dist/esm/icons/index.mjs',
     },
   },
 

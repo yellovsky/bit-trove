@@ -32,7 +32,7 @@ export const ShardHorizontalCard: FC<ShardHorizontalCardProps> = ({ shard }) => 
             {shard.author && <ListCardPrimitive.ListCardAuthor>{shard.author.name}</ListCardPrimitive.ListCardAuthor>}
             <ListCardPrimitive.ListCardDate>{relativeDate}</ListCardPrimitive.ListCardDate>
             <ListCardPrimitive.CardTextWithIcon icon={<ClockIcon size={14} strokeWidth={1.5} />}>
-              <span>{t('{number} min read', { number: shard.readingTime })}</span>
+              <span>{t('{{number}} min read', { number: shard.readingTime })}</span>
             </ListCardPrimitive.CardTextWithIcon>
           </ListCardPrimitive.ListCardFooter>
         </ListCardPrimitive.CardContent>

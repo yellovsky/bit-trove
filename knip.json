@@ -50,7 +50,8 @@
 				"@babel/preset-typescript",
 				"@storybook/preview-api",
 				"@storybook/types",
-				"postcss-simple-vars"
+				"postcss-simple-vars",
+				"vitest-browser-react"
 			],
 			"remix": true,
 			"tailwind": true,
