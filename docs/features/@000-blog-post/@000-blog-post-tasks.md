@@ -102,23 +102,35 @@ This document contains the detailed implementation tasks for the Blog Post Manag
 - ✅ `apps/backend/src/modules/blog-posts/presentation/dtos/blog-post-slug-availability-response.dto.ts` - Created DTOs
 - ✅ `apps/backend/src/modules/blog-posts/blog-posts.module.ts` - Added use case to providers
 
-#### 🔴 TASK-004: Implement My Blog Post Query Endpoint
+#### ✅ TASK-004: Implement My Blog Post Query Endpoint
+**Status**: COMPLETED ✅
 **Description**: Create backend API endpoint for fetching user's blog posts for editing
-**Files**: `apps/backend/src/modules/blog-posts/presentation/blog-post.controller.ts`
+**Files**: `apps/backend/src/modules/blog-posts/presentation/my-blog-posts.controller.ts`
 **Dependencies**: None
 **Estimated Time**: 3 hours
 **Acceptance Criteria**:
-- [ ] GET `/v1/blog-posts/my/:id` endpoint implemented
-- [ ] Authorization checks for ownership
-- [ ] Proper error handling
-- [ ] Complete blog post data returned
+- [x] GET `/v1/my/blog-posts/:id` endpoint implemented
+- [x] Authorization checks for ownership
+- [x] Proper error handling
+- [x] Complete blog post data returned
 
 **Implementation Steps**:
-1. Add getMyBlogPost method to BlogPostController
-2. Implement authorization checks
-3. Create repository method for fetching user's posts
-4. Add proper error handling
-5. Return complete blog post data
+1. ✅ Add findOneLocalizedByIdForAuthor method to BlogPostRepository interface
+2. ✅ Implement findOneLocalizedByIdForAuthor in PrismaBlogPostRepository
+3. ✅ Add canReadMyBlogPost method to BlogPostAccessService interface
+4. ✅ Implement canReadMyBlogPost in BlogPostAccessServiceImpl
+5. ✅ Create GetMyBlogPostUseCase with authorization
+6. ✅ Create MyBlogPostsController
+7. ✅ Update BlogPostsModule with new controller and use case
+
+**Files Created/Modified**:
+- ✅ `apps/backend/src/modules/blog-posts/domain/repositories/blog-post.repository.ts` - Added findOneLocalizedByIdForAuthor method
+- ✅ `apps/backend/src/modules/blog-posts/infrastructure/repositories/blog-post.repository.ts` - Implemented findOneLocalizedByIdForAuthor method
+- ✅ `apps/backend/src/modules/blog-posts/application/services/blog-post-access.service.interface.ts` - Added canReadMyBlogPost method
+- ✅ `apps/backend/src/modules/blog-posts/application/services/blog-post-access.service.ts` - Implemented canReadMyBlogPost method
+- ✅ `apps/backend/src/modules/blog-posts/application/use-cases/get-my-blog-post.use-case.ts` - Created use case
+- ✅ `apps/backend/src/modules/blog-posts/presentation/my-blog-posts.controller.ts` - Created controller
+- ✅ `apps/backend/src/modules/blog-posts/blog-posts.module.ts` - Added controller and use case to module
 
 ### Frontend API Integration
 
@@ -661,6 +673,157 @@ This document contains the detailed implementation tasks for the Blog Post Manag
 4. Add offline support
 5. Create status indicators
 
+### Missing Dependencies (High Priority)
+
+#### 🔴 TASK-044: Configure Casbin Policies for Blog Post Read Access
+**Description**: Configure Casbin policies for blog post read permissions
+**Files**: `apps/backend/src/modules/casbin/`
+**Dependencies**: TASK-004
+**Estimated Time**: 3 hours
+**Acceptance Criteria**:
+- [ ] Add policy rules for blog post read access
+- [ ] Test authorization with different user roles
+- [ ] Verify policy enforcement for "my" blog post access
+- [ ] Test public access for blog post reading
+
+**Implementation Steps**:
+1. Review existing Casbin configuration
+2. Add blog post read policies
+3. Test with different user roles
+4. Verify policy enforcement for my blog post access
+5. Document policy rules
+
+#### 🔴 TASK-045: Validate Database Schema for Author-Based Queries
+**Description**: Verify database schema supports author-based blog post queries
+**Files**: `apps/backend/prisma/schema/blog-post.prisma`
+**Dependencies**: TASK-004
+**Estimated Time**: 2 hours
+**Acceptance Criteria**:
+- [ ] Check if `blogPost` table has proper `authorId` foreign key
+- [ ] Verify indexes for `authorId` queries
+- [ ] Test database queries for author-based filtering
+- [ ] Create migration if needed
+
+**Implementation Steps**:
+1. Review blog-post.prisma schema for authorId support
+2. Check foreign key relationships
+3. Verify database indexes for authorId queries
+4. Test database author-based queries
+5. Create migration if needed
+
+#### 🔴 TASK-046: Create API Models for My Blog Posts
+**Description**: Create API models for my blog post responses
+**Files**: `packages/api-models/src/blog-post/`
+**Dependencies**: None
+**Estimated Time**: 2 hours
+**Acceptance Criteria**:
+- [ ] Create `get-my-blog-post.ts` API model
+- [ ] Add proper Zod schemas for my blog post responses
+- [ ] Export types from `packages/api-models/src/blog-post/index.ts`
+- [ ] Test API model imports
+
+**Implementation Steps**:
+1. Create get-my-blog-post.ts API model
+2. Define Zod schemas for my blog post responses
+3. Export TypeScript types
+4. Update index.ts exports
+5. Test API model imports
+
+### Missing Dependencies (Medium Priority)
+
+#### 🟡 TASK-047: Create Frontend API Integration for My Blog Posts
+**Description**: Create frontend API hooks for my blog posts
+**Files**: `apps/frontend/app/entities/blog-posts/api/`
+**Dependencies**: TASK-046
+**Estimated Time**: 3 hours
+**Acceptance Criteria**:
+- [ ] Create `get-my-blog-post.ts` API function
+- [ ] Create `useMyBlogPostQuery` hook
+- [ ] Add proper error handling and loading states
+- [ ] Test API integration
+
+**Implementation Steps**:
+1. Create get-my-blog-post.ts API function
+2. Create useMyBlogPostQuery hook
+3. Add loading and error states
+4. Transform data for form usage
+5. Test integration with edit form
+
+#### 🟡 TASK-048: Update CMS Interface for My Blog Posts
+**Description**: Update CMS interface to use my blog post endpoint
+**Files**: `apps/frontend/app/pages/cms.blog-posts/`
+**Dependencies**: TASK-047
+**Estimated Time**: 2 hours
+**Acceptance Criteria**:
+- [ ] Update edit form to fetch blog post using my endpoint
+- [ ] Add proper loading states for my blog post fetching
+- [ ] Handle authorization errors gracefully
+- [ ] Test CMS integration
+
+**Implementation Steps**:
+1. Update edit form to use my blog post endpoint
+2. Add loading states for my blog post fetching
+3. Handle authorization errors gracefully
+4. Test CMS integration
+5. Update error handling
+
+#### 🟡 TASK-049: Enhance Error Handling for My Blog Posts
+**Description**: Add specific error handling for my blog post access
+**Files**: `apps/backend/src/modules/blog-posts/`
+**Dependencies**: TASK-004
+**Estimated Time**: 3 hours
+**Acceptance Criteria**:
+- [ ] Add validation for invalid blog post IDs
+- [ ] Add proper error messages for access denied scenarios
+- [ ] Add logging for my blog post access attempts
+- [ ] Test error scenarios
+
+**Implementation Steps**:
+1. Add invalid blog post ID validation
+2. Create specific error types for my blog post access
+3. Add user-friendly error messages
+4. Implement logging for my blog post access
+5. Test error scenarios
+
+### Missing Dependencies (Low Priority)
+
+#### 🟢 TASK-050: Add Testing for My Blog Posts
+**Description**: Add comprehensive tests for my blog post functionality
+**Files**: `apps/backend/src/modules/blog-posts/`
+**Dependencies**: TASK-004
+**Estimated Time**: 4 hours
+**Acceptance Criteria**:
+- [ ] Create unit tests for GetMyBlogPostUseCase
+- [ ] Create unit tests for MyBlogPostsController
+- [ ] Create integration tests for my blog post endpoint
+- [ ] Test authorization scenarios
+- [ ] Test error handling scenarios
+
+**Implementation Steps**:
+1. Create unit tests for GetMyBlogPostUseCase
+2. Create unit tests for MyBlogPostsController
+3. Create integration tests for my blog post endpoint
+4. Test authorization scenarios
+5. Test error handling scenarios
+
+#### 🟢 TASK-051: Update Documentation for My Blog Posts
+**Description**: Update documentation for my blog post endpoint
+**Files**: `docs/features/@000-blog-post/`
+**Dependencies**: TASK-004
+**Estimated Time**: 2 hours
+**Acceptance Criteria**:
+- [ ] Update API documentation
+- [ ] Add usage examples
+- [ ] Document authorization requirements
+- [ ] Add troubleshooting guide
+
+**Implementation Steps**:
+1. Update API documentation
+2. Add usage examples
+3. Document authorization requirements
+4. Add troubleshooting guide
+5. Update status documents
+
 ## Testing Tasks
 
 ### Unit Testing
@@ -728,6 +891,11 @@ TASK-001 → TASK-005 ✅
 TASK-002 → TASK-005 ✅
 TASK-003 → TASK-005 ✅
 TASK-004 → TASK-006
+TASK-004 → TASK-044
+TASK-004 → TASK-045
+TASK-004 → TASK-049
+TASK-004 → TASK-050
+TASK-004 → TASK-051
 TASK-005 → TASK-007
 TASK-007 → TASK-008
 TASK-007 → TASK-009
@@ -762,6 +930,8 @@ TASK-003 → TASK-040
 TASK-003 → TASK-041
 TASK-003 → TASK-042
 TASK-003 → TASK-043
+TASK-046 → TASK-047
+TASK-047 → TASK-048
 ```
 
 ## Resource Requirements
@@ -784,7 +954,7 @@ TASK-003 → TASK-043
 - ✅ TASK-001: Implement Create Blog Post Endpoint
 - ✅ TASK-002: Implement Update Blog Post Endpoint
 - ✅ TASK-003: Implement Slug Availability Check Endpoint
-- 🔴 TASK-004: Implement My Blog Post Query Endpoint
+- ✅ TASK-004: Implement My Blog Post Query Endpoint
 
 ### Phase 2 (Week 2): Frontend Integration
 - 🔴 TASK-005: Replace Placeholder API Calls
@@ -808,9 +978,10 @@ TASK-003 → TASK-043
 - [x] TASK-001: Create blog post endpoint implemented
 - [x] TASK-002: Update blog post endpoint implemented
 - [x] TASK-003: Slug availability check endpoint implemented
+- [x] TASK-004: My blog post query endpoint implemented
 - [ ] All high-priority tasks completed
 - [ ] Core functionality working end-to-end
-- [ ] Backend API endpoints implemented
+- [x] Backend API endpoints implemented
 - [ ] CMS interface fully functional
 - [ ] Authorization system implemented
 

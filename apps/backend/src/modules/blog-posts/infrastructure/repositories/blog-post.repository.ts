@@ -229,6 +229,25 @@ export class PrismaBlogPostRepository implements BlogPostRepository {
     });
   }
 
+  findOneLocalizedByIdForAuthor(
+    reqCtx: RequestContext,
+    id: string,
+    authorId: string
+  ): Effect.Effect<LocalizedBlogPostModel, ExclusionReason | UnknownException> {
+    const prisma = reqCtx.tx ?? this.prismaSrv;
+
+    return Effect.gen(this, function* () {
+      const blogPost = yield* Effect.tryPromise(() =>
+        prisma.localizedBlogPost.findFirst({
+          select: dbLocalizedBlogPostSelect,
+          where: { blogPost: { authorId }, id },
+        })
+      );
+
+      return !blogPost ? yield* Effect.fail(new NotFoundReason()) : this.#mapToModel(blogPost);
+    });
+  }
+
   #mapToModel(dbLocalizedBlogPost: DBLocalizedBlogPost): LocalizedBlogPostModel {
     const alternatives = dbLocalizedBlogPost.blogPost.localizations
       .filter((bp) => bp.id !== dbLocalizedBlogPost.id)

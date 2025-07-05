@@ -7,6 +7,7 @@ import { BLOG_POST_ACCESS_SRV } from './application/services/blog-post-access.se
 import { CheckBlogPostSlugAvailabilityUseCase } from './application/use-cases/check-blog-post-slug-availability.use-case';
 import { CreateBlogPostUseCase } from './application/use-cases/create-blog-post.use-case';
 import { GetManyBlogPosstUseCase } from './application/use-cases/get-many-blog-posts.use-case';
+import { GetMyBlogPostUseCase } from './application/use-cases/get-my-blog-post.use-case';
 import { GetOneBlogPostUseCase } from './application/use-cases/get-one-blog-post.use-case';
 import { UpdateBlogPostUseCase } from './application/use-cases/update-blog-post.use-case';
 
@@ -15,9 +16,10 @@ import { PrismaBlogPostRepository } from './infrastructure/repositories/blog-pos
 import { CasbinModule } from '../casbin';
 import { PrismaModule } from '../prisma';
 import { BlogPostController } from './presentation/blog-post.controller';
+import { MyBlogPostsController } from './presentation/my-blog-posts.controller';
 
 @Module({
-  controllers: [BlogPostController],
+  controllers: [BlogPostController, MyBlogPostsController],
   exports: [BLOG_POST_REPOSITORY],
   imports: [PrismaModule, CasbinModule],
   providers: [
@@ -28,6 +30,7 @@ import { BlogPostController } from './presentation/blog-post.controller';
     CheckBlogPostSlugAvailabilityUseCase,
     GetOneBlogPostUseCase,
     GetManyBlogPosstUseCase,
+    GetMyBlogPostUseCase,
   ],
 })
 export class BlogPostsModule {}

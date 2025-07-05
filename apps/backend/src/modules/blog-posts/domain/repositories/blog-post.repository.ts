@@ -80,6 +80,12 @@ export interface BlogPostRepository {
     params: FindBySlugParams
   ): Effect.Effect<LocalizedBlogPostModel, ExclusionReason | UnknownException>;
 
+  findOneLocalizedByIdForAuthor(
+    reqCtx: RequestContext,
+    id: string,
+    authorId: string
+  ): Effect.Effect<LocalizedBlogPostModel, ExclusionReason | UnknownException>;
+
   findManyLocalized(
     reqCtx: RequestContext,
     params: FindManyBlogPostsParams

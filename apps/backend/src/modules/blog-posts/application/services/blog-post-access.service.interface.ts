@@ -13,6 +13,8 @@ export interface BlogPostAccessService {
 
   canUpdateBlogPost(reqCtx: RequestContext, id: string): Effect.Effect<void, ExclusionReason | UnknownException>;
 
+  canReadMyBlogPost(reqCtx: RequestContext, id: string): Effect.Effect<void, ExclusionReason | UnknownException>;
+
   filterCanReadLocalizedBlogPost(
     reqCtx: RequestContext,
     blogPost: LocalizedBlogPostModel
