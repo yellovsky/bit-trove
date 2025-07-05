@@ -18,6 +18,14 @@ export class BlogPostAccessServiceImpl implements BlogPostAccessService {
     private readonly casbinSrv: IdentifierOf<typeof CASBIN_SRV>
   ) {}
 
+  canCreateBlogPost(reqCtx: RequestContext): Effect.Effect<void, ExclusionReason | UnknownException> {
+    return this.casbinSrv.checkRequestPermission(reqCtx, 'create', 'blog_post', {}).pipe(
+      Effect.flatMap((canCreate) => {
+        return canCreate ? Effect.succeed(undefined) : Effect.fail(new AccessDeniedReason());
+      })
+    );
+  }
+
   filterCanReadLocalizedBlogPost(
     reqCtx: RequestContext,
     blogPost: LocalizedBlogPostModel

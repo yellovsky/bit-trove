@@ -9,6 +9,8 @@ import type { LocalizedBlogPostModel } from '../../domain/models/localized-blog-
 import type { LocalizedShortBlogPostModel } from '../../domain/models/localized-short-blog-post.model';
 
 export interface BlogPostAccessService {
+  canCreateBlogPost(reqCtx: RequestContext): Effect.Effect<void, ExclusionReason | UnknownException>;
+
   filterCanReadLocalizedBlogPost(
     reqCtx: RequestContext,
     blogPost: LocalizedBlogPostModel

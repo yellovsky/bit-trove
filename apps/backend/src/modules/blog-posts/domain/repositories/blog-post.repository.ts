@@ -1,6 +1,8 @@
 import type { Effect } from 'effect';
 import type { UnknownException } from 'effect/Cause';
 
+import type { JSONContent } from '@repo/api-models';
+
 import type { ExclusionReason } from 'src/shared/excluded';
 import type { InjectableIdentifier } from 'src/shared/utils/injectable-identifier';
 import type { RequestContext } from 'src/shared/utils/request-context';
@@ -8,6 +10,18 @@ import type { OrderBy } from 'src/shared/utils/sort-to-order-by';
 
 import type { LocalizedBlogPostModel } from '../models/localized-blog-post.model';
 import type { LocalizedShortBlogPostModel } from '../models/localized-short-blog-post.model';
+
+export interface CreateBlogPostParams {
+  contentJSON: JSONContent | null;
+  languageCode: string;
+  published: boolean;
+  seoDescription: string | null;
+  seoKeywords: string | null;
+  seoTitle: string | null;
+  shortDescription: string;
+  slug: string;
+  title: string;
+}
 
 export interface FindBySlugParams {
   slug: string;
@@ -31,6 +45,11 @@ export interface FindManyBlogPostsParams {
 }
 
 export interface BlogPostRepository {
+  createBlogPost(
+    reqCtx: RequestContext,
+    params: CreateBlogPostParams
+  ): Effect.Effect<LocalizedBlogPostModel, ExclusionReason | UnknownException>;
+
   findOneLocalizedById(
     reqCtx: RequestContext,
     id: string

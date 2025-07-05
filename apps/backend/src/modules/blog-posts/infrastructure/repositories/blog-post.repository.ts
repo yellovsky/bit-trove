@@ -1,7 +1,7 @@
 import type { Prisma } from '@generated/prisma';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Effect } from 'effect';
-import type { UnknownException } from 'effect/Cause';
+import { UnknownException } from 'effect/Cause';
 
 import { type ExclusionReason, NotFoundReason } from 'src/shared/excluded';
 import { SeoModel } from 'src/shared/models/seo.model';
@@ -15,6 +15,7 @@ import { LocalizedBlogPostModel } from '../../domain/models/localized-blog-post.
 import { LocalizedShortBlogPostModel } from '../../domain/models/localized-short-blog-post.model';
 import type {
   BlogPostRepository,
+  CreateBlogPostParams,
   FindBySlugParams,
   FindManyBlogPostsParams,
 } from '../../domain/repositories/blog-post.repository';
@@ -42,10 +43,63 @@ const getWhere = (params: FindManyBlogPostsParams): Prisma.LocalizedBlogPostWher
 
 @Injectable()
 export class PrismaBlogPostRepository implements BlogPostRepository {
+  #logger = new Logger(PrismaBlogPostRepository.name);
+
   constructor(
     @Inject(PRISMA_SRV)
     private readonly prismaSrv: IdentifierOf<typeof PRISMA_SRV>
   ) {}
+
+  createBlogPost(
+    reqCtx: RequestContext,
+    params: CreateBlogPostParams
+  ): Effect.Effect<LocalizedBlogPostModel, ExclusionReason | UnknownException> {
+    const tx = reqCtx.tx ?? this.prismaSrv;
+
+    return Effect.gen(this, function* () {
+      this.#logger.debug('Creating blog post');
+      this.#logger.debug(`  > params: ${JSON.stringify(params)}`);
+
+      const publishedAt = params.published ? new Date() : null;
+
+      // Create the blog post entry first
+      const dbBlogPost = yield* Effect.tryPromise(() =>
+        tx.blogPost.create({
+          data: {
+            authorId: reqCtx.accountId,
+            publishedAt,
+            slug: params.slug,
+          },
+          select: { id: true },
+        })
+      );
+
+      // Create the localized blog post
+      const dbLocalizedBlogPost = yield* Effect.tryPromise(() =>
+        tx.localizedBlogPost.create({
+          data: {
+            blogPostId: dbBlogPost.id,
+            contentJSON: params.contentJSON as Prisma.InputJsonValue,
+            languageCode: params.languageCode,
+            publishedAt,
+            seoDescription: params.seoDescription,
+            seoKeywords: params.seoKeywords,
+            seoTitle: params.seoTitle,
+            shortDescription: params.shortDescription,
+            title: params.title,
+          },
+          select: dbLocalizedBlogPostSelect,
+        })
+      );
+
+      return this.#mapToModel(dbLocalizedBlogPost);
+    }).pipe(
+      Effect.tapError((error) => {
+        if (error instanceof UnknownException) this.#logger.error(`Error creating blog post: ${error.error}`);
+        return Effect.void;
+      })
+    );
+  }
 
   findManyLocalized(
     reqCtx: RequestContext,
