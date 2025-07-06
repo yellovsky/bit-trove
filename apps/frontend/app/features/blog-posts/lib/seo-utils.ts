@@ -5,7 +5,7 @@ import type { BlogPost } from '@repo/api-models';
 
 import { getGlobal } from '@shared/lib/get-global';
 
-import { getBlogPostLink, getBlogPostsLink } from '@features/blog-posts';
+import { getBlogPostLink, getBlogPostsLink } from '../lib/links';
 
 /**
  * Generate Open Graph meta tags for blog posts page

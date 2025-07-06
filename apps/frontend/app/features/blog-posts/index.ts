@@ -6,6 +6,14 @@ export {
   getCreateBlogPostLink,
   getEditBlogPostLink,
 } from './lib/links';
+export {
+  getBlogPostJsonLdMeta,
+  getBlogPostOgMeta,
+  getBlogPostsJsonLdMeta,
+  getBlogPostsOgMeta,
+  getBlogPostsTwitterMeta,
+  getBlogPostTwitterMeta,
+} from './lib/seo-utils';
 export { BackToBlogListButton } from './ui/BackToBlogListButton';
 export { BlogPostBreadcrumbs } from './ui/BlogPostBreadcrumbs';
 export { BlogPostCard } from './ui/BlogPostCard';

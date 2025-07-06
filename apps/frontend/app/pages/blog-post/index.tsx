@@ -2,9 +2,13 @@ import { HydrationBoundary } from '@tanstack/react-query';
 import type { MetaDescriptor } from 'react-router';
 
 import { getGlobal } from '@shared/lib/get-global';
-import { getBlogPostJsonLdMeta, getBlogPostOgMeta, getBlogPostTwitterMeta } from '@shared/lib/seo-utils';
 
-import { getBlogPostLink } from '@features/blog-posts';
+import {
+  getBlogPostJsonLdMeta,
+  getBlogPostLink,
+  getBlogPostOgMeta,
+  getBlogPostTwitterMeta,
+} from '@features/blog-posts';
 
 import type { Route } from './+types';
 import { loadBlogPostRouteData } from './load-data';

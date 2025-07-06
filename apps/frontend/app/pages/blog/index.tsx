@@ -2,9 +2,9 @@ import { HydrationBoundary } from '@tanstack/react-query';
 import i18next from 'i18next';
 import type { MetaDescriptor } from 'react-router';
 
-import { getBlogPostsJsonLdMeta, getBlogPostsOgMeta, getBlogPostsTwitterMeta } from '@shared/lib/seo-utils';
-
 import appI18next from '@app/localization/i18n.server';
+
+import { getBlogPostsJsonLdMeta, getBlogPostsOgMeta, getBlogPostsTwitterMeta } from '@features/blog-posts';
 
 import type { Route } from './+types';
 import { loadBlogPostsRouteData } from './load-data';

@@ -1,0 +1,41 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+
+# Rule: Follow Feature-Sliced Design (FSD) Architecture
+
+When generating or updating code, always follow the principles of Feature-Sliced Design (FSD):
+
+1. **Project Structure**
+   - Organize code by **layers**, not by type.
+   - Core layers: `app/`, `pages/`, `features/`, `entities/`, `shared/`.
+
+2. **Layer Responsibilities**
+   - `app/`: App root, configuration (e.g., providers, routing, error boundaries).
+   - `pages/`: Route-level components (layout + orchestration).
+   - `features/`: User-facing functionality that delivers business value (e.g., LoginForm, AddToCart).
+   - `entities/`: Core business units (e.g., User, Product).
+   - `shared/`: Generic, reusable code (UI components, utils, constants, config).
+
+3. **Code Placement**
+   - Each unit (feature, entity, etc.) lives in its own directory with:
+     - `model/` (state, effects, services)
+     - `ui/` (React components)
+     - `lib/` (helpers specific to the slice)
+     - `api/` (if needed)
+     - `types.ts` (if needed)
+
+4. **Naming Conventions**
+   - Use **kebab-case** for folder names, and **PascalCase** for components.
+   - Example: `features/login-form/ui/LoginForm.tsx`
+
+5. **Isolation and Reuse**
+   - Each slice should be self-contained.
+   - Prefer **importing upward** from `shared` or across layers via `public API` (index.ts).
+
+6. **Testing**
+   - Place tests close to the unit under test, in `__tests__` or `__test__` folders.
+
+⚠️ Never mix component types in one folder (e.g., don’t place UI and model code in the same file or layer unless it's a small experiment).
