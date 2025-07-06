@@ -49,7 +49,6 @@ export default {
     },
   },
   error_loading_data: 'Error loading data',
-
   error_page: {
     '404': {
       button_text: 'Go back to the homepage.',

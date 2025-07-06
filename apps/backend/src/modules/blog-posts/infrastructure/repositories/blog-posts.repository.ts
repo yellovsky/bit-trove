@@ -85,7 +85,7 @@ export class PrismaBlogPostsRepository implements BlogPostsRepository {
       // Calculate reading time
       const readingTime = calculateReadingTime(params.contentJSON, params.title, params.shortDescription);
 
-      const dbshard = yield* Effect.tryPromise(() =>
+      const dbBlogPost = yield* Effect.tryPromise(() =>
         tx.blogPost.create({
           data: {
             authorId: reqCtx.accountId,
@@ -105,7 +105,7 @@ export class PrismaBlogPostsRepository implements BlogPostsRepository {
         })
       );
 
-      return this.#mapToModel(dbshard);
+      return this.#mapToModel(dbBlogPost);
     }).pipe(
       Effect.tapError((error) => {
         if (isUnknownException(error)) this.#logger.error(`Error creating blog post ${error.error}`);
@@ -133,7 +133,7 @@ export class PrismaBlogPostsRepository implements BlogPostsRepository {
       // Calculate reading time
       const readingTime = calculateReadingTime(params.contentJSON, params.title, params.shortDescription);
 
-      const dbshard = yield* Effect.tryPromise(() =>
+      const dbBlogPost = yield* Effect.tryPromise(() =>
         tx.blogPost.update({
           data: {
             contentJSON: params.contentJSON as InputJsonValue,
@@ -153,7 +153,7 @@ export class PrismaBlogPostsRepository implements BlogPostsRepository {
         })
       );
 
-      return this.#mapToModel(dbshard);
+      return this.#mapToModel(dbBlogPost);
     }).pipe(
       Effect.tapError((error) => {
         if (isUnknownException(error)) this.#logger.error(`Error creating blog post ${error.error}`);
@@ -166,7 +166,7 @@ export class PrismaBlogPostsRepository implements BlogPostsRepository {
     const tx = reqCtx.tx ?? this.prismaSrv;
 
     return Effect.tryPromise(() => tx.blogPost.findUnique({ where: { slug } })).pipe(
-      Effect.map((shard) => shard?.id ?? null)
+      Effect.map((blogPost) => blogPost?.id ?? null)
     );
   }
 
@@ -187,8 +187,8 @@ export class PrismaBlogPostsRepository implements BlogPostsRepository {
         where: getWhere(params),
       })
     ).pipe(
-      Effect.tap((shards) => this.#logger.debug(`  > shards: ${JSON.stringify(shards)}`)),
-      Effect.map((shards) => shards.map((t) => this.#mapToModel(t)))
+      Effect.tap((blogPosts) => this.#logger.debug(`  > blogPosts: ${JSON.stringify(blogPosts)}`)),
+      Effect.map((blogPosts) => blogPosts.map((t) => this.#mapToModel(t)))
     );
   }
 
@@ -210,8 +210,8 @@ export class PrismaBlogPostsRepository implements BlogPostsRepository {
     if (params.authorId) where.authorId = params.authorId;
 
     return Effect.tryPromise(async () => prisma.blogPost.findUnique({ select: dbBlogPostSelect, where })).pipe(
-      Effect.flatMap((dbLocalizedShard) =>
-        !dbLocalizedShard ? Effect.fail(new NotFoundReason()) : Effect.succeed(this.#mapToModel(dbLocalizedShard))
+      Effect.flatMap((dbBlogPost) =>
+        !dbBlogPost ? Effect.fail(new NotFoundReason()) : Effect.succeed(this.#mapToModel(dbBlogPost))
       )
     );
   }
@@ -227,8 +227,8 @@ export class PrismaBlogPostsRepository implements BlogPostsRepository {
     else if (params.published === false) where.publishedAt = null;
 
     return Effect.tryPromise(async () => prisma.blogPost.findFirst({ select: dbBlogPostSelect, where })).pipe(
-      Effect.flatMap((dbLocalizedShard) =>
-        !dbLocalizedShard ? Effect.fail(new NotFoundReason()) : Effect.succeed(this.#mapToModel(dbLocalizedShard))
+      Effect.flatMap((dbBlogPost) =>
+        !dbBlogPost ? Effect.fail(new NotFoundReason()) : Effect.succeed(this.#mapToModel(dbBlogPost))
       )
     );
   }
@@ -247,8 +247,8 @@ export class PrismaBlogPostsRepository implements BlogPostsRepository {
         where: { id },
       })
     ).pipe(
-      Effect.tap((dbShard) => this.#logger.debug(`  > dbShard: ${JSON.stringify(dbShard)}`)),
-      Effect.map((dbShard) => this.#mapToModel(dbShard))
+      Effect.tap((dbBlogPost) => this.#logger.debug(`  > dbBlogPost: ${JSON.stringify(dbBlogPost)}`)),
+      Effect.map((dbBlogPost) => this.#mapToModel(dbBlogPost))
     );
   }
 

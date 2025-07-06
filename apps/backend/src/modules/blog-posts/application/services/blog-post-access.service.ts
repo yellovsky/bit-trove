@@ -18,7 +18,7 @@ export class BlogPostAccessServiceImpl implements BlogPostAccessService {
   ) {}
 
   canCreateBlogPost(reqCtx: RequestContext): Effect.Effect<true, ExclusionReason | UnknownException> {
-    return this.casbinSrv.checkRequestPermission(reqCtx, 'create', 'blogPost', {});
+    return this.casbinSrv.checkRequestPermission(reqCtx, 'create', 'blog_post', {});
   }
 
   filterCanReadBlogPost(
@@ -26,7 +26,7 @@ export class BlogPostAccessServiceImpl implements BlogPostAccessService {
     blogPost: BlogPostModel | BlogPostModel
   ): Effect.Effect<BlogPostModel | BlogPostModel, ExclusionReason | UnknownException> {
     return pipe(
-      this.casbinSrv.checkRequestPermission(reqCtx, 'read', 'blogPost', blogPost),
+      this.casbinSrv.checkRequestPermission(reqCtx, 'read', 'blog_post', blogPost),
       Effect.map(() => blogPost)
     );
   }
@@ -48,6 +48,6 @@ export class BlogPostAccessServiceImpl implements BlogPostAccessService {
     reqCtx: RequestContext,
     blogPost: BlogPostModel
   ): Effect.Effect<true, ExclusionReason | UnknownException> {
-    return this.casbinSrv.checkRequestPermission(reqCtx, 'update', 'blogPost', blogPost);
+    return this.casbinSrv.checkRequestPermission(reqCtx, 'update', 'blog_post', blogPost);
   }
 }

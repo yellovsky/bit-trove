@@ -18,7 +18,20 @@ const shardPolicies = [
   objType: 'shard',
 }));
 
-const blogPostPolicies = [{ act: 'read', cond: 'true', sub: 'public' }].map((obj) => ({
+const blogPostPolicies = [
+  // Published shards are always readable
+  { act: 'read', cond: 'r.obj.publishedAt != null', sub: 'public' },
+  // Unpublished shards are readable by the author
+  { act: 'read', cond: 'r.obj.author.id == r.sub', sub: 'authorized' },
+  // Unpublished shards are updatable by the author
+  { act: 'update', cond: 'r.obj.author.id == r.sub', sub: 'authorized' },
+  // Admin can read all shards
+  { act: 'read', cond: 'true', sub: 'admin' },
+  // Admin can create shards
+  { act: 'create', cond: 'true', sub: 'admin' },
+  // Admin can update all shards
+  { act: 'update', cond: 'true', sub: 'admin' },
+].map((obj) => ({
   ...obj,
   objType: 'blog_post',
 }));

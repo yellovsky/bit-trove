@@ -1,4 +1,4 @@
-import { CalendarIcon, ClockIcon, type LucideIcon } from 'lucide-react';
+import { CalendarIcon, ClockIcon, type LucideIcon, UserIcon } from 'lucide-react';
 import type { ComponentProps, FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -65,8 +65,27 @@ const DateLabelIcon: FC<DateLabelIconProps> = ({ date, className, ...rest }) => 
 
 DateLabelIcon.displayName = DATE_LABEL_ICON_NAME;
 
+/* -------------------------------------------------------------------------------------------------
+ * AuthorLabelIcon
+ * -----------------------------------------------------------------------------------------------*/
+const AUTHOR_LABEL_ICON_NAME = 'AuthorLabelIcon';
+
+interface AuthorLabelIconProps extends Omit<LabeledIconProps, 'icon'> {
+  author: string;
+}
+
+const AuthorLabelIcon: FC<AuthorLabelIconProps> = ({ author, className, ...rest }) => {
+  return (
+    <LabeledIcon {...rest} icon={UserIcon}>
+      {author}
+    </LabeledIcon>
+  );
+};
+
+AuthorLabelIcon.displayName = AUTHOR_LABEL_ICON_NAME;
+
 /* -----------------------------------------------------------------------------------------------*/
 
-export { DateLabelIcon, LabeledIcon, ReadingTimeLabelIcon };
+export { AuthorLabelIcon, DateLabelIcon, LabeledIcon, ReadingTimeLabelIcon };
 
-export type { DateLabelIconProps, LabeledIconProps, ReadingTimeLabelIconProps };
+export type { AuthorLabelIconProps, DateLabelIconProps, LabeledIconProps, ReadingTimeLabelIconProps };

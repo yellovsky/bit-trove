@@ -15,6 +15,7 @@ import {
   TextLink,
   UnorderedList,
 } from '@repo/ui/components/Typography';
+import { cn } from '@repo/ui/lib/utils';
 
 export function renderPoseNode(node: JSONContent): React.ReactNode {
   if (!node) return null;
@@ -78,6 +79,9 @@ export function renderPoseNode(node: JSONContent): React.ReactNode {
     case 'doc':
       return renderPoseContent(node.content);
 
+    case 'hardBreak':
+      return <br />;
+
     default:
       console.warn('Unsupported node', node);
       return renderPoseContent(node.content);
@@ -95,6 +99,10 @@ export interface PoseDocumentProps extends ComponentProps<'div'> {
   doc: JSONContent;
 }
 
-export const PoseDocument: FC<PoseDocumentProps> = ({ doc, ...rest }) => {
-  return <div {...rest}>{renderPoseNode(doc)}</div>;
+export const PoseDocument: FC<PoseDocumentProps> = ({ doc, className, ...rest }) => {
+  return (
+    <div className={cn('typography-root', className)} {...rest}>
+      {renderPoseNode(doc)}
+    </div>
+  );
 };

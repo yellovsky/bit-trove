@@ -3,11 +3,11 @@ import type { ComponentProps, FC } from 'react';
 
 import { cn } from '@repo/ui/lib/utils';
 
-interface ScrollAreaProps extends ComponentProps<typeof ScrollAreaPrimitive.Root> {
+interface ScrollAreaProps extends ComponentProps<typeof ScrollAreaPrimitive.Viewport> {
   orientation?: 'horizontal' | 'vertical';
 }
 
-export const ScrollArea: FC<ScrollAreaProps> = ({ children, orientation = 'vertical', className }) => (
+export const ScrollArea: FC<ScrollAreaProps> = ({ children, orientation = 'vertical', className, ...rest }) => (
   <ScrollAreaPrimitive.Root
     className={cn(
       'overflow-hidden',
@@ -16,7 +16,9 @@ export const ScrollArea: FC<ScrollAreaProps> = ({ children, orientation = 'verti
       className
     )}
   >
-    <ScrollAreaPrimitive.Viewport className="size-full rounded">{children}</ScrollAreaPrimitive.Viewport>
+    <ScrollAreaPrimitive.Viewport {...rest} className="size-full rounded">
+      {children}
+    </ScrollAreaPrimitive.Viewport>
     <ScrollAreaPrimitive.Scrollbar
       className="flex touch-none select-none bg-gray-surface p-0.5 transition-colors duration-[160ms] ease-out hover:bg-blackA5 data-[orientation=horizontal]:h-2.5 data-[orientation=vertical]:w-2.5 data-[orientation=horizontal]:flex-col"
       orientation="vertical"

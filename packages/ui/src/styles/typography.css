@@ -89,7 +89,7 @@
   .typography-root pre code,
   .typography-root pre :is(code),
   pre .typography-code {
-    @apply p-0;
+    @apply p-0 bg-transparent;
   }
 
   /* Horizontal Rule */
