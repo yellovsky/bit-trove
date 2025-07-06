@@ -1,6 +1,13 @@
+/* ==========================================================================
+   Typography System - Bit-Trove Design System
+   ========================================================================== */
+
 @reference "./globals.css";
 
+/* Typography component classes and base styles */
+
 @layer components {
+  /* Heading Styles */
   .typography-heading {
     @apply mb-2.5 scroll-m-20 text-balance font-heading tracking-tight;
 
@@ -17,7 +24,9 @@
     }
   }
 
+  /* Root Typography Container */
   .typography-root {
+    /* Heading Elements */
     h1,
     h2,
     h3 {
@@ -37,18 +46,21 @@
     }
   }
 
+  /* Blockquote Styles */
   .typography-root blockquote,
   .typography-root:is(blockquote),
   .typography-blockquote {
     @apply border-l-4 border-l-primary-a6 pl-3 mt-4;
   }
 
+  /* Paragraph Styles */
   .typography-root p,
   .typography-root:is(p),
   .typography-paragraph {
     @apply mt-0 mb-4;
   }
 
+  /* List Styles */
   .typography-root :is(ol, ul),
   .typography-root:is(ol, ul),
   .typography-list {
@@ -63,6 +75,7 @@
     }
   }
 
+  /* Code Styles */
   .typography-root code,
   .typography-root:is(code),
   .typography-code {
@@ -79,16 +92,19 @@
     @apply p-0;
   }
 
+  /* Horizontal Rule */
   .typography-root hr,
   .typography-root:is(hr),
   .typography-horizontal-rule {
     @apply text-gray-7;
   }
 
+  /* Keyboard Input */
   .typography-kbd {
     @apply rounded-sm border border-gray-7 border-b-3 bg-gray-2 px-1.5 py-0.5 text-gray-11 text-sm;
   }
 
+  /* Link Styles */
   .typography-link {
     @apply cursor-pointer underline-offset-4 text-primary-a11 decoration-1 decoration-primary-a5 hover:underline active:text-primary-a10;
   }

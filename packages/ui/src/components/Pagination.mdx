@@ -1,0 +1,98 @@
+import { Meta, Title, Primary, Controls, Stories } from '@storybook/addon-docs/blocks';
+
+{/*
+	* 👇 The isTemplate property is required to tell Storybook that this is a template
+	* See https://storybook.js.org/docs/api/doc-blocks/doc-block-meta
+	* to learn how to use
+*/}
+
+<Meta isTemplate />
+
+<Title />
+
+Pagination component for navigating through multiple pages of content.
+
+The Pagination component provides a user-friendly way to navigate through large datasets or content that spans multiple pages. It includes previous/next navigation, page numbers, and ellipsis for large page ranges.
+
+## Features
+- Previous and next navigation buttons
+- Page number links with active state
+- Ellipsis for large page ranges
+- Responsive design with mobile-friendly layout
+- Accessible navigation with proper ARIA labels
+- Customizable styling and behavior
+- Keyboard navigation support
+
+## Usage
+```tsx
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+  PaginationEllipsis
+} from '@repo/ui/components/Pagination';
+
+// Basic pagination
+<Pagination>
+  <PaginationContent>
+    <PaginationItem>
+      <PaginationPrevious href="#" />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="#" isActive>1</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="#">2</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationNext href="#" />
+    </PaginationItem>
+  </PaginationContent>
+</Pagination>
+
+// With ellipsis for large ranges
+<Pagination>
+  <PaginationContent>
+    <PaginationItem>
+      <PaginationPrevious href="#" />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="#">1</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationEllipsis />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="#" isActive>5</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationEllipsis />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="#">10</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationNext href="#" />
+    </PaginationItem>
+  </PaginationContent>
+</Pagination>
+```
+
+<Primary />
+
+## Inputs
+
+The component accepts the following inputs (props):
+
+<Controls />
+
+---
+
+## Additional variations
+
+Listed below are additional variations of the component.
+
+<Stories />

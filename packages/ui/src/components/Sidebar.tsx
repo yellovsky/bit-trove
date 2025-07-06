@@ -18,9 +18,10 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '
 import { Skeleton } from '@repo/ui/components/Skeleton';
 import { TextInput } from '@repo/ui/components/TextInput';
 import { Toggle } from '@repo/ui/components/Toggle';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@repo/ui/components/tooltip';
 import { useMobile } from '@repo/ui/hooks/use-mobile';
 import { cn } from '@repo/ui/lib/utils';
+
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './Tooltip';
 
 const SIDEBAR_COOKIE_NAME = 'sidebar_state';
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;

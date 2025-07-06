@@ -26,9 +26,7 @@ export const MainLayout: FC<PropsWithChildren> = ({ children }) => (
         </div>
       </header>
       <ScrollArea className="h-[calc(100dvh-3rem)]">
-        <div className="max-w-dvw px-4 py-6">
-          {children}
-        </div>
+        <div className="max-w-dvw px-4 py-6">{children}</div>
       </ScrollArea>
     </SidebarInset>
   </SidebarProvider>

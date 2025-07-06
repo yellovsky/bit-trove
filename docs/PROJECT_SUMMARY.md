@@ -152,7 +152,7 @@ src/
 
 **Technology Stack:**
 - **Components**: Radix UI primitives
-- **Styling**: TailwindCSS with CSS variables
+- **Styling**: TailwindCSS 4.x with organized CSS architecture
 - **Icons**: Lucide React
 - **State**: Jotai for global state
 - **Forms**: React Hook Form
@@ -164,8 +164,21 @@ src/
 ├── components/          # Reusable UI components
 ├── hooks/              # Custom React hooks
 ├── lib/                # Utility functions
-└── styles/             # Global styles and themes
+└── styles/             # Organized CSS design system
+    ├── globals.css     # Main initialization file
+    ├── components.palette.css # Component color mappings
+    ├── typography.css  # Typography system
+    ├── *.palette.css   # Color palette definitions
+    └── README.md       # CSS system documentation
 ```
+
+**CSS Architecture:**
+- **Layered Organization**: Clear separation of concerns with Tailwind layers
+- **Design Tokens**: Semantic color system with consistent naming
+- **Theme Support**: Light/dark mode with CSS variables
+- **Typography System**: Comprehensive heading and text styles
+- **Color Palettes**: 12-step color scales with alpha variants
+- **Component Integration**: Semantic color mappings for UI components
 
 **Key Features:**
 - Accessible components built on Radix UI
@@ -174,6 +187,7 @@ src/
 - Form components with validation
 - Toast notifications
 - Rich text editor components
+- Organized CSS initialization system
 
 ## Development Conventions
 
@@ -186,6 +200,15 @@ src/
 - **Test Patterns**: Browser tests for components, server tests for backend code
 - **Test Setup**: Global test context with i18n and router providers
 - **Component Testing**: DOM-based testing with Playwright and JSDOM
+
+### CSS Best Practices
+- **Layer Organization**: Use Tailwind's layer system (`@layer theme, base, components, utilities`)
+- **Design Tokens**: Use semantic color variables (`--color-primary`, `--color-background`)
+- **Theme Support**: Implement light/dark mode with CSS variables
+- **Typography**: Use consistent heading hierarchy and spacing
+- **Component Colors**: Map semantic colors to design tokens
+- **Accessibility**: Maintain WCAG AA contrast ratios
+- **Performance**: Minimize CSS bundle size through organization
 
 ### File Organization
 - **Components**: One component per file with named exports
@@ -244,6 +267,7 @@ src/
 - **Code Splitting**: Dynamic imports for route-based splitting
 - **Optimization**: Image optimization and lazy loading
 - **Monitoring**: Performance metrics and error tracking
+- **CSS Performance**: Organized CSS architecture with minimal bundle size
 
 ## Development Workflow
 

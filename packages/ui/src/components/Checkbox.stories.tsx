@@ -21,7 +21,7 @@ const meta: Meta<typeof Checkbox> = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  title: 'Components/Checkbox',
+  title: 'UI/Checkbox',
 };
 
 export default meta;

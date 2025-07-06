@@ -1,0 +1,75 @@
+import { Meta, Title, Primary, Controls, Stories } from '@storybook/addon-docs/blocks';
+
+{/*
+	* 👇 The isTemplate property is required to tell Storybook that this is a template
+	* See https://storybook.js.org/docs/api/doc-blocks/doc-block-meta
+	* to learn how to use
+*/}
+
+<Meta isTemplate />
+
+<Title />
+
+Tooltip component for displaying contextual information on hover or focus.
+
+The Tooltip component provides contextual information to users when they hover over or focus on an element. It's built on top of Radix UI primitives and provides smooth animations, proper positioning, and accessibility features.
+
+## Features
+- Multiple positioning options (top, bottom, left, right)
+- Customizable delay duration
+- Smooth animations with fade and zoom effects
+- Accessible keyboard navigation
+- Customizable styling and content
+- Arrow indicator for better visual connection
+- Portal rendering for proper z-index handling
+
+## Usage
+```tsx
+import { Tooltip, TooltipTrigger, TooltipContent } from '@repo/ui/components/Tooltip';
+
+// Basic tooltip
+<Tooltip>
+  <TooltipTrigger>
+    <Button>Hover me</Button>
+  </TooltipTrigger>
+  <TooltipContent>
+    This is a tooltip
+  </TooltipContent>
+</Tooltip>
+
+// With custom delay
+<Tooltip delayDuration={500}>
+  <TooltipTrigger>
+    <Button>Delayed tooltip</Button>
+  </TooltipTrigger>
+  <TooltipContent>
+    This tooltip appears after 500ms
+  </TooltipContent>
+</Tooltip>
+
+// With custom positioning
+<Tooltip>
+  <TooltipTrigger>
+    <Button>Positioned tooltip</Button>
+  </TooltipTrigger>
+  <TooltipContent side="left" sideOffset={8}>
+    Tooltip on the left
+  </TooltipContent>
+</Tooltip>
+```
+
+<Primary />
+
+## Inputs
+
+The component accepts the following inputs (props):
+
+<Controls />
+
+---
+
+## Additional variations
+
+Listed below are additional variations of the component.
+
+<Stories />

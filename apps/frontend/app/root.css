@@ -1,10 +1,17 @@
-/* see: https://tailwindcss.com/docs/preflight#disabling-preflight */
+/* ==========================================================================
+   Frontend Root CSS - Bit-Trove Application
+   ========================================================================== */
+
+/* 1. Layer Organization */
 @layer theme, base, components, utilities;
 
+/* 2. Tailwind CSS Core */
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
 
+/* 3. Design System */
 @import "@repo/ui/globals.css";
 @import "@repo/ui/typography.css";
 
+/* 4. Application-Specific Theme Overrides */
 @import "./theme.css";

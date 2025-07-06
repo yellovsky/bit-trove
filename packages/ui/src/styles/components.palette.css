@@ -1,38 +1,52 @@
+/* ==========================================================================
+   Component Palette - Bit-Trove Design System
+   ========================================================================== */
+
+/* Component-specific color mappings that define the semantic color system */
+
 .components-palette {
-  /* colored */
+  /* Primary Colors */
   --color-primary: var(--color-primary-9);
   --color-primary-foreground: var(--color-primary-contrast);
 
+  /* Secondary Colors */
   --color-secondary: var(--color-primary-4);
   --color-secondary-foreground: var(--color-gray-12);
 
+  /* Accent Colors */
   --color-accent: var(--color-primary-5);
   --color-accent-foreground: var(--color-gray-12);
 
+  /* Focus States */
   --color-focus-ring: var(--color-primary-9);
 
-  /* neutral */
+  /* Background Colors */
   --color-background: var(--color-gray-1);
   --color-foreground: var(--color-gray-12);
 
+  /* Muted Colors */
   --color-muted: var(--color-gray-4);
   --color-muted-foreground: var(--color-gray-11);
 
+  /* Card Colors */
   --color-card: var(--color-gray-2);
   --color-card-foreground: var(--color-gray-12);
 
+  /* Popover Colors */
   --color-popover: var(--color-gray-4);
   --color-popover-foreground: var(--color-gray-12);
 
+  /* Input Colors */
   --color-input: var(--color-gray-6);
-  /* TODO Remove */
   --color-input-bg: var(--color-gray-6);
 
+  /* Border Colors */
   --color-border: var(--color-gray-7);
 
+  /* Destructive Colors */
   --color-destructive: var(--color-red-10);
   --color-destructive-foreground: var(--color-red-12);
 
-  /* Custom */
+  /* Custom Input Border */
   --color-input-border: var(--color-gray-a5);
 }
