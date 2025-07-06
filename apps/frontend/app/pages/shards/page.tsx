@@ -1,4 +1,4 @@
-import { type FC, useEffect, useRef } from 'react';
+import { type FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useIntersectionObserver } from 'usehooks-ts';
 
@@ -15,10 +15,9 @@ interface ShardsPageProps {
 }
 
 export const ShardsPage: FC<ShardsPageProps> = ({ shardsVariables, breadcrumbs }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
   const shardsQuery = useInfiniteShardsQuery(shardsVariables);
   const { t } = useTranslation();
-  const { ref, entry } = useIntersectionObserver({ root: containerRef.current, threshold: 0 });
+  const { ref, entry } = useIntersectionObserver({ threshold: 0 });
 
   useEffect(() => {
     if (entry?.isIntersecting && !shardsQuery.isFetchingNextPage && shardsQuery.hasNextPage)
