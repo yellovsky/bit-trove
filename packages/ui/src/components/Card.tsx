@@ -109,8 +109,8 @@ const CARD_TEXT_WITH_ICON_NAME = 'CardTextWithIcon';
 
 type CardTextWithIconProps = ComponentProps<'div'> & { icon: ReactNode };
 
-const CardTextWithIcon: FC<CardTextWithIconProps> = ({ icon, children, ...rest }) => (
-  <div className="flex items-center space-x-1" data-slot="card-text-with-icon" {...rest}>
+const CardTextWithIcon: FC<CardTextWithIconProps> = ({ icon, children, className, ...rest }) => (
+  <div className={cn('flex flex-nowrap items-center space-x-1', className)} data-slot="card-text-with-icon" {...rest}>
     {icon}
     <span className="truncate">{children}</span>
   </div>

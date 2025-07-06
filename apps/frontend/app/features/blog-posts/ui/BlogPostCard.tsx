@@ -21,26 +21,43 @@ export const BlogPostCard: FC<BlogPostCardProps> = ({ blogPost }) => {
 
   return (
     <GridCardPrimitive.Root asChild>
-      <Link to={getBlogPostLink(blogPost)} variant="unstyled">
+      <Link
+        aria-label={blogPost.title}
+        className="focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        tabIndex={0}
+        to={getBlogPostLink(blogPost)}
+        variant="unstyled"
+      >
         <GridCardPrimitive.CardHeader>
           <GridCardPrimitive.CardHeaderContent>
             <GridCardPrimitive.CardIcon generateOn={filename} />
-            <GridCardPrimitive.CardHeaderText>{filename}</GridCardPrimitive.CardHeaderText>
+            <GridCardPrimitive.CardHeaderText className="@lg:text-xs @sm:text-sm">
+              {filename}
+            </GridCardPrimitive.CardHeaderText>
           </GridCardPrimitive.CardHeaderContent>
           <GridCardPrimitive.CardHeaderBullet generateOn={filename} />
         </GridCardPrimitive.CardHeader>
 
-        <GridCardPrimitive.CardContent>
-          <GridCardPrimitive.CardTitle>{blogPost.title}</GridCardPrimitive.CardTitle>
-          <GridCardPrimitive.CardDescription>{blogPost.shortDescription}</GridCardPrimitive.CardDescription>
+        <GridCardPrimitive.CardContent className="@lg:p-4 @sm:p-3">
+          <GridCardPrimitive.CardTitle className="@lg:text-lg @sm:text-base @xl:text-xl">
+            {blogPost.title}
+          </GridCardPrimitive.CardTitle>
+          <GridCardPrimitive.CardDescription className="@lg:text-base @sm:text-sm @xl:text-sm">
+            {blogPost.shortDescription}
+          </GridCardPrimitive.CardDescription>
 
-          <GridCardPrimitive.CardFooter>
+          <GridCardPrimitive.CardFooter className="@lg:mt-3 @sm:mt-2">
             <GridCardPrimitive.CardFooterGroup>
-              <GridCardPrimitive.CardDate>{relativeDate}</GridCardPrimitive.CardDate>
+              <GridCardPrimitive.CardDate className="@lg:text-sm @sm:text-xs">
+                {relativeDate}
+              </GridCardPrimitive.CardDate>
             </GridCardPrimitive.CardFooterGroup>
 
             {!blogPost.readingTime ? null : (
-              <GridCardPrimitive.CardTextWithIcon icon={<ClockIcon size={14} strokeWidth={1.5} />}>
+              <GridCardPrimitive.CardTextWithIcon
+                className="@lg:text-sm @sm:text-xs"
+                icon={<ClockIcon size={14} strokeWidth={1.5} />}
+              >
                 {t('{{number}} min read', { number: blogPost.readingTime })}
               </GridCardPrimitive.CardTextWithIcon>
             )}
