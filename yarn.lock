@@ -1312,10 +1312,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fontsource-variable/roboto-mono@npm:5.2.6":
+"@fontsource-variable/jetbrains-mono@npm:5.2.6":
   version: 5.2.6
-  resolution: "@fontsource-variable/roboto-mono@npm:5.2.6"
-  checksum: 10c0/8216cf2b685396e24ae891e6cc8167a5b0daa0171ee80530e09b900e0241b05804ba9b451596818f464a3f08e550b4caa43a44e6d811d820c9f9a94370136002
+  resolution: "@fontsource-variable/jetbrains-mono@npm:5.2.6"
+  checksum: 10c0/c5dfb97e26feca25535ce5bd57c6e85429608987adbeafa77ac01f2c9b11d5ee76fbdb26d99afe997e4286f74fe699be4e3460d177d95db2c01a8f46a20de443
   languageName: node
   linkType: hard
 
@@ -8705,7 +8705,7 @@ __metadata:
     "@faker-js/faker": "npm:9.9.0"
     "@fontsource-variable/geologica": "npm:5.2.6"
     "@fontsource-variable/inter": "npm:5.2.6"
-    "@fontsource-variable/roboto-mono": "npm:5.2.6"
+    "@fontsource-variable/jetbrains-mono": "npm:5.2.6"
     "@react-router/dev": "npm:7.6.3"
     "@react-router/node": "npm:7.6.3"
     "@react-router/serve": "npm:7.6.3"

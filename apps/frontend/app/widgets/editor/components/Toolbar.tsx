@@ -1,36 +1,26 @@
-import {
-  forwardRef,
-  type HTMLAttributes,
-  type MutableRefObject,
-  type Ref,
-  type RefCallback,
-  type RefObject,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { type ComponentProps, type FC, type RefObject, useCallback, useEffect, useRef, useState } from 'react';
+
+import { cn } from '@repo/ui/lib/utils';
 
 import { Separator } from './Separator';
 import './Toolbar.css';
 
-import { cn } from '@repo/ui/lib/utils';
+const mergeRefs = <T,>(...inputRefs: (React.Ref<T> | undefined)[]): React.Ref<T> | React.RefCallback<T> => {
+  const filteredInputRefs = inputRefs.filter(Boolean);
 
-type BaseProps = HTMLAttributes<HTMLDivElement>;
+  if (filteredInputRefs.length <= 1) {
+    const firstRef = filteredInputRefs[0];
+    return firstRef || null;
+  }
 
-interface ToolbarProps extends BaseProps {
-  variant?: 'floating' | 'fixed';
-}
-
-const mergeRefs = <T,>(refs: Array<RefObject<T> | Ref<T> | null | undefined>): RefCallback<T> => {
-  return (value) => {
-    refs.forEach((ref) => {
-      if (typeof ref === 'function') {
-        ref(value);
-      } else if (ref != null) {
-        (ref as MutableRefObject<T | null>).current = value;
+  return function mergedRefs(ref) {
+    for (const inputRef of filteredInputRefs) {
+      if (typeof inputRef === 'function') {
+        inputRef(ref);
+      } else if (inputRef) {
+        (inputRef as React.MutableRefObject<T | null>).current = ref;
       }
-    });
+    }
   };
 };
 
@@ -248,52 +238,73 @@ const useSeparatorVisibility = (ref: RefObject<HTMLDivElement | null>): boolean 
   return isVisible;
 };
 
-export const Toolbar = forwardRef<HTMLDivElement, ToolbarProps>(
-  ({ children, className, variant = 'fixed', ...props }, ref) => {
-    const toolbarRef = useRef<HTMLDivElement>(null);
-    const isVisible = useToolbarVisibility(toolbarRef);
-    useToolbarKeyboardNav(toolbarRef);
+/* -------------------------------------------------------------------------------------------------
+ * Toolbar
+ * -----------------------------------------------------------------------------------------------*/
+const TOOLBAR_NAME = 'Toolbar';
 
-    return (
-      <div
-        aria-label="toolbar"
-        className={cn('tiptap-toolbar', className, !isVisible && 'invisible')}
-        data-variant={variant}
-        ref={mergeRefs([toolbarRef, ref])}
-        role="toolbar"
-        {...props}
-      >
-        {children}
-      </div>
-    );
-  }
-);
+type ToolbarProps = ComponentProps<'div'> & {
+  variant?: 'floating' | 'fixed';
+};
 
-Toolbar.displayName = 'Toolbar';
+const Toolbar: FC<ToolbarProps> = ({ className, variant = 'fixed', ref, ...props }) => {
+  const toolbarRef = useRef<HTMLDivElement>(null);
+  const isVisible = useToolbarVisibility(toolbarRef);
 
-export const ToolbarGroup = forwardRef<HTMLDivElement, BaseProps>(({ children, className, ...props }, ref) => {
+  useToolbarKeyboardNav(toolbarRef);
+
+  return (
+    <div
+      aria-label="toolbar"
+      className={cn('tiptap-toolbar', className, !isVisible && 'invisible')}
+      data-variant={variant}
+      ref={mergeRefs(toolbarRef, ref)}
+      role="toolbar"
+      {...props}
+    />
+  );
+};
+
+Toolbar.displayName = TOOLBAR_NAME;
+
+/* -------------------------------------------------------------------------------------------------
+ * ToolbarGroup
+ * -----------------------------------------------------------------------------------------------*/
+const TOOLBAR_GROUP_NAME = 'ToolbarGroup';
+
+type ToolbarGroupProps = ComponentProps<'div'>;
+
+const ToolbarGroup: FC<ToolbarGroupProps> = ({ className, ref, ...rest }) => {
   const groupRef = useRef<HTMLDivElement>(null);
   const isVisible = useGroupVisibility(groupRef);
 
   if (!isVisible) return null;
 
-  return (
-    // biome-ignore lint/a11y/useSemanticElements: from tiptap example
-    <div className={`tiptap-toolbar-group ${className || ''}`} ref={mergeRefs([groupRef, ref])} role="group" {...props}>
-      {children}
-    </div>
-  );
-});
+  return <div className={cn('flex gap-1', className)} ref={mergeRefs(groupRef, ref)} role="group" {...rest} />;
+};
 
-ToolbarGroup.displayName = 'ToolbarGroup';
+ToolbarGroup.displayName = TOOLBAR_GROUP_NAME;
 
-export const ToolbarSeparator = forwardRef<HTMLDivElement, BaseProps>(({ ...props }, ref) => {
+/* -------------------------------------------------------------------------------------------------
+ * ToolbarSeparator
+ * -----------------------------------------------------------------------------------------------*/
+const TOOLBAR_SEPARATOR_NAME = 'ToolbarSeparator';
+
+type ToolbarSeparatorProps = ComponentProps<'div'>;
+
+const ToolbarSeparator: FC<ToolbarSeparatorProps> = (props) => {
   const separatorRef = useRef<HTMLDivElement>(null);
   const isVisible = useSeparatorVisibility(separatorRef);
 
-  if (!isVisible) return null;
+  return !isVisible ? null : (
+    <Separator decorative orientation="vertical" {...props} ref={mergeRefs(separatorRef, props.ref)} />
+  );
+};
 
-  return <Separator decorative orientation="vertical" ref={mergeRefs([separatorRef, ref])} {...props} />;
-});
+ToolbarSeparator.displayName = TOOLBAR_SEPARATOR_NAME;
 
-ToolbarSeparator.displayName = 'ToolbarSeparator';
+/* -----------------------------------------------------------------------------------------------*/
+
+export { Toolbar, ToolbarSeparator, ToolbarGroup };
+
+export type { ToolbarSeparatorProps, ToolbarGroupProps, ToolbarProps };

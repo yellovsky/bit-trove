@@ -10,6 +10,15 @@ import react from "@vitejs/plugin-react";
 
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
+  resolve: {
+    alias: {
+      '@app': path.resolve('app/app'),
+      '@entities': path.resolve('app/entities'),
+      '@features': path.resolve('app/features'),
+      '@shared': path.resolve('app/shared'),
+      '@widgets': path.resolve('app/widgets'),
+    },
+  },
   test: {
     coverage: {
       allowExternal: true,
@@ -33,12 +42,16 @@ export default defineConfig({
 					environment: 'node',
 					// Include generic .test files that should work anywhere and .server.test files for server only, ignore .browser.test
 					include: ['./**/*.server.test.{ts,tsx}', '!./**/*.browser.test.{ts,tsx}', './**/*.test.{ts,tsx}'],
-					name: 'server'
+					name: 'server',
+					env: {
+						REMIX_PUBLIC_CLIENT_HOST: 'https://bittrove.com',
+					},
 				}
 			},
 			{
 				extends: true,
-				optimizeDeps: { include: ['react/jsx-dev-runtime', 'react-router'] },
+				optimizeDeps: { include: ['react/jsx-dev-runtime'] },
+
 				plugins: [
 					babel({
 						filter: /\.[j|t]sx?$/,
@@ -52,6 +65,7 @@ export default defineConfig({
 					tsconfigPaths(),
 				],
 				server: { fs: { strict: false } },
+
 				test: {
 					globals: true,
 					// Include generic .test files that should work anywhere and .browser.test files for browser only, ignore .server.test
@@ -59,17 +73,17 @@ export default defineConfig({
 					includeTaskLocation: true,
 					name: 'browser',
 					setupFiles: [path.join('./tests/setup.browser.tsx')],
-    environment: 'jsdom',
-		browser: {
+    			environment: 'jsdom',
+					env: {
+						REMIX_PUBLIC_CLIENT_HOST: 'https://bittrove.com',
+					},
+
+					browser: {
             enabled: true,
             headless: true,
             provider: "playwright",
             instances: [{ browser: "chromium" }],
           },
-
-					alias:{
-						'react-router': 'react-router'
-					}
 				}
 			},
       {

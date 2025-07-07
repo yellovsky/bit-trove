@@ -11,7 +11,7 @@ interface ToolbarButtonProps extends ComponentProps<typeof Toggle> {
 
 export const ToolbarButton: FC<ToolbarButtonProps> = ({ children, tooltip, className, tooltipOptions, ...props }) => {
   const toggleButton = (
-    <Toggle size="md" {...props}>
+    <Toggle size="sm" {...props}>
       {children}
     </Toggle>
   );

@@ -1,6 +1,6 @@
 import geologicaCss from '@fontsource-variable/geologica/index.css?url';
 import interCss from '@fontsource-variable/inter/index.css?url';
-import robotoMonoCss from '@fontsource-variable/roboto-mono/index.css?url';
+import jetbrainsMonoCss from '@fontsource-variable/jetbrains-mono/index.css?url';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { cx } from 'class-variance-authority';
@@ -31,7 +31,7 @@ import { getCookieStringColorScheme } from '@features/theme';
 import type { Route } from './+types/root';
 import rootCss from './root.css?url';
 
-const cssAssets: LinkDescriptor[] = [rootCss, geologicaCss, interCss, robotoMonoCss]
+const cssAssets: LinkDescriptor[] = [rootCss, geologicaCss, interCss, jetbrainsMonoCss]
   .map((href) => href.split('?')[0])
   .map((href) => ({ as: 'style', href, rel: 'stylesheet' }));
 

@@ -20,10 +20,6 @@
   /* Focus States */
   --color-focus-ring: var(--color-primary-9);
 
-  /* Background Colors */
-  --color-background: var(--color-gray-1);
-  --color-foreground: var(--color-gray-12);
-
   /* Muted Colors */
   --color-muted: var(--color-gray-4);
   --color-muted-foreground: var(--color-gray-11);
@@ -49,4 +45,13 @@
 
   /* Custom Input Border */
   --color-input-border: var(--color-gray-a5);
+
+  /* Background Colors */
+  --color-background: #fff;
+  --color-foreground: hsl(0 0% 3.9%);
+
+  [data-theme="dark"] & {
+    --color-background: #14161a;
+    --color-foreground: #fff;
+  }
 }

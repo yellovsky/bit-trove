@@ -3,7 +3,7 @@ import type { BlogPosting, CollectionPage, WithContext } from 'schema-dts';
 
 import type { BlogPost } from '@repo/api-models';
 
-import { getGlobal } from '@shared/lib/get-global';
+import { addClientHost } from '@shared/lib/link';
 
 import { getBlogPostLink, getBlogPostsLink } from '../lib/links';
 
@@ -12,7 +12,7 @@ import { getBlogPostLink, getBlogPostsLink } from '../lib/links';
  */
 export const getBlogPostsOgMeta = (): MetaDescriptor[] => [
   { content: 'website', property: 'og:type' },
-  { content: [getGlobal('REMIX_PUBLIC_CLIENT_HOST'), getBlogPostsLink()].join('/'), property: 'og:url' },
+  { content: addClientHost(getBlogPostsLink()), property: 'og:url' },
   { content: 'Blog Posts – Comprehensive Programming Articles & Tutorials', property: 'og:title' },
   {
     content:
@@ -27,7 +27,7 @@ export const getBlogPostsOgMeta = (): MetaDescriptor[] => [
  */
 export const getBlogPostsTwitterMeta = (): MetaDescriptor[] => [
   { content: 'summary_large_image', name: 'twitter:card' },
-  { content: [getGlobal('REMIX_PUBLIC_CLIENT_HOST'), getBlogPostsLink()].join('/'), name: 'twitter:url' },
+  { content: addClientHost(getBlogPostsLink()), name: 'twitter:url' },
   { content: 'Blog Posts – Comprehensive Programming Articles & Tutorials', name: 'twitter:title' },
   {
     content:
@@ -41,7 +41,7 @@ export const getBlogPostsTwitterMeta = (): MetaDescriptor[] => [
  */
 export const getBlogPostOgMeta = (blogPost: BlogPost): MetaDescriptor[] => [
   { content: 'article', property: 'og:type' },
-  { content: [getGlobal('REMIX_PUBLIC_CLIENT_HOST'), getBlogPostLink(blogPost)].join('/'), property: 'og:url' },
+  { content: addClientHost(getBlogPostLink(blogPost)), property: 'og:url' },
   { content: blogPost.seo?.title || blogPost.title, property: 'og:title' },
   { content: blogPost.seo?.description || blogPost.shortDescription, property: 'og:description' },
   { content: blogPost.languageCode, property: 'og:locale' },
@@ -54,7 +54,7 @@ export const getBlogPostOgMeta = (blogPost: BlogPost): MetaDescriptor[] => [
  */
 export const getBlogPostTwitterMeta = (blogPost: BlogPost): MetaDescriptor[] => [
   { content: 'summary_large_image', name: 'twitter:card' },
-  { content: [getGlobal('REMIX_PUBLIC_CLIENT_HOST'), getBlogPostLink(blogPost)].join('/'), name: 'twitter:url' },
+  { content: addClientHost(getBlogPostLink(blogPost)), name: 'twitter:url' },
   { content: blogPost.seo?.title || blogPost.title, name: 'twitter:title' },
   { content: blogPost.seo?.description || blogPost.shortDescription, name: 'twitter:description' },
 ];
@@ -73,7 +73,7 @@ export const getBlogPostsJsonLdMeta = (): MetaDescriptor => ({
       name: 'Blog Posts Collection',
     },
     name: 'Blog Posts – Comprehensive Programming Articles & Tutorials',
-    url: [getGlobal('REMIX_PUBLIC_CLIENT_HOST'), getBlogPostsLink()].join('/'),
+    url: addClientHost(getBlogPostsLink()),
   } satisfies WithContext<CollectionPage>,
 });
 
@@ -93,13 +93,13 @@ export const getBlogPostJsonLdMeta = (blogPost: BlogPost): MetaDescriptor => ({
     headline: blogPost.seo?.title || blogPost.title,
     inLanguage: blogPost.languageCode,
     mainEntityOfPage: {
-      '@id': [getGlobal('REMIX_PUBLIC_CLIENT_HOST'), getBlogPostLink(blogPost)].join('/'),
+      '@id': addClientHost(getBlogPostLink(blogPost)),
       '@type': 'WebPage',
     },
     publisher: {
       '@type': 'Organization',
       name: 'BitTrove',
-      url: getGlobal('REMIX_PUBLIC_CLIENT_HOST'),
+      url: addClientHost(getBlogPostLink(blogPost)),
     },
   } satisfies WithContext<BlogPosting>,
 });

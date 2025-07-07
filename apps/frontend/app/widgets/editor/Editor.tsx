@@ -144,8 +144,8 @@ export const Editor: FC<EditorProps> = ({ editor }) => {
             />
           )}
         </Toolbar>
-        <div className="typography-root bg-input-bg p-sm content-wrapper [&_contenteditable]:focus-visible:outline-none">
-          <EditorContent editor={editor} />
+        <div className="typography-root p-4 content-wrapper [&_contenteditable]:focus-visible:outline-none">
+          <EditorContent className="min-h-56" editor={editor} />
         </div>
       </EditorContext.Provider>
     </div>

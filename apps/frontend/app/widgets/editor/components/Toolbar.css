@@ -1,20 +1,17 @@
 @reference '../../../root.css';
 
-:root,
-[data-theme="light"] {
+.tiptap-toolbar {
+  @apply rounded-t-default bg-background;
+
   --tt-toolbar-height: 2.75rem;
   --tt-safe-area-bottom: env(safe-area-inset-bottom, 0px);
   --tt-toolbar-bg-color: var(--color-background);
   --tt-toolbar-border-color: var(--color-border);
-}
 
-[data-theme="dark"] {
-  --tt-toolbar-bg-color: var(--color-background);
-  --tt-toolbar-border-color: var(--color-border);
-}
-
-.tiptap-toolbar {
-  @apply rounded-t-default;
+  [data-theme="dark"] & {
+    --tt-toolbar-bg-color: var(--color-background);
+    --tt-toolbar-border-color: var(--color-border);
+  }
 
   display: flex;
   align-items: center;

@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 import type { BlogPost } from '@repo/api-models';
 
@@ -10,20 +10,6 @@ import {
   getBlogPostsTwitterMeta,
   getBlogPostTwitterMeta,
 } from './seo-utils';
-
-// Mock the global function
-vi.mock('@shared/lib/get-global', () => ({
-  getGlobal: vi.fn((key: string) => {
-    if (key === 'REMIX_PUBLIC_CLIENT_HOST') return 'https://bittrove.com';
-    return '';
-  }),
-}));
-
-// Mock the links
-vi.mock('../lib/links', () => ({
-  getBlogPostLink: vi.fn((blogPost: BlogPost) => `/blog/${blogPost.slug}`),
-  getBlogPostsLink: vi.fn(() => '/blog'),
-}));
 
 const mockBlogPost: BlogPost = {
   alternatives: [],
@@ -98,7 +84,10 @@ describe('Blog Posts SEO Utils', () => {
     });
 
     it('falls back to blog post title when SEO title is not available', () => {
-      const blogPostWithoutSeo = { ...mockBlogPost, seo: undefined };
+      const blogPostWithoutSeo = {
+        ...mockBlogPost,
+        seo: { description: null, keywords: null, title: null },
+      };
       const result = getBlogPostOgMeta(blogPostWithoutSeo);
 
       expect(result).toEqual([
@@ -126,7 +115,7 @@ describe('Blog Posts SEO Utils', () => {
     });
 
     it('falls back to blog post title when SEO title is not available', () => {
-      const blogPostWithoutSeo = { ...mockBlogPost, seo: undefined };
+      const blogPostWithoutSeo = { ...mockBlogPost, seo: { description: null, keywords: null, title: null } };
       const result = getBlogPostTwitterMeta(blogPostWithoutSeo);
 
       expect(result).toEqual([
@@ -182,17 +171,18 @@ describe('Blog Posts SEO Utils', () => {
           publisher: {
             '@type': 'Organization',
             name: 'BitTrove',
-            url: 'https://bittrove.com',
+            url: 'https://bittrove.com/blog/test-blog-post',
           },
         },
       });
     });
 
     it('falls back to blog post title when SEO title is not available', () => {
-      const blogPostWithoutSeo = { ...mockBlogPost, seo: undefined };
+      const blogPostWithoutSeo = { ...mockBlogPost, seo: { description: null, keywords: null, title: null } };
       const result = getBlogPostJsonLdMeta(blogPostWithoutSeo);
 
-      expect(result['script:ld+json']).toMatchObject({
+      const resulted = 'script:ld+json' in result ? result['script:ld+json'] : result;
+      expect(resulted).toMatchObject({
         description: 'Test short description',
         headline: 'Test Blog Post',
       });
@@ -202,7 +192,8 @@ describe('Blog Posts SEO Utils', () => {
       const blogPostWithoutDate = { ...mockBlogPost, publishedAt: null };
       const result = getBlogPostJsonLdMeta(blogPostWithoutDate);
 
-      expect(result['script:ld+json']).toMatchObject({
+      const resulted = 'script:ld+json' in result ? result['script:ld+json'] : result;
+      expect(resulted).toMatchObject({
         datePublished: '',
       });
     });

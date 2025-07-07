@@ -14,6 +14,7 @@
 @import "./amber.palette.css";
 @import "./slate.palette.css";
 @import "./gray.palette.css";
+@import "./light-blue.palette.css";
 
 /* 3. Primary Color Variants */
 @import "./primary-teal.palette.css";
@@ -23,6 +24,7 @@
 @import "./primary-slate.palette.css";
 @import "./primary-gray.palette.css";
 @import "./primary-blue.palette.css";
+@import "./primary-light-blue.palette.css";
 
 /* 4. Component System */
 @import "./components.palette.css";
@@ -41,6 +43,9 @@
   --spacing: 0.25rem;
 
   /* Typography */
+  --font-default: "Inter Variable", sans-serif;
+  --font-sans: "Inter Variable", sans-serif;
+  --font-mono: "JetBrains Mono Variable", monospace;
   --font-heading: Geologica Variable, sans-serif;
 
   /* Border Radius */
@@ -142,6 +147,38 @@
   --color-blue-surface: var(--color-blue-surface);
   --color-blue-indicator: var(--color-blue-indicator);
   --color-blue-track: var(--color-blue-track);
+
+  /* Light Blue Colors */
+  --color-light-blue-1: var(--color-light-blue-1);
+  --color-light-blue-2: var(--color-light-blue-2);
+  --color-light-blue-3: var(--color-light-blue-3);
+  --color-light-blue-4: var(--color-light-blue-4);
+  --color-light-blue-5: var(--color-light-blue-5);
+  --color-light-blue-6: var(--color-light-blue-6);
+  --color-light-blue-7: var(--color-light-blue-7);
+  --color-light-blue-8: var(--color-light-blue-8);
+  --color-light-blue-9: var(--color-light-blue-9);
+  --color-light-blue-10: var(--color-light-blue-10);
+  --color-light-blue-11: var(--color-light-blue-11);
+  --color-light-blue-12: var(--color-light-blue-12);
+
+  --color-light-blue-a1: var(--color-light-blue-a1);
+  --color-light-blue-a2: var(--color-light-blue-a2);
+  --color-light-blue-a3: var(--color-light-blue-a3);
+  --color-light-blue-a4: var(--color-light-blue-a4);
+  --color-light-blue-a5: var(--color-light-blue-a5);
+  --color-light-blue-a6: var(--color-light-blue-a6);
+  --color-light-blue-a7: var(--color-light-blue-a7);
+  --color-light-blue-a8: var(--color-light-blue-a8);
+  --color-light-blue-a9: var(--color-light-blue-a9);
+  --color-light-blue-a10: var(--color-light-blue-a10);
+  --color-light-blue-a11: var(--color-light-blue-a11);
+  --color-light-blue-a12: var(--color-light-blue-a12);
+
+  --color-light-blue-contrast: var(--color-light-blue-contrast);
+  --color-light-blue-surface: var(--color-light-blue-surface);
+  --color-light-blue-indicator: var(--color-light-blue-indicator);
+  --color-light-blue-track: var(--color-light-blue-track);
 
   /* Red Colors */
   --color-red-1: var(--color-red-1);
@@ -327,9 +364,10 @@
 }
 
 /* 8. Theme-Specific Variables */
+/* TODO move to component */
 :root,
 [data-theme="light"] {
-  --sidebar: hsl(0 0% 98%);
+  --sidebar: #fcfcfc;
   --sidebar-foreground: hsl(240 5.3% 26.1%);
   --sidebar-primary: hsl(240 5.9% 10%);
   --sidebar-primary-foreground: hsl(0 0% 98%);
@@ -340,7 +378,7 @@
 }
 
 [data-theme="dark"] {
-  --sidebar: #1d1d1d;
+  --sidebar: #191b1f;
   --sidebar-foreground: var(--color-gray-a11);
   --sidebar-primary: var(--color-primary-9);
   --sidebar-primary-foreground: var(--color-gray-12);

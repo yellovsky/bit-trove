@@ -1,0 +1,66 @@
+:root,
+[data-theme="light"] {
+  --color-light-blue-1: oklch(99.4% 0.0033 254.6);
+  --color-light-blue-2: oklch(98.2% 0.011 254.6);
+  --color-light-blue-3: oklch(96% 0.0228 254.6);
+  --color-light-blue-4: oklch(93.7% 0.0434 254.6);
+  --color-light-blue-5: oklch(90.5% 0.0637 254.6);
+  --color-light-blue-6: oklch(86.4% 0.0837 254.6);
+  --color-light-blue-7: oklch(80.8% 0.1061 254.6);
+  --color-light-blue-8: oklch(73.3% 0.1434 254.6);
+  --color-light-blue-9: oklch(71.4% 0.1434 254.6);
+  --color-light-blue-10: oklch(67.7% 0.1434 254.6);
+  --color-light-blue-11: oklch(54.3% 0.1434 254.6);
+  --color-light-blue-12: oklch(32% 0.1149 254.6);
+
+  --color-light-blue-a1: color(display-p3 0.0235 0.5137 1 / 0.016);
+  --color-light-blue-a2: color(display-p3 0.0235 0.5137 0.9059 / 0.04);
+  --color-light-blue-a3: color(display-p3 0.0078 0.4353 0.9529 / 0.083);
+  --color-light-blue-a4: color(display-p3 0.0078 0.451 0.9451 / 0.142);
+  --color-light-blue-a5: color(display-p3 0.0039 0.4549 0.9451 / 0.208);
+  --color-light-blue-a6: color(display-p3 0.0039 0.4235 0.949 / 0.291);
+  --color-light-blue-a7: color(display-p3 0.0039 0.3961 0.949 / 0.389);
+  --color-light-blue-a8: color(display-p3 0 0.3725 0.949 / 0.538);
+  --color-light-blue-a9: color(display-p3 0 0.3569 0.9176 / 0.561);
+  --color-light-blue-a10: color(display-p3 0 0.3255 0.8471 / 0.604);
+  --color-light-blue-a11: color(display-p3 0 0.2549 0.6431 / 0.757);
+  --color-light-blue-a12: color(display-p3 0 0.1294 0.3608 / 0.934);
+
+  --color-light-blue-contrast: #fff;
+  --color-light-blue-surface: color(display-p3 0.9529 0.9725 1 / 0.8);
+  --color-light-blue-indicator: oklch(71.4% 0.1434 254.6);
+  --color-light-blue-track: oklch(71.4% 0.1434 254.6);
+}
+
+[data-theme="dark"] {
+  --color-light-blue-1: oklch(26% 0.0214 254.6);
+  --color-light-blue-2: oklch(27.4% 0.0249 254.6);
+  --color-light-blue-3: oklch(32.9% 0.0567 254.6);
+  --color-light-blue-4: oklch(36.7% 0.0826 254.6);
+  --color-light-blue-5: oklch(40.7% 0.0902 254.6);
+  --color-light-blue-6: oklch(45% 0.0941 254.6);
+  --color-light-blue-7: oklch(50% 0.1016 254.6);
+  --color-light-blue-8: oklch(55.7% 0.1169 254.6);
+  --color-light-blue-9: oklch(71.4% 0.1434 254.6);
+  --color-light-blue-10: oklch(67.7% 0.1434 254.6);
+  --color-light-blue-11: oklch(77.6% 0.1101 254.6);
+  --color-light-blue-12: oklch(90.8% 0.0407 254.6);
+
+  --color-light-blue-a1: color(display-p3 0 0.2353 0.9843 / 0.042);
+  --color-light-blue-a2: color(display-p3 0 0.3882 1 / 0.064);
+  --color-light-blue-a3: color(display-p3 0.1608 0.4745 1 / 0.201);
+  --color-light-blue-a4: color(display-p3 0.1686 0.4941 1 / 0.302);
+  --color-light-blue-a5: color(display-p3 0.2471 0.5451 1 / 0.37);
+  --color-light-blue-a6: color(display-p3 0.3216 0.5882 1 / 0.439);
+  --color-light-blue-a7: color(display-p3 0.3725 0.6157 1 / 0.53);
+  --color-light-blue-a8: color(display-p3 0.3922 0.6275 1 / 0.644);
+  --color-light-blue-a9: color(display-p3 0.4549 0.6667 1 / 0.946);
+  --color-light-blue-a10: color(display-p3 0.4275 0.6471 1 / 0.891);
+  --color-light-blue-a11: color(display-p3 0.5843 0.749 1 / 0.959);
+  --color-light-blue-a12: color(display-p3 0.8431 0.902 1 / 0.978);
+
+  --color-light-blue-contrast: #fff;
+  --color-light-blue-surface: color(display-p3 0.1176 0.1725 0.2588 / 0.5);
+  --color-light-blue-indicator: oklch(71.4% 0.1434 254.6);
+  --color-light-blue-track: oklch(71.4% 0.1434 254.6);
+}

@@ -1,0 +1,32 @@
+.primary-light-blue {
+  --color-primary-1: var(--color-light-blue-1);
+  --color-primary-2: var(--color-light-blue-2);
+  --color-primary-3: var(--color-light-blue-3);
+  --color-primary-4: var(--color-light-blue-4);
+  --color-primary-5: var(--color-light-blue-5);
+  --color-primary-6: var(--color-light-blue-6);
+  --color-primary-7: var(--color-light-blue-7);
+  --color-primary-8: var(--color-light-blue-8);
+  --color-primary-9: var(--color-light-blue-9);
+  --color-primary-10: var(--color-light-blue-10);
+  --color-primary-11: var(--color-light-blue-11);
+  --color-primary-12: var(--color-light-blue-12);
+
+  --color-primary-a1: var(--color-light-blue-a1);
+  --color-primary-a2: var(--color-light-blue-a2);
+  --color-primary-a3: var(--color-light-blue-a3);
+  --color-primary-a4: var(--color-light-blue-a4);
+  --color-primary-a5: var(--color-light-blue-a5);
+  --color-primary-a6: var(--color-light-blue-a6);
+  --color-primary-a7: var(--color-light-blue-a7);
+  --color-primary-a8: var(--color-light-blue-a8);
+  --color-primary-a9: var(--color-light-blue-a9);
+  --color-primary-a10: var(--color-light-blue-a10);
+  --color-primary-a11: var(--color-light-blue-a11);
+  --color-primary-a12: var(--color-light-blue-a12);
+
+  --color-primary-contrast: var(--color-light-blue-contrast);
+  --color-primary-surface: var(--color-light-blue-surface);
+  --color-primary-indicator: var(--color-light-blue-indicator);
+  --color-primary-track: var(--color-light-blue-track);
+}

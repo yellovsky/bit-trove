@@ -1,7 +1,22 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import { BlogPostMetadata } from './BlogPostMetadata';
+
+// Mock the translation hook
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    i18n: {
+      language: 'en',
+    },
+    t: (key: string, options?: { number?: number }) => {
+      if (key === '{{number}} min read') {
+        return `${options?.number} mins read`;
+      }
+      return key;
+    },
+  }),
+}));
 
 describe('BlogPostMetadata', () => {
   it('renders complete metadata with all information', () => {
@@ -18,10 +33,12 @@ describe('BlogPostMetadata', () => {
     render(<BlogPostMetadata {...props} />);
 
     expect(screen.getByText('John Doe')).toBeInTheDocument();
-    expect(screen.getByText('By')).toBeInTheDocument();
     expect(screen.getByText('Tags:')).toBeInTheDocument();
     expect(screen.getByText('React')).toBeInTheDocument();
     expect(screen.getByText('TypeScript')).toBeInTheDocument();
+    expect(screen.getByText('5 mins read')).toBeInTheDocument();
+    // Date will be formatted by Intl.DateTimeFormat, so we check for the year
+    expect(screen.getByText(/2024/)).toBeInTheDocument();
   });
 
   it('renders without author when not provided', () => {
@@ -33,9 +50,10 @@ describe('BlogPostMetadata', () => {
 
     render(<BlogPostMetadata {...props} />);
 
-    expect(screen.queryByText('By')).not.toBeInTheDocument();
+    expect(screen.queryByText('John Doe')).not.toBeInTheDocument();
     expect(screen.getByText('Tags:')).toBeInTheDocument();
     expect(screen.getByText('React')).toBeInTheDocument();
+    expect(screen.getByText('5 mins read')).toBeInTheDocument();
   });
 
   it('renders without tags when not provided', () => {
@@ -49,6 +67,7 @@ describe('BlogPostMetadata', () => {
 
     expect(screen.getByText('John Doe')).toBeInTheDocument();
     expect(screen.queryByText('Tags:')).not.toBeInTheDocument();
+    expect(screen.getByText('5 mins read')).toBeInTheDocument();
   });
 
   it('renders without reading time when not provided', () => {
@@ -63,6 +82,7 @@ describe('BlogPostMetadata', () => {
     expect(screen.getByText('John Doe')).toBeInTheDocument();
     expect(screen.getByText('Tags:')).toBeInTheDocument();
     expect(screen.getByText('React')).toBeInTheDocument();
+    expect(screen.queryByText('5 mins read')).not.toBeInTheDocument();
   });
 
   it('renders without publication date when not provided', () => {
@@ -77,6 +97,8 @@ describe('BlogPostMetadata', () => {
     expect(screen.getByText('John Doe')).toBeInTheDocument();
     expect(screen.getByText('Tags:')).toBeInTheDocument();
     expect(screen.getByText('React')).toBeInTheDocument();
+    expect(screen.getByText('5 mins read')).toBeInTheDocument();
+    expect(screen.queryByText(/2024/)).not.toBeInTheDocument();
   });
 
   it('renders with custom className', () => {
@@ -120,5 +142,35 @@ describe('BlogPostMetadata', () => {
 
     expect(screen.getByText('John Doe')).toBeInTheDocument();
     expect(screen.queryByText('Tags:')).not.toBeInTheDocument();
+  });
+
+  it('renders with null author', () => {
+    const props = {
+      author: null,
+      readingTime: 5,
+      tags: [{ id: '1', name: 'React', slug: 'react' }],
+    };
+
+    render(<BlogPostMetadata {...props} />);
+
+    expect(screen.queryByText('John Doe')).not.toBeInTheDocument();
+    expect(screen.getByText('Tags:')).toBeInTheDocument();
+    expect(screen.getByText('React')).toBeInTheDocument();
+  });
+
+  it('renders with null publishedAt', () => {
+    const props = {
+      author: { name: 'John Doe' },
+      publishedAt: null,
+      readingTime: 5,
+      tags: [{ id: '1', name: 'React', slug: 'react' }],
+    };
+
+    render(<BlogPostMetadata {...props} />);
+
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
+    expect(screen.getByText('Tags:')).toBeInTheDocument();
+    expect(screen.getByText('React')).toBeInTheDocument();
+    expect(screen.queryByText(/2024/)).not.toBeInTheDocument();
   });
 });
