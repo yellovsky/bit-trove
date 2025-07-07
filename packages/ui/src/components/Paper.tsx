@@ -7,5 +7,5 @@ interface PaperProps extends PropsWithChildren {
 }
 
 export const Paper: FC<PaperProps> = ({ children, className }) => {
-  return <div className={cn('rounded-default border border-border bg-gray-2 p-4', className)}>{children}</div>;
+  return <div className={cn('rounded-default border border-border bg-card p-4', className)}>{children}</div>;
 };

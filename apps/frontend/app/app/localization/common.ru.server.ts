@@ -98,4 +98,5 @@ export default {
   search: {
     placeholder: 'Поиск',
   },
+  'Table of Contents': 'Содержание',
 };

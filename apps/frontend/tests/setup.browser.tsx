@@ -8,6 +8,15 @@ import { PropsWithChildren, ComponentType, FC } from 'react';
 
 import { i18n as i18nParams, resources } from '@app/localization';
 
+// Set up window.env for browser tests
+if (typeof window !== 'undefined') {
+  window.env = {
+    APP_ENV: 'development',
+    REMIX_PUBLIC_API_HOST: 'http://localhost:3000',
+    REMIX_PUBLIC_CLIENT_HOST: 'https://bittrove.com',
+  };
+}
+
 // We extend the global test context with our custom functions that we pass into the context in beforeEach
 declare module 'vitest' {
   export interface TestContext {

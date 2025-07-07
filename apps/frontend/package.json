@@ -28,6 +28,7 @@
 		"@react-router/serve": "7.6.3",
 		"@repo/api-models": "*",
 		"@repo/ui": "*",
+		"@sindresorhus/slugify": "2.2.1",
 		"@tabler/icons-react": "3.34.0",
 		"@tanstack/query-core": "5.81.5",
 		"@tanstack/react-query": "5.81.5",

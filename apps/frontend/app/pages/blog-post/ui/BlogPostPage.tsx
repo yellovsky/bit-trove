@@ -1,12 +1,13 @@
+import slugify from '@sindresorhus/slugify';
 import type { FC } from 'react';
 
-import { PoseDocument } from '@repo/ui/components/PoseDocument';
+import { getJsonContentTitleString, PoseDocument, renderPoseTitle } from '@repo/ui/components/PoseDocument';
 import { Heading } from '@repo/ui/components/Typography';
 
 import { ContentWithSidebar } from '@shared/ui/ContentWithSidebar';
 import { ReadingProgress } from '@shared/ui/ReadingProgress';
 
-import { RelatedArticles, TableOfContents } from '@widgets/blog-post-sidebar';
+import { RelatedArticles, TableOfContents, type TableOfContentsItem } from '@widgets/blog-post-sidebar';
 
 import {
   BackToBlogListButton,
@@ -23,9 +24,25 @@ export const BlogPostPage: FC<{ blogPostVariables: GetOneBlogPostVariables }> = 
   const blogPostResponse = useBlogPostQuery(blogPostVariables);
   const blogPost = blogPostResponse.data?.data;
 
+  const headings = blogPost?.contentJSON?.content?.filter((c) => c.type === 'heading');
+  const tocItems: TableOfContentsItem[] | undefined = !headings?.length
+    ? undefined
+    : [
+        {
+          id: slugify(blogPost?.title ?? ''),
+          level: 1,
+          title: blogPost?.title,
+        },
+        ...headings.map((c) => ({
+          id: slugify(getJsonContentTitleString(c)),
+          level: c.attrs?.level ?? 2,
+          title: renderPoseTitle(c),
+        })),
+      ];
+
   const sidebar = (
     <>
-      <TableOfContents />
+      <TableOfContents items={tocItems} />
       <RelatedArticles />
     </>
   );
@@ -78,7 +95,7 @@ export const BlogPostPage: FC<{ blogPostVariables: GetOneBlogPostVariables }> = 
         <article aria-labelledby="blog-post-title">
           {/* Blog post header */}
           <header className="mb-8">
-            <Heading className="mb-6 text-balance" id="blog-post-title" order={1}>
+            <Heading className="mb-6 text-balance" id={slugify(blogPost?.title ?? '')} order={1}>
               {blogPost.title}
             </Heading>
 

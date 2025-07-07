@@ -11,8 +11,8 @@ import {
 } from '@features/blog-posts';
 
 import type { Route } from './+types';
-import { loadBlogPostRouteData } from './load-data';
-import { BlogPostPage } from './page';
+import { loadBlogPostRouteData } from './lib/load-data';
+import { BlogPostPage } from './ui/BlogPostPage';
 
 export async function loader(args: Route.LoaderArgs) {
   return loadBlogPostRouteData(args);

@@ -97,4 +97,5 @@ export default {
   search: {
     placeholder: 'Search',
   },
+  'Table of Contents': 'Table of Contents',
 };

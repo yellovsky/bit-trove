@@ -25,7 +25,7 @@
   --color-muted-foreground: var(--color-gray-11);
 
   /* Card Colors */
-  --color-card: var(--color-gray-2);
+  --color-card: hsl(220 13% 11%);
   --color-card-foreground: var(--color-gray-12);
 
   /* Popover Colors */
@@ -37,7 +37,7 @@
   --color-input-bg: var(--color-gray-6);
 
   /* Border Colors */
-  --color-border: var(--color-gray-7);
+  --color-border: hsl(220 13% 18%);
 
   /* Destructive Colors */
   --color-destructive: var(--color-red-10);

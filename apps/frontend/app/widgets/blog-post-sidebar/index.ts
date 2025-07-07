@@ -1,2 +1,2 @@
 export { RelatedArticles } from './RelatedArticles';
-export { TableOfContents } from './TableOfContents';
+export { TableOfContents, type TableOfContentsItem } from './TableOfContents';

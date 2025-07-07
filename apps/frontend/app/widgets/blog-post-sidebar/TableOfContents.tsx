@@ -1,11 +1,15 @@
-import type { FC } from 'react';
+import { TableOfContentsIcon } from 'lucide-react';
+import type { FC, ReactNode } from 'react';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Link } from '@repo/ui/components/Link';
+import { Paper } from '@repo/ui/components/Paper';
+import { cn } from '@repo/ui/lib/utils';
 
-interface TableOfContentsItem {
+export interface TableOfContentsItem {
   id: string;
-  title: string;
+  title: ReactNode;
   level: number;
 }
 
@@ -14,97 +18,70 @@ interface TableOfContentsProps {
   className?: string;
 }
 
-export const TableOfContents: FC<TableOfContentsProps> = ({ items = [], className = '' }) => {
+export const TableOfContents: FC<TableOfContentsProps> = ({ items = [], className }) => {
+  const { t } = useTranslation();
   const navRef = useRef<HTMLElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const [activeId, setActiveId] = useState<string>('');
 
-  // Lazy loading with intersection observer
+  // Track which section is currently in view
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1 }
-    );
+    if (items.length === 0) return;
 
-    if (navRef.current) {
-      observer.observe(navRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
-  // Keyboard navigation for table of contents
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (!navRef.current) return;
-
-      const links = navRef.current.querySelectorAll('a');
-      const currentIndex = Array.from(links).indexOf(document.activeElement as HTMLAnchorElement);
-
-      switch (event.key) {
-        case 'ArrowDown': {
-          event.preventDefault();
-          const nextIndex = (currentIndex + 1) % links.length;
-          (links[nextIndex] as HTMLElement)?.focus();
-          break;
-        }
-        case 'ArrowUp': {
-          event.preventDefault();
-          const prevIndex = currentIndex <= 0 ? links.length - 1 : currentIndex - 1;
-          (links[prevIndex] as HTMLElement)?.focus();
-          break;
-        }
-        case 'Home':
-          event.preventDefault();
-          (links[0] as HTMLElement)?.focus();
-          break;
-        case 'End':
-          event.preventDefault();
-          (links[links.length - 1] as HTMLElement)?.focus();
-          break;
-      }
+    const observerOptions = {
+      rootMargin: '-20% 0px -35% 0px',
+      threshold: 0,
     };
 
-    if (items.length > 0 && isVisible) {
-      document.addEventListener('keydown', handleKeyDown);
-      return () => document.removeEventListener('keydown', handleKeyDown);
-    }
-  }, [items.length, isVisible]);
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveId(entry.target.id);
+        }
+      });
+    }, observerOptions);
 
-  if (items.length === 0) {
-    return (
-      <section aria-label="Table of contents" className={`rounded-lg border border-border bg-card p-4 ${className}`}>
-        <h3 className="mb-3 font-semibold text-card-foreground text-sm">Table of Contents</h3>
-        <p className="text-muted-foreground text-sm">No headings found in this article.</p>
-      </section>
-    );
-  }
+    // Observe all section elements
+    items.forEach((item) => {
+      const element = document.getElementById(item.id);
+      if (element) {
+        observer.observe(element);
+      }
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [items]);
+
+  if (items.length === 0) return null;
 
   return (
-    <section aria-label="Table of contents" className={`rounded-lg border border-border bg-card p-4 ${className}`}>
-      <h3 className="mb-3 font-semibold text-card-foreground text-sm">Table of Contents</h3>
-      <nav aria-label="Table of contents navigation" ref={navRef}>
-        <ul className="space-y-1">
-          {items.map((item) => (
-            <li key={item.id}>
-              <Link
-                aria-label={`Jump to section: ${item.title}`}
-                className={`block text-muted-foreground text-sm transition-colors hover:text-foreground ${
-                  item.level === 1 ? 'font-medium' : item.level === 2 ? 'ml-3' : 'ml-6'
-                }`}
-                to={`#${item.id}`}
-                variant="unstyled"
-              >
-                {item.title}
-              </Link>
-            </li>
-          ))}
-        </ul>
+    <Paper className={cn('sticky max-h-96 overflow-y-auto', className)}>
+      <div className="mb-3 flex cursor-pointer items-center justify-between">
+        <h3 className="flex items-center space-x-2 font-semibold text-foreground">
+          <TableOfContentsIcon />
+          <span>{t('Table of Contents')}</span>
+        </h3>
+      </div>
+
+      <nav aria-label="Table of contents navigation" className="space-y-1" ref={navRef}>
+        {items.map((item) => (
+          <Link
+            aria-label={`Jump to section: ${item.title}`}
+            className={cn('block text-sm transition-colors hover:text-primary', {
+              'font-medium text-primary': activeId === item.id,
+              'ps-3': item.level === 2,
+              'ps-6': item.level === 3,
+              'text-muted-foreground': activeId !== item.id,
+            })}
+            key={item.id}
+            to={{ hash: item.id }}
+            variant="unstyled"
+          >
+            {item.title}
+          </Link>
+        ))}
       </nav>
-    </section>
+    </Paper>
   );
 };
