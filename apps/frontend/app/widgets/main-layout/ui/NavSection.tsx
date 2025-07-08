@@ -31,7 +31,7 @@ const NavSectionItem: FC<{ item: NavigationItem }> = ({ item }) => {
   return (
     <SidebarMenuButton asChild isActive={isActive}>
       <Link to={item.to}>
-        {item.icon && <item.icon className="h-4 w-4 text-blue-500" />}
+        {item.icon && <item.icon />}
         <span className="flex-1">{item.title}</span>
       </Link>
     </SidebarMenuButton>

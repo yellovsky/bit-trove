@@ -39,14 +39,7 @@ export const RelatedArticles: FC<RelatedArticlesProps> = ({ articles = [], class
     return () => observer.disconnect();
   }, []);
 
-  if (articles.length === 0) {
-    return (
-      <section aria-label="Related articles" className={`rounded-lg border border-border bg-card p-4 ${className}`}>
-        <h3 className="mb-3 font-semibold text-card-foreground text-sm">Related Articles</h3>
-        <p className="text-muted-foreground text-sm">No related articles found.</p>
-      </section>
-    );
-  }
+  if (articles.length === 0) return null;
 
   return (
     <section aria-label="Related articles" className={`space-y-3 ${className}`} ref={containerRef}>

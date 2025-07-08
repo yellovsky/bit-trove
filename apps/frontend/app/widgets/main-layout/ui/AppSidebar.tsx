@@ -58,9 +58,9 @@ export const AppSidebar: React.FC<ComponentProps<typeof Sidebar>> = ({ ...props 
       <SidebarHeader className="-mt-px border-b border-b-border">
         <SidebarMenu>
           <SidebarMenuItem>
-            <Link className="flex h-8 items-center space-x-2 px-2" to="/">
+            <Link className="flex h-8 items-center space-x-2 px-2 [&>span:last-child]:truncate" to="/">
               <Logo className="size-4" short />
-              <span className="text-primary-11">Bit Trove</span>
+              <span className="text-primary-11 data-[state=open]:hidden">Bit Trove</span>
             </Link>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -75,8 +75,8 @@ export const AppSidebar: React.FC<ComponentProps<typeof Sidebar>> = ({ ...props 
         {isAuthorized && (
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton className="cursor-pointer" onClick={() => signOutMutation.mutate()} size="lg">
-                <LogOutIcon className="h-4 w-4" />
+              <SidebarMenuButton className="cursor-pointer" onClick={() => signOutMutation.mutate()}>
+                <LogOutIcon />
                 <span className="flex-1">{tAuth('sign_out_menu_item.text')}</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
