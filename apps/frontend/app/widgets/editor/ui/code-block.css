@@ -1,0 +1,9 @@
+@reference '../../../root.css';
+
+.codeBlock {
+  @apply text-gray-11 bg-gray-8;
+
+  code {
+    background: none;
+  }
+}
