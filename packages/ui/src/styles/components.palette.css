@@ -6,7 +6,7 @@
 
 .components-palette {
   /* Primary Colors */
-  --color-primary: hsl(0 0% 9%);
+  --color-primary: var(--color-primary-9);
   --color-primary-foreground: hsl(0 0% 98%);
 
   /* Secondary Colors */
@@ -56,7 +56,8 @@
     --color-foreground: #fff;
 
     /* Primary Colors */
-    --color-primary: hsl(220 91% 65%);
+    /* --color-primary: hsl(220 91% 65%); */
+    --color-primary: var(--color-primary-9);
     --color-primary-foreground: hsl(220 13% 9%);
 
     /* Secondary Colors */

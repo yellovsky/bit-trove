@@ -8,7 +8,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@repo/ui/components/Breadcrumb';
-import { Link } from '@repo/ui/components/Link';
+import { TextLink } from '@repo/ui/components/Typography';
 
 import type { AppBreadcrumb } from '../model/breadcrumb.model';
 
@@ -29,7 +29,7 @@ export const Breadcrumbs: FC<BreadcrumbsProps> = ({ items, className }) =>
               <>
                 <BreadcrumbItem>
                   <BreadcrumbLink asChild>
-                    <Link to={item.to ?? '/'}>{item.label}</Link>
+                    <TextLink to={item.to ?? '/'}>{item.label}</TextLink>
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
