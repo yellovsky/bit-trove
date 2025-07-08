@@ -25,9 +25,7 @@ export const BlogPostsSection: FC<BlogPostsSectionProps> = ({ blogPostsVars }) =
       <SectionHeader
         action={
           <Button asChild size="sm" variant="dimmed">
-            <Link to="/blog" variant="unstyled">
-              {t('See all')}
-            </Link>
+            <Link to="/blog">{t('See all')}</Link>
           </Button>
         }
         className="mb-8"

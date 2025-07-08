@@ -76,7 +76,6 @@ export const TableOfContents: FC<TableOfContentsProps> = ({ items = [], classNam
             })}
             key={item.id}
             to={{ hash: item.id }}
-            variant="unstyled"
           >
             {item.title}
           </Link>

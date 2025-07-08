@@ -136,7 +136,7 @@ const Page = () => {
         </Heading>
 
         <Button asChild>
-          <Link to={getCreateBlogPostLink()} variant="unstyled">
+          <Link to={getCreateBlogPostLink()}>
             <PlusCircle />
             {tBlogPosts('create_blog_post_button.text')}
           </Link>

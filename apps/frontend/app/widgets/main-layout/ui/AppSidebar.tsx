@@ -58,18 +58,16 @@ export const AppSidebar: React.FC<ComponentProps<typeof Sidebar>> = ({ ...props 
       <SidebarHeader className="-mt-px border-b border-b-border">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <Link to="/" variant="unstyled">
-                <Logo className="size-4" short />
-                <span className="text-primary-11">Bit Trove</span>
-              </Link>
-            </SidebarMenuButton>
+            <Link className="flex h-8 items-center space-x-2 px-2" to="/">
+              <Logo className="size-4" short />
+              <span className="text-primary-11">Bit Trove</span>
+            </Link>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
 
       <SidebarContent>
-        <NavSection items={navItems} label="Navigation" />
+        <NavSection items={navItems} />
         {isAuthorized && <NavSection items={navItemsCms} label="CMS" />}
       </SidebarContent>
 
@@ -78,8 +76,8 @@ export const AppSidebar: React.FC<ComponentProps<typeof Sidebar>> = ({ ...props 
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton className="cursor-pointer" onClick={() => signOutMutation.mutate()} size="lg">
-                <LogOutIcon />
-                <span>{tAuth('sign_out_menu_item.text')}</span>
+                <LogOutIcon className="h-4 w-4" />
+                <span className="flex-1">{tAuth('sign_out_menu_item.text')}</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>

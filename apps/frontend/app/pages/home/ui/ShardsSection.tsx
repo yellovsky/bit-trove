@@ -32,9 +32,7 @@ export const ShardsSection: FC<ShardsSectionProps> = ({ variables }) => {
       <SectionHeader
         action={
           <Button asChild size="sm" variant="dimmed">
-            <Link to="/shards" variant="unstyled">
-              {t('See all')}
-            </Link>
+            <Link to="/shards">{t('See all')}</Link>
           </Button>
         }
         className="mb-4"

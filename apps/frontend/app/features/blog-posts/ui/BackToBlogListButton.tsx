@@ -19,7 +19,7 @@ const BackToBlogListButton: FC<BackToBlogListButtonProps> = ({ className }) => {
 
   return (
     <Button asChild className={className} size="sm" variant="ghost">
-      <Link to="/blog" variant="unstyled">
+      <Link to="/blog">
         <ArrowLeft className="mr-2 h-4 w-4" />
         {t('menu_items.blog.title')}
       </Link>

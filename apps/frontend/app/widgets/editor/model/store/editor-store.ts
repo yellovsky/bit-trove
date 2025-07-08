@@ -64,7 +64,7 @@ export const activeNodesAtom = atom<Record<string, boolean>>({});
 // Computed atoms for derived state
 export const isEditorActiveAtom = atom((get) => {
   const editor = get(editorAtom);
-  return editor !== null && editor.isEditable;
+  return !!editor?.isEditable;
 });
 
 export const hasSelectionAtom = atom((get) => {
@@ -75,7 +75,7 @@ export const hasSelectionAtom = atom((get) => {
 export const canEditAtom = atom((get) => {
   const editor = get(editorAtom);
   const readOnly = get(editorReadOnlyAtom);
-  return editor !== null && editor.isEditable && !readOnly;
+  return !!editor?.isEditable && !readOnly;
 });
 
 export const editorStateSummaryAtom = atom((get) => {

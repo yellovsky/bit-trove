@@ -60,7 +60,6 @@ export const RelatedArticles: FC<RelatedArticlesProps> = ({ articles = [], class
                   aria-label={`Read article: ${article.title}`}
                   className="line-clamp-2 font-medium text-muted-foreground text-sm transition-colors hover:text-foreground"
                   to={`/blog/${article.slug}`}
-                  variant="unstyled"
                 >
                   {article.title}
                 </Link>

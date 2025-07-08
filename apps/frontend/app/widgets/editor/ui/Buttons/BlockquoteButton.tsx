@@ -2,8 +2,7 @@ import { type Editor, isNodeSelection } from '@tiptap/react';
 import { TextQuoteIcon } from 'lucide-react';
 import type { ComponentProps, FC, MouseEvent } from 'react';
 
-import { getShortcutKey } from '../../lib';
-import { isNodeInSchema } from '../../lib';
+import { getShortcutKey, isNodeInSchema } from '../../lib';
 import { useEditorSync } from '../../model/hooks/use-editor-sync';
 import { useTiptapEditor } from '../../model/hooks/use-tiptap-editor';
 import { ToolbarButton } from '../Toolbar/ToolbarButton';

@@ -26,7 +26,6 @@ export const BlogPostCard: FC<BlogPostCardProps> = ({ blogPost }) => {
         className="focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         tabIndex={0}
         to={getBlogPostLink(blogPost)}
-        variant="unstyled"
       >
         <GridCardPrimitive.CardHeader>
           <GridCardPrimitive.CardHeaderContent>

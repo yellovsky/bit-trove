@@ -20,7 +20,7 @@ export const TagBadge: FC<TagBadgeProps> = ({ tag, nonInteractive, ...props }) =
     </Badge>
   ) : (
     <Badge {...badgeProps} asChild>
-      <Link to="/" variant="unstyled">
+      <Link to="/">
         <HashIcon />
         {tag.name}
       </Link>

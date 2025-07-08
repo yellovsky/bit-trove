@@ -39,7 +39,7 @@ export const ShardTableMenu: FC<ShardTableMenuProps> = ({ shard }) => {
 
       <DropdownMenuContent>
         <DropdownMenuItem asChild>
-          <Link to={getEditShardLink(shard)} variant="unstyled">
+          <Link to={getEditShardLink(shard)}>
             <IconPencil size={14} />
             {tCms('edit_action')}
           </Link>

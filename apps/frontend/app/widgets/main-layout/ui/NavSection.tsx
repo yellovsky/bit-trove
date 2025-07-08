@@ -30,9 +30,9 @@ const NavSectionItem: FC<{ item: NavigationItem }> = ({ item }) => {
 
   return (
     <SidebarMenuButton asChild isActive={isActive}>
-      <Link to={item.to} variant="unstyled">
-        {item.icon && <item.icon />}
-        <span>{item.title}</span>
+      <Link to={item.to}>
+        {item.icon && <item.icon className="h-4 w-4 text-blue-500" />}
+        <span className="flex-1">{item.title}</span>
       </Link>
     </SidebarMenuButton>
   );
@@ -46,6 +46,7 @@ interface NavSectionProps {
 export const NavSection: FC<NavSectionProps> = ({ label, items }) => (
   <SidebarGroup>
     {label && <SidebarGroupLabel>{label}</SidebarGroupLabel>}
+
     <SidebarGroupContent>
       <SidebarMenu>
         {items.map((item) => (

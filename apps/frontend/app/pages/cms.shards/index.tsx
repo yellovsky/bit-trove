@@ -136,7 +136,7 @@ const Page = () => {
         </Heading>
 
         <Button asChild>
-          <Link to={getCreateShardLink()} variant="unstyled">
+          <Link to={getCreateShardLink()}>
             <PlusCircle />
             {tShards('create_shard_button.text')}
           </Link>

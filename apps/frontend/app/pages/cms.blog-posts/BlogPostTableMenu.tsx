@@ -39,7 +39,7 @@ export const BlogPostTableMenu: FC<BlogPostTableMenuProps> = ({ blogPost }) => {
 
       <DropdownMenuContent>
         <DropdownMenuItem asChild>
-          <Link to={getEditBlogPostLink(blogPost)} variant="unstyled">
+          <Link to={getEditBlogPostLink(blogPost)}>
             <IconPencil size={14} />
             {tCms('edit_action')}
           </Link>

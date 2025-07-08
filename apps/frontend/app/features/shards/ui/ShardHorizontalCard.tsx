@@ -21,7 +21,7 @@ export const ShardHorizontalCard: FC<ShardHorizontalCardProps> = ({ shard }) => 
 
   return (
     <ListCardPrimitive.Root asChild>
-      <Link to={getShardLink(shard)} variant="unstyled">
+      <Link to={getShardLink(shard)}>
         <ListCardPrimitive.CardContent>
           <ListCardPrimitive.CardHeader>
             <ListCardPrimitive.CardTitle>{shard.title}</ListCardPrimitive.CardTitle>
