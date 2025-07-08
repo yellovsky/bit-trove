@@ -403,6 +403,8 @@
 /* 10. Base Styles */
 @layer base {
   * {
+    @apply border-border;
+
     --radius-default: 0.25rem;
   }
 

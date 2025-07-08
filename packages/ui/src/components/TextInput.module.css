@@ -1,7 +1,7 @@
 @reference "../styles/globals.css";
 
 .textInput {
-  @apply flex inset-ring inset-ring-input-border text-foreground bg-input-bg relative rounded-sm;
+  @apply flex inset-ring inset-ring-input-border text-foreground bg-background relative rounded-sm;
 
   &:has(input:focus) {
     @apply inset-ring-2 inset-ring-focus-ring;

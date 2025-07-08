@@ -8,7 +8,7 @@ import { useMobile } from '@repo/ui/hooks/use-mobile';
 import { useWindowSize } from '@repo/ui/hooks/use-window-size';
 
 import { BlockquoteButton } from './components/BlockquoteButton';
-import { CodeBlockButton } from './components/CodeBlockButton';
+import { CodeBlockPopover } from './components/CodeBlockPopover';
 import { HeadingToolbarSection } from './components/HeadingToolbarSection';
 import { LinkButton, LinkContent, LinkPopover } from './components/LinkPopover';
 import { ListToolbarButton } from './components/ListToolbarButton';
@@ -32,8 +32,6 @@ interface MainToolbarContentProps {
 const MainToolbarContent: FC<MainToolbarContentProps> = ({ onHighlighterClick, onLinkClick, isMobile }) => {
   return (
     <>
-      {/* <Spacer /> */}
-
       <ToolbarGroup>
         <UndoRedoButton action="undo" />
         <UndoRedoButton action="redo" />
@@ -45,7 +43,7 @@ const MainToolbarContent: FC<MainToolbarContentProps> = ({ onHighlighterClick, o
         <HeadingToolbarSection levels={[1, 2, 3]} />
         <ListToolbarButton />
         <BlockquoteButton />
-        <CodeBlockButton />
+        <CodeBlockPopover />
       </ToolbarGroup>
 
       <ToolbarSeparator />

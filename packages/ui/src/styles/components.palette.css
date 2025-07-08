@@ -6,42 +6,42 @@
 
 .components-palette {
   /* Primary Colors */
-  --color-primary: var(--color-primary-9);
-  --color-primary-foreground: var(--color-primary-contrast);
+  --color-primary: hsl(0 0% 9%);
+  --color-primary-foreground: hsl(0 0% 98%);
 
   /* Secondary Colors */
-  --color-secondary: var(--color-primary-4);
-  --color-secondary-foreground: var(--color-gray-12);
+  --color-secondary: hsl(0 0% 96.1%);
+  --color-secondary-foreground: hsl(0 0% 9%);
 
   /* Accent Colors */
-  --color-accent: var(--color-primary-5);
-  --color-accent-foreground: var(--color-gray-12);
+  --color-accent: hsl(0 0% 96.1%);
+  --color-accent-foreground: hsl(0 0% 9%);
 
   /* Focus States */
   --color-focus-ring: var(--color-primary-9);
 
   /* Muted Colors */
-  --color-muted: var(--color-gray-4);
-  --color-muted-foreground: var(--color-gray-11);
+  --color-muted: hsl(0 0% 96.1%);
+  --color-muted-foreground: hsl(0 0% 45.1%);
 
   /* Card Colors */
-  --color-card: hsl(220 13% 11%);
-  --color-card-foreground: var(--color-gray-12);
+  --color-card: hsl(0 0% 100%);
+  --color-card-foreground: hsl(0 0% 3.9%);
 
   /* Popover Colors */
-  --color-popover: var(--color-gray-4);
-  --color-popover-foreground: var(--color-gray-12);
+  --color-popover: hsl(0 0% 100%);
+  --color-popover-foreground: hsl(0 0% 3.9%);
 
   /* Input Colors */
   --color-input: var(--color-gray-6);
   --color-input-bg: var(--color-gray-6);
 
   /* Border Colors */
-  --color-border: hsl(220 13% 18%);
+  --color-border: hsl(0 0% 89.8%);
 
   /* Destructive Colors */
-  --color-destructive: var(--color-red-10);
-  --color-destructive-foreground: var(--color-red-12);
+  --color-destructive: hsl(0 84.2% 60.2%);
+  --color-destructive-foreground: hsl(0 0% 98%);
 
   /* Custom Input Border */
   --color-input-border: var(--color-gray-a5);
@@ -51,7 +51,39 @@
   --color-foreground: hsl(0 0% 3.9%);
 
   [data-theme="dark"] & {
+    /* Background Colors */
     --color-background: #14161a;
     --color-foreground: #fff;
+
+    /* Primary Colors */
+    --color-primary: hsl(220 91% 65%);
+    --color-primary-foreground: hsl(220 13% 9%);
+
+    /* Secondary Colors */
+    --color-secondary: hsl(220 13% 15%);
+    --color-secondary-foreground: hsl(220 9% 95%);
+
+    /* Accent Colors */
+    --color-accent: hsl(220 13% 15%);
+    --color-accent-foreground: hsl(220 9% 95%);
+
+    /* Muted Colors */
+    --color-muted: hsl(220 13% 15%);
+    --color-muted-foreground: hsl(220 9% 60%);
+
+    /* Popover Colors */
+    --color-popover: hsl(220 13% 11%);
+    --color-popover-foreground: hsl(220 9% 95%);
+
+    /* Card Colors */
+    --color-card: hsl(220 13% 11%);
+    --color-card-foreground: hsl(220 9% 95%);
+
+    /* Destructive Colors */
+    --color-destructive: hsl(0 62.8% 30.6%);
+    --color-destructive-foreground: hsl(0 0% 98%);
+
+    /* Border Colors */
+    --color-border: hsl(220 13% 18%);
   }
 }

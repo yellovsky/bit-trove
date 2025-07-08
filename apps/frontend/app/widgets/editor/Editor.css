@@ -55,7 +55,7 @@
   }
 
   .codeBlock {
-    @apply text-gray-11 bg-gray-8 rounded-default px-4 py-6 text-sm mb-4;
+    @apply border bg-card-foreground dark:bg-card rounded-default px-4 py-6 text-sm mb-4;
 
     code {
       background: none;

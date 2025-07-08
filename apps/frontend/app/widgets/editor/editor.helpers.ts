@@ -5,8 +5,8 @@ import TextAlign from '@tiptap/extension-text-align';
 import Underline from '@tiptap/extension-underline';
 import { type Extensions, type JSONContent, type UseEditorOptions, useEditor as useTipTapEditor } from '@tiptap/react';
 import { StarterKit } from '@tiptap/starter-kit';
-import CodeBlockShiki from 'tiptap-extension-code-block-shiki';
 
+import { EnhancedCodeBlock } from './extensions/enhanced-code-block';
 import { Link } from './extensions/link';
 
 const builtInExtensions = [
@@ -15,8 +15,8 @@ const builtInExtensions = [
   Superscript,
   SubScript,
   Highlight.configure({ multicolor: true }),
-  CodeBlockShiki.configure({
-    defaultTheme: 'nord',
+  EnhancedCodeBlock.configure({
+    defaultTheme: 'github-dark',
     HTMLAttributes: { class: 'codeBlock', style: 'color-scheme: dark' },
   }),
 

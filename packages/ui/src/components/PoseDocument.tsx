@@ -77,8 +77,14 @@ export function renderPoseNode(node: JSONContent): React.ReactNode {
 
     case 'codeBlock': {
       const language = node.attrs?.language;
+      const fileName = node.attrs?.fileName;
       const code = node.content?.[0]?.text;
-      return code ? <CodeBlock language={language}>{code}</CodeBlock> : null;
+
+      return code ? (
+        <CodeBlock fileName={fileName} language={language}>
+          {code}
+        </CodeBlock>
+      ) : null;
     }
 
     case 'horizontalRule':
