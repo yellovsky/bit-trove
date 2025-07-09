@@ -42,7 +42,6 @@
 		"@tiptap/extension-link": "3.0.0",
 		"@tiptap/extension-subscript": "3.0.0",
 		"@tiptap/extension-superscript": "3.0.0",
-		"@tiptap/extension-table": "3.0.0",
 		"@tiptap/extension-text-align": "3.0.0",
 		"@tiptap/extension-text-style": "3.0.0",
 		"@tiptap/extension-underline": "3.0.0",

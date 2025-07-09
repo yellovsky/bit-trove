@@ -1,6 +1,7 @@
 import type { PrismaClient } from '@generated/prisma';
 
 import { seedLocalizationBlogPost } from './localization.blog-post-seed';
+import { seedSpaWithSsrBlogPost } from './spa-with-ssr-seed';
 
 export const blogPostsSeeder = {
   clear: async (tx: PrismaClient) => {
@@ -9,5 +10,6 @@ export const blogPostsSeeder = {
   },
   seed: async (tx: PrismaClient) => {
     await seedLocalizationBlogPost(tx);
+    await seedSpaWithSsrBlogPost(tx);
   },
 };

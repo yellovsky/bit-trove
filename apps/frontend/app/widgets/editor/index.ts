@@ -1,5 +1,3 @@
-// UI Components
-
 // Configuration (Grouped exports)
 export {
   builtInExtensions,

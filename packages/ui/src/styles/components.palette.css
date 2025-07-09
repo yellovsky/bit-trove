@@ -50,6 +50,7 @@
   --color-background: #fff;
   --color-foreground: hsl(0 0% 3.9%);
 
+  &:is([data-theme="dark"]),
   [data-theme="dark"] & {
     /* Background Colors */
     --color-background: #14161a;

@@ -7,24 +7,20 @@ import { useCursorVisibility } from '@repo/ui/hooks/use-cursor-visibility';
 import { useMobile } from '@repo/ui/hooks/use-mobile';
 import { useWindowSize } from '@repo/ui/hooks/use-window-size';
 
+import './Editor.css';
+
+import { BlockquoteButton, HeadingToolbarSection, ListToolbarButton, MarkButton, UndoRedoButton } from './Buttons';
+import { CalloutButton } from './Buttons/CalloutButton';
 import {
-  BlockquoteButton,
   CodeBlockPopover,
   ColorHighlightPopover,
   ColorHighlightPopoverButton,
   ColorHighlightPopoverContent,
-  HeadingToolbarSection,
   LinkButton,
   LinkContent,
   LinkPopover,
-  ListToolbarButton,
-  MarkButton,
-  Toolbar,
-  ToolbarGroup,
-  ToolbarSeparator,
-  UndoRedoButton,
-} from './index';
-import './Editor.css';
+} from './Popovers';
+import { Toolbar, ToolbarGroup, ToolbarSeparator } from './Toolbar';
 
 interface MainToolbarContentProps {
   onHighlighterClick: () => void;
@@ -59,6 +55,7 @@ const MainToolbarContent: FC<MainToolbarContentProps> = ({ onHighlighterClick, o
 
       {!isMobile ? <ColorHighlightPopover /> : <ColorHighlightPopoverButton onClick={onHighlighterClick} />}
       {!isMobile ? <LinkPopover /> : <LinkButton onClick={onLinkClick} />}
+      <CalloutButton />
     </ToolbarGroup>
 
     <ToolbarSeparator />

@@ -37,7 +37,7 @@ function ColorSchemeWrapper({ children }: { children: React.ReactNode; }) {
 		document.body.classList.add(...getPaletteClassName('primary').split(' '));
 	}, [colorScheme]);
 
-	console.log(document.querySelectorAll('.docs-story').forEach(el => el.classList.add('bg-gray-1')))
+	console.log(document.querySelectorAll('.docs-story').forEach(el => el.classList.add('bg-background')))
 
   return <div data-tmp className={getPaletteClassName('primary')}>{children}</div>;
 }

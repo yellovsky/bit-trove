@@ -161,82 +161,82 @@ export const useEditorActions = () => {
     return editor.chain().focus().setImage({ alt, src, title }).run();
   };
 
-  const setTable = (rows: number, cols: number) => {
-    if (!editor) return false;
-    return editor.chain().focus().insertTable({ cols, rows }).run();
-  };
+  // const setTable = (rows: number, cols: number) => {
+  //   if (!editor) return false;
+  //   return editor.chain().focus().insertTable({ cols, rows }).run();
+  // };
 
-  const addColumnBefore = () => {
-    if (!editor) return false;
-    return editor.chain().focus().addColumnBefore().run();
-  };
+  // const addColumnBefore = () => {
+  //   if (!editor) return false;
+  //   return editor.chain().focus().addColumnBefore().run();
+  // };
 
-  const addColumnAfter = () => {
-    if (!editor) return false;
-    return editor.chain().focus().addColumnAfter().run();
-  };
+  // const addColumnAfter = () => {
+  //   if (!editor) return false;
+  //   return editor.chain().focus().addColumnAfter().run();
+  // };
 
-  const deleteColumn = () => {
-    if (!editor) return false;
-    return editor.chain().focus().deleteColumn().run();
-  };
+  // const deleteColumn = () => {
+  //   if (!editor) return false;
+  //   return editor.chain().focus().deleteColumn().run();
+  // };
 
-  const addRowBefore = () => {
-    if (!editor) return false;
-    return editor.chain().focus().addRowBefore().run();
-  };
+  // const addRowBefore = () => {
+  //   if (!editor) return false;
+  //   return editor.chain().focus().addRowBefore().run();
+  // };
 
-  const addRowAfter = () => {
-    if (!editor) return false;
-    return editor.chain().focus().addRowAfter().run();
-  };
+  // const addRowAfter = () => {
+  //   if (!editor) return false;
+  //   return editor.chain().focus().addRowAfter().run();
+  // };
 
-  const deleteRow = () => {
-    if (!editor) return false;
-    return editor.chain().focus().deleteRow().run();
-  };
+  // const deleteRow = () => {
+  //   if (!editor) return false;
+  //   return editor.chain().focus().deleteRow().run();
+  // };
 
-  const deleteTable = () => {
-    if (!editor) return false;
-    return editor.chain().focus().deleteTable().run();
-  };
+  // const deleteTable = () => {
+  //   if (!editor) return false;
+  //   return editor.chain().focus().deleteTable().run();
+  // };
 
-  const mergeCells = () => {
-    if (!editor) return false;
-    return editor.chain().focus().mergeCells().run();
-  };
+  // const mergeCells = () => {
+  //   if (!editor) return false;
+  //   return editor.chain().focus().mergeCells().run();
+  // };
 
-  const splitCell = () => {
-    if (!editor) return false;
-    return editor.chain().focus().splitCell().run();
-  };
+  // const splitCell = () => {
+  //   if (!editor) return false;
+  //   return editor.chain().focus().splitCell().run();
+  // };
 
-  const toggleHeaderColumn = () => {
-    if (!editor) return false;
-    return editor.chain().focus().toggleHeaderColumn().run();
-  };
+  // const toggleHeaderColumn = () => {
+  //   if (!editor) return false;
+  //   return editor.chain().focus().toggleHeaderColumn().run();
+  // };
 
-  const toggleHeaderRow = () => {
-    if (!editor) return false;
-    return editor.chain().focus().toggleHeaderRow().run();
-  };
+  // const toggleHeaderRow = () => {
+  //   if (!editor) return false;
+  //   return editor.chain().focus().toggleHeaderRow().run();
+  // };
 
-  const toggleHeaderCell = () => {
-    if (!editor) return false;
-    return editor.chain().focus().toggleHeaderCell().run();
-  };
+  // const toggleHeaderCell = () => {
+  //   if (!editor) return false;
+  //   return editor.chain().focus().toggleHeaderCell().run();
+  // };
 
   return {
-    addColumnAfter,
-    addColumnBefore,
-    addRowAfter,
-    addRowBefore,
+    // addColumnAfter,
+    // addColumnBefore,
+    // addRowAfter,
+    // addRowBefore,
     blur,
     clearContent,
-    deleteColumn,
+    // deleteColumn,
     // deleteContent,
-    deleteRow,
-    deleteTable,
+    // deleteRow,
+    // deleteTable,
 
     // Focus actions
     focus,
@@ -244,7 +244,7 @@ export const useEditorActions = () => {
     // Content actions
     insertContent,
     // lift,
-    mergeCells,
+    // mergeCells,
     redo,
     setBlockquote,
     setBulletList,
@@ -267,14 +267,14 @@ export const useEditorActions = () => {
     setOrderedList,
 
     // Table actions
-    setTable,
+    // setTable,
 
     // Formatting actions
     setTextAlign,
-    splitCell,
-    toggleHeaderCell,
-    toggleHeaderColumn,
-    toggleHeaderRow,
+    // splitCell,
+    // toggleHeaderCell,
+    // toggleHeaderColumn,
+    // toggleHeaderRow,
     // Mark actions
     toggleMark,
 

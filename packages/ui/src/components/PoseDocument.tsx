@@ -3,6 +3,7 @@ import type { JSONContent } from '@tiptap/core';
 import { cx } from 'class-variance-authority';
 import { type ComponentProps, type FC, Fragment, type ReactNode } from 'react';
 
+import * as Callout from '@repo/ui/components/Callout';
 import { CodeBlock } from '@repo/ui/components/CodeBlock';
 import {
   Blockquote,
@@ -87,6 +88,25 @@ export function renderPoseNode(node: JSONContent): React.ReactNode {
       ) : null;
     }
 
+    case 'callout': {
+      return <Callout.Root>{renderPoseContent(node.content)}</Callout.Root>;
+    }
+
+    case 'calloutTitle': {
+      const type = node.attrs?.type || 'info';
+      const title = node.attrs?.title;
+
+      return (
+        <Callout.Title title={title} type={type}>
+          {renderPoseContent(node.content)}
+        </Callout.Title>
+      );
+    }
+
+    case 'calloutContent': {
+      return <Callout.Content>{renderPoseContent(node.content)}</Callout.Content>;
+    }
+
     case 'horizontalRule':
       return <HorizontalRule />;
 
@@ -140,7 +160,6 @@ export const renderPoseTitle = (node: JSONContent): ReactNode => {
     }
 
     default:
-      console.warn('Unsupported node', node);
       return <>{node.content?.map(renderPoseTitle)}</>;
   }
 };

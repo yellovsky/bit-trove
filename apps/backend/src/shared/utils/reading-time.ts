@@ -45,14 +45,10 @@ const extractTextFromJSON = (content: JSONContent): string => {
 
     if (typeof node !== 'object' || !node) return;
 
-    // Extract text from content array
-    if (Array.isArray(node.content)) {
-      node.content.forEach(extractText);
-    }
-
     // Extract text from text nodes
     if (node.type === 'text' && node.text) {
       textParts.push(node.text);
+      return;
     }
 
     // Handle specific node types

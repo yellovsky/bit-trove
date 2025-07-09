@@ -1,5 +1,7 @@
 import type { PrismaClient } from '@generated/prisma';
 
+import { calculateReadingTime } from 'src/shared/utils/reading-time';
+
 import { testAccountId } from '../account.seed';
 
 const contentJSON = {
@@ -114,6 +116,12 @@ export const seedLocalizationBlogPost = async (tx: PrismaClient) => {
     },
   });
 
+  const title = 'Как локализовать приложение на Remix';
+  const shortDescription =
+    'Узнайте, как добавить локализацию в Remix-приложение с помощью remix-i18next. Подробный гайд по настройке переводов, определению локали, работе с ICU-форматом и смене языка. Улучшите UX и accessibility вашего проекта.';
+
+  const readingTime = calculateReadingTime(contentJSON, title, shortDescription);
+
   await tx.blogPost.create({
     data: {
       authorId: testAccountId,
@@ -122,15 +130,15 @@ export const seedLocalizationBlogPost = async (tx: PrismaClient) => {
       entryId: entry.id,
       languageCode: 'ru',
       publishedAt,
+      readingTime,
       seoDescription:
         'Узнайте, как добавить локализацию в Remix-приложение с помощью remix-i18next. Подробный гайд по настройке переводов, определению локали, работе с ICU-форматом и смене языка. Улучшите UX и accessibility вашего проекта.',
       seoKeywords:
         'Remix локализация, Remix i18n, remix-i18next, перевод в Remix, ICU формат, i18next Remix, смена языка Remix, интернационализация Remix, локализация приложения, перевод UI Remix',
-      seoTitle: 'Как локализовать приложение на Remix',
-      shortDescription:
-        'Узнайте, как добавить локализацию в Remix-приложение с помощью remix-i18next. Подробный гайд по настройке переводов, определению локали, работе с ICU-форматом и смене языка. Улучшите UX и accessibility вашего проекта.',
+      seoTitle: title,
+      shortDescription,
       slug: 'how-to-localize-remix-app',
-      title: 'Как локализовать приложение на Remix',
+      title,
     },
   });
 };
