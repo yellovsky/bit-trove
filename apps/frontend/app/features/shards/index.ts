@@ -7,3 +7,4 @@ export { ShardErrorState } from './ui/ShardErrorState';
 export { ShardHorizontalCard, ShardHorizontalCardPending } from './ui/ShardHorizontalCard';
 export { ShardMetadata } from './ui/ShardMetadata';
 export { ShardNotFoundState } from './ui/ShardNotFoundState';
+export { ShardsSortingDropdown } from './ui/ShardsSortingDropdown';

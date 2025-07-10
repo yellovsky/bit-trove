@@ -21,5 +21,6 @@ export { BlogPostDetailSkeleton } from './ui/BlogPostDetailSkeleton';
 export { BlogPostErrorState } from './ui/BlogPostErrorState';
 export { BlogPostMetadata } from './ui/BlogPostMetadata';
 export { BlogPostNotFoundState } from './ui/BlogPostNotFoundState';
+export { BlogSortingDropdown } from './ui/BlogSortingDropdown';
 export { CreateBlogPostForm } from './ui/CreateBlogPostForm';
 export { SortControls } from './ui/SortControls';

@@ -9,7 +9,7 @@ import { SectionHeader } from '@shared/ui/SectionHeader';
 import { BlogPostCard } from '@features/blog-posts';
 
 import type { GetManyBlogPostsVariables } from '@entities/blog-posts';
-import { useManyBlogPostsQuery } from '@entities/blog-posts';
+import { useInfiniteBlogPostsQuery } from '@entities/blog-posts';
 
 interface BlogPostsSectionProps {
   blogPostsVars: GetManyBlogPostsVariables;
@@ -17,7 +17,7 @@ interface BlogPostsSectionProps {
 
 export const BlogPostsSection: FC<BlogPostsSectionProps> = ({ blogPostsVars }) => {
   const { t } = useTranslation();
-  const query = useManyBlogPostsQuery(blogPostsVars);
+  const query = useInfiniteBlogPostsQuery(blogPostsVars);
   const blogPosts = query.data?.pages.at(0)?.data.items;
 
   return (

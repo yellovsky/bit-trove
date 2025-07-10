@@ -43,7 +43,7 @@ export const prefetchManyBlogPostsQuery = async (
   });
 };
 
-export const useManyBlogPostsQuery = (variables: GetManyBlogPostsVariables) => {
+export const useInfiniteBlogPostsQuery = (variables: GetManyBlogPostsVariables) => {
   const apiClient = useApiClient();
 
   return useInfiniteQuery<

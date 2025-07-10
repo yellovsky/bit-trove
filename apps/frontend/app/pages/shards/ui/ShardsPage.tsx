@@ -5,11 +5,9 @@ import { useIntersectionObserver } from 'usehooks-ts';
 import { SectionHeader } from '@shared/ui/SectionHeader';
 
 import { type AppBreadcrumb, Breadcrumbs } from '@features/breadcrumbs';
-import { ShardHorizontalCard, ShardHorizontalCardPending } from '@features/shards';
+import { ShardHorizontalCard, ShardHorizontalCardPending, ShardsSortingDropdown } from '@features/shards';
 
 import { type GetManyShardsVariables, useInfiniteShardsQuery } from '@entities/shards';
-
-import { ShardsSortingDropdown } from './ShardsSortingDropdown';
 
 interface ShardsPageProps {
   breadcrumbs: AppBreadcrumb[];

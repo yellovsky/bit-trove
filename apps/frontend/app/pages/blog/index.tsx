@@ -5,10 +5,11 @@ import type { MetaDescriptor } from 'react-router';
 import appI18next from '@app/localization/i18n.server';
 
 import { getBlogPostsJsonLdMeta, getBlogPostsOgMeta, getBlogPostsTwitterMeta } from '@features/blog-posts';
+import { getMetaBreadcrumbs } from '@features/breadcrumbs';
 
 import type { Route } from './+types';
-import { loadBlogPostsRouteData } from './load-data';
-import { BlogPostsPage } from './page';
+import { loadBlogPostsRouteData } from './lib/load-data';
+import { BlogPostsPage } from './ui/page';
 
 export async function loader(args: Route.LoaderArgs) {
   const t = await appI18next.getFixedT(args.params.locale);
@@ -35,6 +36,7 @@ export function meta(params: Route.MetaArgs): MetaDescriptor[] {
     ...getBlogPostsOgMeta(),
     ...getBlogPostsTwitterMeta(),
     getBlogPostsJsonLdMeta(),
+    getMetaBreadcrumbs(params.data.breadcrumbs, params.params.locale),
   ];
 }
 

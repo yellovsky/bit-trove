@@ -11,7 +11,7 @@
 		"lint": "biome check & tsc --noEmit",
 		"start": "react-router-serve ./build/server/index.js",
 		"test": "vitest run --browser.headless",
-		"test:ui": "vitest",
+		"test:ui": "vitest --ui --browser.headless",
 		"test:cov": "vitest run --coverage --browser.headless",
 		"typegen": "react-router typegen",
 		"postinstall": "yarn typegen",

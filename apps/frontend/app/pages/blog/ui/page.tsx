@@ -2,15 +2,15 @@ import { type FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useIntersectionObserver } from 'usehooks-ts';
 
-import { Heading } from '@repo/ui/components/Typography';
-
 import { BlogPostsErrorState, EmptyBlogPostsState } from '@shared/ui/ErrorStates';
 import { BlogPostsLoadingState, EndOfContentState, InfiniteScrollLoadingState } from '@shared/ui/LoadingStates';
+import { SectionHeader } from '@shared/ui/SectionHeader';
 
-import { BlogPostCard, SortControls } from '@features/blog-posts';
-import { useBlogPostSorting } from '@features/blog-posts/lib/sorting';
+import { BlogPostCard, BlogSortingDropdown } from '@features/blog-posts';
+import { type AppBreadcrumb, Breadcrumbs } from '@features/breadcrumbs';
 
-import { type GetManyBlogPostsVariables, useManyBlogPostsQuery } from '@entities/blog-posts';
+import type { GetManyBlogPostsVariables } from '@entities/blog-posts';
+import { useInfiniteBlogPostsQuery } from '@entities/blog-posts';
 
 interface BlogPostsPageProps {
   blogPostsVars: GetManyBlogPostsVariables;
@@ -18,19 +18,15 @@ interface BlogPostsPageProps {
 
 export const BlogPostsPage: FC<BlogPostsPageProps> = ({ blogPostsVars }) => {
   const { t } = useTranslation();
-  const { currentSort } = useBlogPostSorting();
-
-  // Update the query variables with the current sort
-  const updatedBlogPostsVars = {
-    ...blogPostsVars,
-    sort: currentSort,
-  };
-
-  const blogPostsQuery = useManyBlogPostsQuery(updatedBlogPostsVars);
-
+  const blogPostsQuery = useInfiniteBlogPostsQuery(blogPostsVars);
   const blogPosts = blogPostsQuery.data?.pages.flatMap((p) => p.data.items);
-
   const { ref, entry } = useIntersectionObserver({ threshold: 0 });
+
+  // Breadcrumbs: Home → Blog
+  const breadcrumbs: AppBreadcrumb[] = [
+    { label: t('menu_items.home.title'), to: '/' },
+    { label: t('menu_items.blog.title'), to: '/blog' },
+  ];
 
   useEffect(() => {
     if (entry?.isIntersecting && !blogPostsQuery.isFetchingNextPage && blogPostsQuery.hasNextPage)
@@ -42,47 +38,52 @@ export const BlogPostsPage: FC<BlogPostsPageProps> = ({ blogPostsVars }) => {
     blogPostsQuery.fetchNextPage,
   ]);
 
-  // Handle loading state
+  // Loading state
   if (blogPostsQuery.isPending) {
     return (
       <output aria-live="polite" className="mx-auto max-w-7xl space-y-6">
-        <div className="flex items-center justify-between">
-          <Heading className="mb-6" id="blog-posts-heading" order={1}>
-            {t('menu_items.blog.title')}
-          </Heading>
-          <SortControls />
-        </div>
+        <Breadcrumbs className="mb-6" items={breadcrumbs} />
+        <SectionHeader
+          action={<BlogSortingDropdown blogPostsVariables={blogPostsVars} />}
+          className="mb-6"
+          order={1}
+          title={t('menu_items.blog.title')}
+          titleId="blog-posts-heading"
+        />
         <BlogPostsLoadingState />
       </output>
     );
   }
 
-  // Handle error state
+  // Error state
   if (blogPostsQuery.isError) {
     const errorMessage = blogPostsQuery.error?.error?.message || 'An error occurred while loading blog posts';
     return (
       <output aria-live="polite" className="mx-auto max-w-7xl space-y-6">
-        <div className="flex items-center justify-between">
-          <Heading className="mb-6" id="blog-posts-heading" order={1}>
-            {t('menu_items.blog.title')}
-          </Heading>
-          <SortControls />
-        </div>
+        <Breadcrumbs className="mb-6" items={breadcrumbs} />
+        <SectionHeader
+          action={<BlogSortingDropdown blogPostsVariables={blogPostsVars} />}
+          className="mb-6"
+          order={1}
+          title={t('menu_items.blog.title')}
+          titleId="blog-posts-heading"
+        />
         <BlogPostsErrorState error={{ message: errorMessage } as Error} onRetry={() => blogPostsQuery.refetch()} />
       </output>
     );
   }
 
-  // Handle empty state
+  // Empty state
   if (!blogPosts || blogPosts.length === 0) {
     return (
       <output aria-live="polite" className="mx-auto max-w-7xl space-y-6">
-        <div className="flex items-center justify-between">
-          <Heading className="mb-6" id="blog-posts-heading" order={1}>
-            {t('menu_items.blog.title')}
-          </Heading>
-          <SortControls />
-        </div>
+        <Breadcrumbs className="mb-6" items={breadcrumbs} />
+        <SectionHeader
+          action={<BlogSortingDropdown blogPostsVariables={blogPostsVars} />}
+          className="mb-6"
+          title={t('menu_items.blog.title')}
+          titleId="blog-posts-heading"
+        />
         <EmptyBlogPostsState />
       </output>
     );
@@ -90,12 +91,14 @@ export const BlogPostsPage: FC<BlogPostsPageProps> = ({ blogPostsVars }) => {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <div className="flex items-center justify-between">
-        <Heading className="mb-6" id="blog-posts-heading" order={1}>
-          {t('menu_items.blog.title')}
-        </Heading>
-        <SortControls />
-      </div>
+      <Breadcrumbs className="mb-6" items={breadcrumbs} />
+      <SectionHeader
+        action={<BlogSortingDropdown blogPostsVariables={blogPostsVars} />}
+        className="mb-6"
+        order={1}
+        title={t('menu_items.blog.title')}
+        titleId="blog-posts-heading"
+      />
       <section aria-labelledby="blog-posts-heading" className="@container">
         <ul className="grid @2xl:grid-cols-3 @4xl:grid-cols-4 @md:grid-cols-2 grid-cols-1 gap-4">
           {blogPosts.map((blogPost) => (

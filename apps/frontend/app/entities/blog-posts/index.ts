@@ -1,7 +1,7 @@
 export type { CreateBlogPostVariables } from './api/create-blog-post';
 export { useCreateBlogPostMutation } from './api/create-blog-post';
 export type { GetManyBlogPostsVariables } from './api/get-many-blog-posts';
-export { prefetchManyBlogPostsQuery, useManyBlogPostsQuery } from './api/get-many-blog-posts';
+export { prefetchManyBlogPostsQuery, useInfiniteBlogPostsQuery } from './api/get-many-blog-posts';
 export type { GetMyManyBlogPostsVariables } from './api/get-my-many-blog-posts';
 export { useMyManyBlogPostsQuery } from './api/get-my-many-blog-posts';
 export type { GetMyOneBlogPostVariables } from './api/get-my-one-blog-post';
