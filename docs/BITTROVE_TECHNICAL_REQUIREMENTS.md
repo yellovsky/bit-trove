@@ -86,7 +86,7 @@ Each module follows DDD layers:
 
 ## Feature Requirements & Implementation Status
 
-### ✅ Implemented Features
+### ✅ Fully Implemented Features
 
 #### 1. Blog Posts Management
 **Status**: ✅ Fully Implemented
@@ -108,6 +108,7 @@ Each module follows DDD layers:
 - **Reading Time**: Automatic calculation and display
 - **Publishing Workflow**: Draft/published status management
 - **Responsive Design**: Mobile-first approach with infinite scrolling
+- **Sorting**: URL-based sorting by date and title with shareable links
 
 #### 3. Authentication & Authorization
 **Status**: ✅ Fully Implemented
@@ -133,9 +134,34 @@ Each module follows DDD layers:
 - **Internationalization**: Multi-language support with RTL
 - **Performance**: Code splitting, lazy loading, and caching
 
+#### 6. Reading Time System
+**Status**: ✅ Fully Implemented
+- **Shard Reading Time**: Automatic calculation and display for all shards
+- **Blog Post Reading Time**: Consistent reading time display for blog posts
+- **Calculation Method**: 200 words per minute standard rate
+- **Content Extraction**: Reading time calculated from TipTap JSON content, titles, and descriptions
+- **Range Support**: Reading time range from 1 minute (minimum) to 999 minutes (maximum)
+- **Filtering**: Reading time-based filtering for shards
+- **UI Components**: Consistent reading time display across cards and detail pages
+
+#### 7. Content Pages & Navigation
+**Status**: ✅ Fully Implemented
+- **Blog Posts Page**: SEO-optimized listing with infinite scroll, loading states, and comprehensive meta tags
+- **Blog Post Detail Page**: Enhanced detail page with structured layout, reading progress, table of contents, and comprehensive SEO
+- **Main Page**: IDE-inspired landing page with curated shards grid and infinite blog posts timeline
+- **Shards Page**: Sorting functionality with URL-based state management and FSD architecture
+- **Breadcrumb Navigation**: Consistent navigation patterns across all content pages
+
+#### 8. Enhanced Content Features
+**Status**: ✅ Fully Implemented
+- **Enhanced Code Blocks**: Language specification, file names, and copy functionality
+- **Callout TipTap Extension**: Visual highlighting with predefined types (info, warning, danger, etc.)
+- **Editor Widget FSD Refactor**: Reorganized editor following FSD principles with improved state management
+- **Content Rendering**: PoseDocument component for consistent content display
+
 ### 🚧 Partially Implemented Features
 
-#### 6. Meta-Blog Documentation
+#### 9. Meta-Blog Documentation
 **Status**: 🚧 Partially Implemented
 - **Current State**: Basic documentation structure exists
 - **Missing**: Comprehensive meta-blog content about BitTrove architecture
@@ -144,33 +170,33 @@ Each module follows DDD layers:
 
 ### ❌ Not Yet Implemented Features
 
-#### 7. Advanced Search & Discovery
+#### 10. Advanced Search & Discovery
 **Status**: ❌ Not Implemented
 - **Graph View**: Zettelkasten-inspired tag relationship visualization
 - **Advanced Filtering**: Complex search queries with multiple criteria
 - **Content Recommendations**: Related content suggestions
 - **Search Analytics**: Search behavior tracking and optimization
 
-#### 8. Enhanced Content Features
-**Status**: ❌ Not Implemented
-- **Content Scheduling**: Scheduled publishing of posts and shards
-- **Content Versioning**: Version history and rollback capabilities
-- **Bulk Operations**: Bulk edit/delete operations for content management
-- **Content Import/Export**: Import from external sources (GitHub, etc.)
-
-#### 9. Developer Experience Features
+#### 11. Developer Experience Features
 **Status**: ❌ Not Implemented
 - **Keyboard Navigation**: Enhanced keyboard shortcuts for shards
 - **Offline Support**: PWA capabilities for offline-first experience
 - **GitHub Integration**: Sync posts with GitHub repositories
 - **RSS Feeds**: RSS feed generation for content syndication
 
-#### 10. Performance & Analytics
+#### 12. Performance & Analytics
 **Status**: ❌ Not Implemented
 - **Performance Monitoring**: Real-time performance metrics
 - **User Analytics**: Content engagement and user behavior tracking
 - **SEO Analytics**: Search engine optimization metrics
 - **Content Performance**: Individual post/shard performance tracking
+
+#### 13. Advanced Content Features
+**Status**: ❌ Not Implemented
+- **Content Scheduling**: Scheduled publishing of posts and shards
+- **Content Versioning**: Version history and rollback capabilities
+- **Bulk Operations**: Bulk edit/delete operations for content management
+- **Content Import/Export**: Import from external sources (GitHub, etc.)
 
 ## MVC Architecture Mapping
 

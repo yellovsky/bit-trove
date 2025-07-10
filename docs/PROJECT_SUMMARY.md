@@ -249,12 +249,25 @@ src/
 - **Media**: Image and video embedding
 - **SEO**: Structured data, meta tags, and reading time metadata
 
-### Reading Time Features
+### Reading Time System
 - **Automatic Calculation**: Reading time calculated at 200 words per minute for all content
 - **Shard Reading Time**: Display reading time on shard cards and detail pages with filtering capabilities
 - **Blog Post Reading Time**: Consistent reading time display on blog post cards and pages
 - **Range Support**: Reading time range from 1 minute (minimum) to 999 minutes (maximum)
 - **Content Extraction**: Reading time calculated from TipTap JSON content, titles, and descriptions
+
+### Content Pages & Navigation
+- **Blog Posts Page**: SEO-optimized listing with infinite scroll, loading states, comprehensive meta tags, and URL-based sorting
+- **Blog Post Detail Page**: Enhanced detail page with structured layout, reading progress indicator, table of contents, and comprehensive SEO
+- **Main Page**: IDE-inspired landing page with curated shards grid and infinite blog posts timeline
+- **Shards Page**: Sorting functionality with URL-based state management, FSD architecture, and breadcrumb navigation
+- **Breadcrumb Navigation**: Consistent navigation patterns across all content pages
+
+### Enhanced Content Features
+- **Enhanced Code Blocks**: Language specification, file names, copy functionality, and syntax highlighting
+- **Callout TipTap Extension**: Visual highlighting with predefined types (info, warning, danger, code, success, recommendation)
+- **Editor Widget FSD Refactor**: Reorganized editor following FSD principles with improved state management and React Compiler compatibility
+- **Content Rendering**: PoseDocument component for consistent content display across editor and viewer
 
 ### Internationalization
 - **Multi-language**: Support for multiple locales
