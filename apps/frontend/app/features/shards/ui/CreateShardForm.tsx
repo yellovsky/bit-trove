@@ -88,7 +88,7 @@ const TitleController: FC<ControlProps> = ({ control }) => {
   );
 };
 
-const SlugController: FC<ControlProps & { id?: string }> = ({ control, id }) => {
+const SlugController: FC<ControlProps & { id: string | undefined }> = ({ control, id }) => {
   const { t } = useTranslation();
   const { t: tShards } = useTranslation('shards');
 
@@ -318,7 +318,7 @@ const ContentController: FC<ControlProps & { editor: TiptapEditor | null }> = ({
 };
 
 const getDefaultValues = (languageCode: string): CreateShardVariables => ({
-  contentJSON: [],
+  contentJSON: { content: [], type: 'doc' },
   entryId: '',
   languageCode,
   published: false,
@@ -377,7 +377,7 @@ export const CreateShardForm: React.FC<CreateShardFormProps> = (props) => {
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <SlugController control={form.control} />
+            <SlugController control={form.control} id={props.id} />
           </div>
           <div>
             <LanguageCodeController control={form.control} />

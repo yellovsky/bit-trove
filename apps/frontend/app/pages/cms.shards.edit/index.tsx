@@ -12,6 +12,10 @@ import { useMyShardQuery } from '@entities/shards/api/get-my-one-shard';
 
 import type { Route } from './+types';
 
+export const handle = {
+  i18n: ['shards', 'cms'],
+};
+
 export default function CMSShardsEditRoute(props: Route.ComponentProps) {
   const navigate = useNavigate();
   const myShardQuery = useMyShardQuery(props.params.id);
@@ -60,14 +64,16 @@ export default function CMSShardsEditRoute(props: Route.ComponentProps) {
         {tShards('edit_shard_form.title')}
       </Heading>
 
-      <CreateShardForm
-        defaultValues={defaultValues}
-        id={props.params.id}
-        isLoading={status === 'pending' || myShardQuery.isLoading}
-        mode="update"
-        onSubmit={handleSubmit}
-        onSuccess={handleSuccess}
-      />
+      {myShardQuery.isLoading ? null : (
+        <CreateShardForm
+          defaultValues={defaultValues}
+          id={props.params.id}
+          isLoading={status === 'pending' || myShardQuery.isLoading}
+          mode="update"
+          onSubmit={handleSubmit}
+          onSuccess={handleSuccess}
+        />
+      )}
     </div>
   );
 }
