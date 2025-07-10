@@ -1,9 +1,8 @@
-import type * as LabelPrimitive from '@radix-ui/react-label';
 import { Slot } from '@radix-ui/react-slot';
-import { Label } from 'radix-ui';
 import { type ComponentProps, type FC, useId } from 'react';
 import { Controller, type ControllerProps, type FieldPath, type FieldValues, FormProvider } from 'react-hook-form';
 
+import * as Label from '@repo/ui/components/Label';
 import { FormFieldProvider, useFormField } from '@repo/ui/hooks/form-field-context';
 import { FormItemProvider } from '@repo/ui/hooks/form-item-context';
 import { cn } from '@repo/ui/lib/utils';
@@ -31,26 +30,13 @@ export const FormItem: FC<ComponentProps<'div'>> = ({ className, ...props }) => 
   );
 };
 
-interface FormLabelProps extends ComponentProps<typeof LabelPrimitive.Root> {
+interface FormLabelProps extends ComponentProps<typeof Label.Root> {
   required?: boolean;
 }
 
 export const FormLabel: FC<FormLabelProps> = ({ className, required, ...props }) => {
   const { error, formItemId } = useFormField();
-
-  return (
-    <Label.Root
-      className={cn(
-        className,
-        'font-medium text-sm data-[error=true]:text-destructive',
-        required && 'after:text-red-10 after:content-["_*"]'
-      )}
-      data-error={!!error}
-      data-slot="form-label"
-      htmlFor={formItemId}
-      {...props}
-    />
-  );
+  return <Label.Root data-error={!!error} data-slot="form-label" htmlFor={formItemId} {...props} />;
 };
 
 export const FormControl: FC<ComponentProps<typeof Slot>> = ({ ...props }) => {

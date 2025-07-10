@@ -95,8 +95,13 @@ export default {
   meta_title_suffix: 'BitTrove',
   no_results_found: 'Ничего не найдено',
   'See all': 'Посмотреть все',
+  'Sort by:': 'Сортировать по:',
   search: {
     placeholder: 'Поиск',
+  },
+  sort: {
+    newest: 'Сначала новые',
+    oldest: 'Сначала старые',
   },
   'Table of Contents': 'Содержание',
 };

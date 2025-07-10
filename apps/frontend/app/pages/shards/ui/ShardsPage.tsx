@@ -2,12 +2,14 @@ import { type FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useIntersectionObserver } from 'usehooks-ts';
 
-import { Heading } from '@repo/ui/components/Typography';
+import { SectionHeader } from '@shared/ui/SectionHeader';
 
 import { type AppBreadcrumb, Breadcrumbs } from '@features/breadcrumbs';
 import { ShardHorizontalCard, ShardHorizontalCardPending } from '@features/shards';
 
 import { type GetManyShardsVariables, useInfiniteShardsQuery } from '@entities/shards';
+
+import { ShardsSortingDropdown } from './ShardsSortingDropdown';
 
 interface ShardsPageProps {
   breadcrumbs: AppBreadcrumb[];
@@ -26,9 +28,13 @@ export const ShardsPage: FC<ShardsPageProps> = ({ shardsVariables, breadcrumbs }
 
   return (
     <>
-      <Breadcrumbs items={breadcrumbs} />
+      <Breadcrumbs className="mb-6" items={breadcrumbs} />
 
-      <Heading order={1}>{t('menu_items.shards.title')}</Heading>
+      <SectionHeader
+        action={<ShardsSortingDropdown shardsVariables={shardsVariables} />}
+        className="mb-4"
+        title={t('menu_items.shards.title')}
+      />
 
       <div className="flex flex-col gap-2">
         {shardsQuery.data?.pages.map((page) =>

@@ -11,6 +11,7 @@ export const getManyShardsSortSchema = zod.union([
   makeSortBySchema('createdAt'),
   makeSortBySchema('publishedAt'),
 ]);
+export type GetManyShardsSort = zod.infer<typeof getManyShardsSortSchema>;
 
 const getManyShardsQueryFilterSchema = zod.object({
   languageCodeIn: localeSchema.array().optional(),

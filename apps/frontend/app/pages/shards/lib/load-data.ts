@@ -12,17 +12,30 @@ import { type GetManyShardsVariables, prefetchInfiniteShardsQuery } from '@entit
 
 import type { Route } from '../+types';
 
+// Valid sort values for shards
+const VALID_SORT_VALUES = ['title', '-title', 'createdAt', '-createdAt', 'publishedAt', '-publishedAt'] as const;
+type ValidSortValue = (typeof VALID_SORT_VALUES)[number];
+
+const isValidSortValue = (value: string): value is ValidSortValue => {
+  return VALID_SORT_VALUES.includes(value as ValidSortValue);
+};
+
 export const loadShardsRouteData = async (
   t: TFunction,
   tShards: TFunction<'shards'>,
-  { params }: Route.LoaderArgs | Route.ClientLoaderArgs
+  { params, request }: Route.LoaderArgs | Route.ClientLoaderArgs
 ) => {
   const apiClient = getApiClient();
   const queryClient = getQueryClient();
 
+  // Extract sort parameter from URL and validate it
+  const url = new URL(request.url);
+  const sortParam = url.searchParams.get('sort') || '-createdAt';
+  const validatedSort = isValidSortValue(sortParam) ? sortParam : '-createdAt';
+
   const shardsVariables: GetManyShardsVariables = {
     locale: params.locale,
-    sort: 'createdAt',
+    sort: validatedSort,
   };
   await prefetchInfiniteShardsQuery(apiClient, queryClient, shardsVariables);
 

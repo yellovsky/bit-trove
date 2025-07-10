@@ -10,7 +10,6 @@ import { ReadingProgress } from '@shared/ui/ReadingProgress';
 import { RelatedArticles, TableOfContents, type TableOfContentsItem } from '@widgets/blog-post-sidebar';
 
 import {
-  BackToShardsListButton,
   ShardBreadcrumbs,
   ShardDetailSkeleton,
   ShardErrorState,
@@ -86,11 +85,7 @@ export const ShardPage: FC<{ shardVariables: GetOneShardVariables }> = ({ shardV
       <ReadingProgress />
 
       <ContentWithSidebar sidebar={sidebar}>
-        {/* Navigation section */}
-        <nav aria-label="Shard navigation" className="mb-6 flex items-center justify-between">
-          <ShardBreadcrumbs shard={shard} />
-          <BackToShardsListButton />
-        </nav>
+        <ShardBreadcrumbs className="mb-6" shard={shard} />
 
         <article aria-labelledby="shard-title">
           {/* Shard header */}

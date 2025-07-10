@@ -2,7 +2,8 @@
 	"$schema": "https://unpkg.com/knip@5/schema.json",
 	"commitlint": true,
 	"ignoreDependencies": [
-		"@commitlint/cli"
+		"@commitlint/cli",
+		"@biomejs/biome"
 	],
 	"ignoreWorkspaces": [
 		"packages/typescript-config"

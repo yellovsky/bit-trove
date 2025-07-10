@@ -94,8 +94,13 @@ export default {
   meta_title_suffix: 'BitTrove',
   no_results_found: 'No results found',
   'See all': 'See all',
+  'Sort by:': 'Sort by:',
   search: {
     placeholder: 'Search',
+  },
+  sort: {
+    newest: 'Newest first',
+    oldest: 'Oldest first',
   },
   'Table of Contents': 'Table of Contents',
 };
