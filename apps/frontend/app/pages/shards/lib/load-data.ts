@@ -10,7 +10,7 @@ import { getShardsLink } from '@features/shards';
 
 import { type GetManyShardsVariables, prefetchInfiniteShardsQuery } from '@entities/shards';
 
-import type { Route } from './+types';
+import type { Route } from '../+types';
 
 export const loadShardsRouteData = async (
   t: TFunction,

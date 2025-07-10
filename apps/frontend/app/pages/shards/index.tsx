@@ -7,8 +7,8 @@ import appI18next from '@app/localization/i18n.server';
 import { getMetaBreadcrumbs } from '@features/breadcrumbs';
 
 import type { Route } from './+types';
-import { loadShardsRouteData } from './load-data';
-import { ShardsPage } from './page';
+import { loadShardsRouteData } from './lib/load-data';
+import { ShardsPage } from './ui/ShardsPage';
 
 export async function loader(args: Route.LoaderArgs) {
   const t = await appI18next.getFixedT(args.params.locale);

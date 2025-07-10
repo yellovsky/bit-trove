@@ -1,0 +1,101 @@
+---
+description: Rect components
+alwaysApply: false
+---
+
+# Cursor Prompt: Organize React Component with Subcomponents
+
+You're building a reusable, accessible, and well-organized React UI component using best practices.
+
+---
+
+## Context
+
+I want to organize the component as a **single file** (or optionally a folder with `index.tsx`) that contains:
+
+### 1. Root Component
+
+- Named like `Breadcrumb`
+- Uses semantic tag (`<nav>`, `<div>`, etc.)
+- Accepts `className` and spreads other props
+- Has a `displayName` set via a constant (e.g., `const NAME = 'Breadcrumb'`)
+- Uses `data-slot` for styling/testing hooks
+
+### 2. Subcomponents
+
+Each subcomponent should follow these rules:
+
+- Named like `BreadcrumbList`, `BreadcrumbItem`, etc.
+- Separated by a clear comment block:
+
+  ```ts
+  /* -------------------------------------------------------------------------------------------------
+   * BreadcrumbList
+   * -----------------------------------------------------------------------------------------------*/
+  ```
+
+- Type definition using `ComponentProps<'tag'>`
+- Functional component with Tailwind styles and `data-slot`
+- Optional support for `asChild` using `@radix-ui/react-slot`
+- Optional icon integration via `lucide-react`
+
+### 3. Shorthand and Full Exports
+
+At the bottom, include:
+
+```ts
+// Shorthand exports
+const Root = Breadcrumb;
+// ...
+
+export {
+  Root,
+  List,
+  Item,
+  Link,
+  Page,
+  Separator,
+  Ellipsis,
+  //
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+  BreadcrumbEllipsis,
+};
+
+export type {
+  BreadcrumbProps,
+  BreadcrumbListProps,
+  BreadcrumbItemProps,
+  BreadcrumbLinkProps,
+  BreadcrumbPageProps,
+  BreadcrumbSeparatorProps,
+  BreadcrumbEllipsisProps,
+};
+```
+
+---
+
+## 📚 Libraries Used
+
+- `@radix-ui/react-slot` – for `asChild` rendering
+- `lucide-react` – for icons
+- `cn()` – utility class name merger from `@repo/ui/lib/utils`
+
+---
+
+## 📌 Usage
+
+Use this structure for components like:
+
+- `Breadcrumb`
+- `Tabs`
+- `Accordion`
+- `Pagination`
+- `Command`
+- `Stepper`
+
+Prefer this structure **when multiple small subcomponents share logic or meaning**, especially for compound components.
