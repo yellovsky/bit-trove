@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router';
 
 import * as Label from '@repo/ui/components/Label';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@repo/ui/components/Select';
+import * as Select from '@repo/ui/components/Select';
 
 import type { GetManyShardsVariables } from '@entities/shards';
 
@@ -28,17 +28,17 @@ export const ShardsSortingDropdown: FC<ShardsSortingDropdownProps> = ({ shardsVa
       <Label.Root className="text-muted-foreground text-sm" htmlFor={id}>
         {t('Sort by:')}
       </Label.Root>
-      <Select onValueChange={setSort} value={shardsVariables.sort}>
-        <SelectTrigger className="w-full sm:w-56" id={id}>
-          <SelectValue placeholder={t('common:select_sort', 'Select sort order')} />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            <SelectItem value="-createdAt">{t('sort.newest')}</SelectItem>
-            <SelectItem value="createdAt">{t('sort.oldest')}</SelectItem>
-          </SelectGroup>
-        </SelectContent>
-      </Select>
+      <Select.Root onValueChange={setSort} value={shardsVariables.sort}>
+        <Select.Trigger className="w-full sm:w-56" id={id}>
+          <Select.Value placeholder={t('common:select_sort', 'Select sort order')} />
+        </Select.Trigger>
+        <Select.Content>
+          <Select.Group>
+            <Select.Item value="-createdAt">{t('sort.newest')}</Select.Item>
+            <Select.Item value="createdAt">{t('sort.oldest')}</Select.Item>
+          </Select.Group>
+        </Select.Content>
+      </Select.Root>
     </div>
   );
 };

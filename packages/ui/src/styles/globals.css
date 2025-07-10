@@ -358,6 +358,8 @@
   --color-destructive-foreground: var(--color-red-a12);
   --color-accent: var(--color-primary-9);
   --color-accent-foreground: var(--color-primary-contrast);
+  --color-input: var(--color-gray-surface);
+  /* TODO remove */
   --color-input-bg: var(--color-gray-surface);
   --color-border: var(--color-gray-a5);
   --color-input-border: var(--color-gray-a5);

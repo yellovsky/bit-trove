@@ -33,7 +33,7 @@
   --color-popover-foreground: hsl(0 0% 3.9%);
 
   /* Input Colors */
-  --color-input: var(--color-gray-6);
+  --color-input: hsl(0 0% 89.8%);
   --color-input-bg: var(--color-gray-6);
 
   /* Border Colors */
@@ -87,5 +87,8 @@
 
     /* Border Colors */
     --color-border: hsl(220 13% 18%);
+
+    /* Input Colors */
+    --color-input: hsl(0 0% 3.9%);
   }
 }

@@ -5,25 +5,35 @@ import type { FC } from 'react';
 import { useFormItemContext } from '@repo/ui/hooks/form-item-context';
 import { cn } from '@repo/ui/lib/utils';
 
-export const Select: FC<SelectPrimitive.SelectProps> = (props) => (
-  <SelectPrimitive.Root data-slot="select" {...props} />
-);
+/* -------------------------------------------------------------------------------------------------
+ * Select
+ * -----------------------------------------------------------------------------------------------*/
+const Select: FC<SelectPrimitive.SelectProps> = (props) => <SelectPrimitive.Root data-slot="select" {...props} />;
 
-export const SelectGroup: FC<SelectPrimitive.SelectGroupProps> = ({ ...props }) => (
+/* -------------------------------------------------------------------------------------------------
+ * SelectGroup
+ * -----------------------------------------------------------------------------------------------*/
+const SelectGroup: FC<SelectPrimitive.SelectGroupProps> = ({ ...props }) => (
   <SelectPrimitive.Group data-slot="select-group" {...props} />
 );
 
-export const SelectValue: FC<SelectPrimitive.SelectValueProps> = ({ ...props }) => (
+/* -------------------------------------------------------------------------------------------------
+ * SelectValue
+ * -----------------------------------------------------------------------------------------------*/
+const SelectValue: FC<SelectPrimitive.SelectValueProps> = ({ ...props }) => (
   <SelectPrimitive.Value data-slot="select-value" {...props} />
 );
 
-export const SelectTrigger: FC<SelectPrimitive.SelectTriggerProps> = ({ className, children, ...rest }) => {
+/* -------------------------------------------------------------------------------------------------
+ * SelectTrigger
+ * -----------------------------------------------------------------------------------------------*/
+const SelectTrigger: FC<SelectPrimitive.SelectTriggerProps> = ({ className, children, ...rest }) => {
   const itemContext = useFormItemContext();
 
   return (
     <SelectPrimitive.Trigger
       className={cn(
-        "flex w-fit cursor-pointer items-center justify-between gap-2 whitespace-nowrap rounded-default border border-input-border bg-input-bg px-3 py-2 text-sm shadow-xs outline-none transition-[color,box-shadow] hover:not-disabled:bg-input-bg/50 focus-visible:inset-ring-2 focus-visible:inset-ring-focus-ring disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:text-destructive-foreground aria-invalid:ring-destructive aria-invalid:focus-visible:inset-ring-destructive data-[size=default]:h-9 data-[size=sm]:h-8 data-[placeholder]:text-muted-foreground *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        "flex w-fit cursor-pointer items-center justify-between gap-2 whitespace-nowrap rounded-default border border-input-border bg-transparent px-3 py-2 text-sm shadow-xs outline-none transition-[color,box-shadow] hover:not-disabled:bg-input/50 focus-visible:inset-ring-2 focus-visible:inset-ring-focus-ring disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:text-destructive-foreground aria-invalid:ring-destructive aria-invalid:focus-visible:inset-ring-destructive data-[size=default]:h-9 data-[size=sm]:h-8 data-[placeholder]:text-muted-foreground *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0",
         className
       )}
       data-slot="select-trigger"
@@ -38,7 +48,10 @@ export const SelectTrigger: FC<SelectPrimitive.SelectTriggerProps> = ({ classNam
   );
 };
 
-export const SelectContent: FC<SelectPrimitive.SelectContentProps> = ({
+/* -------------------------------------------------------------------------------------------------
+ * SelectContent
+ * -----------------------------------------------------------------------------------------------*/
+const SelectContent: FC<SelectPrimitive.SelectContentProps> = ({
   className,
   children,
   position = 'popper',
@@ -73,7 +86,10 @@ export const SelectContent: FC<SelectPrimitive.SelectContentProps> = ({
   </SelectPrimitive.Portal>
 );
 
-export const SelectLabel: FC<SelectPrimitive.SelectLabelProps> = ({ className, ...props }) => (
+/* -------------------------------------------------------------------------------------------------
+ * SelectLabel
+ * -----------------------------------------------------------------------------------------------*/
+const SelectLabel: FC<SelectPrimitive.SelectLabelProps> = ({ className, ...props }) => (
   <SelectPrimitive.Label
     className={cn('px-2 py-1.5 text-muted-foreground text-xs', className)}
     data-slot="select-label"
@@ -81,7 +97,10 @@ export const SelectLabel: FC<SelectPrimitive.SelectLabelProps> = ({ className, .
   />
 );
 
-export const SelectItem: FC<SelectPrimitive.SelectItemProps> = ({ className, children, ...props }) => (
+/* -------------------------------------------------------------------------------------------------
+ * SelectItem
+ * -----------------------------------------------------------------------------------------------*/
+const SelectItem: FC<SelectPrimitive.SelectItemProps> = ({ className, children, ...props }) => (
   <SelectPrimitive.Item
     className={cn(
       "relative flex w-full cursor-default select-none items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden data-[disabled]:pointer-events-none data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[disabled]:opacity-50 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
@@ -99,7 +118,10 @@ export const SelectItem: FC<SelectPrimitive.SelectItemProps> = ({ className, chi
   </SelectPrimitive.Item>
 );
 
-export const SelectSeparator: FC<SelectPrimitive.SelectSeparatorProps> = ({ className, ...props }) => (
+/* -------------------------------------------------------------------------------------------------
+ * SelectSeparator
+ * -----------------------------------------------------------------------------------------------*/
+const SelectSeparator: FC<SelectPrimitive.SelectSeparatorProps> = ({ className, ...props }) => (
   <SelectPrimitive.Separator
     className={cn('-mx-1 pointer-events-none my-1 h-px bg-gray-a6', className)}
     data-slot="select-separator"
@@ -107,7 +129,10 @@ export const SelectSeparator: FC<SelectPrimitive.SelectSeparatorProps> = ({ clas
   />
 );
 
-export const SelectScrollUpButton: FC<SelectPrimitive.SelectScrollUpButtonProps> = ({ className, ...props }) => (
+/* -------------------------------------------------------------------------------------------------
+ * SelectScrollUpButton
+ * -----------------------------------------------------------------------------------------------*/
+const SelectScrollUpButton: FC<SelectPrimitive.SelectScrollUpButtonProps> = ({ className, ...props }) => (
   <SelectPrimitive.ScrollUpButton
     className={cn('flex cursor-default items-center justify-center py-1 hover:bg-accent', className)}
     data-slot="select-scroll-up-button"
@@ -117,7 +142,10 @@ export const SelectScrollUpButton: FC<SelectPrimitive.SelectScrollUpButtonProps>
   </SelectPrimitive.ScrollUpButton>
 );
 
-export const SelectScrollDownButton: FC<SelectPrimitive.SelectScrollDownButtonProps> = ({ className, ...props }) => (
+/* -------------------------------------------------------------------------------------------------
+ * SelectScrollDownButton
+ * -----------------------------------------------------------------------------------------------*/
+const SelectScrollDownButton: FC<SelectPrimitive.SelectScrollDownButtonProps> = ({ className, ...props }) => (
   <SelectPrimitive.ScrollDownButton
     className={cn('flex cursor-default items-center justify-center py-1 hover:bg-accent', className)}
     data-slot="select-scroll-down-button"
@@ -126,3 +154,53 @@ export const SelectScrollDownButton: FC<SelectPrimitive.SelectScrollDownButtonPr
     <ChevronDownIcon className="size-4" />
   </SelectPrimitive.ScrollDownButton>
 );
+
+/* -----------------------------------------------------------------------------------------------*/
+
+const Root = Select;
+const Group = SelectGroup;
+const Value = SelectValue;
+const Trigger = SelectTrigger;
+const Content = SelectContent;
+const Label = SelectLabel;
+const Item = SelectItem;
+const Separator = SelectSeparator;
+const ScrollUpButton = SelectScrollUpButton;
+const ScrollDownButton = SelectScrollDownButton;
+
+export {
+  Root,
+  Group,
+  Value,
+  Trigger,
+  Content,
+  Label,
+  Item,
+  Separator,
+  ScrollUpButton,
+  ScrollDownButton,
+  //
+  Select,
+  SelectGroup,
+  SelectValue,
+  SelectTrigger,
+  SelectContent,
+  SelectLabel,
+  SelectItem,
+  SelectSeparator,
+  SelectScrollUpButton,
+  SelectScrollDownButton,
+};
+
+export type {
+  SelectContentProps,
+  SelectGroupProps,
+  SelectItemProps,
+  SelectLabelProps,
+  SelectProps,
+  SelectScrollDownButtonProps,
+  SelectScrollUpButtonProps,
+  SelectSeparatorProps,
+  SelectTriggerProps,
+  SelectValueProps,
+} from '@radix-ui/react-select';
