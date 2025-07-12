@@ -10,6 +10,8 @@ model Account {
   shardEntries   ShardEntry[]
   shards         Shard[]
   blogPostEnties BlogPostEntry[]
+  articles       Article[]
+  articleEntries ArticleEntry[]
 
   @@map("accounts")
 }

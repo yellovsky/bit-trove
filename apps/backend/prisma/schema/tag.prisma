@@ -6,6 +6,7 @@ model Tag {
 
   shards    ShardTag[]
   blogPosts BlogPostTag[]
+  articles  ArticleTag[]
 
   @@map("tags")
 }

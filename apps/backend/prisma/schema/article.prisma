@@ -1,0 +1,77 @@
+model Article {
+  id   String @id @default(uuid()) @map("id")
+  slug String @unique @map("slug")
+
+  // Type discriminator for different article types
+  type String @map("type") // "blog_post" | "shard"
+
+  languageCode String   @map("language_code")
+  language     Language @relation(fields: [languageCode], references: [code])
+
+  publishedAt DateTime? @map("published_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at")
+
+  author   Account? @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  authorId String?  @map("author_id")
+
+  title            String  @map("title")
+  shortDescription String? @map("short_description")
+  contentJSON      Json?   @map("content_json")
+  readingTime      Int     @default(1) @map("reading_time")
+  seoTitle         String? @map("seo_title")
+  seoDescription   String? @map("seo_description")
+  seoKeywords      String? @map("seo_keywords")
+
+  // Type-specific metadata stored as JSON
+  metadata Json? @map("metadata")
+
+  tags ArticleTag[]
+
+  entryId String       @map("entry_id")
+  entry   ArticleEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+
+  @@index([type])
+  @@index([publishedAt])
+  @@index([authorId])
+  @@index([languageCode])
+  @@index([createdAt])
+  @@index([updatedAt])
+  @@index([type, publishedAt])
+  @@index([type, languageCode])
+  @@index([type, authorId])
+  @@index([publishedAt, languageCode])
+  @@index([type, publishedAt, languageCode])
+  @@map("articles")
+}
+
+model ArticleTag {
+  articleId String  @map("article_id")
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  tagId String @map("tag_id")
+  tag   Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  order Int @map("order")
+
+  @@id([articleId, tagId])
+  @@unique([articleId, order])
+  @@index([tagId])
+  @@index([articleId])
+  @@map("article_tags")
+}
+
+model ArticleEntry {
+  id String @id @default(uuid()) @map("id")
+
+  publishedAt DateTime? @map("published_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at")
+
+  author   Account? @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  authorId String?  @map("author_id")
+
+  articles Article[]
+
+  @@map("article_entries")
+}

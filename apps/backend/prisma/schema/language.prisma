@@ -3,6 +3,7 @@ model Language {
 
   blogPosts BlogPost[]
   shards    Shard[]
+  articles  Article[]
 
   @@map("languages")
 }
