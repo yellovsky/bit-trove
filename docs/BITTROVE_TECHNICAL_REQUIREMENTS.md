@@ -114,7 +114,7 @@ Each module follows DDD layers:
 **Status**: ✅ Fully Implemented
 - **JWT Authentication**: Secure token-based authentication
 - **RBAC System**: Role-based access control with Casbin
-- **Multi-provider Support**: Local and OAuth providers
+- **Multi-provider Support**: Local and OAuth providers (Google support in schema)
 - **Session Management**: HTTP-only cookies for security
 - **Permission Policies**: Granular permission management
 
@@ -159,39 +159,56 @@ Each module follows DDD layers:
 - **Editor Widget FSD Refactor**: Reorganized editor following FSD principles with improved state management
 - **Content Rendering**: PoseDocument component for consistent content display
 
+#### 9. Search System
+**Status**: ✅ Fully Implemented
+- **Global Search**: Command-style search dialog accessible from header
+- **Real-time Search**: Debounced search with 3+ character minimum
+- **Multi-content Search**: Search across both blog posts and shards
+- **Search Results**: Rich result display with metadata and navigation
+- **Keyboard Navigation**: Full keyboard support for search interface
+- **Loading States**: Proper loading and error states for search results
+
+#### 10. Keyboard Navigation (Partial)
+**Status**: 🚧 Partially Implemented
+- **Editor Keyboard Shortcuts**: TipTap editor with comprehensive keyboard shortcuts
+- **Search Keyboard Navigation**: Full keyboard support in search interface
+- **Sidebar Toggle**: Keyboard shortcut for sidebar toggle (Cmd/Ctrl + /)
+- **Menu Navigation**: Keyboard navigation in editor menus and toolbars
+- **Missing**: Global keyboard shortcuts for content creation and navigation
+
 ### 🚧 Partially Implemented Features
 
-#### 9. Meta-Blog Documentation
+#### 11. Meta-Blog Documentation
 **Status**: 🚧 Partially Implemented
-- **Current State**: Basic documentation structure exists
+- **Current State**: Basic documentation structure exists in `/docs/` directory
 - **Missing**: Comprehensive meta-blog content about BitTrove architecture
 - **Needed**: Internal links to code, design decisions, architecture choices
 - **Required**: Developer-friendly layout for technical documentation
 
 ### ❌ Not Yet Implemented Features
 
-#### 10. Advanced Search & Discovery
+#### 12. Advanced Search & Discovery
 **Status**: ❌ Not Implemented
 - **Graph View**: Zettelkasten-inspired tag relationship visualization
 - **Advanced Filtering**: Complex search queries with multiple criteria
 - **Content Recommendations**: Related content suggestions
 - **Search Analytics**: Search behavior tracking and optimization
 
-#### 11. Developer Experience Features
+#### 13. Developer Experience Features
 **Status**: ❌ Not Implemented
-- **Keyboard Navigation**: Enhanced keyboard shortcuts for shards
+- **Global Keyboard Navigation**: Enhanced keyboard shortcuts for content management
 - **Offline Support**: PWA capabilities for offline-first experience
 - **GitHub Integration**: Sync posts with GitHub repositories
 - **RSS Feeds**: RSS feed generation for content syndication
 
-#### 12. Performance & Analytics
+#### 14. Performance & Analytics
 **Status**: ❌ Not Implemented
 - **Performance Monitoring**: Real-time performance metrics
 - **User Analytics**: Content engagement and user behavior tracking
 - **SEO Analytics**: Search engine optimization metrics
 - **Content Performance**: Individual post/shard performance tracking
 
-#### 13. Advanced Content Features
+#### 15. Advanced Content Features
 **Status**: ❌ Not Implemented
 - **Content Scheduling**: Scheduled publishing of posts and shards
 - **Content Versioning**: Version history and rollback capabilities
@@ -282,8 +299,8 @@ Each module follows DDD layers:
 ### Phase 3: Developer Experience (Priority: Medium)
 **Timeline**: 2-3 weeks
 
-#### 3.1 Keyboard Navigation
-- [ ] Add keyboard shortcuts for shards
+#### 3.1 Global Keyboard Navigation
+- [ ] Add keyboard shortcuts for content creation
 - [ ] Implement global keyboard navigation
 - [ ] Create keyboard shortcut documentation
 - [ ] Add accessibility improvements

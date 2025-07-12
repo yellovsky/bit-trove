@@ -31,7 +31,7 @@ bit-trove/
 │   ├── api-models/        # Shared API type definitions
 │   ├── ui/               # Shared UI component library
 │   └── typescript-config/ # Shared TypeScript configuration
-└── prds/                 # Product Requirements Documents
+└── docs/                 # Project documentation and PRDs
 ```
 
 ## Applications
@@ -58,13 +58,15 @@ bit-trove/
 - Blog post management with multilingual support and workflow
 - Reading time calculation and display for all content
 - Comprehensive testing setup with browser/server environments
+- Global search system with command-style interface
+- Keyboard navigation support in editor and search
 
 **Project Structure:**
 ```
 app/
 ├── app/                  # Application core (routing, providers)
 ├── entities/             # Business entities (blog-posts, shards, tags)
-├── features/             # Feature modules (auth, blog-posts, shards, theme)
+├── features/             # Feature modules (auth, blog-posts, shards, theme, search)
 ├── pages/               # Route components
 ├── shared/              # Shared utilities and configurations
 ├── widgets/             # Reusable UI blocks
@@ -239,7 +241,7 @@ src/
 ### Authentication & Authorization
 - **JWT-based**: Secure token-based authentication
 - **RBAC**: Role-based access control with Casbin
-- **Multi-provider**: Support for local and OAuth providers
+- **Multi-provider**: Support for local and OAuth providers (Google support in schema)
 - **Session Management**: HTTP-only cookies for security
 
 ### Content Management
@@ -268,6 +270,22 @@ src/
 - **Callout TipTap Extension**: Visual highlighting with predefined types (info, warning, danger, code, success, recommendation)
 - **Editor Widget FSD Refactor**: Reorganized editor following FSD principles with improved state management and React Compiler compatibility
 - **Content Rendering**: PoseDocument component for consistent content display across editor and viewer
+
+### Search System
+- **Global Search**: Command-style search dialog accessible from header with keyboard shortcut (Cmd/Ctrl + K)
+- **Real-time Search**: Debounced search with 3+ character minimum requirement
+- **Multi-content Search**: Search across both blog posts and shards simultaneously
+- **Search Results**: Rich result display with metadata, reading time, and navigation
+- **Keyboard Navigation**: Full keyboard support for search interface (arrows, enter, escape)
+- **Loading States**: Proper loading and error states for search results
+- **Search Interface**: Reusable SearchInterface component with consistent UI patterns
+
+### Keyboard Navigation
+- **Editor Shortcuts**: Comprehensive keyboard shortcuts in TipTap editor (Cmd/Ctrl + B for bold, etc.)
+- **Search Navigation**: Full keyboard support in search interface
+- **Sidebar Toggle**: Keyboard shortcut for sidebar toggle (Cmd/Ctrl + /)
+- **Menu Navigation**: Keyboard navigation in editor menus and toolbars
+- **Accessibility**: WCAG AA compliant keyboard navigation patterns
 
 ### Internationalization
 - **Multi-language**: Support for multiple locales
@@ -376,9 +394,13 @@ API_PORT=3000
 
 ### Features
 - **Real-time**: WebSocket integration for live updates
-- **Search**: Full-text search with Elasticsearch
+- **Advanced Search**: Full-text search with Elasticsearch
 - **Analytics**: User behavior tracking and analytics
 - **Notifications**: Push notifications and email alerts
+- **Meta-blog**: Comprehensive documentation of BitTrove architecture
+- **Graph Visualization**: Tag relationship visualization
+- **GitHub Integration**: Content synchronization with GitHub
+- **RSS Feeds**: Content syndication capabilities
 
 ### Technical Debt
 - **Dependencies**: Regular security updates and maintenance

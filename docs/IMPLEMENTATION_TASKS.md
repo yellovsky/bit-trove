@@ -286,7 +286,7 @@ interface AdvancedSearchQuery {
 
 ## Phase 3: Developer Experience (Medium Priority)
 
-### 3.1 Keyboard Navigation
+### 3.1 Global Keyboard Navigation
 
 #### Task 3.1.1: Global Keyboard Shortcuts
 **Priority**: 🟡 Medium
@@ -320,21 +320,21 @@ const DEFAULT_SHORTCUTS = {
 } as const;
 ```
 
-#### Task 3.1.2: Shard-Specific Keyboard Navigation
+#### Task 3.1.2: Content Creation Keyboard Navigation
 **Priority**: 🟡 Medium
 **Complexity**: Low
 **Estimated Time**: 3 days
 **Architecture Layer**: Frontend (Features)
 
-**Description**: Add keyboard shortcuts specifically for shard management.
+**Description**: Add keyboard shortcuts specifically for content creation and management.
 
 **Tasks**:
-- [ ] Add keyboard shortcuts for shard creation
-- [ ] Implement quick shard editing
-- [ ] Add keyboard navigation between shards
-- [ ] Create keyboard shortcuts for shard publishing
-- [ ] Add keyboard shortcuts for shard deletion
-- [ ] Implement keyboard-based shard filtering
+- [ ] Add keyboard shortcuts for content creation
+- [ ] Implement quick content editing
+- [ ] Add keyboard navigation between content items
+- [ ] Create keyboard shortcuts for content publishing
+- [ ] Add keyboard shortcuts for content deletion
+- [ ] Implement keyboard-based content filtering
 
 ### 3.2 GitHub Integration
 
