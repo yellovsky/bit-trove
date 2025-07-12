@@ -1,0 +1,5 @@
+---
+alwaysApply: true
+---
+
+Avoid git commit and git add. Never call git commit or git add without confirmation.

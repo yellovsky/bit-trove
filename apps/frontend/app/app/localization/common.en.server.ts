@@ -96,7 +96,16 @@ export default {
   'See all': 'See all',
   'Sort by:': 'Sort by:',
   search: {
-    placeholder: 'Search',
+    empty_message: 'Nothing found. Try a different search term.',
+    empty_tip: 'Try searching for different keywords or check your spelling',
+    empty_title: 'No results found',
+    placeholder: 'Search...',
+    prompt_message: 'Type at least 3 characters to search',
+    prompt_title: 'Search your content',
+    search_close: 'Close',
+    search_navigation: 'Navigate',
+    search_select: 'Select',
+    searching: 'Searching...',
   },
   sort: {
     newest: 'Newest first',

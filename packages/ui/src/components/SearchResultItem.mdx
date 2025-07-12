@@ -1,0 +1,173 @@
+import { Meta, Title, Primary, Controls, Stories } from '@storybook/addon-docs/blocks';
+
+{/*
+	* 👇 The isTemplate property is required to tell Storybook that this is a template
+	* See https://storybook.js.org/docs/api/doc-blocks/doc-block-meta
+	* to learn how to use
+*/}
+
+<Meta isTemplate />
+
+<Title />
+
+A flexible, responsive search result item component built using the compound component pattern. This component is designed to display search results with various levels of detail and adapts to different container sizes.
+
+## Features
+
+- **Compound Component Pattern**: Flexible composition with individual sub-components
+- **Responsive Design**: Automatically adapts to container size using CSS Container Queries
+- **Accessible**: Proper ARIA attributes and semantic HTML
+- **Customizable**: Each sub-component can be styled independently
+- **TypeScript Support**: Full type safety with comprehensive interfaces
+
+
+
+## Usage
+
+### Basic Usage
+
+```tsx
+import {
+  SearchResultItem,
+  SearchResultItemIcon,
+  SearchResultItemContent,
+  SearchResultItemTitle,
+  SearchResultItemDescription,
+  SearchResultItemArrow,
+} from './SearchResultItem';
+
+<SearchResultItem>
+  <SearchResultItemIcon>
+    <div className="h-8 w-8 rounded bg-blue-500/10 flex items-center justify-center">
+      <span className="text-blue-600 text-sm">📄</span>
+    </div>
+  </SearchResultItemIcon>
+  <SearchResultItemContent>
+    <SearchResultItemTitle>Document Title</SearchResultItemTitle>
+    <SearchResultItemDescription>Document description...</SearchResultItemDescription>
+  </SearchResultItemContent>
+  <SearchResultItemArrow />
+</SearchResultItem>
+```
+
+### Full Featured Example
+
+```tsx
+<SearchResultItem>
+  <SearchResultItemIcon>
+    <div className="h-8 w-8 rounded bg-blue-500/10 flex items-center justify-center">
+      <span className="text-blue-600 text-sm">📄</span>
+    </div>
+  </SearchResultItemIcon>
+  <SearchResultItemContent>
+    <SearchResultItemHeader>
+      <span className="text-xs">📄</span>
+      <span className="font-mono text-muted-foreground text-xs">filename.md</span>
+      <div className="h-2 w-2 rounded-full bg-blue-500" />
+      <span className="rounded bg-secondary px-1.5 py-0.5 font-mono text-secondary-foreground text-xs capitalize">
+        blog post
+      </span>
+    </SearchResultItemHeader>
+    <SearchResultItemTitle>Document Title</SearchResultItemTitle>
+    <SearchResultItemDescription>Document description...</SearchResultItemDescription>
+    <SearchResultItemCategory>
+      <SearchResultItemCategoryIcon>Category Name</SearchResultItemCategoryIcon>
+    </SearchResultItemCategory>
+    <SearchResultItemFooter>
+      <SearchResultItemMeta>
+        <SearchResultItemAuthor>Author Name</SearchResultItemAuthor>
+        <SearchResultItemDate>Date</SearchResultItemDate>
+        <SearchResultItemReadingTime>Reading Time</SearchResultItemReadingTime>
+      </SearchResultItemMeta>
+      <SearchResultItemMatchType>
+        <span className="rounded bg-primary/10 px-1.5 py-0.5 font-mono text-primary text-xs">match type</span>
+      </SearchResultItemMatchType>
+    </SearchResultItemFooter>
+    <SearchResultItemTags>
+      <SearchResultItemTag>#tag1</SearchResultItemTag>
+      <SearchResultItemTag>#tag2</SearchResultItemTag>
+      <SearchResultItemMoreTags>+1</SearchResultItemMoreTags>
+    </SearchResultItemTags>
+  </SearchResultItemContent>
+  <SearchResultItemArrow />
+</SearchResultItem>
+```
+
+## Components
+
+### Core Components
+
+- `SearchResultItem` - Main container component
+- `SearchResultItemIcon` - Icon container
+- `SearchResultItemContent` - Main content area
+- `SearchResultItemArrow` - Arrow indicator
+
+### Header Components
+
+- `SearchResultItemHeader` - Header information container
+- `SearchResultItemTitle` - Document title
+- `SearchResultItemDescription` - Document description
+
+### Meta Components
+
+- `SearchResultItemCategory` - Category information
+- `SearchResultItemCategoryIcon` - Category with folder icon
+- `SearchResultItemFooter` - Footer container
+- `SearchResultItemMeta` - Meta information container
+- `SearchResultItemMatchType` - Match type indicator (hidden on narrow containers)
+
+### Text with Icon Components
+
+- `SearchResultItemTextWithIcon` - Base component for text with icon
+- `SearchResultItemAuthor` - Author with user icon
+- `SearchResultItemDate` - Date with calendar icon
+- `SearchResultItemReadingTime` - Reading time with clock icon
+
+### Tag Components
+
+- `SearchResultItemTags` - Tags container
+- `SearchResultItemTag` - Individual tag
+- `SearchResultItemMoreTags` - "More tags" indicator
+
+## Props
+
+All components accept standard HTML props and can be customized with className. The main `SearchResultItem` component also accepts:
+
+- `asChild` - Whether to render as a child component (for composition)
+
+## Responsive Breakpoints
+
+The component uses CSS Container Queries with the following breakpoints:
+
+- `@[300px]` - Very narrow containers
+- `@[350px]` - Narrow containers (hides text with icons)
+- `@[400px]` - Medium containers (hides match types)
+- `@[600px]` - Wide containers (shows all content)
+
+## Accessibility
+
+- Proper semantic HTML structure
+- ARIA data attributes for component identification
+- Keyboard navigation support
+- Screen reader friendly
+
+## Styling
+
+The component uses Tailwind CSS classes and follows the design system. All components can be customized by passing className props or using the `asChild` prop for complete customization.
+
+
+<Primary />
+
+## Inputs
+
+The component accepts the following inputs (props):
+
+<Controls />
+
+---
+
+## Additional variations
+
+Listed below are additional variations of the component.
+
+<Stories />

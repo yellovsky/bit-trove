@@ -26,7 +26,7 @@ import type {
 } from '../../domain/repositories/shards.repository';
 import { type DBShard, type DBShortShard, dbShardSelect, dbShortShardSelect } from './shards.repository.types';
 
-const getWhere = (params: FindManyShardsParams): Prisma.ShardWhereInput => {
+export const getWhere = (params: FindManyShardsParams): Prisma.ShardWhereInput => {
   const where: Prisma.ShardWhereInput = {};
 
   if (params.filter.languageCodeIn?.length) {
@@ -37,6 +37,78 @@ const getWhere = (params: FindManyShardsParams): Prisma.ShardWhereInput => {
   else if (params.filter?.published === false) where.publishedAt = null;
 
   if (params.filter?.authorId) where.authorId = params.filter.authorId;
+
+  // Handle search parameter
+  if (params.filter?.search) {
+    const searchTerms = params.filter.search
+      .toLowerCase()
+      .split(/\s+/)
+      .filter((term) => term.length > 0);
+
+    if (searchTerms.length > 0) {
+      where.OR = [
+        // Search in title (case-insensitive)
+        {
+          title: {
+            contains: searchTerms[0],
+            mode: 'insensitive' as const,
+          },
+        },
+        // Search in short description (case-insensitive)
+        {
+          shortDescription: {
+            contains: searchTerms[0],
+            mode: 'insensitive' as const,
+          },
+        },
+        // Search in JSON content - look for text in Text nodes
+        {
+          contentJSON: {
+            path: ['content', '*', 'content', '*', 'text'],
+            string_contains: searchTerms[0],
+          },
+        },
+        // Also search in nested content structures
+        {
+          contentJSON: {
+            path: ['content', '*', 'content', '*', 'content', '*', 'text'],
+            string_contains: searchTerms[0],
+          },
+        },
+      ];
+
+      // If multiple search terms, add additional conditions
+      for (let i = 1; i < searchTerms.length; i++) {
+        const term = searchTerms[i];
+        where.OR.push(
+          {
+            title: {
+              contains: term,
+              mode: 'insensitive' as const,
+            },
+          },
+          {
+            shortDescription: {
+              contains: term,
+              mode: 'insensitive' as const,
+            },
+          },
+          {
+            contentJSON: {
+              path: ['content', '*', 'content', '*', 'text'],
+              string_contains: term,
+            },
+          },
+          {
+            contentJSON: {
+              path: ['content', '*', 'content', '*', 'content', '*', 'text'],
+              string_contains: term,
+            },
+          }
+        );
+      }
+    }
+  }
 
   return where;
 };

@@ -21,6 +21,7 @@ export const getManyShardsQuerySchema = zod.object({
   filter: getManyShardsQueryFilterSchema.optional(),
   locale: localeSchema,
   page: pageRequestSchema,
+  search: zod.string().min(3).optional(),
   sort: getManyShardsSortSchema,
 });
 export type GetManyShardsQuery = zod.infer<typeof getManyShardsQuerySchema>;

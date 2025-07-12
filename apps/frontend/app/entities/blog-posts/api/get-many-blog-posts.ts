@@ -1,4 +1,10 @@
-import { type InfiniteData, type QueryClient, type QueryFunction, useInfiniteQuery } from '@tanstack/react-query';
+import {
+  type InfiniteData,
+  type QueryClient,
+  type QueryFunction,
+  type UseInfiniteQueryOptions,
+  useInfiniteQuery,
+} from '@tanstack/react-query';
 
 import type { FailedResponse, GetManyBlogPostsQuery, GetManyBlogPostsResponse, PageRequest } from '@repo/api-models';
 
@@ -43,7 +49,18 @@ export const prefetchManyBlogPostsQuery = async (
   });
 };
 
-export const useInfiniteBlogPostsQuery = (variables: GetManyBlogPostsVariables) => {
+export const useInfiniteBlogPostsQuery = (
+  variables: GetManyBlogPostsVariables,
+  options?: Partial<
+    UseInfiniteQueryOptions<
+      GetManyBlogPostsResponse,
+      FailedResponse,
+      InfiniteData<GetManyBlogPostsResponse>,
+      GetManyBlogPostsQKey,
+      PageRequest
+    >
+  >
+) => {
   const apiClient = useApiClient();
 
   return useInfiniteQuery<
@@ -53,8 +70,8 @@ export const useInfiniteBlogPostsQuery = (variables: GetManyBlogPostsVariables) 
     GetManyBlogPostsQKey,
     PageRequest
   >({
+    ...options,
     getNextPageParam,
-
     initialPageParam,
     queryFn: getManyBlogPosts(apiClient),
     queryKey: makeGetManyBlogPostsQKey(variables),

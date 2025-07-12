@@ -38,7 +38,11 @@ export class ShardsController {
 
   @Get()
   @Public()
-  @ApiOperation({ summary: 'Get many shards' })
+  @ApiOperation({
+    description:
+      'Retrieve a list of shards with optional search functionality. Supports searching in titles, descriptions, and content.',
+    summary: 'Get many shards',
+  })
   @ApiResponse({ description: 'Returns the shards', status: 200 })
   async getMany(
     @ReqCtx() reqCtx: RequestContext,

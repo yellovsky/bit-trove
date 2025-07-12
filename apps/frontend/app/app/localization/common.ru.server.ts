@@ -97,7 +97,16 @@ export default {
   'See all': 'Посмотреть все',
   'Sort by:': 'Сортировать по:',
   search: {
-    placeholder: 'Поиск',
+    empty_message: 'Ничего не найдено. Попробуйте другой поисковый запрос.',
+    empty_tip: 'Попробуйте поискать по другим ключевым словам или проверьте написание',
+    empty_title: 'Результаты не найдены',
+    placeholder: 'Поиск...',
+    prompt_message: 'Введите минимум 3 символа для поиска',
+    prompt_title: 'Поиск по контенту',
+    search_close: 'Закрыть',
+    search_navigation: 'Навигация',
+    search_select: 'Выбрать',
+    searching: 'Поиск...',
   },
   sort: {
     newest: 'Сначала новые',

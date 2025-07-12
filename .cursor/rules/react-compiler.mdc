@@ -1,0 +1,25 @@
+---
+description: Enable React Compiler Best Practices
+alwaysApply: false
+---
+
+description: >
+  This rule enforces best practices for using the React Compiler introduced in React 19.
+  The compiler optimizes re-renders and eliminates the need for most manual memoization.
+  Avoid `useMemo`, `useCallback`, and `memo` unless explicitly required for correctness
+  (e.g., when working with proxies or compiler directives like `/* use no memo */`).
+
+appliesTo: [frontend, shared-components, design-system]
+
+requirements:
+  - Ensure React Compiler is enabled (React 19+ with the appropriate build config)
+  - Avoid using `useMemo`, `useCallback`, and `React.memo` by default
+  - If a component interacts with proxies (e.g. Zustand, MobX, Valtio, etc.), allow memoization
+  - If `/* use no memo */` directive is present, allow manual memoization
+  - Remove legacy memoization unless proven necessary (performance or logic)
+  - Document any intentional use of memoization with comments or directives
+
+notes:
+  - Use the compiler to handle performance optimizations; manual hooks often introduce noise and bugs
+  - Prefer idiomatic code — e.g., inline functions and objects are OK
+  - Watch out for non-serializable props or unstable inputs in 3rd-party libraries

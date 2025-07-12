@@ -24,6 +24,7 @@ export const getManyBlogPostsQuerySchema = zod.object({
   filter: getManyBlogPostsQueryFilterSchema.optional(),
   locale: localeSchema,
   page: pageRequestSchema,
+  search: zod.string().min(3).optional(),
   sort: getManyBlogPostsSortSchema,
 });
 export type GetManyBlogPostsQuery = zod.infer<typeof getManyBlogPostsQuerySchema>;

@@ -30,6 +30,7 @@ export class GetManyBlogPostsUseCase {
       filter: {
         languageCodeIn: query.filter?.languageCodeIn,
         published: true,
+        search: query.search,
       },
       orderBy: sortToOrderBy(query.sort),
       skip: query.page.offset,

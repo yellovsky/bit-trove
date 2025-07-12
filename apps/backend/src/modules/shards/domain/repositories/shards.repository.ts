@@ -30,6 +30,7 @@ interface FindManyShardsFilter {
   published?: boolean;
   authorId?: string | null;
   languageCodeIn?: string[];
+  search?: string;
 }
 
 export interface FindManyShardsParams {

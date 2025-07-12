@@ -1,4 +1,10 @@
-import { type InfiniteData, type QueryClient, type QueryFunction, useInfiniteQuery } from '@tanstack/react-query';
+import {
+  type InfiniteData,
+  type QueryClient,
+  type QueryFunction,
+  type UseInfiniteQueryOptions,
+  useInfiniteQuery,
+} from '@tanstack/react-query';
 
 import type { FailedResponse, GetManyShardsQuery, GetManyShardsResponse, PageRequest } from '@repo/api-models';
 
@@ -43,7 +49,18 @@ export const prefetchInfiniteShardsQuery = async (
   });
 };
 
-export const useInfiniteShardsQuery = (variables: GetManyShardsVariables) => {
+export const useInfiniteShardsQuery = (
+  variables: GetManyShardsVariables,
+  options?: Partial<
+    UseInfiniteQueryOptions<
+      GetManyShardsResponse,
+      FailedResponse,
+      InfiniteData<GetManyShardsResponse>,
+      GetManyShardsQKey,
+      PageRequest
+    >
+  >
+) => {
   const apiClient = useApiClient();
 
   return useInfiniteQuery<
@@ -53,8 +70,8 @@ export const useInfiniteShardsQuery = (variables: GetManyShardsVariables) => {
     GetManyShardsQKey,
     PageRequest
   >({
+    ...options,
     getNextPageParam,
-
     initialPageParam,
     queryFn: getManyShards(apiClient),
     queryKey: makeGetManyShardsQKey(variables),

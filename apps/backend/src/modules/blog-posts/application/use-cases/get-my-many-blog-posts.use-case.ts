@@ -31,7 +31,11 @@ export class GetMyManyBlogPostsUseCase {
     this.#logger.log(` > query ${JSON.stringify(query)}`);
 
     const params: FindManyBlogPostsParams = {
-      filter: { authorId: reqCtx.accountId, languageCodeIn: query.filter?.languageCodeIn },
+      filter: {
+        authorId: reqCtx.accountId,
+        languageCodeIn: query.filter?.languageCodeIn,
+        search: query.search,
+      },
       orderBy: sortToOrderBy(query.sort),
       skip: query.page.offset,
       take: query.page.limit,

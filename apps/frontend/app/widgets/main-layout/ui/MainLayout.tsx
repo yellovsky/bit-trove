@@ -3,7 +3,6 @@ import { type FC, type PropsWithChildren, useDeferredValue, useState } from 'rea
 import { ScrollArea } from '@repo/ui/components/ScrollArea';
 import { Separator } from '@repo/ui/components/Separator';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@repo/ui/components/Sidebar';
-import { TextInput } from '@repo/ui/components/TextInput';
 
 import { MainContentScrollContext } from '@shared/ui/MainContentScroll';
 
@@ -11,6 +10,7 @@ import { LanguageSwitcher } from '@features/language-switcher';
 import { ColorSchemeSwitcher } from '@features/theme';
 
 import { AppSidebar } from './AppSidebar';
+import { HeaderSearchInput } from './HeaderSearchInput';
 
 export const MainLayout: FC<PropsWithChildren> = ({ children }) => {
   const [mainScroll, setMainScroll] = useState(0);
@@ -31,9 +31,8 @@ export const MainLayout: FC<PropsWithChildren> = ({ children }) => {
             <div className="flex w-full items-center gap-2 px-8">
               <SidebarTrigger className="-ml-1" />
               <Separator className="mr-2 data-[orientation=vertical]:h-4" orientation="vertical" />
-              <div className="flex-1">
-                <TextInput placeholder="Search" />
-              </div>
+              <div className="flex-1" />
+              <HeaderSearchInput />
               <LanguageSwitcher />
               <ColorSchemeSwitcher />
             </div>

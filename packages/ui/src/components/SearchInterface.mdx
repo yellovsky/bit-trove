@@ -1,0 +1,114 @@
+import { Meta, Title, Primary, Controls, Stories } from '@storybook/addon-docs/blocks';
+
+{/*
+	* 👇 The isTemplate property is required to tell Storybook that this is a template
+	* See https://storybook.js.org/docs/api/doc-blocks/doc-block-meta
+	* to learn how to use
+*/}
+
+<Meta isTemplate />
+
+<Title />
+
+
+A comprehensive search interface component that provides a search input with support for search history, suggestions, and real-time results. This component is designed to be embedded within dialogs, modals, or any other container.
+
+## Features
+
+- **Real-time search**: Debounced search with configurable delay
+- **Search history**: Automatic history tracking and display
+- **Search suggestions**: Intelligent suggestions based on input
+- **Loading states**: Visual feedback during search operations
+- **Error handling**: Graceful error display with retry functionality
+- **Keyboard navigation**: Full keyboard accessibility
+- **Responsive design**: Mobile-first responsive layout
+- **Embeddable**: Can be used within any container (dialogs, modals, etc.)
+
+## Usage
+
+The SearchInterface component is designed to be embedded within other components like dialogs or modals. It consists of multiple sub-components that can be composed together:
+
+```tsx
+import {
+  SearchInterfaceRoot,
+  SearchInterfaceInput,
+  SearchInterfaceLoading,
+  SearchInterfaceError,
+  SearchInterfaceEmpty,
+  SearchInterfaceGroup,
+  SearchInterfaceResultItem,
+  SearchInterfaceHistoryItem,
+  SearchInterfaceSuggestionItem,
+  SearchInterfaceViewAll,
+  SearchInterfacePrompt,
+} from '@repo/ui/components/SearchCommand';
+
+// Basic usage within a dialog
+<Dialog>
+  <DialogContent>
+    <SearchInterfaceRoot onQueryChange={(query, debouncedQuery) => {
+      // Handle search query changes
+    }}>
+      <SearchInterfaceInput
+        value={query}
+        onChange={setQuery}
+        placeholder="Search..."
+      />
+      <SearchInterfacePrompt />
+    </SearchInterfaceRoot>
+  </DialogContent>
+</Dialog>
+```
+
+## Component Structure
+
+### SearchInterfaceRoot
+The main container component that manages query state and debouncing. Provides context for child components.
+
+### SearchInterfaceInput
+The search input field with built-in styling and accessibility features.
+
+### SearchInterfaceLoading
+Displays a loading spinner with text while search is in progress.
+
+### SearchInterfaceError
+Shows error messages with optional retry functionality.
+
+### SearchInterfaceEmpty
+Displays when no search results are found.
+
+### SearchInterfaceGroup
+Groups related search results with a heading.
+
+### SearchInterfaceResultItem
+Individual search result item with title and description.
+
+### SearchInterfaceHistoryItem
+Displays search history items.
+
+### SearchInterfaceSuggestionItem
+Shows search suggestions.
+
+### SearchInterfaceViewAll
+Button to view all search results when there are more than shown.
+
+### SearchInterfacePrompt
+Initial prompt when no search has been performed.
+
+## Examples
+
+<Primary />
+
+## Inputs
+
+The component accepts the following inputs (props):
+
+<Controls />
+
+---
+
+## Additional variations
+
+Listed below are additional variations of the component.
+
+<Stories />
