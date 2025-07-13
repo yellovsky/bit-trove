@@ -86,6 +86,10 @@
 
   .typography-root pre {
     @apply overflow-x-scroll;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   .typography-root pre code,
