@@ -1,22 +1,24 @@
 import { useTranslation } from 'react-i18next';
 
+import { isBlogPost } from '@repo/api-models';
 import { Heading } from '@repo/ui/components/Typography';
 
-import { CreateBlogPostForm, getCreateBlogPostLink } from '@features/blog-posts';
+import { CreateBlogPostForm, getCreateBlogPostLink, type UpsertBlogPostVariables } from '@features/blog-posts';
 import { type AppBreadcrumb, Breadcrumbs } from '@features/breadcrumbs';
 
-import { type CreateBlogPostVariables, useCreateBlogPostMutation } from '@entities/blog-posts';
+import { useBlogPostCreateMutation } from '@entities/blog-posts';
 
 export const handle = {
   i18n: ['cms'],
 };
 
 export default function CMSBlogPostsCreateRoute() {
-  const { status, mutateAsync } = useCreateBlogPostMutation();
+  const { status, mutateAsync } = useBlogPostCreateMutation();
   const { t } = useTranslation();
 
-  const handleSubmit = async (data: CreateBlogPostVariables) => {
+  const handleSubmit = async (data: UpsertBlogPostVariables) => {
     const blogPost = await mutateAsync(data);
+    if (!isBlogPost(blogPost.data)) throw new Error('Invalid response');
     return blogPost.data;
   };
 

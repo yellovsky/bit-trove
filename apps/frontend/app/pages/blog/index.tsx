@@ -9,7 +9,7 @@ import { getMetaBreadcrumbs } from '@features/breadcrumbs';
 
 import type { Route } from './+types';
 import { loadBlogPostsRouteData } from './lib/load-data';
-import { BlogPostsPage } from './ui/page';
+import { BlogPostsPage } from './ui/BlogPostsPage';
 
 export async function loader(args: Route.LoaderArgs) {
   const t = await appI18next.getFixedT(args.params.locale);

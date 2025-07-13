@@ -17,9 +17,9 @@ import {
   ShardNotFoundState,
 } from '@features/shards';
 
-import { type GetOneShardVariables, useShardQuery } from '@entities/shards';
+import { type ShardGetVariables, useShardQuery } from '@entities/shards';
 
-export const ShardPage: FC<{ shardVariables: GetOneShardVariables }> = ({ shardVariables }) => {
+export const ShardPage: FC<{ shardVariables: ShardGetVariables }> = ({ shardVariables }) => {
   const shardResponse = useShardQuery(shardVariables);
   const shard = shardResponse.data?.data;
 

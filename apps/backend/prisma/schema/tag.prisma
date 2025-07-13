@@ -4,9 +4,7 @@ model Tag {
 
   name String @unique @map("name")
 
-  shards    ShardTag[]
-  blogPosts BlogPostTag[]
-  articles  ArticleTag[]
+  articles ArticleTag[]
 
   @@map("tags")
 }

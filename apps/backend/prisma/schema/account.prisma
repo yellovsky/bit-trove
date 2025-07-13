@@ -6,10 +6,6 @@ model Account {
 
   profiles       Profile[]
   authProviders  AuthProvider[]
-  blogPosts      BlogPost[]
-  shardEntries   ShardEntry[]
-  shards         Shard[]
-  blogPostEnties BlogPostEntry[]
   articles       Article[]
   articleEntries ArticleEntry[]
 

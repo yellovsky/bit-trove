@@ -5,19 +5,18 @@ import { Heading } from '@repo/ui/components/Typography';
 import { type AppBreadcrumb, Breadcrumbs } from '@features/breadcrumbs';
 import { CreateShardForm, getCreateShardLink } from '@features/shards';
 
-import { useCreateShardMutation } from '@entities/shards';
-import type { CreateShardVariables } from '@entities/shards/api/create-shard';
+import { type ShardCreateVariables, useShardCreateMutation } from '@entities/shards';
 
 export const handle = {
   i18n: ['cms', 'shards'],
 };
 
 export default function CMSShardsCreateRoute() {
-  const { status, mutateAsync } = useCreateShardMutation();
+  const { status, mutateAsync } = useShardCreateMutation();
   const { t } = useTranslation();
   const { t: tShards } = useTranslation('shards');
 
-  const handleSubmit = async (data: CreateShardVariables) => {
+  const handleSubmit = async (data: ShardCreateVariables) => {
     const shard = await mutateAsync(data);
     return shard.data;
   };

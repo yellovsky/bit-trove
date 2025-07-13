@@ -9,15 +9,15 @@ import { SectionHeader } from '@shared/ui/SectionHeader';
 
 import { ShardHorizontalCard, ShardHorizontalCardPending } from '@features/shards';
 
-import { type GetManyShardsVariables, useInfiniteShardsQuery } from '@entities/shards';
+import { type ShortShardsGetVariables, useInfiniteShortShardsQuery } from '@entities/shards';
 
 interface ShardsSectionProps {
-  variables: GetManyShardsVariables;
+  variables: ShortShardsGetVariables;
 }
 
 export const ShardsSection: FC<ShardsSectionProps> = ({ variables }) => {
   const { t } = useTranslation();
-  const query = useInfiniteShardsQuery(variables);
+  const query = useInfiniteShortShardsQuery(variables);
   const shards = query.data?.pages.at(0)?.data.items;
   const { ref, entry } = useIntersectionObserver({ threshold: 0 });
 

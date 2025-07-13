@@ -5,10 +5,10 @@ import { useSearchParams } from 'react-router';
 import * as Label from '@repo/ui/components/Label';
 import * as Select from '@repo/ui/components/Select';
 
-import type { GetManyShardsVariables } from '@entities/shards';
+import type { ShortShardsGetVariables } from '@entities/shards';
 
 interface ShardsSortingDropdownProps {
-  shardsVariables: GetManyShardsVariables;
+  shardsVariables: ShortShardsGetVariables;
 }
 
 export const ShardsSortingDropdown: FC<ShardsSortingDropdownProps> = ({ shardsVariables }) => {

@@ -10,7 +10,7 @@ import { useMemo } from 'react';
 import { Fragment } from 'react/jsx-runtime';
 import { useTranslation } from 'react-i18next';
 
-import { getManyBlogPostsSortSchema, type ShortBlogPost } from '@repo/api-models';
+import { type ShortBlogPost, shortArticlesGetSortSchema } from '@repo/api-models';
 import { Button } from '@repo/ui/components/button';
 import { Link } from '@repo/ui/components/link';
 import {
@@ -32,7 +32,7 @@ import { SortableTableHeader } from '@shared/ui/SortableTableHeader';
 
 import { getCreateBlogPostLink } from '@features/blog-posts';
 
-import { useMyManyBlogPostsQuery } from '@entities/blog-posts';
+import { useMyShortBlogPostsQuery } from '@entities/blog-posts';
 
 import { BlogPostPublishSwitch } from './BlogPostPublishSwitch';
 import { BlogPostTableMenu } from './BlogPostTableMenu';
@@ -93,9 +93,9 @@ const Page = () => {
   const { t, i18n } = useTranslation();
   const { t: tBlogPosts } = useTranslation('blog_posts');
   const { pagination, setPagination } = useTableQueryPagination();
-  const { sorting, sort, setSorting } = useTableQuerySorting(getManyBlogPostsSortSchema, DEFAULT_SORT);
+  const { sorting, sort, setSorting } = useTableQuerySorting(shortArticlesGetSortSchema, DEFAULT_SORT);
 
-  const blogPostsQuery = useMyManyBlogPostsQuery({
+  const blogPostsQuery = useMyShortBlogPostsQuery({
     locale: i18n.language,
     page: {
       limit: pagination.pageSize,

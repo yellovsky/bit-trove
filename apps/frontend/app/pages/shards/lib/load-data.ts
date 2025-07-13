@@ -8,7 +8,7 @@ import { getQueryClient } from '@shared/lib/query-client';
 import type { AppBreadcrumb } from '@features/breadcrumbs';
 import { getShardsLink } from '@features/shards';
 
-import { type GetManyShardsVariables, prefetchInfiniteShardsQuery } from '@entities/shards';
+import { prefetchInfiniteShortShards, type ShortShardsGetVariables } from '@entities/shards';
 
 import type { Route } from '../+types';
 
@@ -33,11 +33,11 @@ export const loadShardsRouteData = async (
   const sortParam = url.searchParams.get('sort') || '-createdAt';
   const validatedSort = isValidSortValue(sortParam) ? sortParam : '-createdAt';
 
-  const shardsVariables: GetManyShardsVariables = {
+  const shardsVariables: ShortShardsGetVariables = {
     locale: params.locale,
     sort: validatedSort,
   };
-  await prefetchInfiniteShardsQuery(apiClient, queryClient, shardsVariables);
+  await prefetchInfiniteShortShards(apiClient, queryClient, shardsVariables);
 
   const breadcrumbs: AppBreadcrumb[] = [
     { label: t('menu_items.home.title'), to: '/' },

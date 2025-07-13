@@ -8,16 +8,15 @@ import { SectionHeader } from '@shared/ui/SectionHeader';
 
 import { BlogPostCard } from '@features/blog-posts';
 
-import type { GetManyBlogPostsVariables } from '@entities/blog-posts';
-import { useInfiniteBlogPostsQuery } from '@entities/blog-posts';
+import { type ShortBlogPostsGetVariables, useInfiniteShortBlogPostsQuery } from '@entities/blog-posts';
 
 interface BlogPostsSectionProps {
-  blogPostsVars: GetManyBlogPostsVariables;
+  blogPostsVars: ShortBlogPostsGetVariables;
 }
 
 export const BlogPostsSection: FC<BlogPostsSectionProps> = ({ blogPostsVars }) => {
   const { t } = useTranslation();
-  const query = useInfiniteBlogPostsQuery(blogPostsVars);
+  const query = useInfiniteShortBlogPostsQuery(blogPostsVars);
   const blogPosts = query.data?.pages.at(0)?.data.items;
 
   return (

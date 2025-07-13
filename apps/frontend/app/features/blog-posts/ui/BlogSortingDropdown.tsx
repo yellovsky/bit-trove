@@ -5,10 +5,10 @@ import { useSearchParams } from 'react-router';
 import * as Label from '@repo/ui/components/Label';
 import * as Select from '@repo/ui/components/Select';
 
-import type { GetManyBlogPostsVariables } from '@entities/blog-posts';
+import type { ShortBlogPostsGetVariables } from '@entities/blog-posts';
 
 interface BlogSortingDropdownProps {
-  blogPostsVariables: GetManyBlogPostsVariables;
+  blogPostsVariables: ShortBlogPostsGetVariables;
 }
 
 export const BlogSortingDropdown: FC<BlogSortingDropdownProps> = ({ blogPostsVariables }) => {

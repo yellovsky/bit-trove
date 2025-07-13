@@ -22,6 +22,7 @@ const makeFakeShard = (): ShortShard => {
       { id: faker.string.uuid(), name: faker.lorem.word(), slug: faker.lorem.slug() },
     ],
     title: faker.lorem.sentence(),
+    type: 'shard',
   };
 };
 

@@ -1,9 +1,7 @@
 model Language {
   code String @id @map("code")
 
-  blogPosts BlogPost[]
-  shards    Shard[]
-  articles  Article[]
+  articles Article[]
 
   @@map("languages")
 }

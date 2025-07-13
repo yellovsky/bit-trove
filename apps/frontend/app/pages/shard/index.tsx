@@ -48,7 +48,7 @@ export function meta(params: Route.MetaArgs): MetaDescriptor[] {
 export default function ShardRoute(props: Route.ComponentProps) {
   return (
     <HydrationBoundary state={props.loaderData?.dehydratedState}>
-      <ShardPage shardVariables={props.loaderData.getOneShardVars} />
+      <ShardPage shardVariables={props.loaderData.shardVariables} />
     </HydrationBoundary>
   );
 }

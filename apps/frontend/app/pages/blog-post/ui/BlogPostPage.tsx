@@ -18,9 +18,9 @@ import {
   BlogPostNotFoundState,
 } from '@features/blog-posts';
 
-import { type GetOneBlogPostVariables, useBlogPostQuery } from '@entities/blog-posts';
+import { type BlogPostGetVariables, useBlogPostQuery } from '@entities/blog-posts';
 
-export const BlogPostPage: FC<{ blogPostVariables: GetOneBlogPostVariables }> = ({ blogPostVariables }) => {
+export const BlogPostPage: FC<{ blogPostVariables: BlogPostGetVariables }> = ({ blogPostVariables }) => {
   const blogPostResponse = useBlogPostQuery(blogPostVariables);
   const blogPost = blogPostResponse.data?.data;
 

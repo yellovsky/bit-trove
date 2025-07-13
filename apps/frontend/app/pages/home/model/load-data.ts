@@ -6,8 +6,8 @@ import { getGlobal } from '@shared/lib/get-global';
 import { getMetaTitle } from '@shared/lib/meta';
 import { getQueryClient } from '@shared/lib/query-client';
 
-import { type GetManyBlogPostsVariables, prefetchManyBlogPostsQuery } from '@entities/blog-posts';
-import { type GetManyShardsVariables, prefetchInfiniteShardsQuery } from '@entities/shards';
+import { prefetchInfiniteShortBlogPosts, type ShortBlogPostsGetVariables } from '@entities/blog-posts';
+import { prefetchInfiniteShortShards, type ShortShardsGetVariables } from '@entities/shards';
 
 import type { Route } from '../+types';
 
@@ -15,17 +15,17 @@ export const loadHomeRouteData = async (t: TFunction, { params }: Route.LoaderAr
   const apiClient = getApiClient();
   const queryClient = getQueryClient();
 
-  const shardsVariables: GetManyShardsVariables = {
+  const shardsVariables: ShortShardsGetVariables = {
     locale: params.locale,
     sort: '-createdAt',
   };
-  await prefetchInfiniteShardsQuery(apiClient, queryClient, shardsVariables);
+  await prefetchInfiniteShortShards(apiClient, queryClient, shardsVariables);
 
-  const blogPostsVariables: GetManyBlogPostsVariables = {
+  const blogPostsVariables: ShortBlogPostsGetVariables = {
     locale: params.locale,
     sort: '-createdAt',
   };
-  await prefetchManyBlogPostsQuery(apiClient, queryClient, blogPostsVariables);
+  await prefetchInfiniteShortBlogPosts(apiClient, queryClient, blogPostsVariables);
 
   return {
     blogPostsVariables,

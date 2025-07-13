@@ -18,6 +18,7 @@ const mockBlogPost: ShortBlogPost = {
   slug: 'test-blog-post',
   tags: [],
   title: 'Test Blog Post',
+  type: 'blog_post',
 };
 
 describe('BlogPostCard', () => {

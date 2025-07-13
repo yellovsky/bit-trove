@@ -1,40 +1,11 @@
 import * as zod from 'zod';
 
-import { authorSchema } from '../author';
-import { isoDateSchema } from '../common/iso-date';
-import { jsonContentSchema } from '../common/json-content';
-import { localeSchema } from '../common/locale';
-import { seoSchema } from '../common/seo';
-import { uuidSchema } from '../common/uuid';
-import { tagSchema } from '../tag';
+import { articleSchema, type ShortArticle, shortArticleSchema } from '../article';
 
-export const alternativeShardSchema = zod.object({
-  id: uuidSchema,
-  languageCode: localeSchema,
-  slug: zod.string(),
-});
-export type AlternativeShard = zod.infer<typeof alternativeShardSchema>;
-
-export const shortShardSchema = zod.object({
-  alternatives: alternativeShardSchema.array(),
-  author: authorSchema.nullable(),
-  createdAt: isoDateSchema,
-  entryId: zod.string().uuid(),
-  id: zod.string().uuid(),
-  languageCode: localeSchema,
-  publishedAt: isoDateSchema.nullable(),
-  readingTime: zod.number().int().min(1).max(999),
-  shortDescription: zod.string().nullable(),
-  slug: zod.string(),
-  tags: tagSchema.array(),
-  title: zod.string(),
-});
-
+export const shortShardSchema = shortArticleSchema.omit({ type: true }).extend({ type: zod.literal('shard') });
 export type ShortShard = zod.infer<typeof shortShardSchema>;
+export const isShortShard = (maybeShard: ShortArticle): maybeShard is ShortShard => maybeShard.type === 'shard';
 
-export const shardSchema = shortShardSchema.extend({
-  contentJSON: jsonContentSchema,
-  seo: seoSchema,
-});
-
+export const shardSchema = articleSchema.omit({ type: true }).extend({ type: zod.literal('shard') });
 export type Shard = zod.infer<typeof shardSchema>;
+export const isShard = (maybeShard: ShortArticle): maybeShard is ShortShard => maybeShard.type === 'shard';

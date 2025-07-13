@@ -1,5 +1,4 @@
-export * from './get-many-shards';
-export * from './get-one-shard';
+export * from './get-shard';
+export * from './get-short-shards';
 export * from './shard';
-export * from './shard-slug-availability';
 export * from './upsert-shard';

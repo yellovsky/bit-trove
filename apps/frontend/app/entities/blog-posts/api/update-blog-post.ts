@@ -1,34 +1,46 @@
-import { type MutationFunction, useMutation } from '@tanstack/react-query';
+import {
+  type MutationFunction,
+  type UseMutationOptions,
+  type UseMutationResult,
+  useMutation,
+} from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
-import type { FailedResponse, UpsertBlogPostBody, UpsertBlogPostResponse } from '@repo/api-models';
+import { type BlogPostUpsertResponse, type FailedResponse, isBlogPostGetResponse } from '@repo/api-models';
 
 import { type ApiClient, useApiClient } from '@shared/lib/api-client';
 import { getQueryClient } from '@shared/lib/query-client';
 
-import { invalidateBlogPostsQuery } from '../lib/invalidate-blog-posts';
+import { type ArticleUpdateVariables, invalidateArticlesQuery, updateArticle } from '@entities/articles';
 
-export type UpdateBlogPostVariables = UpsertBlogPostBody & { id: string };
+export type BlogPostUpdateVariables = Omit<ArticleUpdateVariables, 'type'>;
 
 const updateBlogPost =
-  (apiClient: ApiClient): MutationFunction<UpsertBlogPostResponse, UpdateBlogPostVariables> =>
-  ({ id, ...rest }) =>
-    apiClient.patch<UpsertBlogPostResponse>(`/v1/blog-posts/${id}`, rest, { withCredentials: true });
+  (apiClient: ApiClient): MutationFunction<BlogPostUpsertResponse, ArticleUpdateVariables> =>
+  async (params) => {
+    const response = await updateArticle(apiClient)(params);
+    if (!isBlogPostGetResponse(response)) throw new Response('Internal server error', { status: 500 });
+    return response;
+  };
 
-export const useUpdateBlogPostMutation = () => {
+export const useBlogPostUpdateMutation = (
+  options?: Partial<UseMutationOptions<BlogPostUpsertResponse, FailedResponse, ArticleUpdateVariables>>
+): UseMutationResult<BlogPostUpsertResponse, FailedResponse, ArticleUpdateVariables> => {
   const apiClient = useApiClient();
   const { t: tBlogPosts } = useTranslation('blog_posts');
 
-  return useMutation<UpsertBlogPostResponse, FailedResponse, UpdateBlogPostVariables>({
+  return useMutation<BlogPostUpsertResponse, FailedResponse, ArticleUpdateVariables>({
+    ...options,
     mutationFn: updateBlogPost(apiClient),
-
-    onError: (error) => {
-      toast.error(tBlogPosts('Update blog post failed'), { description: error.error.message });
+    onError: (error, ...rest) => {
+      toast.error(tBlogPosts('Create blog post failed'), { description: error.error.message });
+      options?.onError?.(error, ...rest);
     },
-    onSuccess: () => {
-      invalidateBlogPostsQuery(getQueryClient());
-      toast.success(tBlogPosts('Update blog post success'));
+    onSuccess: (...args) => {
+      toast.success(tBlogPosts('Create blog post success'));
+      invalidateArticlesQuery(getQueryClient());
+      options?.onSuccess?.(...args);
     },
   });
 };

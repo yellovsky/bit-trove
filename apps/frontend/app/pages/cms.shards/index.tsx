@@ -10,7 +10,7 @@ import { useMemo } from 'react';
 import { Fragment } from 'react/jsx-runtime';
 import { useTranslation } from 'react-i18next';
 
-import { getManyShardsSortSchema, type ShortShard } from '@repo/api-models';
+import { type ShortShard, shortArticlesGetSortSchema } from '@repo/api-models';
 import { Button } from '@repo/ui/components/button';
 import { Link } from '@repo/ui/components/link';
 import {
@@ -32,7 +32,7 @@ import { SortableTableHeader } from '@shared/ui/SortableTableHeader';
 
 import { getCreateShardLink } from '@features/shards';
 
-import { useMyManyShardsQuery } from '@entities/shards';
+import { useMyShortShardsQuery } from '@entities/shards';
 
 import { ShardPublishSwitch } from './ShardPublishSwitch';
 import { ShardTableMenu } from './ShardTableMenu';
@@ -93,9 +93,9 @@ const Page = () => {
   const { t, i18n } = useTranslation();
   const { t: tShards } = useTranslation('shards');
   const { pagination, setPagination } = useTableQueryPagination();
-  const { sorting, sort, setSorting } = useTableQuerySorting(getManyShardsSortSchema, DEFAULT_SORT);
+  const { sorting, sort, setSorting } = useTableQuerySorting(shortArticlesGetSortSchema, DEFAULT_SORT);
 
-  const shardsQuery = useMyManyShardsQuery({
+  const shardsQuery = useMyShortShardsQuery({
     locale: i18n.language,
     page: {
       limit: pagination.pageSize,

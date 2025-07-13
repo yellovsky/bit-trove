@@ -1,16 +1,15 @@
-export type { CreateBlogPostVariables } from './api/create-blog-post';
-export { useCreateBlogPostMutation } from './api/create-blog-post';
-export type { GetManyBlogPostsVariables } from './api/get-many-blog-posts';
-export { prefetchManyBlogPostsQuery, useInfiniteBlogPostsQuery } from './api/get-many-blog-posts';
-export type { GetMyManyBlogPostsVariables } from './api/get-my-many-blog-posts';
-export { useMyManyBlogPostsQuery } from './api/get-my-many-blog-posts';
-export type { GetMyOneBlogPostVariables } from './api/get-my-one-blog-post';
-export { useMyBlogPostQuery } from './api/get-my-one-blog-post';
-export type { GetOneBlogPostVariables } from './api/get-one-blog-post';
-export { prefetchOneBlogPostQuery, useBlogPostQuery } from './api/get-one-blog-post';
+export { checkBlogPostSlugAvailability } from './api/check-blog-post-slug-availability';
+export { type BlogPostCreateVariables, useBlogPostCreateMutation } from './api/create-blog-post';
+export { type BlogPostGetVariables, prefetchBlogPostQuery, useBlogPostQuery } from './api/get-blog-post';
+export { type MyBlogPostGetVariables, useMyBlogPostQuery } from './api/get-my-blog-post';
+export { type MyShortBlogPostsGetVariables, useMyShortBlogPostsQuery } from './api/get-my-short-blog-posts';
+export {
+  prefetchInfiniteShortBlogPosts,
+  type ShortBlogPostsGetVariables,
+  useInfiniteShortBlogPostsQuery,
+} from './api/get-short-blog-posts';
 export type { PublishBlogPostVariables } from './api/publish-blog-post';
 export { usePublishBlogPostMutation } from './api/publish-blog-post';
 export type { UnpublishBlogPostVariables } from './api/unpublish-blog-post';
 export { useUnpublishBlogPostMutation } from './api/unpublish-blog-post';
-export type { UpdateBlogPostVariables } from './api/update-blog-post';
-export { useUpdateBlogPostMutation } from './api/update-blog-post';
+export { type BlogPostUpdateVariables, useBlogPostUpdateMutation } from './api/update-blog-post';

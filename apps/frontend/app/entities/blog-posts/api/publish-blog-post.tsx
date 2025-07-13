@@ -1,33 +1,27 @@
-import { type MutationFunction, useMutation } from '@tanstack/react-query';
+import type { UseMutationOptions } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
-import type { FailedResponse, GetOneBlogPostResponse } from '@repo/api-models';
+import type { ArticleGetResponse, FailedResponse } from '@repo/api-models';
 
-import { type ApiClient, useApiClient } from '@shared/lib/api-client';
-import { getQueryClient } from '@shared/lib/query-client';
+import { type PublishArticleVariables, usePublishArticleMutation } from '@entities/articles';
 
-import { invalidateBlogPostsQuery } from '../lib/invalidate-blog-posts';
+export type PublishBlogPostVariables = PublishArticleVariables;
 
-export type PublishBlogPostVariables = string;
-
-const publishBlogPost =
-  (apiClient: ApiClient): MutationFunction<GetOneBlogPostResponse, PublishBlogPostVariables> =>
-  (id) =>
-    apiClient.patch<GetOneBlogPostResponse>(`/v1/cms-blog-posts/publish/${id}`, null, { withCredentials: true });
-
-export const usePublishBlogPostMutation = () => {
-  const apiClient = useApiClient();
+export const usePublishBlogPostMutation = (
+  options?: Partial<UseMutationOptions<ArticleGetResponse, FailedResponse, PublishArticleVariables>>
+) => {
   const { t: tBlogPosts } = useTranslation('blog_posts');
 
-  return useMutation<GetOneBlogPostResponse, FailedResponse, PublishBlogPostVariables>({
-    mutationFn: publishBlogPost(apiClient),
-    onError: (error) => {
+  return usePublishArticleMutation({
+    ...options,
+    onError: (error, ...rest) => {
       toast.error(tBlogPosts('Publish blog post failed'), { description: error.error.message });
+      options?.onError?.(error, ...rest);
     },
-    onSuccess: () => {
-      invalidateBlogPostsQuery(getQueryClient());
+    onSuccess: (...args) => {
       toast.success(tBlogPosts('Publish blog post success'));
+      options?.onSuccess?.(...args);
     },
   });
 };

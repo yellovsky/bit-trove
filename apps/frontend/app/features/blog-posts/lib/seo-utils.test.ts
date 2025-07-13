@@ -30,6 +30,7 @@ const mockBlogPost: BlogPost = {
   slug: 'test-blog-post',
   tags: [],
   title: 'Test Blog Post',
+  type: 'blog_post',
 };
 
 describe('Blog Posts SEO Utils', () => {

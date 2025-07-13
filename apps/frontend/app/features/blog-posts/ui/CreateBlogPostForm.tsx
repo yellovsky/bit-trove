@@ -3,7 +3,7 @@ import type { ChangeEvent, FC } from 'react';
 import { type Control, type SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { type BlogPost, failedResponseSchema, type UpsertBlogPostBody } from '@repo/api-models';
+import { type ArticleUpsertBody, type BlogPost, failedResponseSchema } from '@repo/api-models';
 import { Button } from '@repo/ui/components/Button';
 import { Fieldset as UiFieldset } from '@repo/ui/components/Fieldset';
 import {
@@ -23,10 +23,12 @@ import { getApiClient } from '@shared/lib/api-client';
 
 import { Editor, useEditor } from '@widgets/editor';
 
-import { checkBlogPostSlugAvailability } from '../api/check-blog-post-slug-availability';
+import { checkBlogPostSlugAvailability } from '@entities/blog-posts';
+
+export type UpsertBlogPostVariables = Omit<ArticleUpsertBody, 'type'>;
 
 interface ControlProps {
-  control: Control<UpsertBlogPostBody>;
+  control: Control<UpsertBlogPostVariables>;
 }
 
 const PublishController: FC<ControlProps> = ({ control }) => {
@@ -297,7 +299,7 @@ const ContentController: FC<ControlProps & { editor: TiptapEditor | null }> = ({
   );
 };
 
-const getDefaultValues = (languageCode: string): UpsertBlogPostBody => ({
+const getDefaultValues = (languageCode: string): UpsertBlogPostVariables => ({
   contentJSON: [],
   entryId: null,
   languageCode,
@@ -313,9 +315,9 @@ const getDefaultValues = (languageCode: string): UpsertBlogPostBody => ({
 
 interface CreateBlogPostFormProps {
   isLoading?: boolean;
-  onSubmit: (data: UpsertBlogPostBody) => Promise<BlogPost>;
+  onSubmit: (data: UpsertBlogPostVariables) => Promise<BlogPost>;
   onSuccess?: (data: BlogPost) => void;
-  defaultValues?: UpsertBlogPostBody;
+  defaultValues?: UpsertBlogPostVariables;
   mode: 'create' | 'update';
   id?: string;
 }
@@ -330,14 +332,14 @@ export const CreateBlogPostForm: React.FC<CreateBlogPostFormProps> = (props) => 
   const { t: tBlogPosts } = useTranslation('blog_posts');
 
   const defaultValues = props.defaultValues ?? getDefaultValues(i18n.language);
-  const form = useForm<UpsertBlogPostBody>({ defaultValues, mode: 'onChange', reValidateMode: 'onChange' });
+  const form = useForm<UpsertBlogPostVariables>({ defaultValues, mode: 'onChange', reValidateMode: 'onChange' });
 
   const editor = useEditor({
     content: defaultValues.contentJSON,
     onUpdate: ({ editor }) => form.setValue('contentJSON', editor.getJSON()),
   });
 
-  const submitHandler: SubmitHandler<UpsertBlogPostBody> = async (data) => {
+  const submitHandler: SubmitHandler<UpsertBlogPostVariables> = async (data) => {
     try {
       const blogPost = await props.onSubmit(data);
       props.onSuccess?.(blogPost);

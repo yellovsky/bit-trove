@@ -5,10 +5,9 @@ import { Heading } from '@repo/ui/components/Typography';
 
 import { type AppBreadcrumb, Breadcrumbs } from '@features/breadcrumbs';
 import { CreateShardForm, getCmsShardsLink, getEditShardLink } from '@features/shards';
+import type { UpsertShardVariables } from '@features/shards/ui/CreateShardForm';
 
-import { useUpdateShardMutation } from '@entities/shards';
-import type { CreateShardVariables } from '@entities/shards/api/create-shard';
-import { useMyShardQuery } from '@entities/shards/api/get-my-one-shard';
+import { type ShardUpdateVariables, useMyShardQuery, useShardUpdateMutation } from '@entities/shards';
 
 import type { Route } from './+types';
 
@@ -17,24 +16,29 @@ export const handle = {
 };
 
 export default function CMSShardsEditRoute(props: Route.ComponentProps) {
-  const navigate = useNavigate();
-  const myShardQuery = useMyShardQuery(props.params.id);
-
-  const { status, mutateAsync } = useUpdateShardMutation();
   const { t, i18n } = useTranslation();
   const { t: tShards } = useTranslation('shards');
+  const navigate = useNavigate();
 
-  const handleSubmit = async (data: CreateShardVariables) => {
-    const shard = await mutateAsync({ ...data, id: props.params.id });
+  const myShardQuery = useMyShardQuery({
+    id: props.params.id,
+    locale: i18n.language,
+  });
+
+  const { status, mutateAsync } = useShardUpdateMutation();
+
+  const handleSubmit = async (data: Omit<UpsertShardVariables, 'id'>) => {
+    const shard = await mutateAsync({ ...data, id: props.params.id, type: 'shard' });
     return shard.data;
   };
 
   const myShard = myShardQuery.data?.data;
-  const defaultValues: CreateShardVariables | undefined = !myShard
+  const defaultValues: ShardUpdateVariables | undefined = !myShard
     ? undefined
     : {
-        contentJSON: myShard.contentJSON,
+        contentJSON: myShard.contentJSON ?? { content: [], type: 'doc' },
         entryId: myShard.entryId,
+        id: myShard.id,
         languageCode: myShard.languageCode,
         published: myShard.publishedAt !== null,
         seoDescription: myShard.seo.description,

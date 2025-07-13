@@ -1,9 +1,9 @@
 import { useCallback, useMemo } from 'react';
 import { useSearchParams } from 'react-router';
 
-import { getManyBlogPostsSortSchema } from '@repo/api-models';
+import { type ShortArticlesGetSort, shortArticlesGetSortSchema } from '@repo/api-models';
 
-export type BlogPostSortOption = 'createdAt' | '-createdAt' | 'publishedAt' | '-publishedAt' | 'title' | '-title';
+export type BlogPostSortOption = ShortArticlesGetSort;
 
 export const BLOG_POST_SORT_OPTIONS = [
   { label: 'sort.newest_first', value: '-createdAt' },
@@ -21,7 +21,7 @@ export const useBlogPostSorting = () => {
 
   const currentSort = useMemo(() => {
     const urlSort = searchParams.get('sort');
-    return getManyBlogPostsSortSchema.safeParse(urlSort).data || DEFAULT_BLOG_POST_SORT;
+    return shortArticlesGetSortSchema.safeParse(urlSort).data || DEFAULT_BLOG_POST_SORT;
   }, [searchParams]);
 
   const setSort = useCallback(

@@ -7,15 +7,15 @@ import { SectionHeader } from '@shared/ui/SectionHeader';
 import { type AppBreadcrumb, Breadcrumbs } from '@features/breadcrumbs';
 import { ShardHorizontalCard, ShardHorizontalCardPending, ShardsSortingDropdown } from '@features/shards';
 
-import { type GetManyShardsVariables, useInfiniteShardsQuery } from '@entities/shards';
+import { type ShortShardsGetVariables, useInfiniteShortShardsQuery } from '@entities/shards';
 
 interface ShardsPageProps {
   breadcrumbs: AppBreadcrumb[];
-  shardsVariables: GetManyShardsVariables;
+  shardsVariables: ShortShardsGetVariables;
 }
 
 export const ShardsPage: FC<ShardsPageProps> = ({ shardsVariables, breadcrumbs }) => {
-  const shardsQuery = useInfiniteShardsQuery(shardsVariables);
+  const shardsQuery = useInfiniteShortShardsQuery(shardsVariables);
   const { t } = useTranslation();
   const { ref, entry } = useIntersectionObserver({ threshold: 0 });
 

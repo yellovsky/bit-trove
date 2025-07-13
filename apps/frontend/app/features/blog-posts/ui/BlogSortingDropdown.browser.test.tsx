@@ -1,7 +1,7 @@
 import { act, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
-import type { GetManyBlogPostsVariables } from '@entities/blog-posts';
+import type { ShortBlogPostsGetVariables } from '@entities/blog-posts';
 
 import { BlogSortingDropdown } from './BlogSortingDropdown';
 
@@ -26,7 +26,10 @@ vi.mock('react-i18next', () => ({
 }));
 
 describe('BlogSortingDropdown', () => {
-  const mockBlogPostsVariables: GetManyBlogPostsVariables = {
+  const mockBlogPostsVariables: ShortBlogPostsGetVariables = {
+    filter: {
+      typeIn: ['blog_post'],
+    },
     locale: 'en',
     sort: '-createdAt' as const,
   };

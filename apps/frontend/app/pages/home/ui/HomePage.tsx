@@ -3,15 +3,15 @@ import { useTranslation } from 'react-i18next';
 
 import { Heading, Paragraph } from '@repo/ui/components/Typography';
 
-import type { GetManyBlogPostsVariables } from '@entities/blog-posts';
-import type { GetManyShardsVariables } from '@entities/shards';
+import type { ShortBlogPostsGetVariables } from '@entities/blog-posts';
+import type { ShortShardsGetVariables } from '@entities/shards';
 
 import { BlogPostsSection } from './BlogPostsSection';
 import { ShardsSection } from './ShardsSection';
 
 interface HomePageProps {
-  shardsVariables: GetManyShardsVariables;
-  blogPostsVariables: GetManyBlogPostsVariables;
+  shardsVariables: ShortShardsGetVariables;
+  blogPostsVariables: ShortBlogPostsGetVariables;
 }
 
 export const HomePage: FC<HomePageProps> = ({ shardsVariables, blogPostsVariables }) => {

@@ -3,7 +3,7 @@ import type { ChangeEvent, FC } from 'react';
 import { type Control, type SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { failedResponseSchema, type Shard } from '@repo/api-models';
+import { type ArticleUpsertBody, failedResponseSchema, type Shard } from '@repo/api-models';
 import { Button } from '@repo/ui/components/Button';
 import { Fieldset as UiFieldset } from '@repo/ui/components/Fieldset';
 import {
@@ -23,12 +23,12 @@ import { getApiClient } from '@shared/lib/api-client';
 
 import { Editor, useEditor } from '@widgets/editor';
 
-import type { CreateShardVariables } from '@entities/shards/api/create-shard';
+import { checkShardSlugAvailability, type ShardCreateVariables } from '@entities/shards';
 
-import { checkShardSlugAvailability } from '../api/check-shard-slug-availability';
+export type UpsertShardVariables = Omit<ArticleUpsertBody, 'type'>;
 
 interface ControlProps {
-  control: Control<CreateShardVariables>;
+  control: Control<UpsertShardVariables>;
 }
 
 const PublishController: FC<ControlProps> = ({ control }) => {
@@ -317,7 +317,7 @@ const ContentController: FC<ControlProps & { editor: TiptapEditor | null }> = ({
   );
 };
 
-const getDefaultValues = (languageCode: string): CreateShardVariables => ({
+const getDefaultValues = (languageCode: string): ShardCreateVariables => ({
   contentJSON: { content: [], type: 'doc' },
   entryId: '',
   languageCode,
@@ -333,9 +333,9 @@ const getDefaultValues = (languageCode: string): CreateShardVariables => ({
 
 interface CreateShardFormProps {
   isLoading?: boolean;
-  onSubmit: (data: CreateShardVariables) => Promise<Shard>;
+  onSubmit: (data: UpsertShardVariables) => Promise<Shard>;
   onSuccess?: (data: Shard) => void;
-  defaultValues?: CreateShardVariables;
+  defaultValues?: UpsertShardVariables;
   mode: 'create' | 'update';
   id?: string;
 }
@@ -350,14 +350,14 @@ export const CreateShardForm: React.FC<CreateShardFormProps> = (props) => {
   const { t: tShards } = useTranslation('shards');
 
   const defaultValues = props.defaultValues ?? getDefaultValues(i18n.language);
-  const form = useForm<CreateShardVariables>({ defaultValues, mode: 'onChange', reValidateMode: 'onChange' });
+  const form = useForm<UpsertShardVariables>({ defaultValues, mode: 'onChange', reValidateMode: 'onChange' });
 
   const editor = useEditor({
     content: defaultValues.contentJSON,
     onUpdate: ({ editor }) => form.setValue('contentJSON', editor.getJSON()),
   });
 
-  const submitHandler: SubmitHandler<CreateShardVariables> = async (data) => {
+  const submitHandler: SubmitHandler<UpsertShardVariables> = async (data) => {
     try {
       const shard = await await props.onSubmit(data);
       props.onSuccess?.(shard);

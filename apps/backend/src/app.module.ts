@@ -5,14 +5,13 @@ import { utilities as nestWinstonModuleUtilities, WinstonModule } from 'nest-win
 import * as winston from 'winston';
 
 import { AppConfigModule } from 'src/modules/app-config';
+import { ArticlesModule } from 'src/modules/articles';
 import { AuthModule, JwtGuard, JwtStrategy } from 'src/modules/auth';
-import { BlogPostsModule } from 'src/modules/blog-posts';
 import { AppCacheModule } from 'src/modules/cache';
 import { CasbinModule } from 'src/modules/casbin';
 import { I18nModule } from 'src/modules/i18n';
 import { PermissionPoliciesModule } from 'src/modules/permission-policies';
 import { PrismaModule } from 'src/modules/prisma';
-import { ShardsModule } from 'src/modules/shards';
 
 import { TagsModule } from './modules/tags';
 import { RequestLoggerMiddleware } from './request-logger.middleware';
@@ -35,8 +34,7 @@ import { RequestLoggerMiddleware } from './request-logger.middleware';
     }),
     PassportModule.register({ session: true }),
     AppConfigModule,
-    BlogPostsModule,
-    ShardsModule,
+    ArticlesModule,
     I18nModule,
     PrismaModule,
     TagsModule,

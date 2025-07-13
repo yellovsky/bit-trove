@@ -1,23 +1,19 @@
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
+import { isBlogPost } from '@repo/api-models';
 import { Skeleton } from '@repo/ui/components/Skeleton';
 import { Heading } from '@repo/ui/components/Typography';
 
-import { CreateBlogPostForm, getCmsBlogPostsLink } from '@features/blog-posts';
+import { CreateBlogPostForm, getCmsBlogPostsLink, type UpsertBlogPostVariables } from '@features/blog-posts';
 import { type AppBreadcrumb, Breadcrumbs } from '@features/breadcrumbs';
 
-import {
-  type CreateBlogPostVariables,
-  type UpdateBlogPostVariables,
-  useMyBlogPostQuery,
-  useUpdateBlogPostMutation,
-} from '@entities/blog-posts';
+import { useBlogPostUpdateMutation, useMyBlogPostQuery } from '@entities/blog-posts';
 
 export default function CMSBlogPostsEditRoute(props: { params: { id: string } }) {
   const navigate = useNavigate();
 
-  const { status, mutateAsync } = useUpdateBlogPostMutation();
+  const { status, mutateAsync } = useBlogPostUpdateMutation();
   const { t, i18n } = useTranslation();
   const { t: tBlogPosts } = useTranslation('blog_posts');
 
@@ -26,10 +22,11 @@ export default function CMSBlogPostsEditRoute(props: { params: { id: string } })
     isLoading: isLoadingBlogPost,
     error: blogPostError,
     isError: isBlogPostError,
-  } = useMyBlogPostQuery({ id: props.params.id });
+  } = useMyBlogPostQuery({ id: props.params.id, locale: i18n.language });
 
-  const handleSubmit = async (data: Omit<UpdateBlogPostVariables, 'id'>) => {
-    const blogPost = await mutateAsync({ ...data, id: props.params.id });
+  const handleSubmit = async (data: Omit<UpsertBlogPostVariables, 'id'>) => {
+    const blogPost = await mutateAsync({ ...data, id: props.params.id, type: 'blog_post' });
+    if (!isBlogPost(blogPost.data)) throw new Error('Invalid response');
     return blogPost.data;
   };
 
@@ -41,7 +38,7 @@ export default function CMSBlogPostsEditRoute(props: { params: { id: string } })
     { label: tBlogPosts('Edit blog post'), to: `/cms/blog-posts/edit/${props.params.id}` },
   ].filter(Boolean) as AppBreadcrumb[];
 
-  const defaultValues: CreateBlogPostVariables | undefined = !blogPost
+  const defaultValues: UpsertBlogPostVariables | undefined = !blogPost
     ? undefined
     : {
         contentJSON: blogPost.data.contentJSON ?? [],

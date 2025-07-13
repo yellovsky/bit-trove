@@ -7,7 +7,7 @@ import { getQueryClient } from '@shared/lib/query-client';
 
 import { DEFAULT_BLOG_POST_SORT } from '@features/blog-posts/lib/sorting';
 
-import { type GetManyBlogPostsVariables, prefetchManyBlogPostsQuery } from '@entities/blog-posts';
+import { prefetchInfiniteShortBlogPosts, type ShortBlogPostsGetVariables } from '@entities/blog-posts';
 
 import type { Route } from '../+types';
 
@@ -32,18 +32,18 @@ export const loadBlogPostsRouteData = async (
   const sortParam = url.searchParams.get('sort') || DEFAULT_BLOG_POST_SORT;
   const validatedSort = isValidSortValue(sortParam) ? sortParam : DEFAULT_BLOG_POST_SORT;
 
-  const blogPostsVars: GetManyBlogPostsVariables = {
-    locale: params.locale,
-    sort: validatedSort,
-  };
-
   // Breadcrumbs: Home → Blog
   const breadcrumbs = [
     { label: t('menu_items.home.title'), to: '/' },
     { label: t('menu_items.blog.title'), to: '/blog' },
   ];
 
-  await prefetchManyBlogPostsQuery(apiClient, queryClient, blogPostsVars);
+  const blogPostsVars: ShortBlogPostsGetVariables = {
+    locale: params.locale,
+    sort: validatedSort,
+  };
+
+  await prefetchInfiniteShortBlogPosts(apiClient, queryClient, blogPostsVars);
 
   return {
     blogPostsVars,

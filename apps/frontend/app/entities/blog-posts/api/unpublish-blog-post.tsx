@@ -1,33 +1,27 @@
-import { type MutationFunction, useMutation } from '@tanstack/react-query';
+import type { UseMutationOptions } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
-import type { FailedResponse, GetOneBlogPostResponse } from '@repo/api-models';
+import type { ArticleGetResponse, FailedResponse } from '@repo/api-models';
 
-import { type ApiClient, useApiClient } from '@shared/lib/api-client';
-import { getQueryClient } from '@shared/lib/query-client';
+import { type UnpublishArticleVariables, useUnpublishArticleMutation } from '@entities/articles';
 
-import { invalidateBlogPostsQuery } from '../lib/invalidate-blog-posts';
+export type UnpublishBlogPostVariables = UnpublishArticleVariables;
 
-export type UnpublishBlogPostVariables = string;
-
-const unpublishBlogPost =
-  (apiClient: ApiClient): MutationFunction<GetOneBlogPostResponse, UnpublishBlogPostVariables> =>
-  (id) =>
-    apiClient.patch<GetOneBlogPostResponse>(`/v1/cms-blog-posts/unpublish/${id}`, null, { withCredentials: true });
-
-export const useUnpublishBlogPostMutation = () => {
-  const apiClient = useApiClient();
+export const useUnpublishBlogPostMutation = (
+  options?: Partial<UseMutationOptions<ArticleGetResponse, FailedResponse, UnpublishArticleVariables>>
+) => {
   const { t: tBlogPosts } = useTranslation('blog_posts');
 
-  return useMutation<GetOneBlogPostResponse, FailedResponse, UnpublishBlogPostVariables>({
-    mutationFn: unpublishBlogPost(apiClient),
-    onError: (error) => {
+  return useUnpublishArticleMutation({
+    ...options,
+    onError: (error, ...rest) => {
       toast.error(tBlogPosts('Unpublish blog post failed'), { description: error.error.message });
+      options?.onError?.(error, ...rest);
     },
-    onSuccess: () => {
-      invalidateBlogPostsQuery(getQueryClient());
+    onSuccess: (...args) => {
       toast.success(tBlogPosts('Unpublish blog post success'));
+      options?.onSuccess?.(...args);
     },
   });
 };
