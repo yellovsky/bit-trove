@@ -1,6 +1,7 @@
 export default {
   '{{number}} min read': '{number} мин. чтения',
   '{{year}} all rights reserved': '© {year}. Все права защищены.',
+  blog_post: 'Блог пост',
   'Content management': 'Управление контентом',
   error: {
     '403': {
@@ -114,6 +115,7 @@ export default {
     search_select: 'Выбрать',
     searching: 'Поиск...',
   },
+  shard: 'Фрагмент',
   sort: {
     newest: 'Сначала новые',
     oldest: 'Сначала старые',

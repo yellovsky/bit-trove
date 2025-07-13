@@ -1,6 +1,7 @@
 export default {
   '{{number}} min read': '{number, plural, one {# min read} other {# mins read}}',
   '{{year}} all rights reserved': '© {year}. All rights reserved.',
+  'Blog Post': 'Blog Post',
   'Content management': 'Content management',
   error: {
     '403': {
@@ -99,6 +100,7 @@ export default {
   meta_title_suffix: 'BitTrove',
   no_results_found: 'No results found',
   'See all': 'See all',
+  Shard: 'Shard',
   'Sort by:': 'Sort by:',
   search: {
     empty_message: 'Nothing found. Try a different search term.',
