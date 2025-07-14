@@ -2,12 +2,13 @@ import { PrismaClient } from '@generated/prisma';
 import * as R from 'ramda';
 
 import { accountsSeeder } from './account.seed';
+import { articleRelationsSeeder } from './article-relations';
 import { articlesSeeder } from './articles';
 import { cabinRulesSeeder } from './casbin-rule.seed';
 import { languagesSeeder } from './languages.seed';
 import { tagsSeeder } from './tags';
 
-const seeders = [languagesSeeder, cabinRulesSeeder, accountsSeeder, tagsSeeder, articlesSeeder];
+const seeders = [languagesSeeder, cabinRulesSeeder, accountsSeeder, tagsSeeder, articlesSeeder, articleRelationsSeeder];
 
 const main = async () => {
   const prisma = new PrismaClient();

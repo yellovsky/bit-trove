@@ -5,17 +5,14 @@ import { Effect } from 'effect';
 import { isUnknownException, type UnknownException } from 'effect/Cause';
 
 import { type ExclusionReason, NotFoundReason, UnknownReason } from 'src/shared/excluded';
-import { AuthorModel } from 'src/shared/models/author.model';
-import { SeoModel } from 'src/shared/models/seo.model';
 import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
 import { calculateReadingTime } from 'src/shared/utils/reading-time';
 import type { RequestContext } from 'src/shared/utils/request-context';
 
 import { PRISMA_SRV } from 'src/modules/prisma';
-import { TAGS_SRV, TagModel } from 'src/modules/tags';
+import { TAGS_SRV } from 'src/modules/tags';
 
-import { AlternativeArticleModel } from '../../domain/models/alternative-article.model';
-import { ArticleModel } from '../../domain/models/article.model';
+import type { ArticleModel } from '../../domain/models/article.model';
 import type {
   ArticlesRepository,
   CreateArticleParams,
@@ -24,12 +21,8 @@ import type {
   FindManyArticlesParams,
   UpdateArticleParams,
 } from '../../domain/repositories/articles.repository';
-import {
-  type DBArticle,
-  type DBShortArticle,
-  dbArticleSelect,
-  dbShortArticleSelect,
-} from './articles.repository.types';
+import { dbArticleSelect, dbShortArticleSelect } from './articles.repository.types';
+import { mapToArticleModel } from './model-mappers';
 
 const getWhere = (params: FindManyArticlesParams): Prisma.ArticleWhereInput => {
   const where: Prisma.ArticleWhereInput = {};
@@ -178,7 +171,7 @@ export class PrismaArticlesRepository implements ArticlesRepository {
         })
       );
 
-      return this.#mapToModel(dbArticle);
+      return mapToArticleModel(dbArticle);
     }).pipe(
       Effect.tapError((error) => {
         if (isUnknownException(error)) this.#logger.error(`Error creating article ${error.error}`);
@@ -226,7 +219,7 @@ export class PrismaArticlesRepository implements ArticlesRepository {
         })
       );
 
-      return this.#mapToModel(dbArticle);
+      return mapToArticleModel(dbArticle);
     }).pipe(
       Effect.tapError((error) => {
         if (isUnknownException(error)) this.#logger.error(`Error creating article ${error.error}`);
@@ -261,7 +254,7 @@ export class PrismaArticlesRepository implements ArticlesRepository {
       })
     ).pipe(
       Effect.tap((articles) => this.#logger.debug(`  > articles: ${JSON.stringify(articles)}`)),
-      Effect.map((articles) => articles.map((t) => this.#mapToModel(t)))
+      Effect.map((articles) => articles.map((t) => mapToArticleModel(t)))
     );
   }
 
@@ -286,7 +279,7 @@ export class PrismaArticlesRepository implements ArticlesRepository {
 
     return Effect.tryPromise(async () => prisma.article.findUnique({ select: dbArticleSelect, where })).pipe(
       Effect.flatMap((dbArticle) =>
-        !dbArticle ? Effect.fail(new NotFoundReason()) : Effect.succeed(this.#mapToModel(dbArticle))
+        !dbArticle ? Effect.fail(new NotFoundReason()) : Effect.succeed(mapToArticleModel(dbArticle))
       )
     );
   }
@@ -307,7 +300,7 @@ export class PrismaArticlesRepository implements ArticlesRepository {
 
     return Effect.tryPromise(async () => prisma.article.findFirst({ select: dbArticleSelect, where })).pipe(
       Effect.flatMap((dbArticle) =>
-        !dbArticle ? Effect.fail(new NotFoundReason()) : Effect.succeed(this.#mapToModel(dbArticle))
+        !dbArticle ? Effect.fail(new NotFoundReason()) : Effect.succeed(mapToArticleModel(dbArticle))
       )
     );
   }
@@ -327,62 +320,7 @@ export class PrismaArticlesRepository implements ArticlesRepository {
       })
     ).pipe(
       Effect.tap((dbArticle) => this.#logger.debug(`  > dbArticle: ${JSON.stringify(dbArticle)}`)),
-      Effect.map((dbArticle) => this.#mapToModel(dbArticle))
+      Effect.map((dbArticle) => mapToArticleModel(dbArticle))
     );
-  }
-
-  #getAuthor(dbArticle: DBArticle | DBShortArticle): AuthorModel | null {
-    const authorId = dbArticle.author?.id;
-    const authorName = dbArticle.author?.profiles.find((p) => p.isRoot)?.name;
-    return !authorId || !authorName ? null : AuthorModel.from({ id: authorId, name: authorName });
-  }
-
-  #getSeo(dbArticle: DBArticle | DBShortArticle): SeoModel | null {
-    return 'seoDescription' in dbArticle
-      ? SeoModel.from({
-          description: dbArticle.seoDescription,
-          keywords: dbArticle.seoKeywords,
-          title: dbArticle.seoTitle,
-        })
-      : null;
-  }
-
-  #getAlternatives(dbArticle: DBArticle | DBShortArticle): AlternativeArticleModel[] {
-    return dbArticle.entry.articles
-      .filter((a) => a.id !== dbArticle.id)
-      .map((a) =>
-        AlternativeArticleModel.from({
-          id: a.id,
-          languageCode: a.languageCode,
-          publishedAt: a.publishedAt,
-          slug: a.slug,
-        })
-      );
-  }
-
-  #mapToModel(dbArticle: DBArticle | DBShortArticle): ArticleModel {
-    const contentJSON =
-      'contentJSON' in dbArticle && typeof dbArticle.contentJSON === 'object' ? dbArticle.contentJSON : null;
-
-    return ArticleModel.from({
-      alternatives: this.#getAlternatives(dbArticle),
-      author: this.#getAuthor(dbArticle),
-      contentJSON,
-      createdAt: dbArticle.createdAt,
-      entryId: dbArticle.entry.id,
-      id: dbArticle.id,
-      languageCode: dbArticle.languageCode,
-      publishedAt: dbArticle.publishedAt,
-      readingTime: dbArticle.readingTime,
-      seo: this.#getSeo(dbArticle),
-      shortDescription: dbArticle.shortDescription,
-      slug: dbArticle.slug,
-      tags: dbArticle.tags
-        .sort((a, b) => a.order - b.order)
-        .map((t) => TagModel.from({ id: t.tag.id, name: t.tag.name, slug: t.tag.slug })),
-      title: dbArticle.title,
-      type: dbArticle.type,
-      updatedAt: dbArticle.updatedAt,
-    });
   }
 }

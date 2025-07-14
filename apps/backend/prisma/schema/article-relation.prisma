@@ -1,0 +1,33 @@
+model ArticleRelation {
+  id String @id @default(uuid()) @map("id")
+
+  // Source and target articles
+  sourceId String  @map("source_id")
+  source   Article @relation("ArticleRelationSource", fields: [sourceId], references: [id], onDelete: Cascade)
+
+  targetId String  @map("target_id")
+  target   Article @relation("ArticleRelationTarget", fields: [targetId], references: [id], onDelete: Cascade)
+
+  // Relation type (extensible enum)
+  relationType String @map("relation_type") // "related" | "furtherReading"
+
+  // Order/priority for sorting
+  order Int @map("order")
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  // Unique constraint to prevent duplicate relations
+  @@unique([sourceId, targetId, relationType])
+  // Indexes for performance
+  @@index([sourceId])
+  @@index([targetId])
+  @@index([relationType])
+  @@index([sourceId, relationType])
+  @@index([targetId, relationType])
+  @@index([sourceId, order])
+  @@index([targetId, order])
+  // Map to database table
+  @@map("article_relations")
+}

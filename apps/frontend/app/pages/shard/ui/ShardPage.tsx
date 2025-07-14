@@ -7,8 +7,9 @@ import { Heading } from '@repo/ui/components/Typography';
 import { ContentWithSidebar } from '@shared/ui/ContentWithSidebar';
 import { ReadingProgress } from '@shared/ui/ReadingProgress';
 
-import { RelatedArticles, TableOfContents, type TableOfContentsItem } from '@widgets/blog-post-sidebar';
+import { TableOfContents, type TableOfContentsItem } from '@widgets/blog-post-sidebar';
 
+import { RelatedArticles } from '@features/articles/ui/RelatedArticles';
 import {
   ShardBreadcrumbs,
   ShardDetailSkeleton,
@@ -42,7 +43,7 @@ export const ShardPage: FC<{ shardVariables: ShardGetVariables }> = ({ shardVari
   const sidebar = (
     <>
       <TableOfContents items={tocItems} />
-      <RelatedArticles />
+      {shard?.id && <RelatedArticles articleId={shard.id} />}
     </>
   );
 
@@ -111,6 +112,11 @@ export const ShardPage: FC<{ shardVariables: ShardGetVariables }> = ({ shardVari
             </output>
           )}
         </article>
+
+        {/* Related articles at the bottom */}
+        <section className="mt-12 border-t pt-8">
+          <RelatedArticles articleId={shard.id} className="space-y-4" />
+        </section>
       </ContentWithSidebar>
     </>
   );

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Inject, Param, Patch, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Effect } from 'effect';
 import type * as zod from 'zod';
@@ -15,6 +15,7 @@ import { CheckArticleSlugAvailabilityUseCase } from '../application/use-cases/ch
 import { CreateArticleUseCase } from '../application/use-cases/create-article.use-case';
 import { GetManyArticlesUseCase } from '../application/use-cases/get-many-articles.use-case';
 import { GetOneArticleUseCase } from '../application/use-cases/get-one-article.use-case';
+import { GetRelatedArticlesUseCase } from '../application/use-cases/get-related-articles.use-case';
 import { UpdateArticleUseCase } from '../application/use-cases/update-article.use-case';
 import { ArticleModel } from '../domain/models/article.model';
 import {
@@ -23,6 +24,7 @@ import {
 } from './dtos/article-slug-availability-response.dto';
 import { GetManyArticlesResponseDto } from './dtos/get-many-articles-reponse.dto';
 import { GetOneArticleResponseDto } from './dtos/get-one-article-reponse.dto';
+import { GetRelatedArticlesResponseDto } from './dtos/get-related-articles-response.dto';
 
 @ApiTags('Articles')
 @Controller({ path: 'articles', version: '1' })
@@ -41,7 +43,10 @@ export class ArticlesController {
     private readonly getManyArticlesUseCase: GetManyArticlesUseCase,
 
     @Inject(CheckArticleSlugAvailabilityUseCase)
-    private readonly checkArticleSlugAvailabilityUseCase: CheckArticleSlugAvailabilityUseCase
+    private readonly checkArticleSlugAvailabilityUseCase: CheckArticleSlugAvailabilityUseCase,
+
+    @Inject(GetRelatedArticlesUseCase)
+    private readonly getRelatedArticlesUseCase: GetRelatedArticlesUseCase
   ) {}
 
   @Post()
@@ -147,6 +152,37 @@ export class ArticlesController {
       .execute(reqCtx, slugOrId, query)
       .pipe(
         Effect.flatMap((articleModel) => GetOneArticleResponseDto.fromModel(articleModel)),
+        Effect.mapError((err) => (err instanceof ExclusionReason ? err : new UnknownReason()))
+      );
+
+    return Effect.runPromise(pipeline);
+  }
+
+  // REFACTORED
+  @Get('/:id/related')
+  @Public()
+  @ApiOperation({
+    description:
+      'Retrieves paginated list of articles related to the specified article. Supports filtering by relation type and includes direction context.',
+    summary: 'Get related articles for a specific article',
+  })
+  @ApiResponse({
+    description: 'Related articles retrieved successfully',
+    status: HttpStatus.OK,
+    type: GetRelatedArticlesResponseDto,
+  })
+  @ApiResponse({
+    description: 'Article not found',
+    status: HttpStatus.NOT_FOUND,
+  })
+  async getRelatedArticles(
+    @ReqCtx() reqCtx: RequestContext,
+    @Param('id') id: string
+  ): Promise<GetRelatedArticlesResponseDto> {
+    const pipeline: Effect.Effect<GetRelatedArticlesResponseDto, ExclusionReason> = this.getRelatedArticlesUseCase
+      .execute(reqCtx, id)
+      .pipe(
+        Effect.flatMap((items) => GetRelatedArticlesResponseDto.fromModel(items)),
         Effect.mapError((err) => (err instanceof ExclusionReason ? err : new UnknownReason()))
       );
 

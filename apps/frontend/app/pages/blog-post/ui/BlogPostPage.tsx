@@ -7,8 +7,9 @@ import { Heading } from '@repo/ui/components/Typography';
 import { ContentWithSidebar } from '@shared/ui/ContentWithSidebar';
 import { ReadingProgress } from '@shared/ui/ReadingProgress';
 
-import { RelatedArticles, TableOfContents, type TableOfContentsItem } from '@widgets/blog-post-sidebar';
+import { TableOfContents, type TableOfContentsItem } from '@widgets/blog-post-sidebar';
 
+import { RelatedArticles } from '@features/articles/ui/RelatedArticles';
 import {
   BackToBlogListButton,
   BlogPostBreadcrumbs,
@@ -43,7 +44,7 @@ export const BlogPostPage: FC<{ blogPostVariables: BlogPostGetVariables }> = ({ 
   const sidebar = (
     <>
       <TableOfContents items={tocItems} />
-      <RelatedArticles />
+      {blogPost?.id && <RelatedArticles articleId={blogPost.id} />}
     </>
   );
 
@@ -116,6 +117,11 @@ export const BlogPostPage: FC<{ blogPostVariables: BlogPostGetVariables }> = ({ 
             </output>
           )}
         </article>
+
+        {/* Related articles at the bottom */}
+        <section className="mt-12 border-t pt-8">
+          <RelatedArticles articleId={blogPost.id} className="space-y-4" />
+        </section>
       </ContentWithSidebar>
     </>
   );
