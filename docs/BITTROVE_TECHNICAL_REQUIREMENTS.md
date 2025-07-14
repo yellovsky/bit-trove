@@ -14,7 +14,7 @@ BitTrove is a personal programming blog built as a modern full-stack application
 The project follows a sophisticated layered architecture that extends beyond traditional MVC:
 
 - **Frontend**: Feature-Sliced Design (FSD) with React Router 7.x
-- **Backend**: Domain-Driven Design (DDD) with NestJS
+- **Backend**: Layered Architecture (Clean/Hexagonal Architecture) with NestJS
 - **Database**: PostgreSQL with Prisma ORM
 - **State Management**: Jotai + TanStack Query
 - **UI**: Radix UI + Shadcn/ui with TailwindCSS 4.x
@@ -33,7 +33,7 @@ app/
 └── server/              # Server-side utilities
 ```
 
-#### Backend (DDD Architecture)
+#### Backend (Layered Architecture)
 ```
 src/
 ├── modules/              # Feature modules
@@ -49,7 +49,7 @@ src/
 └── main.ts              # Application entry point
 ```
 
-Each module follows DDD layers:
+Each module follows layered architecture:
 - **Domain**: Entities, value objects, domain services
 - **Application**: Use cases, application services
 - **Infrastructure**: Repositories, external services
@@ -264,7 +264,7 @@ Each module follows DDD layers:
 - [ ] Implement developer-friendly documentation layout
 
 #### 1.2 Technical Documentation
-- [ ] Document DDD implementation patterns
+- [ ] Document layered architecture implementation patterns
 - [ ] Create FSD architecture guide
 - [ ] Document API design decisions
 - [ ] Add code examples and snippets
@@ -402,7 +402,7 @@ Each module follows DDD layers:
 ## Risk Assessment
 
 ### Technical Risks
-- **Complexity**: DDD/FSD architecture complexity
+- **Complexity**: Layered Architecture/FSD architecture complexity
 - **Performance**: Large content volume impact
 - **Security**: Authentication and authorization vulnerabilities
 - **Scalability**: Database and caching limitations
@@ -415,7 +415,7 @@ Each module follows DDD layers:
 
 ## Conclusion
 
-BitTrove represents a sophisticated implementation of modern web development practices, combining DDD and FSD architectures with a focus on developer experience and content management. The current implementation provides a solid foundation for the remaining features, with clear architectural patterns and established conventions.
+BitTrove represents a sophisticated implementation of modern web development practices, combining layered architecture and FSD architectures with a focus on developer experience and content management. The current implementation provides a solid foundation for the remaining features, with clear architectural patterns and established conventions.
 
 The phased implementation plan prioritizes meta-blog enhancement and advanced discovery features, followed by developer experience improvements and performance optimizations. Each phase builds upon the existing architecture while maintaining the established patterns and conventions.
 

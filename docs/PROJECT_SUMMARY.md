@@ -2,12 +2,12 @@
 
 ## Overview
 
-Bit-Trove is a modern full-stack monorepo built with TypeScript, following Domain-Driven Design (DDD) and Feature-Sliced Design (FSD) principles. The project consists of a React Router frontend, NestJS backend, and shared packages for API models and UI components.
+Bit-Trove is a modern full-stack monorepo built with TypeScript, following layered architecture (clean/hexagonal architecture) and Feature-Sliced Design (FSD) principles. The project consists of a React Router frontend, NestJS backend, and shared packages for API models and UI components.
 
 ## Architecture Principles
 
-### Domain-Driven Design (DDD)
-- **Backend**: Follows DDD with clear separation of domain, application, infrastructure, and presentation layers
+### Layered Architecture (Clean/Hexagonal Architecture)
+- **Backend**: Follows layered architecture with clear separation of domain, application, infrastructure, and presentation layers
 - **Domain Layer**: Contains business entities, value objects, and domain services
 - **Application Layer**: Orchestrates use cases and application services
 - **Infrastructure Layer**: Handles external concerns (database, caching, external APIs)
@@ -96,7 +96,7 @@ app/
 **Architecture:**
 ```
 src/
-├── modules/              # Feature modules (DDD layers)
+├── modules/              # Feature modules (layered architecture)
 │   ├── auth/            # Authentication & authorization
 │   ├── blog-posts/      # Blog post management
 │   ├── shards/          # Content management
@@ -109,8 +109,8 @@ src/
 └── main.ts              # Application entry point
 ```
 
-**DDD Implementation:**
-Each module follows DDD layers:
+**Layered Architecture Implementation:**
+Each module follows layered architecture:
 - **Domain**: Entities, value objects, domain services
 - **Application**: Use cases, application services
 - **Infrastructure**: Repositories, external services

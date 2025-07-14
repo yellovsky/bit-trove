@@ -79,7 +79,7 @@ This feature provides comprehensive blog post management functionality for our p
 
 ## Technical Considerations
 
-- **Backend**: NestJS with Domain-Driven Design architecture
+- **Backend**: NestJS with layered architecture (clean/hexagonal architecture)
 - **Database**: PostgreSQL with Prisma ORM
 - **API**: RESTful API with proper versioning
 - **Authentication**: JWT-based authentication with role-based access

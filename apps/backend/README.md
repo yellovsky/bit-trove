@@ -1,6 +1,6 @@
 # NestJS API
 
-The backend is built with **NestJS** and follows **Domain-Driven Design (DDD)** principles. It provides a robust foundation for building scalable server-side applications.
+The backend is built with **NestJS** and follows **layered architecture** (clean/hexagonal architecture) principles. It provides a robust foundation for building scalable server-side applications with clear separation of concerns across domain, application, infrastructure, and presentation layers.
 
 ## Features
 

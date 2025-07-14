@@ -103,7 +103,7 @@ The Shard Search feature adds text-based search functionality to the existing `g
 - Extend existing shard repository methods to support search functionality
 - Implement search logic in the application service layer
 - Add search validation and sanitization
-- Ensure proper integration with existing DDD patterns
+- Ensure proper integration with existing layered architecture patterns
 
 ### Database Queries
 - Use parameterized queries to prevent SQL injection

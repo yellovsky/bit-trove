@@ -40,7 +40,7 @@ apps/frontend/app/pages/meta-blog/
 ├── page.tsx                    # Meta-blog index
 ├── architecture/
 │   ├── page.tsx               # Architecture overview
-│   ├── ddd-patterns.tsx       # DDD implementation
+│   ├── layered-architecture-patterns.tsx       # Layered architecture implementation
 │   └── fsd-patterns.tsx       # FSD implementation
 ├── development/
 │   ├── page.tsx               # Development workflow
@@ -61,7 +61,7 @@ apps/frontend/app/pages/meta-blog/
 **Description**: Create comprehensive documentation of architectural decisions and patterns.
 
 **Tasks**:
-- [ ] Document DDD implementation patterns with code examples
+- [ ] Document layered architecture implementation patterns with code examples
 - [ ] Create FSD architecture guide with component examples
 - [ ] Document API design decisions and REST patterns
 - [ ] Add database schema documentation
@@ -74,7 +74,7 @@ apps/frontend/app/pages/meta-blog/
 ```markdown
 # Architecture Documentation
 
-## Domain-Driven Design (DDD)
+## Layered Architecture (Clean/Hexagonal Architecture)
 - Domain Models
 - Application Services
 - Infrastructure Layer
@@ -129,7 +129,7 @@ interface CodeReferenceProps {
 
 // apps/frontend/app/features/meta-blog/ui/ArchitectureDiagram.tsx
 interface ArchitectureDiagramProps {
-  type: 'ddd' | 'fsd' | 'api' | 'database';
+  type: 'layered' | 'fsd' | 'api' | 'database';
   interactive?: boolean;
 }
 ```
@@ -533,7 +533,7 @@ interface SchedulingService {
 ## Implementation Guidelines
 
 ### Code Organization
-- Follow existing architectural patterns (DDD/FSD)
+- Follow existing architectural patterns (Layered Architecture/FSD)
 - Maintain consistent naming conventions
 - Use TypeScript strict mode
 - Implement comprehensive testing

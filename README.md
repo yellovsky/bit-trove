@@ -58,7 +58,7 @@ bit-trove/
 
 ## Development
 
-- Backend follows Domain-Driven Design (DDD)
+- Backend follows layered architecture (clean/hexagonal architecture)
 - Frontend follows Feature Slice Design (FSD)
 - Uses Biome for linting and formatting
 - Implements i18n for internationalization
