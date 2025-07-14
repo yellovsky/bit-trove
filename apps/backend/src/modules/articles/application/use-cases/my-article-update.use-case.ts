@@ -12,8 +12,8 @@ import type { ArticleModel } from '../../domain/models/article.model';
 import { ARTICLES_REPOSITORY } from '../../domain/repositories/articles.repository';
 
 @Injectable()
-export class UpdateArticleUseCase {
-  #logger = new Logger(UpdateArticleUseCase.name);
+export class MyArticleUpdateUseCase {
+  #logger = new Logger(MyArticleUpdateUseCase.name);
 
   constructor(
     @Inject(ARTICLES_REPOSITORY)

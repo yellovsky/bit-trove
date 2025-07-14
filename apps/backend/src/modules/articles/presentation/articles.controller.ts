@@ -1,9 +1,9 @@
-import { Body, Controller, Get, HttpStatus, Inject, Param, Patch, Post, Query } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Inject, Param, Query } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Effect } from 'effect';
 import type * as zod from 'zod';
 
-import { articleGetQuerySchema, articleUpsertBodySchema, shortArticlesGetQuerySchema } from '@repo/api-models';
+import { articleGetQuerySchema, shortArticlesGetQuerySchema } from '@repo/api-models';
 
 import { Public } from 'src/shared/decorators/public';
 import { ListResponsePaginationDto } from 'src/shared/dto/list-response-pagination.dto';
@@ -11,12 +11,11 @@ import { ExclusionReason, UnknownReason } from 'src/shared/excluded';
 import { ReqCtx, type RequestContext } from 'src/shared/utils/request-context';
 import { ZodValidationPipe } from 'src/shared/utils/zod-validation-pipe';
 
-import { CheckArticleSlugAvailabilityUseCase } from '../application/use-cases/check-article-slug-availability.use-case';
-import { CreateArticleUseCase } from '../application/use-cases/create-article.use-case';
-import { GetManyArticlesUseCase } from '../application/use-cases/get-many-articles.use-case';
-import { GetOneArticleUseCase } from '../application/use-cases/get-one-article.use-case';
-import { GetRelatedArticlesUseCase } from '../application/use-cases/get-related-articles.use-case';
-import { UpdateArticleUseCase } from '../application/use-cases/update-article.use-case';
+import { ArticleGetUseCase } from '../application/use-cases/article-get.use-case';
+import { CMSArticlesCheckSlugAvailabilityUseCase } from '../application/use-cases/cms-articles-check-slug-availability.use-case';
+import { MyArticleUpdateUseCase } from '../application/use-cases/my-article-update.use-case';
+import { RelatedArticlesGetUseCase } from '../application/use-cases/related-articles-get.use-case';
+import { ShortArticlesGetUseCase } from '../application/use-cases/short-articles-get.use-case';
 import { ArticleModel } from '../domain/models/article.model';
 import {
   ArticleSlugAvailabilityDto,
@@ -30,92 +29,40 @@ import { GetRelatedArticlesResponseDto } from './dtos/get-related-articles-respo
 @Controller({ path: 'articles', version: '1' })
 export class ArticlesController {
   constructor(
-    @Inject(CreateArticleUseCase)
-    private readonly createArticleUseCase: CreateArticleUseCase,
+    @Inject(MyArticleUpdateUseCase)
+    private readonly articleUpdateUseCase: MyArticleUpdateUseCase,
 
-    @Inject(UpdateArticleUseCase)
-    private readonly updateArticleUseCase: UpdateArticleUseCase,
+    @Inject(ArticleGetUseCase)
+    private readonly articleGetUseCase: ArticleGetUseCase,
 
-    @Inject(GetOneArticleUseCase)
-    private readonly getOneArticleUseCase: GetOneArticleUseCase,
+    @Inject(ShortArticlesGetUseCase)
+    private readonly shortArticlesGetUseCase: ShortArticlesGetUseCase,
 
-    @Inject(GetManyArticlesUseCase)
-    private readonly getManyArticlesUseCase: GetManyArticlesUseCase,
+    @Inject(CMSArticlesCheckSlugAvailabilityUseCase)
+    private readonly checkArticleSlugAvailabilityUseCase: CMSArticlesCheckSlugAvailabilityUseCase,
 
-    @Inject(CheckArticleSlugAvailabilityUseCase)
-    private readonly checkArticleSlugAvailabilityUseCase: CheckArticleSlugAvailabilityUseCase,
-
-    @Inject(GetRelatedArticlesUseCase)
-    private readonly getRelatedArticlesUseCase: GetRelatedArticlesUseCase
+    @Inject(RelatedArticlesGetUseCase)
+    private readonly relatedArticlesGetUseCase: RelatedArticlesGetUseCase
   ) {}
-
-  @Post()
-  @ApiOperation({ summary: 'Create an article' })
-  @ApiResponse({ description: 'Returns the created article', status: 200 })
-  async create(
-    @ReqCtx() reqCtx: RequestContext,
-    @Body(new ZodValidationPipe(articleUpsertBodySchema))
-    body: zod.infer<typeof articleUpsertBodySchema>
-  ): Promise<GetOneArticleResponseDto> {
-    const pipeline: Effect.Effect<GetOneArticleResponseDto, ExclusionReason> = this.createArticleUseCase
-      .execute(reqCtx, body)
-      .pipe(
-        Effect.flatMap((articleModel) => GetOneArticleResponseDto.fromModel(articleModel)),
-        Effect.mapError((err) => (err instanceof ExclusionReason ? err : new UnknownReason()))
-      );
-
-    return Effect.runPromise(pipeline);
-  }
-
-  @Patch(':id')
-  @ApiOperation({ summary: 'Update a article' })
-  @ApiResponse({ description: 'Returns the updated article', status: 200 })
-  async update(
-    @ReqCtx() reqCtx: RequestContext,
-    @Param('id') id: string,
-    @Body(new ZodValidationPipe(articleUpsertBodySchema))
-    body: zod.infer<typeof articleUpsertBodySchema>
-  ): Promise<GetOneArticleResponseDto> {
-    const pipeline: Effect.Effect<GetOneArticleResponseDto, ExclusionReason> = this.updateArticleUseCase
-      .execute(reqCtx, id, body)
-      .pipe(
-        Effect.flatMap((articleModel) => GetOneArticleResponseDto.fromModel(articleModel)),
-        Effect.mapError((err) => (err instanceof ExclusionReason ? err : new UnknownReason()))
-      );
-
-    return Effect.runPromise(pipeline);
-  }
-
-  @Get('check-slug-availability/:slug')
-  @ApiOperation({ summary: 'Check if a article slug is available' })
-  @ApiResponse({ description: 'Returns the availability of the article slug', status: 200 })
-  async checkSlugAvailability(
-    @ReqCtx() reqCtx: RequestContext,
-    @Param('slug') slug: string
-  ): Promise<CheckArticleSlugAvailabilityResponseDto> {
-    const pipeline: Effect.Effect<CheckArticleSlugAvailabilityResponseDto, ExclusionReason> =
-      this.checkArticleSlugAvailabilityUseCase.execute(reqCtx, slug).pipe(
-        Effect.map((takenBy) => {
-          return new CheckArticleSlugAvailabilityResponseDto({
-            data: new ArticleSlugAvailabilityDto(takenBy ? { available: false, takenBy } : { available: true }),
-          });
-        }),
-        Effect.mapError((err) => (err instanceof ExclusionReason ? err : new UnknownReason()))
-      );
-
-    return Effect.runPromise(pipeline);
-  }
 
   @Get()
   @Public()
-  @ApiOperation({ summary: 'Get many articles' })
-  @ApiResponse({ description: 'Returns the articles', status: 200 })
-  async getMany(
+  @ApiOperation({
+    description:
+      'Retrieves a paginated list of published articles. Supports filtering by type, language, tags, and search terms. Returns short article data suitable for listing pages.',
+    summary: 'Get published articles',
+  })
+  @ApiResponse({
+    description: 'List of published articles retrieved successfully',
+    status: 200,
+    type: GetManyArticlesResponseDto,
+  })
+  async getShortArticles(
     @ReqCtx() reqCtx: RequestContext,
     @Query(new ZodValidationPipe(shortArticlesGetQuerySchema))
     query: zod.infer<typeof shortArticlesGetQuerySchema>
   ): Promise<GetManyArticlesResponseDto> {
-    const pipeline: Effect.Effect<GetManyArticlesResponseDto, ExclusionReason> = this.getManyArticlesUseCase
+    const pipeline: Effect.Effect<GetManyArticlesResponseDto, ExclusionReason> = this.shortArticlesGetUseCase
       .execute(reqCtx, query)
       .pipe(
         Effect.flatMap(({ items, total }) => {
@@ -140,15 +87,27 @@ export class ArticlesController {
 
   @Get(':slugOrId')
   @Public()
-  @ApiOperation({ summary: 'Get a article by slug or ID' })
-  @ApiResponse({ description: 'Returns the article', status: 200 })
+  @ApiOperation({
+    description:
+      'Retrieves a single published article by its slug or ID. Returns full article data including content, metadata, and related information. Supports optional include parameters for additional data.',
+    summary: 'Get article by slug or ID',
+  })
+  @ApiResponse({
+    description: 'Article retrieved successfully',
+    status: 200,
+    type: GetOneArticleResponseDto,
+  })
+  @ApiResponse({
+    description: 'Article not found',
+    status: 404,
+  })
   async getOne(
     @ReqCtx() reqCtx: RequestContext,
     @Param('slugOrId') slugOrId: string,
     @Query(new ZodValidationPipe(articleGetQuerySchema))
     query: zod.infer<typeof articleGetQuerySchema>
   ): Promise<GetOneArticleResponseDto> {
-    const pipeline: Effect.Effect<GetOneArticleResponseDto, ExclusionReason> = this.getOneArticleUseCase
+    const pipeline: Effect.Effect<GetOneArticleResponseDto, ExclusionReason> = this.articleGetUseCase
       .execute(reqCtx, slugOrId, query)
       .pipe(
         Effect.flatMap((articleModel) => GetOneArticleResponseDto.fromModel(articleModel)),
@@ -158,13 +117,12 @@ export class ArticlesController {
     return Effect.runPromise(pipeline);
   }
 
-  // REFACTORED
   @Get('/:id/related')
   @Public()
   @ApiOperation({
     description:
-      'Retrieves paginated list of articles related to the specified article. Supports filtering by relation type and includes direction context.',
-    summary: 'Get related articles for a specific article',
+      'Retrieves a list of articles related to the specified article. Supports bidirectional relationships and different relation types (related, furtherReading). Returns articles with relation context and direction information.',
+    summary: 'Get related articles',
   })
   @ApiResponse({
     description: 'Related articles retrieved successfully',
@@ -179,10 +137,38 @@ export class ArticlesController {
     @ReqCtx() reqCtx: RequestContext,
     @Param('id') id: string
   ): Promise<GetRelatedArticlesResponseDto> {
-    const pipeline: Effect.Effect<GetRelatedArticlesResponseDto, ExclusionReason> = this.getRelatedArticlesUseCase
+    const pipeline: Effect.Effect<GetRelatedArticlesResponseDto, ExclusionReason> = this.relatedArticlesGetUseCase
       .execute(reqCtx, id)
       .pipe(
         Effect.flatMap((items) => GetRelatedArticlesResponseDto.fromModel(items)),
+        Effect.mapError((err) => (err instanceof ExclusionReason ? err : new UnknownReason()))
+      );
+
+    return Effect.runPromise(pipeline);
+  }
+
+  @Get('check-slug-availability/:slug')
+  @ApiOperation({
+    description:
+      'Checks if a given slug is available for use when creating or updating an article. Returns availability status and information about who currently owns the slug if it is taken.',
+    summary: 'Check article slug availability',
+  })
+  @ApiResponse({
+    description: 'Slug availability check completed',
+    status: 200,
+    type: CheckArticleSlugAvailabilityResponseDto,
+  })
+  async checkSlugAvailability(
+    @ReqCtx() reqCtx: RequestContext,
+    @Param('slug') slug: string
+  ): Promise<CheckArticleSlugAvailabilityResponseDto> {
+    const pipeline: Effect.Effect<CheckArticleSlugAvailabilityResponseDto, ExclusionReason> =
+      this.checkArticleSlugAvailabilityUseCase.execute(reqCtx, slug).pipe(
+        Effect.map((takenBy) => {
+          return new CheckArticleSlugAvailabilityResponseDto({
+            data: new ArticleSlugAvailabilityDto(takenBy ? { available: false, takenBy } : { available: true }),
+          });
+        }),
         Effect.mapError((err) => (err instanceof ExclusionReason ? err : new UnknownReason()))
       );
 

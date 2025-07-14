@@ -13,16 +13,16 @@ import { ArticleRelationServiceImpl } from './application/services/article-relat
 import { ARTICLE_RELATION_SERVICE } from './application/services/article-relation.service.interface';
 import { ArticlesServiceImpl } from './application/services/articles.service';
 import { ARTICLES_SRV } from './application/services/articles.service.interface';
-import { CheckArticleSlugAvailabilityUseCase } from './application/use-cases/check-article-slug-availability.use-case';
-import { CreateArticleUseCase } from './application/use-cases/create-article.use-case';
-import { GetManyArticlesUseCase } from './application/use-cases/get-many-articles.use-case';
-import { GetMyArticleUseCase } from './application/use-cases/get-my-article.use-case';
-import { GetMyManyArticlesUseCase } from './application/use-cases/get-my-many-articles.use-case';
-import { GetOneArticleUseCase } from './application/use-cases/get-one-article.use-case';
-import { GetRelatedArticlesUseCase } from './application/use-cases/get-related-articles.use-case';
-import { PublishArticleUseCase } from './application/use-cases/publish-article.use-case';
-import { UnpublishArticleUseCase } from './application/use-cases/unpublish-article.use-case';
-import { UpdateArticleUseCase } from './application/use-cases/update-article.use-case';
+import { ArticleGetUseCase } from './application/use-cases/article-get.use-case';
+import { CMSArticlesCheckSlugAvailabilityUseCase } from './application/use-cases/cms-articles-check-slug-availability.use-case';
+import { MyArticleCreateUseCase } from './application/use-cases/my-article-create.use-case';
+import { MyArticleGetUseCase } from './application/use-cases/my-article-get.use-case';
+import { MyArticlePublishUseCase } from './application/use-cases/my-article-publish.use-case';
+import { MyArticleUnpublishUseCase } from './application/use-cases/my-article-unpublish.use-case';
+import { MyArticleUpdateUseCase } from './application/use-cases/my-article-update.use-case';
+import { MyShortArticlesGetUseCase } from './application/use-cases/my-short-articles-get.use-case';
+import { RelatedArticlesGetUseCase } from './application/use-cases/related-articles-get.use-case';
+import { ShortArticlesGetUseCase } from './application/use-cases/short-articles-get.use-case';
 
 import { PrismaArticleRelationsRepository } from './infrastructure/repositories/article-relations.repository';
 import { PrismaArticlesRepository } from './infrastructure/repositories/articles.repository';
@@ -41,16 +41,16 @@ import { MyArticlesController } from './presentation/my-articles.controller';
     { provide: ARTICLE_ACCESS_SRV, useClass: ArticleAccessServiceImpl },
     { provide: ARTICLE_RELATION_SERVICE, useClass: ArticleRelationServiceImpl },
     { provide: ARTICLES_SRV, useClass: ArticlesServiceImpl },
-    CreateArticleUseCase,
-    UpdateArticleUseCase,
-    CheckArticleSlugAvailabilityUseCase,
-    GetOneArticleUseCase,
-    GetManyArticlesUseCase,
-    GetMyArticleUseCase,
-    GetMyManyArticlesUseCase,
-    PublishArticleUseCase,
-    UnpublishArticleUseCase,
-    GetRelatedArticlesUseCase,
+    MyArticleCreateUseCase,
+    MyArticleUpdateUseCase,
+    CMSArticlesCheckSlugAvailabilityUseCase,
+    ArticleGetUseCase,
+    ShortArticlesGetUseCase,
+    MyArticleGetUseCase,
+    MyShortArticlesGetUseCase,
+    MyArticlePublishUseCase,
+    MyArticleUnpublishUseCase,
+    RelatedArticlesGetUseCase,
   ],
 })
 export class ArticlesModule {}

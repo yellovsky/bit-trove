@@ -10,13 +10,13 @@ import type { ArticleModel } from '../../domain/models/article.model';
 import { ARTICLES_SRV } from '../services/articles.service.interface';
 
 @Injectable()
-export class PublishArticleUseCase {
+export class MyArticleUnpublishUseCase {
   constructor(
     @Inject(ARTICLES_SRV)
     private readonly articlesSrv: IdentifierOf<typeof ARTICLES_SRV>
   ) {}
 
   execute(reqCtx: RequestContext, id: string): Effect.Effect<ArticleModel, ExclusionReason | UnknownException> {
-    return this.articlesSrv.publishArticle(reqCtx, id);
+    return this.articlesSrv.unpublishArticle(reqCtx, id);
   }
 }

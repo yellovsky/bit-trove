@@ -1,47 +1,46 @@
-import { Controller, Inject, Param, Patch } from '@nestjs/common';
+import { Controller, Get, Inject, Param } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Effect } from 'effect';
 
 import { ExclusionReason, UnknownReason } from 'src/shared/excluded';
 import { ReqCtx, type RequestContext } from 'src/shared/utils/request-context';
 
-import { PublishArticleUseCase } from '../application/use-cases/publish-article.use-case';
-import { UnpublishArticleUseCase } from '../application/use-cases/unpublish-article.use-case';
-import { GetOneArticleResponseDto } from './dtos/get-one-article-reponse.dto';
+import { CMSArticlesCheckSlugAvailabilityUseCase } from '../application/use-cases/cms-articles-check-slug-availability.use-case';
+import {
+  ArticleSlugAvailabilityDto,
+  CheckArticleSlugAvailabilityResponseDto,
+} from './dtos/article-slug-availability-response.dto';
 
 @ApiTags('CMS Articles')
 @Controller({ path: 'cms-articles', version: '1' })
 export class CMSArticlesController {
   constructor(
-    @Inject(PublishArticleUseCase)
-    private readonly publishArticleUseCase: PublishArticleUseCase,
-
-    @Inject(UnpublishArticleUseCase)
-    private readonly unpublishArticleUseCase: UnpublishArticleUseCase
+    @Inject(CMSArticlesCheckSlugAvailabilityUseCase)
+    private readonly checkArticleSlugAvailabilityUseCase: CMSArticlesCheckSlugAvailabilityUseCase
   ) {}
 
-  @Patch('publish/:id')
-  @ApiOperation({ summary: 'Publish an article' })
-  @ApiResponse({ description: 'Returns the published article', status: 200 })
-  async publish(@ReqCtx() reqCtx: RequestContext, @Param('id') id: string): Promise<GetOneArticleResponseDto> {
-    const pipeline: Effect.Effect<GetOneArticleResponseDto, ExclusionReason> = this.publishArticleUseCase
-      .execute(reqCtx, id)
-      .pipe(
-        Effect.flatMap((article) => GetOneArticleResponseDto.fromModel(article)),
-        Effect.mapError((err) => (err instanceof ExclusionReason ? err : new UnknownReason()))
-      );
-
-    return Effect.runPromise(pipeline);
-  }
-
-  @Patch('unpublish/:id')
-  @ApiOperation({ summary: 'Unpublish an article' })
-  @ApiResponse({ description: 'Returns the unpublished article', status: 200 })
-  async unpublish(@ReqCtx() reqCtx: RequestContext, @Param('id') id: string): Promise<GetOneArticleResponseDto> {
-    const pipeline: Effect.Effect<GetOneArticleResponseDto, ExclusionReason> = this.unpublishArticleUseCase
-      .execute(reqCtx, id)
-      .pipe(
-        Effect.flatMap((article) => GetOneArticleResponseDto.fromModel(article)),
+  @Get(':slug/check-slug-availability')
+  @ApiOperation({
+    description:
+      'CMS utility endpoint to check if a given slug is available for use when creating or updating an article. Returns availability status and information about who currently owns the slug if it is taken.',
+    summary: 'Check article slug availability (CMS)',
+  })
+  @ApiResponse({
+    description: 'Slug availability check completed',
+    status: 200,
+    type: CheckArticleSlugAvailabilityResponseDto,
+  })
+  async checkSlugAvailability(
+    @ReqCtx() reqCtx: RequestContext,
+    @Param('slug') slug: string
+  ): Promise<CheckArticleSlugAvailabilityResponseDto> {
+    const pipeline: Effect.Effect<CheckArticleSlugAvailabilityResponseDto, ExclusionReason> =
+      this.checkArticleSlugAvailabilityUseCase.execute(reqCtx, slug).pipe(
+        Effect.map((takenBy) => {
+          return new CheckArticleSlugAvailabilityResponseDto({
+            data: new ArticleSlugAvailabilityDto(takenBy ? { available: false, takenBy } : { available: true }),
+          });
+        }),
         Effect.mapError((err) => (err instanceof ExclusionReason ? err : new UnknownReason()))
       );
 

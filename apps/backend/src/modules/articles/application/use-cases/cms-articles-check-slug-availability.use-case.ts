@@ -8,7 +8,7 @@ import type { RequestContext } from 'src/shared/utils/request-context';
 import { ARTICLES_REPOSITORY } from '../../domain/repositories/articles.repository';
 
 @Injectable()
-export class CheckArticleSlugAvailabilityUseCase {
+export class CMSArticlesCheckSlugAvailabilityUseCase {
   constructor(
     @Inject(ARTICLES_REPOSITORY)
     private readonly repository: IdentifierOf<typeof ARTICLES_REPOSITORY>

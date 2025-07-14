@@ -13,8 +13,8 @@ import { ARTICLES_REPOSITORY } from '../../domain/repositories/articles.reposito
 import { ARTICLE_ACCESS_SRV } from '../services/article-access.service.interface';
 
 @Injectable()
-export class CreateArticleUseCase {
-  #logger = new Logger(CreateArticleUseCase.name);
+export class MyArticleCreateUseCase {
+  #logger = new Logger(MyArticleCreateUseCase.name);
 
   constructor(
     @Inject(ARTICLES_REPOSITORY)

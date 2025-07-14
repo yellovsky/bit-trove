@@ -12,7 +12,7 @@ import type { ArticleModel } from '../../domain/models/article.model';
 import { ARTICLES_SRV } from '../services/articles.service.interface';
 
 @Injectable()
-export class GetOneArticleUseCase {
+export class ArticleGetUseCase {
   constructor(
     @Inject(ARTICLES_SRV)
     private readonly articlesSrv: IdentifierOf<typeof ARTICLES_SRV>

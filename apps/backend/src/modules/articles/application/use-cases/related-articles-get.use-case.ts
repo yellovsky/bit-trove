@@ -13,7 +13,7 @@ import {
 } from '../services/article-relation.service.interface';
 
 @Injectable()
-export class GetRelatedArticlesUseCase {
+export class RelatedArticlesGetUseCase {
   constructor(
     @Inject(ARTICLE_RELATION_SERVICE)
     private readonly relationSrv: IdentifierOf<typeof ARTICLE_RELATION_SERVICE>

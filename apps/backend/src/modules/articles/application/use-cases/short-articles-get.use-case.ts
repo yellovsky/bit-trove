@@ -13,7 +13,7 @@ import type { ArticleModel } from '../../domain/models/article.model';
 import { ARTICLES_REPOSITORY, type FindManyArticlesParams } from '../../domain/repositories/articles.repository';
 
 @Injectable()
-export class GetManyArticlesUseCase {
+export class ShortArticlesGetUseCase {
   constructor(
     @Inject(ARTICLES_REPOSITORY)
     private readonly repository: IdentifierOf<typeof ARTICLES_REPOSITORY>

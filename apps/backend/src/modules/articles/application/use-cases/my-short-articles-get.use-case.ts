@@ -13,8 +13,8 @@ import type { ArticleModel } from '../../domain/models/article.model';
 import { ARTICLES_REPOSITORY, type FindManyArticlesParams } from '../../domain/repositories/articles.repository';
 
 @Injectable()
-export class GetMyManyArticlesUseCase {
-  #logger = new Logger(GetMyManyArticlesUseCase.name);
+export class MyShortArticlesGetUseCase {
+  #logger = new Logger(MyShortArticlesGetUseCase.name);
 
   constructor(
     @Inject(ARTICLES_REPOSITORY)
