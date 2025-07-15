@@ -22,6 +22,7 @@ import {
 } from '@repo/ui/components/Form';
 import { SelectContent, SelectItem, SelectTrigger, SelectValue, Select as UiSelect } from '@repo/ui/components/Select';
 import { Switch as UISwitch } from '@repo/ui/components/Switch';
+import { type Option, TagsInput } from '@repo/ui/components/TagsInput';
 import { TextInput as UiTextInput } from '@repo/ui/components/TextInput';
 
 import { getApiClient } from '@shared/lib/api-client';
@@ -29,6 +30,7 @@ import { getApiClient } from '@shared/lib/api-client';
 import { Editor, useEditor } from '@widgets/editor';
 
 import { checkBlogPostSlugAvailability } from '@entities/blog-posts';
+import { useAllTagsQuery } from '@entities/tags';
 
 import { RelatedArticlesSection } from './RelatedArticlesSection';
 
@@ -337,6 +339,39 @@ const RelatedArticlesController: FC<ControlProps> = ({ control }) => {
   );
 };
 
+const TagsController: FC<ControlProps> = ({ control }) => {
+  const { t: tCms } = useTranslation('cms');
+  const allTagsQuery = useAllTagsQuery({});
+
+  const defaultOptions: Option[] =
+    allTagsQuery.data?.data?.map((tag) => ({
+      label: tag.name,
+      value: tag.name,
+    })) ?? [];
+
+  return (
+    <FormField
+      control={control}
+      name="tags"
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel>{tCms('tags_input.aria_label')}</FormLabel>
+          <FormControl>
+            <TagsInput
+              onChange={(value) => field.onChange(value.map((v) => v.value))}
+              options={defaultOptions}
+              placeholder={tCms('tags_input.placeholder')}
+              value={field.value.map((v) => ({ label: v, value: v }))}
+            />
+          </FormControl>
+          <FormDescription>{tCms('tags_input.description')}</FormDescription>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  );
+};
+
 const getDefaultValues = (languageCode: string): UpsertBlogPostVariables => ({
   contentJSON: [],
   entryId: null,
@@ -393,6 +428,7 @@ export const CreateBlogPostForm: React.FC<CreateBlogPostFormProps> = (props) => 
     <UiForm {...form}>
       <form className="space-y-6" onSubmit={form.handleSubmit(submitHandler)}>
         <TitleController control={form.control} />
+        <TagsController control={form.control} />
         <PublishController control={form.control} />
 
         <div className="grid grid-cols-2 gap-4">

@@ -10,7 +10,7 @@ import type { RequestContext } from 'src/shared/utils/request-context';
 import { PRISMA_SRV } from 'src/modules/prisma';
 
 import type { TagModel } from '../../domain/models/tag.model';
-import { type FindAllTagsParams, TAGS_REPOSITORY } from '../../domain/repositories/tags.repository';
+import { type FindAllTagsQuery, TAGS_REPOSITORY } from '../../domain/repositories/tags.repository';
 
 @Injectable()
 export class GetAllTagsUseCase {
@@ -23,7 +23,7 @@ export class GetAllTagsUseCase {
   ) {}
 
   execute(reqCtx: RequestContext, query: GetAllTagsQuery): Effect.Effect<TagModel[], UnknownException> {
-    const params: FindAllTagsParams = {
+    const params: FindAllTagsQuery = {
       filter: query.filter,
     };
 

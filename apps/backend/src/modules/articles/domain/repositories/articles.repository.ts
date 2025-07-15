@@ -49,7 +49,7 @@ export interface CreateArticlePayload {
   /** Optional entry ID for grouping articles */
   entryId: string | null;
   /** List of tag names */
-  tags: string[];
+  tagIds: string[];
   /** Article type (blog_post or shard) */
   type: ArticleType;
   /** Author ID */

@@ -8,6 +8,7 @@ import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
 import type { TxRequestContext } from 'src/shared/utils/request-context';
 
 import { TRANSACTION_SRV } from 'src/modules/prisma';
+import { TAGS_SRV } from 'src/modules/tags/application/services/tags.service.interface';
 
 import type { ArticleModel } from '../../domain/models/article.model';
 import { ARTICLE_RELATION_REPOSITORY } from '../../domain/repositories/article-relation.repository';
@@ -35,7 +36,10 @@ export class ArticlesServiceImpl implements ArticlesService {
     private readonly articleRelationRepository: IdentifierOf<typeof ARTICLE_RELATION_REPOSITORY>,
 
     @Inject(TRANSACTION_SRV)
-    private readonly transactionSrv: IdentifierOf<typeof TRANSACTION_SRV>
+    private readonly transactionSrv: IdentifierOf<typeof TRANSACTION_SRV>,
+
+    @Inject(TAGS_SRV)
+    private readonly tagsSrv: IdentifierOf<typeof TAGS_SRV>
   ) {}
 
   getArticleById(
@@ -81,9 +85,12 @@ export class ArticlesServiceImpl implements ArticlesService {
     txReqCtx: TxRequestContext,
     command: CreateArticleCommand
   ): Effect.Effect<ArticleModel, ExclusionReason | UnknownException> {
-    return pipe(
-      this.articlesAccessSrv.canCreateArticle(txReqCtx),
-      Effect.flatMap(() => this.repository.createArticle(txReqCtx, command))
+    return this.transactionSrv.withTransaction(txReqCtx, (txCtx) =>
+      Effect.gen(this, function* () {
+        yield* this.articlesAccessSrv.canCreateArticle(txCtx);
+        const tags = yield* this.tagsSrv.getOrCreateTagsByNames(txCtx, command.tags);
+        return yield* this.repository.createArticle(txCtx, { ...command, tagIds: tags.map((tag) => tag.id) });
+      })
     );
   }
 
@@ -91,13 +98,19 @@ export class ArticlesServiceImpl implements ArticlesService {
     txReqCtx: TxRequestContext,
     command: UpdateArticleCommand
   ): Effect.Effect<ArticleModel, ExclusionReason | UnknownException> {
-    return this.transactionSrv.withTransaction(txReqCtx, (txCtx) => {
-      return pipe(
-        this.getArticleById(txCtx, { id: command.articleId }),
-        Effect.flatMap((article) => this.articlesAccessSrv.canUpdateArticle(txCtx, article)),
-        Effect.flatMap(() => this.repository.updateArticle(txCtx, command))
-      );
-    });
+    return this.transactionSrv.withTransaction(txReqCtx, (txCtx) =>
+      Effect.gen(this, function* () {
+        const articleToUpdated = yield* this.getArticleById(txCtx, { id: command.articleId });
+        yield* this.articlesAccessSrv.canUpdateArticle(txCtx, articleToUpdated);
+
+        const tags = yield* this.tagsSrv.getOrCreateTagsByNames(txCtx, command.data.tags);
+
+        return yield* this.repository.updateArticle(txCtx, {
+          ...command,
+          data: { ...command.data, tagIds: tags.map((tag) => tag.id) },
+        });
+      })
+    );
   }
 
   publishArticle(

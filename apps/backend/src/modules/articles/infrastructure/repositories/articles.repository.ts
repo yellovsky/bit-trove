@@ -158,6 +158,7 @@ export class PrismaArticlesRepository implements ArticlesRepository {
             seoTitle: params.seoTitle,
             shortDescription: params.shortDescription,
             slug: params.slug,
+            tags: { createMany: { data: params.tagIds.map((tagId, order) => ({ order, tagId })) } },
             title: params.title,
             type: params.type,
           },
@@ -183,9 +184,6 @@ export class PrismaArticlesRepository implements ArticlesRepository {
       this.#logger.debug(`  > articleId: ${articleId}`);
       this.#logger.debug(`  > params: ${JSON.stringify(data)}`);
 
-      // TODO do not call service here (?)
-      // const tags = yield* this.tagsSrv.getOrCreateTagsByNames(tx, params.tags);
-
       // delete all tags before saving new ones
       yield* Effect.tryPromise(() => txCtx.tx.articleTag.deleteMany({ where: { articleId } }));
 
@@ -204,8 +202,7 @@ export class PrismaArticlesRepository implements ArticlesRepository {
             seoTitle: data.seoTitle,
             shortDescription: data.shortDescription,
             slug: data.slug,
-            // TODO Revert
-            // tags: { createMany: { data: data.tags.map((tag, order) => ({ order, tagId: tag.id })) } },
+            tags: { createMany: { data: data.tagIds.map((tagId, order) => ({ order, tagId })) } },
             title: data.title,
           },
           select: dbArticleSelect,

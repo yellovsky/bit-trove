@@ -6,10 +6,10 @@ import type { UnknownException } from 'effect/Cause';
 import type { TransactionContext } from 'src/modules/prisma';
 
 import { TagModel } from '../../domain/models/tag.model';
-import type { FindAllTagsParams, TagsRepository } from '../../domain/repositories/tags.repository';
+import type { FindAllTagsQuery, TagsRepository } from '../../domain/repositories/tags.repository';
 import { type DBTag, dbTagSelect } from './tags.repository.types';
 
-const getAllWhere = (params: FindAllTagsParams): Prisma.TagWhereInput => {
+const getAllWhere = (params: FindAllTagsQuery): Prisma.TagWhereInput => {
   const where: Prisma.TagWhereInput = {};
   if (params.filter?.like) where.name = { contains: params.filter.like, mode: 'insensitive' };
   return where;
@@ -17,7 +17,7 @@ const getAllWhere = (params: FindAllTagsParams): Prisma.TagWhereInput => {
 
 @Injectable()
 export class PrismaTagsRepository implements TagsRepository {
-  findAll(txCtx: TransactionContext, params: FindAllTagsParams): Effect.Effect<TagModel[], UnknownException> {
+  findAll(txCtx: TransactionContext, params: FindAllTagsQuery): Effect.Effect<TagModel[], UnknownException> {
     const where = getAllWhere(params);
 
     return Effect.gen(this, function* () {

@@ -7,14 +7,14 @@ import type { TransactionContext } from 'src/modules/prisma';
 
 import type { TagModel } from '../models/tag.model';
 
-export interface FindAllTagsParams {
+export interface FindAllTagsQuery {
   filter?: {
     like?: string;
   };
 }
 
 export interface TagsRepository {
-  findAll(txCtx: TransactionContext, params: FindAllTagsParams): Effect.Effect<TagModel[], UnknownException>;
+  findAll(txCtx: TransactionContext, params: FindAllTagsQuery): Effect.Effect<TagModel[], UnknownException>;
   findTagsByNames(txCtx: TransactionContext, names: string[]): Effect.Effect<TagModel[], UnknownException>;
   createManyTags(txCtx: TransactionContext, names: string[]): Effect.Effect<TagModel[], UnknownException>;
 }
