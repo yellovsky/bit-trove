@@ -8,6 +8,7 @@ import { Heading } from '@repo/ui/components/Typography';
 import { CreateBlogPostForm, getCmsBlogPostsLink, type UpsertBlogPostVariables } from '@features/blog-posts';
 import { type AppBreadcrumb, Breadcrumbs } from '@features/breadcrumbs';
 
+import { useRelatedArticlesQuery } from '@entities/articles/api/article-relation.api';
 import { useBlogPostUpdateMutation, useMyBlogPostQuery } from '@entities/blog-posts';
 
 export default function CMSBlogPostsEditRoute(props: { params: { id: string } }) {
@@ -17,12 +18,8 @@ export default function CMSBlogPostsEditRoute(props: { params: { id: string } })
   const { t, i18n } = useTranslation();
   const { t: tBlogPosts } = useTranslation('blog_posts');
 
-  const {
-    data: blogPost,
-    isLoading: isLoadingBlogPost,
-    error: blogPostError,
-    isError: isBlogPostError,
-  } = useMyBlogPostQuery({ id: props.params.id, locale: i18n.language });
+  const blogPostQuery = useMyBlogPostQuery({ id: props.params.id, locale: i18n.language });
+  const relatedArticlesQuery = useRelatedArticlesQuery({ id: props.params.id, locale: i18n.language });
 
   const handleSubmit = async (data: Omit<UpsertBlogPostVariables, 'id'>) => {
     const blogPost = await mutateAsync({ ...data, id: props.params.id, type: 'blog_post' });
@@ -38,23 +35,28 @@ export default function CMSBlogPostsEditRoute(props: { params: { id: string } })
     { label: tBlogPosts('Edit blog post'), to: `/cms/blog-posts/edit/${props.params.id}` },
   ].filter(Boolean) as AppBreadcrumb[];
 
-  const defaultValues: UpsertBlogPostVariables | undefined = !blogPost
-    ? undefined
-    : {
-        contentJSON: blogPost.data.contentJSON ?? [],
-        entryId: blogPost.data.entryId,
-        languageCode: blogPost.data.languageCode,
-        published: blogPost.data.publishedAt !== null,
-        seoDescription: blogPost.data.seo.description,
-        seoKeywords: blogPost.data.seo.keywords,
-        seoTitle: blogPost.data.seo.title,
-        shortDescription: blogPost.data.shortDescription,
-        slug: blogPost.data.slug,
-        tags: blogPost.data.tags.map((tag) => tag.name),
-        title: blogPost.data.title,
-      };
+  const defaultValues: UpsertBlogPostVariables | undefined =
+    !blogPostQuery.data || !relatedArticlesQuery.data
+      ? undefined
+      : {
+          contentJSON: blogPostQuery.data.data.contentJSON ?? [],
+          entryId: blogPostQuery.data.data.entryId,
+          languageCode: blogPostQuery.data.data.languageCode,
+          published: blogPostQuery.data.data.publishedAt !== null,
+          relatedArticles: relatedArticlesQuery.data.data.map((article) => ({
+            articleId: article.id,
+            relationType: article.relationType,
+          })),
+          seoDescription: blogPostQuery.data.data.seo.description,
+          seoKeywords: blogPostQuery.data.data.seo.keywords,
+          seoTitle: blogPostQuery.data.data.seo.title,
+          shortDescription: blogPostQuery.data.data.shortDescription,
+          slug: blogPostQuery.data.data.slug,
+          tags: blogPostQuery.data.data.tags.map((tag) => tag.name),
+          title: blogPostQuery.data.data.title,
+        };
 
-  if (isLoadingBlogPost) {
+  if (blogPostQuery.isLoading || relatedArticlesQuery.isLoading) {
     return (
       <div>
         <Breadcrumbs className="mb-4" items={breadcrumbs} />
@@ -73,7 +75,7 @@ export default function CMSBlogPostsEditRoute(props: { params: { id: string } })
     );
   }
 
-  if (isBlogPostError || !blogPost) {
+  if (blogPostQuery.isError || !blogPostQuery.data || relatedArticlesQuery.isError || !relatedArticlesQuery.data) {
     return (
       <div>
         <Breadcrumbs className="mb-4" items={breadcrumbs} />
@@ -82,11 +84,11 @@ export default function CMSBlogPostsEditRoute(props: { params: { id: string } })
         </Heading>
         <div className="rounded-lg border border-destructive bg-destructive/10 p-4">
           <p className="text-destructive">
-            {blogPostError ? tBlogPosts('Error loading blog post') : tBlogPosts('Blog post not found')}
+            {blogPostQuery.error ? tBlogPosts('Error loading blog post') : tBlogPosts('Blog post not found')}
           </p>
-          {blogPostError && (
+          {blogPostQuery.error && (
             <p className="mt-2 text-muted-foreground text-sm">
-              {blogPostError.error?.message || 'Unknown error occurred'}
+              {blogPostQuery.error.error?.message || 'Unknown error occurred'}
             </p>
           )}
         </div>

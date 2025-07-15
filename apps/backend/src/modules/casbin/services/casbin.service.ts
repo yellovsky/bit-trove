@@ -8,7 +8,7 @@ import type { UnknownException } from 'effect/Cause';
 import { AccessDeniedReason, type ExclusionReason } from 'src/shared/excluded';
 import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
 import type { SkippedOr } from 'src/shared/utils/load-result';
-import type { AuthRequestContext, RequestContext } from 'src/shared/utils/request-context';
+import type { AuthRequestContext, TxRequestContext } from 'src/shared/utils/request-context';
 
 import { PRISMA_SRV } from 'src/modules/prisma';
 
@@ -45,21 +45,24 @@ export class CasbinServiceImpl implements CasbinService, OnModuleInit {
     return this.#enforcer.enforce(sub || 'public', action, objType, obj);
   }
 
-  getManyPolicies(reqCtx: RequestContext, params: GetPoliciesListParams): Promise<SkippedOr<PermissionPolicyEntity>[]> {
-    return this.casbinRepo.findManyPolicies(reqCtx, params);
+  getManyPolicies(
+    txReqCtx: TxRequestContext,
+    params: GetPoliciesListParams
+  ): Promise<SkippedOr<PermissionPolicyEntity>[]> {
+    return this.casbinRepo.findManyPolicies(txReqCtx, params);
   }
 
-  getPoliciesTotal(reqCtx: RequestContext, params: GetPoliciesListParams): Promise<number> {
-    return this.casbinRepo.getTotal(reqCtx, params);
+  getPoliciesTotal(txReqCtx: TxRequestContext, params: GetPoliciesListParams): Promise<number> {
+    return this.casbinRepo.getTotal(txReqCtx, params);
   }
 
   async getManyPoliciesWithTotal(
-    reqCtx: RequestContext,
+    txReqCtx: TxRequestContext,
     params: GetPoliciesListParams
   ): Promise<{ items: SkippedOr<PermissionPolicyEntity>[]; total: number }> {
     return {
-      items: await this.getManyPolicies(reqCtx, params),
-      total: await this.getPoliciesTotal(reqCtx, params),
+      items: await this.getManyPolicies(txReqCtx, params),
+      total: await this.getPoliciesTotal(txReqCtx, params),
     };
   }
 

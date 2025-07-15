@@ -3,7 +3,7 @@ import * as Either from 'effect/Either';
 
 import type { ResultOrExcluded } from 'src/shared/excluded';
 import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
-import type { RequestContext } from 'src/shared/utils/request-context';
+import type { TxRequestContext } from 'src/shared/utils/request-context';
 
 import { ACCOUNTS_SRV, AUTH_PROVIDERS_SRV, PROFILES_SRV, type ProfileEntity } from 'src/modules/acount';
 
@@ -32,11 +32,11 @@ export class AuthServiceImpl implements AuthService {
 
   // TODO Think about Option and chaining
   async validateProfileByEmail(
-    reqCtx: RequestContext,
+    txReqCtx: TxRequestContext,
     email: string,
     password: string
   ): Promise<ResultOrExcluded<ProfileEntity>> {
-    const emailAuthProvider = await this.authProvidersSrv.getAuthProviderByEmail(reqCtx, email);
+    const emailAuthProvider = await this.authProvidersSrv.getAuthProviderByEmail(txReqCtx, email);
     if (Either.isLeft(emailAuthProvider)) throw new AuthNotFoundError();
 
     const passwordHash = emailAuthProvider.right.getPasswordHash();
@@ -45,13 +45,13 @@ export class AuthServiceImpl implements AuthService {
     const pwdValid = await this.bcryptSrv.compare(password, passwordHash);
     if (!pwdValid) throw new AuthInvalidPwdError();
 
-    return this.accountSrv.getAccountRootProfile(reqCtx, emailAuthProvider.right.accountId);
+    return this.accountSrv.getAccountRootProfile(txReqCtx, emailAuthProvider.right.accountId);
   }
 
   async validateProfileByJWTTokenPayload(
-    reqCtx: RequestContext,
+    txReqCtx: TxRequestContext,
     payload: JWTTokenPayload
   ): Promise<ResultOrExcluded<ProfileEntity>> {
-    return this.profilesSrv.getProfileById(reqCtx, payload.profileId);
+    return this.profilesSrv.getProfileById(txReqCtx, payload.profileId);
   }
 }

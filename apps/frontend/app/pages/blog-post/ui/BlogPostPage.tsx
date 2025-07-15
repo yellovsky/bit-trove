@@ -119,9 +119,7 @@ export const BlogPostPage: FC<{ blogPostVariables: BlogPostGetVariables }> = ({ 
         </article>
 
         {/* Related articles at the bottom */}
-        <section className="mt-12 border-t pt-8">
-          <RelatedArticles articleId={blogPost.id} className="space-y-4" />
-        </section>
+        <RelatedArticles articleId={blogPost.id} className="border-t pt-6 xl:hidden" />
       </ContentWithSidebar>
     </>
   );

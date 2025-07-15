@@ -7,24 +7,23 @@ import { isUnknownException, type UnknownException } from 'effect/Cause';
 import { type ExclusionReason, NotFoundReason, UnknownReason } from 'src/shared/excluded';
 import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
 import { calculateReadingTime } from 'src/shared/utils/reading-time';
-import type { RequestContext } from 'src/shared/utils/request-context';
 
-import { PRISMA_SRV } from 'src/modules/prisma';
+import type { TransactionContext } from 'src/modules/prisma';
 import { TAGS_SRV } from 'src/modules/tags';
 
 import type { ArticleModel } from '../../domain/models/article.model';
 import type {
   ArticlesRepository,
-  CreateArticleParams,
-  FindByIdParams,
-  FindBySlugParams,
-  FindManyArticlesParams,
-  UpdateArticleParams,
+  CreateArticlePayload,
+  FindArticleByIdQuery,
+  FindArticleBySlugQuery,
+  FindArticlesQuery,
+  UpdateArticlePayload,
 } from '../../domain/repositories/articles.repository';
 import { dbArticleSelect, dbShortArticleSelect } from './articles.repository.types';
 import { mapToArticleModel } from './model-mappers';
 
-const getWhere = (params: FindManyArticlesParams): Prisma.ArticleWhereInput => {
+const getWhere = (params: FindArticlesQuery): Prisma.ArticleWhereInput => {
   const where: Prisma.ArticleWhereInput = {};
 
   if (params.filter.languageCodeIn?.length) {
@@ -118,19 +117,14 @@ export class PrismaArticlesRepository implements ArticlesRepository {
   #logger = new Logger(PrismaArticlesRepository.name);
 
   constructor(
-    @Inject(PRISMA_SRV)
-    private readonly prismaSrv: IdentifierOf<typeof PRISMA_SRV>,
-
     @Inject(TAGS_SRV)
     private readonly tagsSrv: IdentifierOf<typeof TAGS_SRV>
   ) {}
 
   createArticle(
-    reqCtx: RequestContext,
-    params: CreateArticleParams
+    txCtx: TransactionContext,
+    params: CreateArticlePayload
   ): Effect.Effect<ArticleModel, UnknownReason | UnknownException> {
-    const tx = reqCtx.tx ?? this.prismaSrv;
-
     return Effect.gen(this, function* () {
       this.#logger.debug('Creating article');
       this.#logger.debug(`  > params: ${JSON.stringify(params)}`);
@@ -139,8 +133,8 @@ export class PrismaArticlesRepository implements ArticlesRepository {
 
       const entryId = params.entryId;
       const dbEntry = entryId
-        ? yield* Effect.tryPromise(() => tx.article.findUnique({ where: { id: entryId } }))
-        : yield* Effect.tryPromise(() => tx.articleEntry.create({ data: { authorId: reqCtx.accountId, publishedAt } }));
+        ? yield* Effect.tryPromise(() => txCtx.tx.article.findUnique({ where: { id: entryId } }))
+        : yield* Effect.tryPromise(() => txCtx.tx.articleEntry.create({ data: { publishedAt } }));
 
       if (!dbEntry) {
         this.#logger.error('  > no dbEntry');
@@ -151,9 +145,9 @@ export class PrismaArticlesRepository implements ArticlesRepository {
       const readingTime = calculateReadingTime(params.contentJSON, params.title, params.shortDescription);
 
       const dbArticle = yield* Effect.tryPromise(() =>
-        tx.article.create({
+        txCtx.tx.article.create({
           data: {
-            authorId: reqCtx.accountId,
+            authorId: params.authorId,
             contentJSON: params.contentJSON as InputJsonValue,
             entryId: dbEntry.id,
             languageCode: params.languageCode,
@@ -181,41 +175,41 @@ export class PrismaArticlesRepository implements ArticlesRepository {
   }
 
   updateArticle(
-    reqCtx: RequestContext,
-    id: string,
-    params: UpdateArticleParams
+    txCtx: TransactionContext,
+    { articleId, data }: UpdateArticlePayload
   ): Effect.Effect<ArticleModel, UnknownReason | UnknownException> {
-    const tx = reqCtx.tx ?? this.prismaSrv;
-
     return Effect.gen(this, function* () {
       this.#logger.debug('Creating article');
-      this.#logger.debug(`  > params: ${JSON.stringify(params)}`);
+      this.#logger.debug(`  > articleId: ${articleId}`);
+      this.#logger.debug(`  > params: ${JSON.stringify(data)}`);
 
-      const tags = yield* this.tagsSrv.getOrCreateTagsByNames(reqCtx, params.tags);
+      // TODO do not call service here (?)
+      // const tags = yield* this.tagsSrv.getOrCreateTagsByNames(tx, params.tags);
 
       // delete all tags before saving new ones
-      yield* Effect.tryPromise(() => tx.articleTag.deleteMany({ where: { articleId: id } }));
+      yield* Effect.tryPromise(() => txCtx.tx.articleTag.deleteMany({ where: { articleId } }));
 
       // Calculate reading time
-      const readingTime = calculateReadingTime(params.contentJSON, params.title, params.shortDescription);
+      const readingTime = calculateReadingTime(data.contentJSON, data.title, data.shortDescription);
 
       const dbArticle = yield* Effect.tryPromise(() =>
-        tx.article.update({
+        txCtx.tx.article.update({
           data: {
-            contentJSON: params.contentJSON as InputJsonValue,
-            languageCode: params.languageCode,
-            publishedAt: params.published ? new Date() : null,
+            contentJSON: data.contentJSON as InputJsonValue,
+            languageCode: data.languageCode,
+            publishedAt: data.published ? new Date() : null,
             readingTime,
-            seoDescription: params.seoDescription,
-            seoKeywords: params.seoKeywords,
-            seoTitle: params.seoTitle,
-            shortDescription: params.shortDescription,
-            slug: params.slug,
-            tags: { createMany: { data: tags.map((tag, order) => ({ order, tagId: tag.id })) } },
-            title: params.title,
+            seoDescription: data.seoDescription,
+            seoKeywords: data.seoKeywords,
+            seoTitle: data.seoTitle,
+            shortDescription: data.shortDescription,
+            slug: data.slug,
+            // TODO Revert
+            // tags: { createMany: { data: data.tags.map((tag, order) => ({ order, tagId: tag.id })) } },
+            title: data.title,
           },
           select: dbArticleSelect,
-          where: { id },
+          where: { id: articleId },
         })
       );
 
@@ -228,24 +222,17 @@ export class PrismaArticlesRepository implements ArticlesRepository {
     );
   }
 
-  getArticleIdBySlug(reqCtx: RequestContext, slug: string): Effect.Effect<string | null, UnknownException> {
-    const tx = reqCtx.tx ?? this.prismaSrv;
-
-    return Effect.tryPromise(() => tx.article.findUnique({ where: { slug } })).pipe(
+  getArticleIdBySlug(txCtx: TransactionContext, slug: string): Effect.Effect<string | null, UnknownException> {
+    return Effect.tryPromise(() => txCtx.tx.article.findUnique({ where: { slug } })).pipe(
       Effect.map((blogPost) => blogPost?.id ?? null)
     );
   }
 
-  findManyArticles(
-    reqCtx: RequestContext,
-    params: FindManyArticlesParams
-  ): Effect.Effect<ArticleModel[], UnknownException> {
+  findArticles(txCtx: TransactionContext, params: FindArticlesQuery): Effect.Effect<ArticleModel[], UnknownException> {
     this.#logger.debug(`findManyLocalized ${JSON.stringify(params)}`);
 
-    const prisma = reqCtx.tx ?? this.prismaSrv;
-
     return Effect.tryPromise(async () =>
-      prisma.article.findMany({
+      txCtx.tx.article.findMany({
         orderBy: params.orderBy,
         select: dbShortArticleSelect,
         skip: params.skip,
@@ -258,17 +245,14 @@ export class PrismaArticlesRepository implements ArticlesRepository {
     );
   }
 
-  findTotalArticles(reqCtx: RequestContext, params: FindManyArticlesParams): Effect.Effect<number, UnknownException> {
-    const prisma = reqCtx.tx ?? this.prismaSrv;
-    return Effect.tryPromise(async () => prisma.article.count({ where: getWhere(params) }));
+  findArticlesTotal(txCtx: TransactionContext, params: FindArticlesQuery): Effect.Effect<number, UnknownException> {
+    return Effect.tryPromise(async () => txCtx.tx.article.count({ where: getWhere(params) }));
   }
 
-  findOneArticleById(
-    reqCtx: RequestContext,
-    params: FindByIdParams
+  findArticleById(
+    txCtx: TransactionContext,
+    params: FindArticleByIdQuery
   ): Effect.Effect<ArticleModel, ExclusionReason | UnknownException> {
-    const prisma = reqCtx.tx ?? this.prismaSrv;
-
     const where: Prisma.ArticleWhereUniqueInput = { id: params.id };
     if (params.filter?.published) where.publishedAt = { not: null };
     else if (params.filter?.published === false) where.publishedAt = null;
@@ -277,19 +261,17 @@ export class PrismaArticlesRepository implements ArticlesRepository {
 
     if (params.filter?.typeIn) where.type = { in: params.filter.typeIn };
 
-    return Effect.tryPromise(async () => prisma.article.findUnique({ select: dbArticleSelect, where })).pipe(
+    return Effect.tryPromise(async () => txCtx.tx.article.findUnique({ select: dbArticleSelect, where })).pipe(
       Effect.flatMap((dbArticle) =>
         !dbArticle ? Effect.fail(new NotFoundReason()) : Effect.succeed(mapToArticleModel(dbArticle))
       )
     );
   }
 
-  findOneArticleBySlug(
-    reqCtx: RequestContext,
-    params: FindBySlugParams
+  findArticleBySlug(
+    txCtx: TransactionContext,
+    params: FindArticleBySlugQuery
   ): Effect.Effect<ArticleModel, ExclusionReason | UnknownException> {
-    const prisma = reqCtx.tx ?? this.prismaSrv;
-
     const where: Prisma.ArticleWhereInput = { slug: params.slug };
     if (params.filter?.published) where.publishedAt = { not: null };
     else if (params.filter?.published === false) where.publishedAt = null;
@@ -298,7 +280,7 @@ export class PrismaArticlesRepository implements ArticlesRepository {
 
     if (params.filter?.typeIn) where.type = { in: params.filter.typeIn };
 
-    return Effect.tryPromise(async () => prisma.article.findFirst({ select: dbArticleSelect, where })).pipe(
+    return Effect.tryPromise(async () => txCtx.tx.article.findFirst({ select: dbArticleSelect, where })).pipe(
       Effect.flatMap((dbArticle) =>
         !dbArticle ? Effect.fail(new NotFoundReason()) : Effect.succeed(mapToArticleModel(dbArticle))
       )
@@ -306,14 +288,13 @@ export class PrismaArticlesRepository implements ArticlesRepository {
   }
 
   setArticlePublished(
-    reqCtx: RequestContext,
+    txCtx: TransactionContext,
     id: string,
     published: boolean
   ): Effect.Effect<ArticleModel, ExclusionReason | UnknownException> {
-    const prisma = reqCtx.tx ?? this.prismaSrv;
     this.#logger.debug(`setArticlePublished ${id} ${published}`);
     return Effect.tryPromise(async () =>
-      prisma.article.update({
+      txCtx.tx.article.update({
         data: { publishedAt: published ? new Date() : null },
         select: dbArticleSelect,
         where: { id },

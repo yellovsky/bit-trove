@@ -1,6 +1,6 @@
 import type { ShortBlogPost } from '@repo/api-models';
 
-export const getBlogPostLink = (blogPost: ShortBlogPost): string => `/blog/${blogPost.slug}`;
+export const getBlogPostLink = (blogPost: Pick<ShortBlogPost, 'slug' | 'type'>): string => `/blog/${blogPost.slug}`;
 
 export const getBlogPostsLink = (): string => '/blog';
 

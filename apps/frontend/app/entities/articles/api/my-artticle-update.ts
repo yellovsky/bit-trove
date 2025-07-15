@@ -12,24 +12,24 @@ import { getQueryClient } from '@shared/lib/query-client';
 
 import { invalidateArticlesQuery } from '../lib/invalidate-articles';
 
-export type ArticleUpdateVariables = ArticleUpsertBody & { id: string };
+export type MyArticleUpdateVariables = ArticleUpsertBody & { id: string };
 
-export const updateArticle =
-  (apiClient: ApiClient): MutationFunction<ArticleUpsertResponse, ArticleUpdateVariables> =>
+export const myArticleUpdate =
+  (apiClient: ApiClient): MutationFunction<ArticleUpsertResponse, MyArticleUpdateVariables> =>
   ({ id, ...rest }) =>
-    apiClient.patch<ArticleUpsertResponse>(`/v1/cms-articles/${id}`, rest, { withCredentials: true });
+    apiClient.patch<ArticleUpsertResponse>(`/v1/my/articles/${id}`, rest, { withCredentials: true });
 
-export const useArticleUpdateMutation = (
+export const useMyArticleUpdateMutation = (
   options?: Omit<
-    Partial<UseMutationOptions<ArticleUpsertResponse, FailedResponse, ArticleUpdateVariables>>,
+    Partial<UseMutationOptions<ArticleUpsertResponse, FailedResponse, MyArticleUpdateVariables>>,
     'mutationFn'
   >
-): UseMutationResult<ArticleUpsertResponse, FailedResponse, ArticleUpdateVariables> => {
+): UseMutationResult<ArticleUpsertResponse, FailedResponse, MyArticleUpdateVariables> => {
   const apiClient = useApiClient();
 
-  return useMutation<ArticleUpsertResponse, FailedResponse, ArticleUpdateVariables>({
+  return useMutation<ArticleUpsertResponse, FailedResponse, MyArticleUpdateVariables>({
     ...options,
-    mutationFn: updateArticle(apiClient),
+    mutationFn: myArticleUpdate(apiClient),
 
     onSuccess: (...args) => {
       invalidateArticlesQuery(getQueryClient());

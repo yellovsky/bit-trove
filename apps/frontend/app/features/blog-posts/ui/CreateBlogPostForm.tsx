@@ -1,9 +1,14 @@
 import type { Editor as TiptapEditor } from '@tiptap/react';
 import type { ChangeEvent, FC } from 'react';
-import { type Control, type SubmitHandler, useForm } from 'react-hook-form';
+import { type Control, type SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { type ArticleUpsertBody, type BlogPost, failedResponseSchema } from '@repo/api-models';
+import {
+  type ArticleRelationType,
+  type ArticleUpsertBody,
+  type BlogPost,
+  failedResponseSchema,
+} from '@repo/api-models';
 import { Button } from '@repo/ui/components/Button';
 import { Fieldset as UiFieldset } from '@repo/ui/components/Fieldset';
 import {
@@ -24,6 +29,8 @@ import { getApiClient } from '@shared/lib/api-client';
 import { Editor, useEditor } from '@widgets/editor';
 
 import { checkBlogPostSlugAvailability } from '@entities/blog-posts';
+
+import { RelatedArticlesSection } from './RelatedArticlesSection';
 
 export type UpsertBlogPostVariables = Omit<ArticleUpsertBody, 'type'>;
 
@@ -199,7 +206,7 @@ const SeoController: FC<ControlProps> = ({ control }) => {
   const { t: tBlogPosts } = useTranslation('blog_posts');
 
   return (
-    <UiFieldset legend="SEO" variant="filled">
+    <UiFieldset legend="SEO">
       <FormField
         control={control}
         name="seoTitle"
@@ -299,11 +306,43 @@ const ContentController: FC<ControlProps & { editor: TiptapEditor | null }> = ({
   );
 };
 
+const RelatedArticlesController: FC<ControlProps> = ({ control }) => {
+  const { t } = useTranslation();
+  const { fields, append, remove } = useFieldArray({ control, name: 'relatedArticles' });
+
+  const handleAdd = (relation: ArticleRelationType, articleId: string) => {
+    const existingIndex = fields.findIndex((field) => field.articleId === articleId);
+    if (existingIndex >= 0) remove(existingIndex);
+    append({ articleId, relationType: relation });
+  };
+
+  const handleDelete = (articleId: string) => {
+    const existingIndex = fields.findIndex((field) => field.articleId === articleId);
+    if (existingIndex >= 0) remove(existingIndex);
+  };
+
+  return (
+    <FormField
+      control={control}
+      name="relatedArticles"
+      render={({ field }) => (
+        <RelatedArticlesSection
+          articlesWithRelation={field.value}
+          legend={t('Related Articles')}
+          onAdd={handleAdd}
+          onDelete={handleDelete}
+        />
+      )}
+    />
+  );
+};
+
 const getDefaultValues = (languageCode: string): UpsertBlogPostVariables => ({
   contentJSON: [],
   entryId: null,
   languageCode,
   published: false,
+  relatedArticles: [],
   seoDescription: '',
   seoKeywords: '',
   seoTitle: '',
@@ -367,6 +406,9 @@ export const CreateBlogPostForm: React.FC<CreateBlogPostFormProps> = (props) => 
 
         <ShortDescriptionController control={form.control} />
         <SeoController control={form.control} />
+
+        <RelatedArticlesController control={form.control} />
+
         <ContentController control={form.control} editor={editor} />
 
         <Button className="block w-full" type="submit">

@@ -9,6 +9,7 @@ import { requestContextFromRequest } from 'src/shared/utils/request-context';
 
 import type { ProfileEntity } from 'src/modules/acount';
 import { APP_CONFIG_SRV } from 'src/modules/app-config';
+import { PRISMA_SRV } from 'src/modules/prisma';
 
 import { ACCESS_TOKEN_COOKIE_KEY } from '../config/constants';
 import { AUTH_SRV } from '../interfaces/auth.service.interface';
@@ -28,7 +29,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     private readonly authSrv: IdentifierOf<typeof AUTH_SRV>,
 
     @Inject(APP_CONFIG_SRV)
-    readonly appConfigSrv: IdentifierOf<typeof APP_CONFIG_SRV>
+    readonly appConfigSrv: IdentifierOf<typeof APP_CONFIG_SRV>,
+
+    @Inject(PRISMA_SRV)
+    private readonly prismaSrv: IdentifierOf<typeof PRISMA_SRV>
   ) {
     super({
       ignoreExpiration: false,
@@ -45,7 +49,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     this.#logger.debug(`  > payload: ${JSON.stringify(payload)}`);
 
     return Either.getOrThrowWith(
-      await this.authSrv.validateProfileByJWTTokenPayload(reqCtx, payload),
+      await this.authSrv.validateProfileByJWTTokenPayload(reqCtx.withTx(this.prismaSrv), payload),
       () => new Error(`Account ${payload.accountId} has no ${payload.profileId} profile`)
     );
   }

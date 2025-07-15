@@ -30,12 +30,15 @@ export const createShortArticlesGetKey = (variables: ShortArticlesGetVariables):
   variables,
 ];
 
-export const fetchShortArticles =
+export const getShortArticlesApi = (apiClient: ApiClient, params: ShortArticlesGetQuery, signal?: AbortSignal) =>
+  apiClient.get<ShortArticlesGetResponse>('/v1/articles', { params, signal });
+
+export const getShortArticles =
   (apiClient: ApiClient): QueryFunction<ShortArticlesGetResponse, ShortArticlesQueryKey, PageRequest> =>
   async ({ queryKey, pageParam, signal }) => {
     const variables: ShortArticlesGetVariables = queryKey[2];
     const params = { ...variables, page: pageParam };
-    return apiClient.get<ShortArticlesGetResponse>('/v1/articles', { params, signal });
+    return getShortArticlesApi(apiClient, params, signal);
   };
 
 export const prefetchShortArticles = async (
@@ -46,7 +49,7 @@ export const prefetchShortArticles = async (
   await queryClient.prefetchInfiniteQuery({
     getNextPageParam,
     initialPageParam,
-    queryFn: fetchShortArticles(apiClient),
+    queryFn: getShortArticles(apiClient),
     queryKey: createShortArticlesGetKey(variables),
   });
 };
@@ -75,7 +78,7 @@ export const useInfiniteShortArticlesQuery = (
     ...options,
     getNextPageParam,
     initialPageParam,
-    queryFn: fetchShortArticles(apiClient),
+    queryFn: getShortArticles(apiClient),
     queryKey: createShortArticlesGetKey(variables),
   });
 };

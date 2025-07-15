@@ -42,7 +42,7 @@ const buttonVariants = cva(
         ghost: 'hover:bg-accent hover:text-accent-foreground active:brightness-[0.9] dark:hover:bg-accent/50',
         link: 'text-primary underline-offset-4 hover:underline active:brightness-[0.9]',
         outline:
-          'border border-border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground active:brightness-[0.9] dark:border-input dark:bg-input/30 dark:hover:bg-input/50',
+          'border border-border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground active:brightness-[0.9]',
         secondary: 'bg-secondary text-secondary-foreground hover:bg-primary-a4 active:bg-primary-a5',
       },
     },

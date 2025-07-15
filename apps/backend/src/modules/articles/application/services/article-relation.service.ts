@@ -4,11 +4,15 @@ import type { UnknownException } from 'effect/Cause';
 
 import type { ExclusionReason } from 'src/shared/excluded';
 import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
-import type { RequestContext } from 'src/shared/utils/request-context';
+import type { TxRequestContext } from 'src/shared/utils/request-context';
 
 import type { ArticleWithRelationModel } from '../../domain/models/article-with-relation.model';
 import { ARTICLE_RELATION_REPOSITORY } from '../../domain/repositories/article-relation.repository';
-import type { ArticleRelationService, GetManyRelatedArticlesParams } from './article-relation.service.interface';
+import type {
+  ArticleRelationService,
+  GetRelatedArticlesCommand,
+  UpdateArticleRelationsCommand,
+} from './article-relation.service.interface';
 
 @Injectable()
 export class ArticleRelationServiceImpl implements ArticleRelationService {
@@ -17,10 +21,17 @@ export class ArticleRelationServiceImpl implements ArticleRelationService {
     private readonly repository: IdentifierOf<typeof ARTICLE_RELATION_REPOSITORY>
   ) {}
 
-  getManyArticlesWithRelation(
-    reqCtx: RequestContext,
-    params: GetManyRelatedArticlesParams
+  getRelatedArticles(
+    txReqCtx: TxRequestContext,
+    command: GetRelatedArticlesCommand
   ): Effect.Effect<Array<ArticleWithRelationModel | ExclusionReason>, ExclusionReason | UnknownException> {
-    return this.repository.findManyArticlesWithRelation(reqCtx, params);
+    return this.repository.findArticlesWithRelations(txReqCtx, command);
+  }
+
+  updateArticleRelations(
+    txReqCtx: TxRequestContext,
+    command: UpdateArticleRelationsCommand
+  ): Effect.Effect<ArticleWithRelationModel[], ExclusionReason | UnknownException> {
+    return this.repository.updateArticleRelations(txReqCtx, command);
   }
 }

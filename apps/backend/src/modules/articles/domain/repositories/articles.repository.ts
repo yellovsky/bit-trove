@@ -5,97 +5,243 @@ import type { JSONContent } from '@repo/api-models';
 
 import type { ExclusionReason, UnknownReason } from 'src/shared/excluded';
 import type { InjectableIdentifier } from 'src/shared/utils/injectable-identifier';
-import type { RequestContext } from 'src/shared/utils/request-context';
 import type { OrderBy } from 'src/shared/utils/sort-to-order-by';
+
+import type { TransactionContext } from 'src/modules/prisma';
 
 import type { ArticleModel } from '../models/article.model';
 
-export interface CreateArticleParams {
+// ============================================================================
+// ARTICLE TYPES - Domain constants
+// ============================================================================
+
+/**
+ * Supported article types
+ */
+type ArticleType = 'blog_post' | 'shard';
+
+// ============================================================================
+// CREATE/UPDATE TYPES - Data persistence parameters
+// ============================================================================
+
+/**
+ * Parameters for creating a new article
+ */
+export interface CreateArticlePayload {
+  /** Article content in JSON format */
   contentJSON: JSONContent | null;
+  /** Language code (e.g., 'en', 'ru') */
   languageCode: string;
+  /** Whether the article is published */
   published: boolean;
+  /** Short description for previews */
   shortDescription: string | null;
+  /** URL-friendly slug */
   slug: string;
+  /** Article title */
   title: string;
+  /** SEO title for search engines */
   seoTitle: string | null;
+  /** SEO description for search engines */
   seoDescription: string | null;
+  /** SEO keywords for search engines */
   seoKeywords: string | null;
+  /** Optional entry ID for grouping articles */
   entryId: string | null;
+  /** List of tag names */
   tags: string[];
-  type: 'blog_post' | 'shard';
+  /** Article type (blog_post or shard) */
+  type: ArticleType;
+  /** Author ID */
+  authorId: string | null;
 }
-export type UpdateArticleParams = CreateArticleParams;
-type FindManyArticlesOrderBy = OrderBy<'title' | 'publishedAt' | 'createdAt'>;
 
-interface FindManyArticlesFilter {
+/**
+ * Parameters for updating an existing article
+ */
+export interface UpdateArticlePayload {
+  /** Article ID to update */
+  articleId: string;
+  /** Article update parameters */
+  data: CreateArticlePayload;
+}
+
+// ============================================================================
+// QUERY TYPES - Data retrieval parameters
+// ============================================================================
+
+/**
+ * Supported ordering fields for article queries
+ */
+type ArticleOrderBy = OrderBy<'title' | 'publishedAt' | 'createdAt'>;
+
+/**
+ * Filter criteria for article queries
+ */
+interface ArticleFilter {
+  /** Filter by publication status */
   published?: boolean;
+  /** Filter by author ID */
   authorId?: string | null;
+  /** Filter by language codes */
   languageCodeIn?: string[];
+  /** Search in title and content */
   search?: string;
-  typeIn?: string[];
+  /** Filter by article types */
+  typeIn?: ArticleType[];
 }
 
-export interface FindManyArticlesParams {
+/**
+ * Parameters for finding multiple articles
+ */
+export interface FindArticlesQuery {
+  /** Number of articles to return */
   take: number;
+  /** Number of articles to skip (for pagination) */
   skip: number;
-  orderBy: FindManyArticlesOrderBy;
-  filter: FindManyArticlesFilter;
+  /** Ordering criteria */
+  orderBy: ArticleOrderBy;
+  /** Filter criteria */
+  filter: ArticleFilter;
 }
 
-export interface FindBySlugParams {
+/**
+ * Parameters for finding an article by slug
+ */
+export interface FindArticleBySlugQuery {
+  /** Article slug to search for */
   slug: string;
+  /** Optional filter criteria */
   filter?: {
+    /** Filter by author ID */
     authorId?: string;
+    /** Filter by publication status */
     published?: boolean;
-    typeIn?: string[];
+    /** Filter by article types */
+    typeIn?: ArticleType[];
   };
 }
 
-export interface FindByIdParams {
+/**
+ * Parameters for finding an article by ID
+ */
+export interface FindArticleByIdQuery {
+  /** Article ID to search for */
   id: string;
+  /** Optional filter criteria */
   filter?: {
+    /** Filter by author ID */
     authorId?: string;
+    /** Filter by publication status */
     published?: boolean;
-    typeIn?: string[];
+    /** Filter by article types */
+    typeIn?: ArticleType[];
   };
 }
 
+// ============================================================================
+// REPOSITORY INTERFACE - Data access operations
+// ============================================================================
+
+/**
+ * Repository for article data access operations
+ */
 export interface ArticlesRepository {
+  /**
+   * Create a new article
+   *
+   * @param reqCtx - Request context with transaction information
+   * @param payload - Article creation parameters
+   * @returns Created article model
+   */
   createArticle(
-    reqCtx: RequestContext,
-    params: CreateArticleParams
+    txCtx: TransactionContext,
+    payload: CreateArticlePayload
   ): Effect.Effect<ArticleModel, UnknownReason | UnknownException>;
 
+  /**
+   * Update an existing article
+   *
+   * @param reqCtx - Request context with transaction information
+   * @param payload - Article update parameters
+   * @returns Updated article model
+   */
   updateArticle(
-    reqCtx: RequestContext,
-    id: string,
-    params: UpdateArticleParams
+    txCtx: TransactionContext,
+    payload: UpdateArticlePayload
   ): Effect.Effect<ArticleModel, UnknownReason | UnknownException>;
 
-  getArticleIdBySlug(reqCtx: RequestContext, slug: string): Effect.Effect<string | null, UnknownException>;
+  /**
+   * Get article ID by slug
+   *
+   * @param reqCtx - Request context with transaction information
+   * @param slug - Article slug to search for
+   * @returns Article ID if found, null otherwise
+   */
+  getArticleIdBySlug(txCtx: TransactionContext, slug: string): Effect.Effect<string | null, UnknownException>;
 
-  findManyArticles(
-    reqCtx: RequestContext,
-    params: FindManyArticlesParams
+  /**
+   * Find multiple articles with pagination and filtering
+   *
+   * @param reqCtx - Request context with transaction information
+   * @param query - Query parameters for finding articles
+   * @returns Array of article models
+   */
+  findArticles(
+    txCtx: TransactionContext,
+    query: FindArticlesQuery
   ): Effect.Effect<ArticleModel[], ExclusionReason | UnknownException>;
 
-  findTotalArticles(reqCtx: RequestContext, params: FindManyArticlesParams): Effect.Effect<number, UnknownException>;
+  /**
+   * Get total count of articles matching the query
+   *
+   * @param reqCtx - Request context with transaction information
+   * @param query - Query parameters for counting articles
+   * @returns Total count of matching articles
+   */
+  findArticlesTotal(txCtx: TransactionContext, query: FindArticlesQuery): Effect.Effect<number, UnknownException>;
 
-  findOneArticleById(
-    reqCtx: RequestContext,
-    params: FindByIdParams
+  /**
+   * Find a single article by ID
+   *
+   * @param reqCtx - Request context with transaction information
+   * @param query - Query parameters for finding the article
+   * @returns Article model if found
+   */
+  findArticleById(
+    txCtx: TransactionContext,
+    query: FindArticleByIdQuery
   ): Effect.Effect<ArticleModel, ExclusionReason | UnknownException>;
 
-  findOneArticleBySlug(
-    reqCtx: RequestContext,
-    params: FindBySlugParams
+  /**
+   * Find a single article by slug
+   *
+   * @param reqCtx - Request context with transaction information
+   * @param query - Query parameters for finding the article
+   * @returns Article model if found
+   */
+  findArticleBySlug(
+    txCtx: TransactionContext,
+    query: FindArticleBySlugQuery
   ): Effect.Effect<ArticleModel, ExclusionReason | UnknownException>;
 
+  /**
+   * Update article publication status
+   *
+   * @param reqCtx - Request context with transaction information
+   * @param id - Article ID to update
+   * @param published - New publication status
+   * @returns Updated article model
+   */
   setArticlePublished(
-    reqCtx: RequestContext,
+    txCtx: TransactionContext,
     id: string,
     published: boolean
   ): Effect.Effect<ArticleModel, ExclusionReason | UnknownException>;
 }
+
+// ============================================================================
+// INJECTION TOKEN
+// ============================================================================
 
 export const ARTICLES_REPOSITORY = 'ARTICLES_REPOSITORY' as InjectableIdentifier<ArticlesRepository>;

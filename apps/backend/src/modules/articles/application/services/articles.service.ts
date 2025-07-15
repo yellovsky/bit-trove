@@ -5,19 +5,22 @@ import { validate as isUUID } from 'uuid';
 
 import type { ExclusionReason } from 'src/shared/excluded';
 import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
-import type { RequestContext } from 'src/shared/utils/request-context';
+import type { TxRequestContext } from 'src/shared/utils/request-context';
+
+import { TRANSACTION_SRV } from 'src/modules/prisma';
 
 import type { ArticleModel } from '../../domain/models/article.model';
+import { ARTICLE_RELATION_REPOSITORY } from '../../domain/repositories/article-relation.repository';
 import { ARTICLES_REPOSITORY } from '../../domain/repositories/articles.repository';
 import { ARTICLE_ACCESS_SRV } from './article-access.service.interface';
 import type {
   ArticlesService,
-  CreateArticleParams,
-  GetArticleByIdParams,
-  GetArticleBySlugOrIdParams,
-  GetArticleBySlugParams,
-  GetManyArticlesParams,
-  UpdateArticleParams,
+  CreateArticleCommand,
+  GetArticleByIdCommand,
+  GetArticleBySlugCommand,
+  GetArticleBySlugOrIdCommand,
+  GetArticlesCommand,
+  UpdateArticleCommand,
 } from './articles.service.interface';
 
 export class ArticlesServiceImpl implements ArticlesService {
@@ -26,88 +29,98 @@ export class ArticlesServiceImpl implements ArticlesService {
     private readonly articlesAccessSrv: IdentifierOf<typeof ARTICLE_ACCESS_SRV>,
 
     @Inject(ARTICLES_REPOSITORY)
-    private readonly repository: IdentifierOf<typeof ARTICLES_REPOSITORY>
+    private readonly repository: IdentifierOf<typeof ARTICLES_REPOSITORY>,
+
+    @Inject(ARTICLE_RELATION_REPOSITORY)
+    private readonly articleRelationRepository: IdentifierOf<typeof ARTICLE_RELATION_REPOSITORY>,
+
+    @Inject(TRANSACTION_SRV)
+    private readonly transactionSrv: IdentifierOf<typeof TRANSACTION_SRV>
   ) {}
 
   getArticleById(
-    reqCtx: RequestContext,
-    params: GetArticleByIdParams
+    txReqCtx: TxRequestContext,
+    params: GetArticleByIdCommand
   ): Effect.Effect<ArticleModel, ExclusionReason | UnknownException> {
     return pipe(
-      this.repository.findOneArticleById(reqCtx, params),
-      Effect.flatMap((article) => this.articlesAccessSrv.filterCanReadArticle(reqCtx, article))
+      this.repository.findArticleById(txReqCtx, params),
+      Effect.flatMap((article) => this.articlesAccessSrv.filterCanReadArticle(txReqCtx, article))
     );
   }
 
   getArticleBySlug(
-    reqCtx: RequestContext,
-    params: GetArticleBySlugParams
+    txReqCtx: TxRequestContext,
+    params: GetArticleBySlugCommand
   ): Effect.Effect<ArticleModel, ExclusionReason | UnknownException> {
     return pipe(
-      this.repository.findOneArticleBySlug(reqCtx, params),
-      Effect.flatMap((article) => this.articlesAccessSrv.filterCanReadArticle(reqCtx, article))
+      this.repository.findArticleBySlug(txReqCtx, params),
+      Effect.flatMap((article) => this.articlesAccessSrv.filterCanReadArticle(txReqCtx, article))
     );
   }
 
   getArticleBySlugOrId(
-    reqCtx: RequestContext,
-    params: GetArticleBySlugOrIdParams
+    txReqCtx: TxRequestContext,
+    params: GetArticleBySlugOrIdCommand
   ): Effect.Effect<ArticleModel, ExclusionReason | UnknownException> {
     return isUUID(params.slugOrId)
-      ? this.getArticleById(reqCtx, { id: params.slugOrId, published: params.published, type: params.type })
-      : this.getArticleBySlug(reqCtx, { published: params.published, slug: params.slugOrId, type: params.type });
+      ? this.getArticleById(txReqCtx, { id: params.slugOrId, published: params.published, type: params.type })
+      : this.getArticleBySlug(txReqCtx, { published: params.published, slug: params.slugOrId, type: params.type });
   }
 
-  getManyArticles(
-    reqCtx: RequestContext,
-    params: GetManyArticlesParams
+  getArticles(
+    txReqCtx: TxRequestContext,
+    params: GetArticlesCommand
   ): Effect.Effect<Array<ArticleModel | ExclusionReason>, ExclusionReason | UnknownException> {
     return pipe(
-      this.repository.findManyArticles(reqCtx, params),
-      Effect.flatMap((items) => this.articlesAccessSrv.filterCanReadArticleList(reqCtx, items))
+      this.repository.findArticles(txReqCtx, params),
+      Effect.flatMap((items) => this.articlesAccessSrv.filterCanReadArticleList(txReqCtx, items))
     );
   }
 
   createArticle(
-    reqCtx: RequestContext,
-    body: CreateArticleParams
+    txReqCtx: TxRequestContext,
+    command: CreateArticleCommand
   ): Effect.Effect<ArticleModel, ExclusionReason | UnknownException> {
     return pipe(
-      this.articlesAccessSrv.canCreateArticle(reqCtx),
-      Effect.flatMap(() => this.repository.createArticle(reqCtx, body))
+      this.articlesAccessSrv.canCreateArticle(txReqCtx),
+      Effect.flatMap(() => this.repository.createArticle(txReqCtx, command))
     );
   }
 
   updateArticle(
-    reqCtx: RequestContext,
-    id: string,
-    body: UpdateArticleParams
+    txReqCtx: TxRequestContext,
+    command: UpdateArticleCommand
   ): Effect.Effect<ArticleModel, ExclusionReason | UnknownException> {
-    return pipe(
-      this.getArticleById(reqCtx, { id }),
-      Effect.flatMap((article) => this.articlesAccessSrv.canUpdateArticle(reqCtx, article)),
-      Effect.flatMap(() => this.repository.updateArticle(reqCtx, id, body))
-    );
+    return this.transactionSrv.withTransaction(txReqCtx, (txCtx) => {
+      return pipe(
+        this.getArticleById(txCtx, { id: command.articleId }),
+        Effect.flatMap((article) => this.articlesAccessSrv.canUpdateArticle(txCtx, article)),
+        Effect.flatMap(() => this.repository.updateArticle(txCtx, command))
+      );
+    });
   }
 
-  publishArticle(reqCtx: RequestContext, id: string): Effect.Effect<ArticleModel, ExclusionReason | UnknownException> {
+  publishArticle(
+    txReqCtx: TxRequestContext,
+    id: string
+  ): Effect.Effect<ArticleModel, ExclusionReason | UnknownException> {
     return pipe(
-      this.getArticleById(reqCtx, { id }),
-      Effect.flatMap((article) => this.articlesAccessSrv.canUpdateArticle(reqCtx, article)),
-      Effect.flatMap(() => this.repository.setArticlePublished(reqCtx, id, true)),
-      Effect.flatMap((article) => this.articlesAccessSrv.filterCanReadArticle(reqCtx, article))
+      this.getArticleById(txReqCtx, { id }),
+      Effect.flatMap((article) => this.articlesAccessSrv.canUpdateArticle(txReqCtx, article)),
+      Effect.flatMap(() => this.repository.setArticlePublished(txReqCtx, id, true)),
+      Effect.flatMap((article) => this.articlesAccessSrv.filterCanReadArticle(txReqCtx, article))
     );
   }
 
   unpublishArticle(
-    reqCtx: RequestContext,
+    txReqCtx: TxRequestContext,
     id: string
   ): Effect.Effect<ArticleModel, ExclusionReason | UnknownException> {
     return pipe(
-      this.getArticleById(reqCtx, { id }),
-      Effect.flatMap((article) => this.articlesAccessSrv.canUpdateArticle(reqCtx, article)),
-      Effect.flatMap(() => this.repository.setArticlePublished(reqCtx, id, false)),
-      Effect.flatMap((article) => this.articlesAccessSrv.filterCanReadArticle(reqCtx, article))
+      this.getArticleById(txReqCtx, { id }),
+      Effect.flatMap((article) => this.articlesAccessSrv.canUpdateArticle(txReqCtx, article)),
+      Effect.flatMap(() => this.repository.setArticlePublished(txReqCtx, id, false)),
+      Effect.flatMap((article) => this.articlesAccessSrv.filterCanReadArticle(txReqCtx, article))
     );
   }
 }

@@ -4,7 +4,7 @@ import type { UnknownException } from 'effect/Cause';
 
 import { ExclusionReason } from 'src/shared/excluded';
 import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
-import type { RequestContext } from 'src/shared/utils/request-context';
+import type { TxRequestContext } from 'src/shared/utils/request-context';
 
 import { CASBIN_SRV } from 'src/modules/casbin';
 
@@ -17,27 +17,27 @@ export class ArticleAccessServiceImpl implements ArticleAccessService {
     private readonly casbinSrv: IdentifierOf<typeof CASBIN_SRV>
   ) {}
 
-  canCreateArticle(reqCtx: RequestContext): Effect.Effect<true, ExclusionReason | UnknownException> {
-    return this.casbinSrv.checkRequestPermission(reqCtx, 'create', 'article', {});
+  canCreateArticle(txReqCtx: TxRequestContext): Effect.Effect<true, ExclusionReason | UnknownException> {
+    return this.casbinSrv.checkRequestPermission(txReqCtx, 'create', 'article', {});
   }
 
   filterCanReadArticle(
-    reqCtx: RequestContext,
+    txReqCtx: TxRequestContext,
     article: ArticleModel
   ): Effect.Effect<ArticleModel, ExclusionReason | UnknownException> {
     return pipe(
-      this.casbinSrv.checkRequestPermission(reqCtx, 'read', 'article', article),
+      this.casbinSrv.checkRequestPermission(txReqCtx, 'read', 'article', article),
       Effect.map(() => article)
     );
   }
 
   filterCanReadArticleList(
-    reqCtx: RequestContext,
+    txReqCtx: TxRequestContext,
     articles: ArticleModel[]
   ): Effect.Effect<Array<ArticleModel | ExclusionReason>, UnknownException> {
     return Effect.all(
       articles.map((article) =>
-        this.filterCanReadArticle(reqCtx, article).pipe(
+        this.filterCanReadArticle(txReqCtx, article).pipe(
           Effect.catchAll((err) => (err instanceof ExclusionReason ? Effect.succeed(err) : Effect.fail(err)))
         )
       )
@@ -45,9 +45,9 @@ export class ArticleAccessServiceImpl implements ArticleAccessService {
   }
 
   canUpdateArticle(
-    reqCtx: RequestContext,
+    txReqCtx: TxRequestContext,
     article: ArticleModel
   ): Effect.Effect<true, ExclusionReason | UnknownException> {
-    return this.casbinSrv.checkRequestPermission(reqCtx, 'update', 'article', article);
+    return this.casbinSrv.checkRequestPermission(txReqCtx, 'update', 'article', article);
   }
 }

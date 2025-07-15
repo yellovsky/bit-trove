@@ -99,6 +99,7 @@ export default {
     'personal programming blog, JavaScript blog, React blog, MobX tutorials, TypeScript tips, functional programming, software architecture, code experiments, developer notes, frontend engineering, web development blog, effect-ts, RxJS state management, custom editors in React',
   meta_title_suffix: 'BitTrove',
   no_results_found: 'No results found',
+  'Related Articles': 'Related Articles',
   'See all': 'See all',
   Shard: 'Shard',
   'Sort by:': 'Sort by:',

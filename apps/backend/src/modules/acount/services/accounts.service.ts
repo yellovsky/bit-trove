@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 
 import type { ResultOrExcluded } from 'src/shared/excluded';
 import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
-import type { RequestContext } from 'src/shared/utils/request-context';
+import type { TxRequestContext } from 'src/shared/utils/request-context';
 
 import type { AccountEntity } from '../entities/account.entity';
 import type { ProfileEntity } from '../entities/profile.entity';
@@ -20,11 +20,11 @@ export class AccountsServiceImpl implements AccountsService {
     private readonly profilesRepo: IdentifierOf<typeof PROFILES_REPO>
   ) {}
 
-  getAccountById(reqCtx: RequestContext, id: string): Promise<ResultOrExcluded<AccountEntity>> {
-    return this.accountsRepo.findAccountById(reqCtx, id);
+  getAccountById(txReqCtx: TxRequestContext, id: string): Promise<ResultOrExcluded<AccountEntity>> {
+    return this.accountsRepo.findAccountById(txReqCtx, id);
   }
 
-  getAccountRootProfile(reqCtx: RequestContext, accountId: string): Promise<ResultOrExcluded<ProfileEntity>> {
-    return this.profilesRepo.findAccountRootProfile(reqCtx, accountId);
+  getAccountRootProfile(txReqCtx: TxRequestContext, accountId: string): Promise<ResultOrExcluded<ProfileEntity>> {
+    return this.profilesRepo.findAccountRootProfile(txReqCtx, accountId);
   }
 }

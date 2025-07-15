@@ -19,11 +19,11 @@ import { getNextPageParam, initialPageParam } from '@shared/lib/page-params';
 
 import {
   createShortArticlesGetKey,
+  getShortArticles,
   prefetchShortArticles,
   type ShortArticlesGetVariables,
   type ShortArticlesQueryKey,
 } from '@entities/articles';
-import { fetchShortArticles } from '@entities/articles/api/get-short-articles';
 
 export type ShortBlogPostsGetVariables = Omit<ShortArticlesGetVariables, 'filter'> & {
   filter?: Omit<ShortArticlesGetVariables['filter'], 'typeIn'>;
@@ -40,7 +40,7 @@ const createShortBlogPostsGetKey = (variables: ShortBlogPostsGetVariables): Shor
 const fetchShortBlogPosts =
   (apiClient: ApiClient): QueryFunction<ShortBlogPostsGetResponse, ShortArticlesQueryKey, PageRequest> =>
   async (params) => {
-    const response = await fetchShortArticles(apiClient)(params);
+    const response = await getShortArticles(apiClient)(params);
     if (!isShortBlogPostsGetResponse(response)) throw new Response('Internal server error', { status: 500 });
     return response;
   };

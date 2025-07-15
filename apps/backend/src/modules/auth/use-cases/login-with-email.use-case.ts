@@ -9,6 +9,7 @@ import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
 import type { RequestContext } from 'src/shared/utils/request-context';
 
 import { ACCOUNTS_SRV, AUTH_PROVIDERS_SRV } from 'src/modules/acount';
+import { PRISMA_SRV } from 'src/modules/prisma';
 
 import { ACCESS_TOKEN_COOKIE_KEY } from '../config/constants';
 import { LoginWithEmailResponseDto } from '../dto/login-with-email-response.dto';
@@ -24,7 +25,10 @@ export class LoginWithEmailUseCase {
     private readonly accountSrv: IdentifierOf<typeof ACCOUNTS_SRV>,
 
     @Inject(AUTH_PROVIDERS_SRV)
-    private readonly authProviderSrv: IdentifierOf<typeof AUTH_PROVIDERS_SRV>
+    private readonly authProviderSrv: IdentifierOf<typeof AUTH_PROVIDERS_SRV>,
+
+    @Inject(PRISMA_SRV)
+    private readonly prismaSrv: IdentifierOf<typeof PRISMA_SRV>
   ) {}
 
   async execute(
@@ -33,13 +37,14 @@ export class LoginWithEmailUseCase {
     req: Request,
     res: Response
   ): Promise<LoginWithEmailResponseDto> {
+    // TODO add transaction
     const authProvider = Either.getOrThrowWith(
-      await this.authProviderSrv.getAuthProviderByEmail(reqCtx, body.email),
+      await this.authProviderSrv.getAuthProviderByEmail(reqCtx.withTx(this.prismaSrv), body.email),
       () => new Error(`Auth provider with ${body.email} email not found`)
     );
 
     const account = Either.getOrThrowWith(
-      await this.accountSrv.getAccountById(reqCtx, authProvider.accountId),
+      await this.accountSrv.getAccountById(reqCtx.withTx(this.prismaSrv), authProvider.accountId),
       () => new Error(`Account with ${body.email} email not found`)
     );
 

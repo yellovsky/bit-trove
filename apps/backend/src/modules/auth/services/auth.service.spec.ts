@@ -4,11 +4,12 @@ import { Either } from 'effect';
 
 import { NotFoundReason } from 'src/shared/excluded';
 import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
-import { makeMockRequestContext } from 'src/shared/utils/request-context';
+import { makeMockTxRequestContext } from 'src/shared/utils/request-context';
 
 import { ACCOUNTS_SRV, AUTH_PROVIDERS_SRV, PROFILES_SRV } from 'src/modules/acount';
 import { createMockAccountEntity } from 'src/modules/acount/entities/account.entity.mock';
 import { createMockEmailAuthProviderEntity } from 'src/modules/acount/entities/auth-provider.entity.mock';
+import type { TransactionContext } from 'src/modules/prisma';
 
 import { AuthInvalidPwdError } from '../errors/auth-invalid-pwd.error';
 import { AuthNotFoundError } from '../errors/auth-not-found.error';
@@ -57,7 +58,11 @@ describe('AuthService', () => {
         authProvidersSrv.getAuthProviderByEmail.mockResolvedValue(Either.right(expectedAccountEntity.authProviders[0]));
         bcryptSrv.compare.mockResolvedValue(true);
 
-        const profileEntity = await service.validateProfileByEmail(makeMockRequestContext(), 'email', 'password');
+        const profileEntity = await service.validateProfileByEmail(
+          makeMockTxRequestContext(createMock<TransactionContext>()),
+          'email',
+          'password'
+        );
         await expect(Either.getOrThrow(profileEntity)).toBe(expectedAccountEntity.profiles.at(0));
       });
     });
@@ -66,7 +71,11 @@ describe('AuthService', () => {
       it('should throw AuthNotFoundError', async () => {
         authProvidersSrv.getAuthProviderByEmail.mockResolvedValue(Either.left(new NotFoundReason()));
         const fn = async () => {
-          await service.validateProfileByEmail(makeMockRequestContext(), 'email', 'password');
+          await service.validateProfileByEmail(
+            makeMockTxRequestContext(createMock<TransactionContext>()),
+            'email',
+            'password'
+          );
         };
 
         await expect(fn()).rejects.toThrow(AuthNotFoundError);
@@ -80,7 +89,11 @@ describe('AuthService', () => {
         );
 
         const fn = async () => {
-          await service.validateProfileByEmail(makeMockRequestContext(), 'email', 'password');
+          await service.validateProfileByEmail(
+            makeMockTxRequestContext(createMock<TransactionContext>()),
+            'email',
+            'password'
+          );
         };
 
         await expect(fn()).rejects.toThrow(AuthPwdIsNotSetError);
@@ -97,7 +110,11 @@ describe('AuthService', () => {
         bcryptSrv.compare.mockResolvedValue(false);
 
         const fn = async () => {
-          await service.validateProfileByEmail(makeMockRequestContext(), 'email', 'password');
+          await service.validateProfileByEmail(
+            makeMockTxRequestContext(createMock<TransactionContext>()),
+            'email',
+            'password'
+          );
         };
 
         await expect(fn()).rejects.toThrow(AuthInvalidPwdError);

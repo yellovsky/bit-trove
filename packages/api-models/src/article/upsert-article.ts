@@ -1,5 +1,6 @@
 import * as zod from 'zod';
 
+import { articleRelationTypeSchema } from '../article-relation';
 import { jsonContentSchema } from '../common/json-content';
 import { localeSchema } from '../common/locale';
 import { getSuccessResponseSchema } from '../common/success-response';
@@ -10,6 +11,12 @@ export const articleUpsertBodySchema = zod.object({
   entryId: zod.string().nullable(),
   languageCode: localeSchema,
   published: zod.boolean(),
+  relatedArticles: zod.array(
+    zod.object({
+      articleId: zod.string(),
+      relationType: articleRelationTypeSchema,
+    })
+  ),
   seoDescription: zod.string().nullable(),
   seoKeywords: zod.string().nullable(),
   seoTitle: zod.string().nullable(),

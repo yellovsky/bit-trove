@@ -3,24 +3,25 @@ import type { UnknownException } from 'effect/Cause';
 
 import type { ExclusionReason } from 'src/shared/excluded';
 import type { InjectableIdentifier } from 'src/shared/utils/injectable-identifier';
-import type { RequestContext } from 'src/shared/utils/request-context';
+import type { TxRequestContext } from 'src/shared/utils/request-context';
 
 import type { ArticleModel } from '../../domain/models/article.model';
 
 export interface ArticleAccessService {
   filterCanReadArticle(
-    reqCtx: RequestContext,
+    txReqCtx: TxRequestContext,
     article: ArticleModel
   ): Effect.Effect<ArticleModel, ExclusionReason | UnknownException>;
 
   filterCanReadArticleList(
-    reqCtx: RequestContext,
+    txReqCtx: TxRequestContext,
     articles: ArticleModel[]
   ): Effect.Effect<Array<ArticleModel | ExclusionReason>, UnknownException>;
 
-  canCreateArticle(reqCtx: RequestContext): Effect.Effect<true, ExclusionReason | UnknownException>;
+  canCreateArticle(txReqCtx: TxRequestContext): Effect.Effect<true, ExclusionReason | UnknownException>;
+
   canUpdateArticle(
-    reqCtx: RequestContext,
+    txReqCtx: TxRequestContext,
     article: ArticleModel
   ): Effect.Effect<true, ExclusionReason | UnknownException>;
 }

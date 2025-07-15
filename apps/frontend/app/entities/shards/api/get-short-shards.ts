@@ -19,11 +19,11 @@ import { getNextPageParam, initialPageParam } from '@shared/lib/page-params';
 
 import {
   createShortArticlesGetKey,
+  getShortArticles,
   prefetchShortArticles,
   type ShortArticlesGetVariables,
   type ShortArticlesQueryKey,
 } from '@entities/articles';
-import { fetchShortArticles } from '@entities/articles/api/get-short-articles';
 
 export type ShortShardsGetVariables = Omit<ShortArticlesGetVariables, 'filter'> & {
   filter?: Omit<ShortArticlesGetVariables['filter'], 'typeIn'>;
@@ -40,7 +40,7 @@ const createShortShardsGetKey = (variables: ShortShardsGetVariables): ShortArtic
 const fetchShortShards =
   (apiClient: ApiClient): QueryFunction<ShortShardsGetResponse, ShortArticlesQueryKey, PageRequest> =>
   async (params) => {
-    const response = await fetchShortArticles(apiClient)(params);
+    const response = await getShortArticles(apiClient)(params);
     if (!isShortShardsGetResponse(response)) throw new Response('Not found', { status: 404 });
     return response;
   };
