@@ -10,20 +10,9 @@ export default {
   create_blog_post_button: {
     text: 'Создать статью',
   },
-  create_blog_post_form: {
-    submit_button: {
-      text: 'Создать статью',
-    },
-    title: 'Создать статью',
-  },
   'Edit blog post': 'Редактировать статью',
   'Error loading blog post': 'Ошибка загрузки статьи',
-  edit_blog_post_form: {
-    submit_button: {
-      text: 'Сохранить статью',
-    },
-    title: 'Редактировать статью',
-  },
+
   empty: {
     description: 'Загляните позже для новых статей и руководств.',
     title: 'Статей пока нет',

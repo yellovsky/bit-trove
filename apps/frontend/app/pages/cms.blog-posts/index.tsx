@@ -37,6 +37,10 @@ import { useMyShortBlogPostsQuery } from '@entities/blog-posts';
 import { BlogPostPublishSwitch } from './BlogPostPublishSwitch';
 import { BlogPostTableMenu } from './BlogPostTableMenu';
 
+export const handle = {
+  i18n: ['cms', 'cms_articles', 'blog_posts'],
+};
+
 const columnHelper = createColumnHelper<ShortBlogPost>();
 
 const useColumns = () => {

@@ -1,18 +1,20 @@
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
+import { isShard } from '@repo/api-models';
 import { Heading } from '@repo/ui/components/Typography';
 
+import { UpsertArticleForm, type UpsertArticleVariables } from '@features/articles';
 import { type AppBreadcrumb, Breadcrumbs } from '@features/breadcrumbs';
-import { CreateShardForm, getCmsShardsLink, getEditShardLink } from '@features/shards';
-import type { UpsertShardVariables } from '@features/shards/ui/CreateShardForm';
+import { getCmsShardsLink, getEditShardLink } from '@features/shards';
 
-import { type ShardUpdateVariables, useMyShardQuery, useShardUpdateMutation } from '@entities/shards';
+import { useRelatedArticlesQuery } from '@entities/articles/api/article-relation.api';
+import { useMyShardQuery, useShardUpdateMutation } from '@entities/shards';
 
 import type { Route } from './+types';
 
 export const handle = {
-  i18n: ['shards', 'cms'],
+  i18n: ['cms', 'cms_articles', 'shards'],
 };
 
 export default function CMSShardsEditRoute(props: Route.ComponentProps) {
@@ -20,35 +22,37 @@ export default function CMSShardsEditRoute(props: Route.ComponentProps) {
   const { t: tShards } = useTranslation('shards');
   const navigate = useNavigate();
 
-  const myShardQuery = useMyShardQuery({
-    id: props.params.id,
-    locale: i18n.language,
-  });
+  const myShardQuery = useMyShardQuery({ id: props.params.id, locale: i18n.language });
+  const relatedArticlesQuery = useRelatedArticlesQuery({ id: props.params.id, locale: i18n.language });
 
   const { status, mutateAsync } = useShardUpdateMutation();
 
-  const handleSubmit = async (data: Omit<UpsertShardVariables, 'id'>) => {
+  const handleSubmit = async (data: Omit<UpsertArticleVariables, 'id'>) => {
     const shard = await mutateAsync({ ...data, id: props.params.id, type: 'shard' });
+    if (!isShard(shard.data)) throw new Error('Invalid response');
     return shard.data;
   };
 
-  const myShard = myShardQuery.data?.data;
-  const defaultValues: ShardUpdateVariables | undefined = !myShard
-    ? undefined
-    : {
-        contentJSON: myShard.contentJSON ?? { content: [], type: 'doc' },
-        entryId: myShard.entryId,
-        id: myShard.id,
-        languageCode: myShard.languageCode,
-        published: myShard.publishedAt !== null,
-        seoDescription: myShard.seo.description,
-        seoKeywords: myShard.seo.keywords,
-        seoTitle: myShard.seo.title,
-        shortDescription: myShard.shortDescription,
-        slug: myShard.slug,
-        tags: myShard.tags.map((tag) => tag.name),
-        title: myShard.title,
-      };
+  const defaultValues: UpsertArticleVariables | undefined =
+    !myShardQuery.data || !relatedArticlesQuery.data
+      ? undefined
+      : {
+          contentJSON: myShardQuery.data.data.contentJSON ?? { content: [], type: 'doc' },
+          entryId: myShardQuery.data.data.entryId,
+          languageCode: myShardQuery.data.data.languageCode,
+          published: myShardQuery.data.data.publishedAt !== null,
+          relatedArticles: relatedArticlesQuery.data.data.map((article) => ({
+            articleId: article.id,
+            relationType: article.relationType,
+          })),
+          seoDescription: myShardQuery.data.data.seo.description,
+          seoKeywords: myShardQuery.data.data.seo.keywords,
+          seoTitle: myShardQuery.data.data.seo.title,
+          shortDescription: myShardQuery.data.data.shortDescription,
+          slug: myShardQuery.data.data.slug,
+          tags: myShardQuery.data.data.tags.map((tag) => tag.name),
+          title: myShardQuery.data.data.title,
+        };
 
   const handleSuccess = () => navigate(`/${i18n.language}${getCmsShardsLink()}`);
   const breadcrumbs = [
@@ -56,7 +60,7 @@ export default function CMSShardsEditRoute(props: Route.ComponentProps) {
     { label: 'CMS', to: '/cms' },
     { label: t('menu_items.shards.title'), to: '/cms/shards' },
     myShardQuery.data?.data
-      ? { label: tShards('edit_shard_form.title'), to: getEditShardLink(myShardQuery.data?.data) }
+      ? { label: tShards('edit_shard_page.title'), to: getEditShardLink(myShardQuery.data?.data) }
       : null,
   ].filter(Boolean) as AppBreadcrumb[];
 
@@ -65,11 +69,11 @@ export default function CMSShardsEditRoute(props: Route.ComponentProps) {
       <Breadcrumbs className="mb-4" items={breadcrumbs} />
 
       <Heading className="mb-4" order={2}>
-        {tShards('edit_shard_form.title')}
+        {tShards('edit_shard_page.title')}
       </Heading>
 
       {myShardQuery.isLoading ? null : (
-        <CreateShardForm
+        <UpsertArticleForm
           defaultValues={defaultValues}
           id={props.params.id}
           isLoading={status === 'pending' || myShardQuery.isLoading}

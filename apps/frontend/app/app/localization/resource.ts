@@ -2,6 +2,8 @@ import { isLocale, type Locale, SUPPORTED_LOCALES } from '@shared/config';
 import { CMS_NS } from '@shared/config/translations';
 import { cmsEn, cmsRu } from '@shared/translations/cms';
 
+import { ARTICLES_NS, CMS_ARTICLES_NS } from '@features/articles';
+import { articlesEn, articlesRu, cmsArticlesEn, cmsArticlesRu } from '@features/articles/translations';
 import { AUTH_NS } from '@features/auth';
 import { authEn, authRu } from '@features/auth/translations';
 import { BLOG_POSTS_NS } from '@features/blog-posts';
@@ -27,6 +29,8 @@ type Resource = {
   [AUTH_NS]: ResourceShape<typeof authEn>;
   [SHARDS_NS]: ResourceShape<typeof shardsEn>;
   [CMS_NS]: ResourceShape<typeof cmsEn>;
+  [ARTICLES_NS]: ResourceShape<typeof articlesEn>;
+  [CMS_ARTICLES_NS]: ResourceShape<typeof cmsArticlesEn>;
 };
 
 export const resources: Record<Locale, Resource> = {
@@ -36,6 +40,8 @@ export const resources: Record<Locale, Resource> = {
     [AUTH_NS]: authEn,
     [SHARDS_NS]: shardsEn,
     [CMS_NS]: cmsEn,
+    [ARTICLES_NS]: articlesEn,
+    [CMS_ARTICLES_NS]: cmsArticlesEn,
   },
   ru: {
     [COMMON_NS]: commonRu,
@@ -43,6 +49,8 @@ export const resources: Record<Locale, Resource> = {
     [AUTH_NS]: authRu,
     [SHARDS_NS]: shardsRu,
     [CMS_NS]: cmsRu,
+    [ARTICLES_NS]: articlesRu,
+    [CMS_ARTICLES_NS]: cmsArticlesRu,
   },
 };
 

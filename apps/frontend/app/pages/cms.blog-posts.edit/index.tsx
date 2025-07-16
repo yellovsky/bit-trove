@@ -5,11 +5,16 @@ import { isBlogPost } from '@repo/api-models';
 import { Skeleton } from '@repo/ui/components/Skeleton';
 import { Heading } from '@repo/ui/components/Typography';
 
-import { CreateBlogPostForm, getCmsBlogPostsLink, type UpsertBlogPostVariables } from '@features/blog-posts';
+import { UpsertArticleForm, type UpsertArticleVariables } from '@features/articles';
+import { getCmsBlogPostsLink } from '@features/blog-posts';
 import { type AppBreadcrumb, Breadcrumbs } from '@features/breadcrumbs';
 
 import { useRelatedArticlesQuery } from '@entities/articles/api/article-relation.api';
 import { useBlogPostUpdateMutation, useMyBlogPostQuery } from '@entities/blog-posts';
+
+export const handle = {
+  i18n: ['cms', 'cms_articles', 'blog_posts'],
+};
 
 export default function CMSBlogPostsEditRoute(props: { params: { id: string } }) {
   const navigate = useNavigate();
@@ -21,7 +26,7 @@ export default function CMSBlogPostsEditRoute(props: { params: { id: string } })
   const blogPostQuery = useMyBlogPostQuery({ id: props.params.id, locale: i18n.language });
   const relatedArticlesQuery = useRelatedArticlesQuery({ id: props.params.id, locale: i18n.language });
 
-  const handleSubmit = async (data: Omit<UpsertBlogPostVariables, 'id'>) => {
+  const handleSubmit = async (data: Omit<UpsertArticleVariables, 'id'>) => {
     const blogPost = await mutateAsync({ ...data, id: props.params.id, type: 'blog_post' });
     if (!isBlogPost(blogPost.data)) throw new Error('Invalid response');
     return blogPost.data;
@@ -35,7 +40,7 @@ export default function CMSBlogPostsEditRoute(props: { params: { id: string } })
     { label: tBlogPosts('Edit blog post'), to: `/cms/blog-posts/edit/${props.params.id}` },
   ].filter(Boolean) as AppBreadcrumb[];
 
-  const defaultValues: UpsertBlogPostVariables | undefined =
+  const defaultValues: UpsertArticleVariables | undefined =
     !blogPostQuery.data || !relatedArticlesQuery.data
       ? undefined
       : {
@@ -104,7 +109,7 @@ export default function CMSBlogPostsEditRoute(props: { params: { id: string } })
         {tBlogPosts('Edit blog post')}
       </Heading>
 
-      <CreateBlogPostForm
+      <UpsertArticleForm
         defaultValues={defaultValues}
         id={props.params.id}
         isLoading={status === 'pending'}

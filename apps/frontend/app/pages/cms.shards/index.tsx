@@ -37,11 +37,14 @@ import { useMyShortShardsQuery } from '@entities/shards';
 import { ShardPublishSwitch } from './ShardPublishSwitch';
 import { ShardTableMenu } from './ShardTableMenu';
 
+export const handle = {
+  i18n: ['cms', 'cms_articles', 'shards'],
+};
+
 const columnHelper = createColumnHelper<ShortShard>();
 
 const useColumns = () => {
-  const { t: tShards, i18n } = useTranslation('shards');
-  const { t: tCms } = useTranslation('cms');
+  const { t: tCmsArticles, i18n } = useTranslation('cms_articles');
 
   const dateFormatter = useMemo(
     () =>
@@ -56,24 +59,24 @@ const useColumns = () => {
     () => [
       columnHelper.accessor('title', {
         enableSorting: true,
-        header: tShards('upsert_shard_form.title.label'),
+        header: tCmsArticles('articles_table.title.column_header'),
       }),
       columnHelper.accessor('slug', {
         enableSorting: false,
-        header: tShards('upsert_shard_form.slug.label'),
+        header: tCmsArticles('articles_table.slug.column_header'),
       }),
       columnHelper.accessor('languageCode', {
         enableSorting: false,
-        header: tShards('upsert_shard_form.language_code.label'),
+        header: tCmsArticles('articles_table.language_code.column_header'),
       }),
       columnHelper.accessor('createdAt', {
         cell: (info) => <div className="text-nowrap">{dateFormatter.format(new Date(info.getValue()))}</div>,
         enableSorting: true,
-        header: tCms('created_at'),
+        header: tCmsArticles('articles_table.created_at.column_header'),
       }),
       columnHelper.display({
         cell: (row) => (!row.row.original ? null : <ShardPublishSwitch shard={row.row.original} />),
-        header: tCms('published'),
+        header: tCmsArticles('articles_table.published.column_header'),
         id: 'published',
       }),
       columnHelper.display({
@@ -81,7 +84,7 @@ const useColumns = () => {
         id: 'actions',
       }),
     ],
-    [dateFormatter, tCms, tShards]
+    [dateFormatter, tCmsArticles]
   );
 };
 

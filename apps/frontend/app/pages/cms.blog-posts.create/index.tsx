@@ -3,20 +3,21 @@ import { useTranslation } from 'react-i18next';
 import { isBlogPost } from '@repo/api-models';
 import { Heading } from '@repo/ui/components/Typography';
 
-import { CreateBlogPostForm, getCreateBlogPostLink, type UpsertBlogPostVariables } from '@features/blog-posts';
+import { UpsertArticleForm, type UpsertArticleVariables } from '@features/articles';
+import { getCreateBlogPostLink } from '@features/blog-posts';
 import { type AppBreadcrumb, Breadcrumbs } from '@features/breadcrumbs';
 
 import { useBlogPostCreateMutation } from '@entities/blog-posts';
 
 export const handle = {
-  i18n: ['cms'],
+  i18n: ['cms', 'cms_articles', 'blog_posts'],
 };
 
 export default function CMSBlogPostsCreateRoute() {
   const { status, mutateAsync } = useBlogPostCreateMutation();
   const { t } = useTranslation();
 
-  const handleSubmit = async (data: UpsertBlogPostVariables) => {
+  const handleSubmit = async (data: UpsertArticleVariables) => {
     const blogPost = await mutateAsync(data);
     if (!isBlogPost(blogPost.data)) throw new Error('Invalid response');
     return blogPost.data;
@@ -37,7 +38,7 @@ export default function CMSBlogPostsCreateRoute() {
         Create Blog Post
       </Heading>
 
-      <CreateBlogPostForm isLoading={status === 'pending'} mode="create" onSubmit={handleSubmit} />
+      <UpsertArticleForm isLoading={status === 'pending'} mode="create" onSubmit={handleSubmit} />
     </div>
   );
 }

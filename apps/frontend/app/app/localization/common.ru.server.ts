@@ -1,6 +1,8 @@
 export default {
   '{{number}} min read': '{number} мин. чтения',
   '{{year}} all rights reserved': '© {year}. Все права защищены.',
+
+  'Blog Post': 'Блог пост',
   blog_post: 'Блог пост',
   'Content management': 'Управление контентом',
   error: {
@@ -103,6 +105,7 @@ export default {
   no_results_found: 'Ничего не найдено',
   'Related Articles': 'Ещё по теме',
   'See all': 'Посмотреть все',
+  Shard: 'Фрагмент',
   'Sort by:': 'Сортировать по:',
   search: {
     empty_message: 'Ничего не найдено. Попробуйте другой поисковый запрос.',

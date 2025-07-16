@@ -10,20 +10,9 @@ export default {
   create_blog_post_button: {
     text: 'Create blog post',
   },
-  create_blog_post_form: {
-    submit_button: {
-      text: 'Create blog post',
-    },
-    title: 'Create blog post',
-  },
   'Edit blog post': 'Edit Blog Post',
   'Error loading blog post': 'Error loading blog post',
-  edit_blog_post_form: {
-    submit_button: {
-      text: 'Save blog post',
-    },
-    title: 'Edit blog post',
-  },
+
   empty: {
     description: 'Check back later for new articles and tutorials.',
     title: 'No blog posts yet',

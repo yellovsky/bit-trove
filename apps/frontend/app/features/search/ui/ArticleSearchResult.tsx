@@ -2,7 +2,7 @@ import { FileTextIcon } from 'lucide-react';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { isBlogPost, type ShortArticle } from '@repo/api-models';
+import { isBlogPost, isShard, type ShortArticle } from '@repo/api-models';
 import { Link } from '@repo/ui/components/Link';
 import * as SearchResultItem from '@repo/ui/components/SearchResultItem';
 
@@ -24,7 +24,7 @@ const ArticleSearchResult: FC<ArticleSearchResultProps> = ({ article, ...rest })
   const { t } = useTranslation();
   const date = useRelativeDate(article.createdAt);
 
-  const to = isBlogPost(article) ? getBlogPostLink(article) : getShardLink(article);
+  const to = isBlogPost(article) ? getBlogPostLink(article) : isShard(article) ? getShardLink(article) : '/';
   const filename = [article.title.replace(/ /g, '-').toLowerCase(), '.md'].join('');
   return (
     <SearchResultItem.Root {...rest} asChild>
