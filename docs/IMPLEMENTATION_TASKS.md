@@ -15,11 +15,216 @@ Tasks that enhance functionality but aren't critical for basic operation.
 ### 🟢 Low Priority (Nice-to-Have)
 Tasks that improve user experience but aren't essential.
 
-## Phase 1: Meta-Blog Enhancement (High Priority)
+## Phase 1: Security & Production Readiness (High Priority)
 
-### 1.1 Meta-Blog Content Structure
+### 1.1 Security Hardening
 
-#### Task 1.1.1: Create Meta-Blog Section
+#### Task 1.1.1: Replace Casbin eval() with Safer Evaluation
+**Priority**: 🔴 High
+**Complexity**: High
+**Estimated Time**: 1 week
+**Architecture Layer**: Backend (Security)
+
+**Description**: Replace the unsafe eval() usage in Casbin model with a safer condition evaluation system.
+
+**Current Issue**: `model.conf` line 15 uses `eval(p.cond)` which is a security risk.
+
+**Tasks**:
+- [ ] Design a safe condition evaluation system
+- [ ] Implement condition parser and validator
+- [ ] Create condition evaluation engine
+- [ ] Update Casbin model configuration
+- [ ] Migrate existing policies to new format
+- [ ] Add comprehensive testing for condition evaluation
+- [ ] Update documentation
+
+**Implementation**:
+```typescript
+// apps/backend/src/modules/casbin/services/condition-evaluator.service.ts
+interface ConditionEvaluatorService {
+  evaluateCondition(condition: string, context: EvaluationContext): boolean;
+  validateCondition(condition: string): ValidationResult;
+}
+
+// apps/backend/src/modules/casbin/domain/models/condition.model.ts
+interface ConditionModel {
+  expression: string;
+  variables: string[];
+  validationRules: ValidationRule[];
+}
+```
+
+#### Task 1.1.2: Implement Rate Limiting
+**Priority**: 🔴 High
+**Complexity**: Medium
+**Estimated Time**: 3 days
+**Architecture Layer**: Backend (Security)
+
+**Description**: Implement comprehensive rate limiting for API endpoints.
+
+**Tasks**:
+- [ ] Design rate limiting strategy
+- [ ] Implement rate limiting middleware
+- [ ] Add rate limiting for authentication endpoints
+- [ ] Add rate limiting for content creation endpoints
+- [ ] Configure rate limiting for search endpoints
+- [ ] Add rate limiting headers
+- [ ] Create rate limiting configuration
+
+**Implementation**:
+```typescript
+// apps/backend/src/modules/rate-limiting/rate-limiting.module.ts
+// apps/backend/src/modules/rate-limiting/middleware/rate-limiting.middleware.ts
+// apps/backend/src/modules/rate-limiting/services/rate-limiting.service.ts
+
+interface RateLimitingService {
+  checkRateLimit(key: string, limit: number, window: number): Promise<boolean>;
+  getRateLimitInfo(key: string): Promise<RateLimitInfo>;
+}
+```
+
+#### Task 1.1.3: Add Security Headers
+**Priority**: 🔴 High
+**Complexity**: Low
+**Estimated Time**: 1 day
+**Architecture Layer**: Backend (Security)
+
+**Description**: Implement comprehensive security headers for all responses.
+
+**Tasks**:
+- [ ] Add Helmet.js integration
+- [ ] Configure Content Security Policy
+- [ ] Add X-Frame-Options header
+- [ ] Add X-Content-Type-Options header
+- [ ] Add Referrer-Policy header
+- [ ] Add Permissions-Policy header
+- [ ] Test security headers
+
+**Implementation**:
+```typescript
+// apps/backend/src/main.ts
+import helmet from 'helmet';
+
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrc: ["'self'"],
+      imgSrc: ["'self'", "data:", "https:"],
+    },
+  },
+  hsts: {
+    maxAge: 31536000,
+    includeSubDomains: true,
+    preload: true,
+  },
+}));
+```
+
+#### Task 1.1.4: Implement JWT Refresh Tokens
+**Priority**: 🔴 High
+**Complexity**: Medium
+**Estimated Time**: 1 week
+**Architecture Layer**: Backend (Auth)
+
+**Description**: Implement JWT refresh token mechanism with shorter access token expiration.
+
+**Tasks**:
+- [ ] Design refresh token strategy
+- [ ] Implement refresh token generation
+- [ ] Add refresh token validation
+- [ ] Create token refresh endpoint
+- [ ] Update authentication flow
+- [ ] Add token blacklisting for logout
+- [ ] Update client-side token management
+
+**Implementation**:
+```typescript
+// apps/backend/src/modules/auth/services/refresh-token.service.ts
+interface RefreshTokenService {
+  generateRefreshToken(userId: string): Promise<string>;
+  validateRefreshToken(token: string): Promise<ValidationResult>;
+  revokeRefreshToken(token: string): Promise<void>;
+}
+
+// apps/backend/src/modules/auth/controllers/auth.controller.ts
+@Post('refresh')
+async refreshToken(@Body() body: RefreshTokenDto): Promise<RefreshTokenResponse> {
+  // Implementation
+}
+```
+
+### 1.2 Monitoring & Health Checks
+
+#### Task 1.2.1: Add Health Check Endpoints
+**Priority**: 🔴 High
+**Complexity**: Low
+**Estimated Time**: 2 days
+**Architecture Layer**: Backend (Monitoring)
+
+**Description**: Implement comprehensive health check endpoints for all system components.
+
+**Tasks**:
+- [ ] Create health check module
+- [ ] Add database health check
+- [ ] Add Redis health check
+- [ ] Add application health check
+- [ ] Create health check aggregation
+- [ ] Add health check metrics
+- [ ] Create health check documentation
+
+**Implementation**:
+```typescript
+// apps/backend/src/modules/health/health.module.ts
+// apps/backend/src/modules/health/controllers/health.controller.ts
+// apps/backend/src/modules/health/services/health.service.ts
+
+interface HealthService {
+  checkDatabaseHealth(): Promise<HealthStatus>;
+  checkRedisHealth(): Promise<HealthStatus>;
+  checkApplicationHealth(): Promise<HealthStatus>;
+  getOverallHealth(): Promise<HealthReport>;
+}
+```
+
+#### Task 1.2.2: Implement Application Metrics
+**Priority**: 🟡 Medium
+**Complexity**: Medium
+**Estimated Time**: 1 week
+**Architecture Layer**: Backend (Monitoring)
+
+**Description**: Implement comprehensive application metrics collection.
+
+**Tasks**:
+- [ ] Design metrics collection strategy
+- [ ] Implement request metrics
+- [ ] Add database query metrics
+- [ ] Add cache hit/miss metrics
+- [ ] Create metrics aggregation
+- [ ] Add metrics export endpoints
+- [ ] Create metrics dashboard
+
+**Implementation**:
+```typescript
+// apps/backend/src/modules/metrics/metrics.module.ts
+// apps/backend/src/modules/metrics/services/metrics.service.ts
+// apps/backend/src/modules/metrics/interceptors/metrics.interceptor.ts
+
+interface MetricsService {
+  recordRequest(duration: number, status: number, endpoint: string): void;
+  recordDatabaseQuery(duration: number, query: string): void;
+  recordCacheHit(key: string): void;
+  recordCacheMiss(key: string): void;
+  getMetrics(): Promise<MetricsReport>;
+}
+```
+
+## Phase 2: Meta-Blog Enhancement (High Priority)
+
+### 2.1 Meta-Blog Content Structure
+
+#### Task 2.1.1: Create Meta-Blog Section
 **Priority**: 🔴 High
 **Complexity**: Medium
 **Estimated Time**: 1 week
@@ -43,551 +248,433 @@ apps/frontend/app/pages/meta-blog/
 │   ├── layered-architecture-patterns.tsx       # Layered architecture implementation
 │   └── fsd-patterns.tsx       # FSD implementation
 ├── development/
-│   ├── page.tsx               # Development workflow
-│   ├── setup-guide.tsx        # Project setup
-│   └── deployment.tsx         # Deployment guide
-└── design-decisions/
-    ├── page.tsx               # Design decisions overview
-    ├── technology-choices.tsx # Tech stack decisions
-    └── api-design.tsx         # API design patterns
+│   ├── page.tsx               # Development guidelines
+│   ├── coding-standards.tsx   # Code standards and conventions
+│   └── testing-strategies.tsx # Testing approaches
+├── deployment/
+│   ├── page.tsx               # Deployment overview
+│   ├── infrastructure.tsx     # Infrastructure setup
+│   └── monitoring.tsx         # Monitoring and observability
+└── api/
+    ├── page.tsx               # API documentation
+    ├── authentication.tsx     # Auth system documentation
+    └── endpoints.tsx          # API endpoint reference
 ```
 
-#### Task 1.1.2: Document Architecture Decisions
-**Priority**: 🔴 High
-**Complexity**: High
-**Estimated Time**: 2 weeks
-**Architecture Layer**: Documentation
-
-**Description**: Create comprehensive documentation of architectural decisions and patterns.
-
-**Tasks**:
-- [ ] Document layered architecture implementation patterns with code examples
-- [ ] Create FSD architecture guide with component examples
-- [ ] Document API design decisions and REST patterns
-- [ ] Add database schema documentation
-- [ ] Create authentication/authorization flow diagrams
-- [ ] Document caching strategies and Redis usage
-- [ ] Add performance optimization patterns
-- [ ] Create testing strategy documentation
-
-**Content Structure**:
-```markdown
-# Architecture Documentation
-
-## Layered Architecture (Clean/Hexagonal Architecture)
-- Domain Models
-- Application Services
-- Infrastructure Layer
-- Presentation Layer
-
-## Feature-Sliced Design (FSD)
-- App Layer
-- Entities Layer
-- Features Layer
-- Shared Layer
-- Widgets Layer
-
-## API Design
-- RESTful Patterns
-- Error Handling
-- Validation
-- Versioning
-
-## Database Design
-- Schema Design
-- Relationships
-- Indexing Strategy
-- Migration Patterns
-```
-
-#### Task 1.1.3: Internal Code Links
+#### Task 2.1.2: Implement Architecture Documentation
 **Priority**: 🔴 High
 **Complexity**: Medium
 **Estimated Time**: 1 week
-**Architecture Layer**: Frontend (Features)
+**Architecture Layer**: Frontend (Content)
 
-**Description**: Implement internal links between documentation and actual code.
+**Description**: Create comprehensive documentation about BitTrove's architecture decisions.
 
 **Tasks**:
-- [ ] Create code reference component
-- [ ] Add GitHub repository links
-- [ ] Implement file path references
-- [ ] Add line number linking
-- [ ] Create code snippet highlighting
-- [ ] Add "View Source" buttons
+- [ ] Document layered architecture implementation
+- [ ] Create FSD architecture guide
+- [ ] Document API design decisions
+- [ ] Add code examples and snippets
+- [ ] Create architecture diagrams
+- [ ] Document design patterns used
+
+**Content Sections**:
+- **Layered Architecture**: Domain, Application, Infrastructure, Presentation layers
+- **FSD Implementation**: Feature-Sliced Design patterns and conventions
+- **API Design**: RESTful API design principles and patterns
+- **Database Design**: Prisma schema and relationship modeling
+- **Security Architecture**: Authentication, authorization, and security patterns
+
+#### Task 2.1.3: Add Internal Code Links
+**Priority**: 🟡 Medium
+**Complexity**: Low
+**Estimated Time**: 3 days
+**Architecture Layer**: Frontend (Content)
+
+**Description**: Add internal links to actual code files and GitHub repositories.
+
+**Tasks**:
+- [ ] Create code linking system
+- [ ] Add links to key implementation files
+- [ ] Create GitHub integration for code references
+- [ ] Add syntax highlighting for code snippets
 - [ ] Implement code search functionality
 
-**Components to Create**:
+**Implementation**:
 ```typescript
-// apps/frontend/app/features/meta-blog/ui/CodeReference.tsx
-interface CodeReferenceProps {
+// apps/frontend/app/features/meta-blog/components/CodeLink.tsx
+interface CodeLinkProps {
   filePath: string;
   lineNumber?: number;
   repository?: string;
-  branch?: string;
-}
-
-// apps/frontend/app/features/meta-blog/ui/ArchitectureDiagram.tsx
-interface ArchitectureDiagramProps {
-  type: 'layered' | 'fsd' | 'api' | 'database';
-  interactive?: boolean;
+  children: React.ReactNode;
 }
 ```
 
-### 1.2 Technical Documentation Enhancement
+## Phase 3: Advanced Search & Discovery (Medium Priority)
 
-#### Task 1.2.1: Developer-Friendly Layout
-**Priority**: 🔴 High
-**Complexity**: Medium
-**Estimated Time**: 1 week
-**Architecture Layer**: Frontend (UI)
+### 3.1 Graph Visualization
 
-**Description**: Create a developer-friendly documentation layout with syntax highlighting and interactive elements.
-
-**Tasks**:
-- [ ] Implement syntax highlighting for code blocks
-- [ ] Add interactive code examples
-- [ ] Create collapsible sections
-- [ ] Add table of contents navigation
-- [ ] Implement dark/light mode for documentation
-- [ ] Add copy-to-clipboard functionality
-- [ ] Create responsive documentation layout
-
-**Components to Create**:
-```typescript
-// apps/frontend/app/shared/ui/DocumentationLayout.tsx
-// apps/frontend/app/shared/ui/CodeBlock.tsx
-// apps/frontend/app/shared/ui/TableOfContents.tsx
-// apps/frontend/app/shared/ui/CollapsibleSection.tsx
-```
-
-## Phase 2: Advanced Search & Discovery (Medium Priority)
-
-### 2.1 Graph Visualization
-
-#### Task 2.1.1: Tag Relationship Graph
+#### Task 3.1.1: Implement Tag Relationship Graph
 **Priority**: 🟡 Medium
 **Complexity**: High
-**Estimated Time**: 3 weeks
-**Architecture Layer**: Frontend (Features), Backend (Services)
+**Estimated Time**: 2 weeks
+**Architecture Layer**: Frontend (Features)
 
-**Description**: Implement Zettelkasten-inspired tag relationship visualization.
+**Description**: Create an interactive graph visualization for tag relationships.
 
 **Tasks**:
-- [ ] Design graph data structure
-- [ ] Implement D3.js or React Flow integration
-- [ ] Create graph node and edge components
-- [ ] Add interactive graph navigation
+- [ ] Design graph visualization component
+- [ ] Implement D3.js or similar graph library
+- [ ] Create tag relationship data structure
+- [ ] Add interactive node navigation
 - [ ] Implement graph filtering and search
 - [ ] Add graph export functionality
-- [ ] Create graph analytics dashboard
 
-**Backend Implementation**:
+**Implementation**:
 ```typescript
-// apps/backend/src/modules/tags/application/services/tag-graph.service.ts
-interface TagGraphService {
-  getTagRelationships(tags: string[]): Promise<TagRelationship[]>;
-  getRelatedTags(tagId: string): Promise<TagRelationship[]>;
-  getTagGraphData(): Promise<GraphData>;
-}
-
-// apps/backend/src/modules/tags/domain/models/tag-relationship.model.ts
-interface TagRelationship {
-  sourceTag: string;
-  targetTag: string;
-  strength: number;
-  sharedContent: number;
-}
+// apps/frontend/app/features/graph-view/
+├── ui/
+│   ├── TagGraph.tsx           # Main graph component
+│   ├── GraphNode.tsx          # Individual node component
+│   ├── GraphEdge.tsx          # Edge/connection component
+│   └── GraphControls.tsx      # Graph control panel
+├── model/
+│   ├── graph.types.ts         # Graph data types
+│   └── graph.utils.ts         # Graph utility functions
+└── api/
+    └── graph.api.ts           # Graph data API calls
 ```
 
-**Frontend Implementation**:
-```typescript
-// apps/frontend/app/features/tag-graph/ui/TagGraph.tsx
-// apps/frontend/app/features/tag-graph/ui/GraphNode.tsx
-// apps/frontend/app/features/tag-graph/ui/GraphControls.tsx
-```
-
-#### Task 2.1.2: Interactive Graph Navigation
+#### Task 3.1.2: Enhanced Search Analytics
 **Priority**: 🟡 Medium
 **Complexity**: Medium
-**Estimated Time**: 2 weeks
-**Architecture Layer**: Frontend (Features)
+**Estimated Time**: 1 week
+**Architecture Layer**: Backend (Analytics)
 
-**Description**: Add interactive navigation and filtering to the tag graph.
-
-**Tasks**:
-- [ ] Implement zoom and pan controls
-- [ ] Add node selection and highlighting
-- [ ] Create graph search functionality
-- [ ] Add graph layout options
-- [ ] Implement graph export (PNG, SVG)
-- [ ] Add graph performance optimization
-- [ ] Create graph accessibility features
-
-### 2.2 Enhanced Search
-
-#### Task 2.2.1: Advanced Search Queries
-**Priority**: 🟡 Medium
-**Complexity**: High
-**Estimated Time**: 2 weeks
-**Architecture Layer**: Backend (Services), Frontend (Features)
-
-**Description**: Implement advanced search with multiple criteria and filters.
+**Description**: Implement search analytics and optimization features.
 
 **Tasks**:
-- [ ] Design advanced search query structure
-- [ ] Implement search query builder
-- [ ] Add search result highlighting
-- [ ] Create search filters (date, tags, reading time)
-- [ ] Implement search suggestions
-- [ ] Add search analytics tracking
-- [ ] Create search result ranking
+- [ ] Design search analytics data model
+- [ ] Implement search query tracking
+- [ ] Add search result click tracking
+- [ ] Create search analytics dashboard
+- [ ] Implement search optimization suggestions
+- [ ] Add search performance metrics
 
-**Backend Implementation**:
+**Implementation**:
 ```typescript
-// apps/backend/src/modules/search/application/services/search.service.ts
-interface SearchService {
-  advancedSearch(query: AdvancedSearchQuery): Promise<SearchResult[]>;
-  getSearchSuggestions(query: string): Promise<string[]>;
-  trackSearchAnalytics(query: string, results: SearchResult[]): void;
+// apps/backend/src/modules/search-analytics/
+├── domain/
+│   ├── models/
+│   │   ├── search-query.model.ts
+│   │   └── search-result.model.ts
+│   └── repositories/
+│       └── search-analytics.repository.ts
+├── application/
+│   ├── services/
+│   │   └── search-analytics.service.ts
+│   └── use-cases/
+│       ├── track-search-query.use-case.ts
+│       └── get-search-analytics.use-case.ts
+└── presentation/
+    └── controllers/
+        └── search-analytics.controller.ts
+```
+
+### 3.2 Advanced Search Features
+
+#### Task 3.2.1: Implement Advanced Search Queries
+**Priority**: 🟡 Medium
+**Complexity**: Medium
+**Estimated Time**: 1 week
+**Architecture Layer**: Backend (Search)
+
+**Description**: Add advanced search capabilities with complex query support.
+
+**Tasks**:
+- [ ] Design advanced query syntax
+- [ ] Implement query parser
+- [ ] Add boolean operators (AND, OR, NOT)
+- [ ] Implement field-specific search
+- [ ] Add date range filtering
+- [ ] Create search query builder
+
+**Implementation**:
+```typescript
+// apps/backend/src/modules/search/services/advanced-search.service.ts
+interface AdvancedSearchService {
+  parseQuery(query: string): SearchQuery;
+  executeSearch(query: SearchQuery): Promise<SearchResult[]>;
+  buildQuery(filters: SearchFilters): string;
 }
 
-// apps/backend/src/modules/search/domain/models/advanced-search-query.model.ts
-interface AdvancedSearchQuery {
-  text: string;
+interface SearchQuery {
+  terms: string[];
+  operators: SearchOperator[];
   filters: SearchFilters;
   sort: SearchSort;
-  pagination: Pagination;
 }
 ```
 
-**Frontend Implementation**:
-```typescript
-// apps/frontend/app/features/search/ui/AdvancedSearchForm.tsx
-// apps/frontend/app/features/search/ui/SearchFilters.tsx
-// apps/frontend/app/features/search/ui/SearchResults.tsx
-```
+## Phase 4: Developer Experience (Medium Priority)
 
-#### Task 2.2.2: Search Analytics Dashboard
-**Priority**: 🟢 Low
-**Complexity**: Medium
-**Estimated Time**: 1 week
-**Architecture Layer**: Frontend (Pages), Backend (Analytics)
+### 4.1 Global Keyboard Navigation
 
-**Description**: Create analytics dashboard for search behavior and optimization.
-
-**Tasks**:
-- [ ] Design search analytics data structure
-- [ ] Implement search analytics collection
-- [ ] Create search analytics dashboard
-- [ ] Add search performance metrics
-- [ ] Implement search optimization suggestions
-- [ ] Add search trend analysis
-
-## Phase 3: Developer Experience (Medium Priority)
-
-### 3.1 Global Keyboard Navigation
-
-#### Task 3.1.1: Global Keyboard Shortcuts
+#### Task 4.1.1: Implement Global Keyboard Shortcuts
 **Priority**: 🟡 Medium
 **Complexity**: Medium
 **Estimated Time**: 1 week
 **Architecture Layer**: Frontend (Features)
 
-**Description**: Implement global keyboard navigation for improved developer experience.
+**Description**: Add comprehensive keyboard navigation throughout the application.
 
 **Tasks**:
 - [ ] Design keyboard shortcut system
 - [ ] Implement global keyboard event handling
-- [ ] Add keyboard shortcuts for common actions
+- [ ] Add shortcuts for content creation
+- [ ] Create keyboard navigation for search
+- [ ] Add shortcuts for theme switching
 - [ ] Create keyboard shortcut documentation
-- [ ] Add keyboard shortcut customization
-- [ ] Implement accessibility compliance
-- [ ] Add keyboard shortcut hints
 
 **Implementation**:
 ```typescript
-// apps/frontend/app/features/keyboard-navigation/ui/KeyboardShortcuts.tsx
-// apps/frontend/app/features/keyboard-navigation/hooks/useKeyboardShortcuts.ts
-// apps/frontend/app/features/keyboard-navigation/config/shortcuts.ts
-
-const DEFAULT_SHORTCUTS = {
-  'ctrl+k': 'open-search',
-  'ctrl+n': 'new-shard',
-  'ctrl+b': 'new-blog-post',
-  'ctrl+/': 'toggle-help',
-  'escape': 'close-modal',
-} as const;
+// apps/frontend/app/features/keyboard-navigation/
+├── hooks/
+│   ├── useKeyboardShortcuts.ts
+│   └── useKeyboardNavigation.ts
+├── components/
+│   ├── KeyboardShortcutsHelp.tsx
+│   └── KeyboardShortcutsProvider.tsx
+└── config/
+    └── shortcuts.config.ts
 ```
 
-#### Task 3.1.2: Content Creation Keyboard Navigation
-**Priority**: 🟡 Medium
-**Complexity**: Low
-**Estimated Time**: 3 days
-**Architecture Layer**: Frontend (Features)
-
-**Description**: Add keyboard shortcuts specifically for content creation and management.
-
-**Tasks**:
-- [ ] Add keyboard shortcuts for content creation
-- [ ] Implement quick content editing
-- [ ] Add keyboard navigation between content items
-- [ ] Create keyboard shortcuts for content publishing
-- [ ] Add keyboard shortcuts for content deletion
-- [ ] Implement keyboard-based content filtering
-
-### 3.2 GitHub Integration
-
-#### Task 3.2.1: GitHub OAuth Integration
+#### Task 4.1.2: GitHub Integration
 **Priority**: 🟡 Medium
 **Complexity**: High
 **Estimated Time**: 2 weeks
-**Architecture Layer**: Backend (Auth), Frontend (Features)
+**Architecture Layer**: Backend (Integration)
 
-**Description**: Implement GitHub OAuth for content synchronization.
+**Description**: Implement GitHub OAuth and content synchronization.
 
 **Tasks**:
-- [ ] Set up GitHub OAuth application
-- [ ] Implement GitHub OAuth flow
-- [ ] Add GitHub user profile integration
-- [ ] Create GitHub repository linking
-- [ ] Implement GitHub webhook handling
-- [ ] Add GitHub content synchronization
-- [ ] Create GitHub integration settings
+- [ ] Implement GitHub OAuth integration
+- [ ] Add GitHub webhook handling
+- [ ] Create content sync functionality
+- [ ] Implement repository-based content management
+- [ ] Add GitHub issue integration
+- [ ] Create GitHub API rate limiting
 
-**Backend Implementation**:
+**Implementation**:
 ```typescript
-// apps/backend/src/modules/auth/strategies/github.strategy.ts
-// apps/backend/src/modules/github/github.module.ts
-// apps/backend/src/modules/github/services/github-sync.service.ts
-
-interface GitHubSyncService {
-  syncRepository(repoUrl: string): Promise<SyncResult>;
-  createWebhook(repoUrl: string): Promise<WebhookResult>;
-  handleWebhook(payload: WebhookPayload): Promise<void>;
-}
+// apps/backend/src/modules/github/
+├── services/
+│   ├── github-auth.service.ts
+│   ├── github-api.service.ts
+│   └── github-sync.service.ts
+├── controllers/
+│   └── github.controller.ts
+└── webhooks/
+    └── github-webhook.handler.ts
 ```
 
-**Frontend Implementation**:
-```typescript
-// apps/frontend/app/features/github/ui/GitHubIntegration.tsx
-// apps/frontend/app/features/github/ui/RepositorySelector.tsx
-// apps/frontend/app/features/github/ui/SyncStatus.tsx
-```
+## Phase 5: Performance & Analytics (Medium Priority)
 
-#### Task 3.2.2: Content Synchronization
+### 5.1 Performance Monitoring
+
+#### Task 5.1.1: Implement Real-time Performance Metrics
 **Priority**: 🟡 Medium
-**Complexity**: High
-**Estimated Time**: 2 weeks
-**Architecture Layer**: Backend (Services), Frontend (Features)
-
-**Description**: Implement bidirectional content synchronization with GitHub.
-
-**Tasks**:
-- [ ] Design content sync data structure
-- [ ] Implement content export to GitHub
-- [ ] Add content import from GitHub
-- [ ] Create sync conflict resolution
-- [ ] Implement sync scheduling
-- [ ] Add sync status monitoring
-- [ ] Create sync error handling
-
-### 3.3 RSS & Syndication
-
-#### Task 3.3.1: RSS Feed Generation
-**Priority**: 🟢 Low
-**Complexity**: Low
+**Complexity**: Medium
 **Estimated Time**: 1 week
-**Architecture Layer**: Backend (Controllers), Frontend (Pages)
+**Architecture Layer**: Backend (Monitoring)
 
-**Description**: Implement RSS feed generation for content syndication.
-
-**Tasks**:
-- [ ] Design RSS feed structure
-- [ ] Implement RSS feed generation
-- [ ] Add RSS feed validation
-- [ ] Create RSS feed caching
-- [ ] Add RSS feed customization
-- [ ] Implement RSS feed analytics
-- [ ] Create RSS feed documentation
-
-**Implementation**:
-```typescript
-// apps/backend/src/modules/feeds/feeds.module.ts
-// apps/backend/src/modules/feeds/controllers/rss.controller.ts
-// apps/backend/src/modules/feeds/services/rss.service.ts
-
-interface RSSService {
-  generateBlogFeed(): Promise<string>;
-  generateShardsFeed(): Promise<string>;
-  generateCombinedFeed(): Promise<string>;
-}
-```
-
-## Phase 4: Performance & Analytics (Low Priority)
-
-### 4.1 Performance Monitoring
-
-#### Task 4.1.1: Real-Time Performance Metrics
-**Priority**: 🟢 Low
-**Complexity**: High
-**Estimated Time**: 2 weeks
-**Architecture Layer**: Backend (Monitoring), Frontend (Analytics)
-
-**Description**: Implement real-time performance monitoring and metrics collection.
+**Description**: Add comprehensive performance monitoring and metrics collection.
 
 **Tasks**:
-- [ ] Design performance metrics structure
-- [ ] Implement Core Web Vitals tracking
-- [ ] Add API performance monitoring
+- [ ] Design performance metrics system
+- [ ] Implement request timing metrics
+- [ ] Add database performance monitoring
 - [ ] Create performance dashboard
-- [ ] Implement performance alerts
-- [ ] Add performance optimization suggestions
-- [ ] Create performance regression testing
+- [ ] Add performance alerting
+- [ ] Implement Core Web Vitals tracking
 
 **Implementation**:
 ```typescript
-// apps/backend/src/modules/monitoring/monitoring.module.ts
-// apps/backend/src/modules/monitoring/services/performance.service.ts
-// apps/frontend/app/features/analytics/ui/PerformanceDashboard.tsx
-
-interface PerformanceService {
-  trackPageLoad(metrics: PageLoadMetrics): void;
-  trackApiCall(endpoint: string, duration: number): void;
-  getPerformanceReport(): Promise<PerformanceReport>;
-}
+// apps/backend/src/modules/performance/
+├── services/
+│   ├── performance-metrics.service.ts
+│   └── performance-monitor.service.ts
+├── interceptors/
+│   └── performance.interceptor.ts
+└── controllers/
+    └── performance.controller.ts
 ```
 
-### 4.2 User Analytics
-
-#### Task 4.2.1: User Behavior Tracking
-**Priority**: 🟢 Low
+#### Task 5.1.2: User Analytics Implementation
+**Priority**: 🟡 Medium
 **Complexity**: Medium
-**Estimated Time**: 2 weeks
-**Architecture Layer**: Backend (Analytics), Frontend (Tracking)
+**Estimated Time**: 1 week
+**Architecture Layer**: Backend (Analytics)
 
-**Description**: Implement privacy-compliant user behavior tracking.
+**Description**: Implement user behavior tracking and analytics.
 
 **Tasks**:
-- [ ] Design analytics data structure
+- [ ] Design user analytics data model
 - [ ] Implement page view tracking
-- [ ] Add content engagement tracking
-- [ ] Create user journey analysis
-- [ ] Implement privacy controls
-- [ ] Add analytics dashboard
-- [ ] Create analytics export functionality
-
-## Phase 5: Advanced Content Features (Low Priority)
-
-### 5.1 Content Scheduling
-
-#### Task 5.1.1: Scheduled Publishing
-**Priority**: 🟢 Low
-**Complexity**: Medium
-**Estimated Time**: 2 weeks
-**Architecture Layer**: Backend (Services), Frontend (Features)
-
-**Description**: Implement scheduled publishing for posts and shards.
-
-**Tasks**:
-- [ ] Design scheduling data structure
-- [ ] Implement scheduling service
-- [ ] Add scheduling UI components
-- [ ] Create scheduling validation
-- [ ] Implement scheduling notifications
-- [ ] Add scheduling conflict resolution
-- [ ] Create scheduling calendar view
+- [ ] Add user interaction tracking
+- [ ] Create analytics dashboard
+- [ ] Implement privacy-compliant tracking
+- [ ] Add analytics export functionality
 
 **Implementation**:
 ```typescript
-// apps/backend/src/modules/scheduling/scheduling.module.ts
-// apps/backend/src/modules/scheduling/services/scheduling.service.ts
-// apps/frontend/app/features/scheduling/ui/SchedulePublish.tsx
-
-interface SchedulingService {
-  schedulePublish(contentId: string, publishDate: Date): Promise<void>;
-  getScheduledContent(): Promise<ScheduledContent[]>;
-  cancelScheduledPublish(contentId: string): Promise<void>;
-}
+// apps/backend/src/modules/analytics/
+├── domain/
+│   ├── models/
+│   │   ├── page-view.model.ts
+│   │   └── user-interaction.model.ts
+│   └── repositories/
+│       └── analytics.repository.ts
+├── application/
+│   ├── services/
+│   │   └── analytics.service.ts
+│   └── use-cases/
+│       ├── track-page-view.use-case.ts
+│       └── get-analytics.use-case.ts
+└── presentation/
+    └── controllers/
+        └── analytics.controller.ts
 ```
 
-### 5.2 Content Versioning
+## Phase 6: Advanced Content Features (Low Priority)
 
-#### Task 5.2.1: Version History
+### 6.1 Content Management Enhancements
+
+#### Task 6.1.1: Content Scheduling System
+**Priority**: 🟢 Low
+**Complexity**: Medium
+**Estimated Time**: 1 week
+**Architecture Layer**: Backend (Content)
+
+**Description**: Implement content scheduling and automated publishing.
+
+**Tasks**:
+- [ ] Design scheduling system
+- [ ] Implement scheduled publishing
+- [ ] Add scheduling UI components
+- [ ] Create scheduling notifications
+- [ ] Add bulk scheduling operations
+- [ ] Implement scheduling analytics
+
+**Implementation**:
+```typescript
+// apps/backend/src/modules/scheduling/
+├── domain/
+│   ├── models/
+│   │   └── scheduled-content.model.ts
+│   └── repositories/
+│       └── scheduling.repository.ts
+├── application/
+│   ├── services/
+│   │   └── scheduling.service.ts
+│   └── use-cases/
+│       ├── schedule-content.use-case.ts
+│       └── publish-scheduled.use-case.ts
+└── infrastructure/
+    └── cron/
+        └── scheduling.cron.ts
+```
+
+#### Task 6.1.2: Content Versioning System
 **Priority**: 🟢 Low
 **Complexity**: High
-**Estimated Time**: 3 weeks
-**Architecture Layer**: Backend (Services), Frontend (Features)
+**Estimated Time**: 2 weeks
+**Architecture Layer**: Backend (Content)
 
-**Description**: Implement version history and rollback capabilities.
+**Description**: Implement content versioning and rollback capabilities.
 
 **Tasks**:
-- [ ] Design versioning data structure
+- [ ] Design versioning data model
 - [ ] Implement version creation on content changes
 - [ ] Add version comparison functionality
-- [ ] Create rollback capabilities
-- [ ] Implement version diff visualization
-- [ ] Add version metadata tracking
-- [ ] Create version cleanup policies
+- [ ] Create rollback mechanism
+- [ ] Add version history UI
+- [ ] Implement version branching
 
-## Implementation Guidelines
-
-### Code Organization
-- Follow existing architectural patterns (Layered Architecture/FSD)
-- Maintain consistent naming conventions
-- Use TypeScript strict mode
-- Implement comprehensive testing
-- Add proper documentation
-
-### Testing Strategy
-- Unit tests for all business logic
-- Integration tests for API endpoints
-- Component tests for UI components
-- E2E tests for critical user flows
-- Performance tests for new features
-
-### Documentation Requirements
-- Update API documentation for new endpoints
-- Add component documentation for new UI
-- Create feature documentation
-- Update deployment guides
-- Add troubleshooting documentation
-
-### Performance Considerations
-- Implement proper caching strategies
-- Optimize database queries
-- Use code splitting for new features
-- Monitor bundle size increases
-- Implement lazy loading where appropriate
-
-### Security Requirements
-- Validate all user inputs
-- Implement proper authorization checks
-- Add rate limiting for new endpoints
-- Follow OWASP security guidelines
-- Conduct security reviews for new features
+**Implementation**:
+```typescript
+// apps/backend/src/modules/versioning/
+├── domain/
+│   ├── models/
+│   │   ├── content-version.model.ts
+│   │   └── version-diff.model.ts
+│   └── repositories/
+│       └── versioning.repository.ts
+├── application/
+│   ├── services/
+│   │   ├── versioning.service.ts
+│   │   └── diff.service.ts
+│   └── use-cases/
+│       ├── create-version.use-case.ts
+│       └── rollback-version.use-case.ts
+└── presentation/
+    └── controllers/
+        └── versioning.controller.ts
+```
 
 ## Success Criteria
 
-### Feature Completion
-- All tasks marked as complete
-- Comprehensive test coverage (>90%)
-- Documentation updated
-- Performance benchmarks met
-- Security review passed
+### Phase 1 Completion Criteria
+- [ ] All security vulnerabilities addressed
+- [ ] Health check endpoints functional
+- [ ] Basic monitoring in place
+- [ ] Rate limiting implemented
+- [ ] Security headers configured
 
-### Quality Assurance
-- Code review completed
-- Automated tests passing
-- Performance tests passing
-- Accessibility compliance verified
-- Cross-browser compatibility confirmed
+### Phase 2 Completion Criteria
+- [ ] Meta-blog section fully functional
+- [ ] Architecture documentation complete
+- [ ] Internal code links working
+- [ ] Developer-friendly documentation layout
 
-### User Experience
-- Feature usability tested
-- Performance metrics within targets
-- Accessibility requirements met
-- Mobile responsiveness verified
-- Error handling tested
+### Phase 3 Completion Criteria
+- [ ] Graph visualization functional
+- [ ] Advanced search queries working
+- [ ] Search analytics implemented
+- [ ] User experience improved
 
-This task breakdown provides a comprehensive roadmap for implementing the remaining BitTrove features while maintaining the established architectural patterns and quality standards.
+### Phase 4 Completion Criteria
+- [ ] Global keyboard navigation working
+- [ ] GitHub integration functional
+- [ ] Developer experience enhanced
+- [ ] Accessibility improved
+
+### Phase 5 Completion Criteria
+- [ ] Performance monitoring active
+- [ ] User analytics collecting data
+- [ ] Performance dashboard functional
+- [ ] Optimization recommendations working
+
+### Phase 6 Completion Criteria
+- [ ] Content scheduling functional
+- [ ] Versioning system working
+- [ ] Advanced content features operational
+- [ ] Content management enhanced
+
+## Risk Mitigation
+
+### Technical Risks
+- **Complexity**: Break down complex tasks into smaller, manageable pieces
+- **Performance**: Implement performance monitoring early
+- **Security**: Prioritize security tasks and conduct regular audits
+- **Integration**: Use feature flags for gradual rollout
+
+### Timeline Risks
+- **Scope Creep**: Maintain strict task boundaries
+- **Dependencies**: Identify and manage task dependencies early
+- **Resource Constraints**: Prioritize tasks based on business value
+- **Technical Debt**: Balance new features with technical debt reduction
+
+## Conclusion
+
+This implementation plan provides a structured approach to completing BitTrove's remaining features. The phased approach ensures that critical security and monitoring features are addressed first, followed by user experience enhancements and advanced features. Each phase builds upon the previous one while maintaining the established architectural patterns and conventions.
