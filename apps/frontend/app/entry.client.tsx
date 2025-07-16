@@ -3,7 +3,7 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import Backend from 'i18next-http-backend';
 import ICU from 'i18next-icu';
 import { Provider } from 'jotai';
-import { startTransition } from 'react';
+import { StrictMode, startTransition } from 'react';
 import { hydrateRoot } from 'react-dom/client';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { HydratedRouter } from 'react-router/dom';
@@ -41,9 +41,9 @@ async function hydrate() {
       document,
       <I18nextProvider i18n={i18next}>
         <Provider>
-          {/* <StrictMode> */}
-          <HydratedRouter />
-          {/* </StrictMode> */}
+          <StrictMode>
+            <HydratedRouter />
+          </StrictMode>
         </Provider>
       </I18nextProvider>
     );
