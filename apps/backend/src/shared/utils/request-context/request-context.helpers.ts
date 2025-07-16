@@ -1,10 +1,8 @@
 import { createParamDecorator, type ExecutionContext } from '@nestjs/common';
 import type { Request } from 'express';
 
-import type { TransactionContext } from 'src/modules/prisma';
-
 import { BaseRequestContextImpl } from './request-context';
-import type { RequestContext, TxRequestContext } from './request-context.types';
+import type { RequestContext } from './request-context.types';
 
 export const requestContextFromRequest = (request: Request): RequestContext =>
   BaseRequestContextImpl.fromRequest(request);
@@ -23,10 +21,3 @@ export const makeMockRequestContext = (
     profileId: null,
     ...params,
   });
-
-export const makeMockTxRequestContext = (tx: TransactionContext): TxRequestContext => {
-  return {
-    ...makeMockRequestContext(),
-    ...tx,
-  };
-};

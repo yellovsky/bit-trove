@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { addDays } from 'date-fns';
-import { Either } from 'effect';
+import { Effect } from 'effect';
 import type { Request, Response } from 'express';
 
 import type { LoginWithEmailBody } from '@repo/api-models';
@@ -9,7 +9,7 @@ import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
 import type { RequestContext } from 'src/shared/utils/request-context';
 
 import { ACCOUNTS_SRV, AUTH_PROVIDERS_SRV } from 'src/modules/acount';
-import { PRISMA_SRV } from 'src/modules/prisma';
+import { PRISMA_SRV, TRANSACTION_SRV } from 'src/modules/prisma';
 
 import { ACCESS_TOKEN_COOKIE_KEY } from '../config/constants';
 import { LoginWithEmailResponseDto } from '../dto/login-with-email-response.dto';
@@ -28,46 +28,46 @@ export class LoginWithEmailUseCase {
     private readonly authProviderSrv: IdentifierOf<typeof AUTH_PROVIDERS_SRV>,
 
     @Inject(PRISMA_SRV)
-    private readonly prismaSrv: IdentifierOf<typeof PRISMA_SRV>
+    private readonly prismaSrv: IdentifierOf<typeof PRISMA_SRV>,
+
+    @Inject(TRANSACTION_SRV)
+    private readonly transactionSrv: IdentifierOf<typeof TRANSACTION_SRV>
   ) {}
 
-  async execute(
+  execute(
     reqCtx: RequestContext,
     body: LoginWithEmailBody,
     req: Request,
     res: Response
-  ): Promise<LoginWithEmailResponseDto> {
-    // TODO add transaction
-    const authProvider = Either.getOrThrowWith(
-      await this.authProviderSrv.getAuthProviderByEmail(reqCtx.withTx(this.prismaSrv), body.email),
-      () => new Error(`Auth provider with ${body.email} email not found`)
+  ): Effect.Effect<LoginWithEmailResponseDto, Error> {
+    return this.transactionSrv.withTransaction(reqCtx.withTx(this.prismaSrv), (txXtx) =>
+      Effect.gen(this, function* () {
+        const authProvider = yield* this.authProviderSrv
+          .getAuthProviderByEmail(txXtx.withTx(this.prismaSrv), { email: body.email })
+          .pipe(Effect.mapError(() => new Error(`Auth provider with ${body.email} email not found`)));
+
+        const account = yield* this.accountSrv
+          .getAccountById(txXtx.withTx(this.prismaSrv), { accountId: authProvider.accountId })
+          .pipe(Effect.mapError(() => new Error(`Account with ${body.email} email not found`)));
+
+        const profileId = account.profiles.at(0)?.id;
+        if (!profileId) return yield* Effect.fail(new Error(`Account with ${body.email} has no profiles`));
+
+        const accessToken = yield* this.accessTokenSrv.generate({ accountId: authProvider.accountId, profileId });
+        const domain = this.#getCookieDomain(req);
+
+        if (domain) {
+          res.cookie(ACCESS_TOKEN_COOKIE_KEY, accessToken, {
+            domain,
+            expires: addDays(Date.now(), 7),
+            httpOnly: true,
+            sameSite: 'lax',
+          });
+        }
+
+        return new LoginWithEmailResponseDto();
+      })
     );
-
-    const account = Either.getOrThrowWith(
-      await this.accountSrv.getAccountById(reqCtx.withTx(this.prismaSrv), authProvider.accountId),
-      () => new Error(`Account with ${body.email} email not found`)
-    );
-
-    const profileId = account.profiles.at(0)?.id;
-    if (!profileId) throw new Error(`Account with ${body.email} has no profiles`);
-
-    const accessToken = await this.accessTokenSrv.generate({
-      accountId: authProvider.accountId,
-      profileId,
-    });
-
-    const domain = this.#getCookieDomain(req);
-
-    if (domain) {
-      res.cookie(ACCESS_TOKEN_COOKIE_KEY, accessToken, {
-        domain,
-        expires: addDays(Date.now(), 7),
-        httpOnly: true,
-        sameSite: 'lax',
-      });
-    }
-
-    return new LoginWithEmailResponseDto();
   }
 
   #getCookieDomain(req: Request): string | null {

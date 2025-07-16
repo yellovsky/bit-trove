@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Inject, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Effect } from 'effect';
 import type { Request, Response } from 'express';
 import type * as zod from 'zod';
 
@@ -64,7 +65,7 @@ export class AuthControllerV1 {
     @Body(new ZodValidationPipe(loginWithEmailBodySchema))
     body: zod.infer<typeof loginWithEmailBodySchema>
   ): Promise<LoginWithEmailResponse> {
-    return this.loginWithEmailUseCase.execute(reqCtx, body, req, res);
+    return Effect.runPromise(this.loginWithEmailUseCase.execute(reqCtx, body, req, res));
   }
 
   @Get('is-authorized')

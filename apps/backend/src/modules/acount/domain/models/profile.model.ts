@@ -1,4 +1,4 @@
-export interface ProfileEntityData {
+interface ProfileModelData {
   id: string;
   accountId: string;
   name: string;
@@ -7,10 +7,9 @@ export interface ProfileEntityData {
   updatedAt: Date;
 }
 
-export class ProfileEntity {
-  // TODO ResultOrExcluded?
-  static from(data: ProfileEntityData): ProfileEntity {
-    return new ProfileEntity(data.id, data.accountId, data.name, data.isRoot, data.createdAt, data.updatedAt);
+export class ProfileModel {
+  static from(data: ProfileModelData): ProfileModel {
+    return new ProfileModel(data.id, data.accountId, data.name, data.isRoot, data.createdAt, data.updatedAt);
   }
 
   constructor(

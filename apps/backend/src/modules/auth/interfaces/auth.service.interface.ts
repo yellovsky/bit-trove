@@ -1,8 +1,11 @@
-import type { ResultOrExcluded } from 'src/shared/excluded';
+import type { Effect } from 'effect';
+import type { UnknownException } from 'effect/Cause';
+
+import type { ExclusionReason } from 'src/shared/excluded';
 import type { InjectableIdentifier } from 'src/shared/utils/injectable-identifier';
 import type { TxRequestContext } from 'src/shared/utils/request-context';
 
-import type { ProfileEntity } from 'src/modules/acount';
+import type { ProfileModel } from 'src/modules/acount';
 
 import type { JWTTokenPayload } from './jwt-token';
 
@@ -11,12 +14,12 @@ export interface AuthService {
     txReqCtx: TxRequestContext,
     email: string,
     password: string
-  ): Promise<ResultOrExcluded<ProfileEntity>>;
+  ): Effect.Effect<ProfileModel, ExclusionReason | UnknownException>;
 
   validateProfileByJWTTokenPayload(
     txReqCtx: TxRequestContext,
     payload: JWTTokenPayload
-  ): Promise<ResultOrExcluded<ProfileEntity>>;
+  ): Effect.Effect<ProfileModel, ExclusionReason | UnknownException>;
 }
 
 export const AUTH_SRV = 'AUTH_SRV' as InjectableIdentifier<AuthService>;

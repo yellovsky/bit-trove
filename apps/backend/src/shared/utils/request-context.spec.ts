@@ -1,12 +1,24 @@
+import { faker } from '@faker-js/faker';
 import * as parser from 'accept-language-parser';
 
 import { FALLBACK_LNG } from 'src/shared/config/i18n';
 
-import { createMockProfileEntity } from 'src/modules/acount/entities/profile.entity.mok';
+import { ProfileModel } from 'src/modules/acount';
 
 import { makeMockRequestContext, requestContextFromRequest } from './request-context';
 
 vi.mock('accept-language-parser');
+
+// Mock ProfileModel for testing
+const createMockProfileEntity = (overrides?: Partial<{ accountId: string; id: string }>) =>
+  ProfileModel.from({
+    accountId: overrides?.accountId || faker.string.uuid(),
+    createdAt: faker.date.past(),
+    id: overrides?.id || faker.string.uuid(),
+    isRoot: true,
+    name: faker.person.fullName(),
+    updatedAt: faker.date.past(),
+  });
 
 describe('RequestContext', () => {
   it('resolves locale from query.locale', () => {

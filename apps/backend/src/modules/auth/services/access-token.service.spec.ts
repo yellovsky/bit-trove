@@ -1,6 +1,7 @@
 import type { INestApplication } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { Test, type TestingModule } from '@nestjs/testing';
+import { Effect } from 'effect';
 
 import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
 
@@ -34,8 +35,8 @@ describe('AccessTokenService', () => {
 
   it('should generate token', async () => {
     const payload = { accountId: 'account-id', profileId: 'profile-id' };
-    const token = await service.generate(payload);
-    const parsedPayload = await service.parse(token);
+    const token = await Effect.runPromise(service.generate(payload));
+    const parsedPayload = await Effect.runPromise(service.parse(token));
 
     expect(parsedPayload).toEqual(expect.objectContaining(payload));
   });

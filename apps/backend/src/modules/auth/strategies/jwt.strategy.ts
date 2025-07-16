@@ -1,13 +1,13 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { Either } from 'effect';
+import { Effect } from 'effect';
 import type { Request } from 'express';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
 import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
 import { requestContextFromRequest } from 'src/shared/utils/request-context';
 
-import type { ProfileEntity } from 'src/modules/acount';
+import type { ProfileModel } from 'src/modules/acount';
 import { APP_CONFIG_SRV } from 'src/modules/app-config';
 import { PRISMA_SRV } from 'src/modules/prisma';
 
@@ -42,15 +42,16 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(request: Request, payload: JWTTokenPayload): Promise<ProfileEntity> {
+  async validate(request: Request, payload: JWTTokenPayload): Promise<ProfileModel> {
     const reqCtx = requestContextFromRequest(request);
 
     this.#logger.debug('Validating JWT token');
     this.#logger.debug(`  > payload: ${JSON.stringify(payload)}`);
 
-    return Either.getOrThrowWith(
-      await this.authSrv.validateProfileByJWTTokenPayload(reqCtx.withTx(this.prismaSrv), payload),
-      () => new Error(`Account ${payload.accountId} has no ${payload.profileId} profile`)
-    );
+    const pipeline: Effect.Effect<ProfileModel, Error> = this.authSrv
+      .validateProfileByJWTTokenPayload(reqCtx.withTx(this.prismaSrv), payload)
+      .pipe(Effect.mapError(() => new Error(`Account ${payload.accountId} has no ${payload.profileId} profile`)));
+
+    return Effect.runPromise(pipeline);
   }
 }

@@ -2,18 +2,20 @@ import { Module } from '@nestjs/common';
 
 import { PrismaModule } from 'src/modules/prisma';
 
-import { ACCOUNTS_REPO } from './interfaces/accounts.repository.interface';
-import { ACCOUNTS_SRV } from './interfaces/accounts.service.interface';
-import { AUTH_PROVIDERS_REPO } from './interfaces/auth-providers.repository.interface';
-import { AUTH_PROVIDERS_SRV } from './interfaces/auth-providers.service.interface';
-import { PROFILES_REPO } from './interfaces/profiles.repository.interface';
-import { PROFILES_SRV } from './interfaces/profiles.service.interface';
-import { AccountsRepositoryImpl } from './repositories/accounts.repository';
-import { AuthProvidersRepositoryImpl } from './repositories/auth-providers.repository';
-import { ProfilesRepositoryImpl } from './repositories/profiles.repository';
-import { AccountsServiceImpl } from './services/accounts.service';
-import { AuthProvidersServiceImpl } from './services/auth-providers.service';
-import { ProfilesServiceImpl } from './services/profiles.service';
+import { ACCOUNTS_REPO } from './domain/repositories/accounts.repository.interface';
+import { AUTH_PROVIDERS_REPO } from './domain/repositories/auth-providers.repository.interface';
+import { PROFILES_REPO } from './domain/repositories/profiles.repository.interface';
+
+import { AccountsServiceImpl } from './application/services/accounts.service';
+import { ACCOUNTS_SRV } from './application/services/accounts.service.interface';
+import { AuthProvidersServiceImpl } from './application/services/auth-providers.service';
+import { AUTH_PROVIDERS_SRV } from './application/services/auth-providers.service.interface';
+import { ProfilesServiceImpl } from './application/services/profiles.service';
+import { PROFILES_SRV } from './application/services/profiles.service.interface';
+
+import { AccountsRepositoryImpl } from './infrastructure/repositories/accounts.repository';
+import { AuthProvidersRepositoryImpl } from './infrastructure/repositories/auth-providers.repository';
+import { ProfilesRepositoryImpl } from './infrastructure/repositories/profiles.repository';
 
 @Module({
   exports: [ACCOUNTS_SRV, AUTH_PROVIDERS_SRV, PROFILES_SRV],

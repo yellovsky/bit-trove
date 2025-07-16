@@ -3,7 +3,7 @@ import type { Request } from 'express';
 
 import { FALLBACK_LNG, SUPPORTED_LNGS } from 'src/shared/config/i18n';
 
-import { ProfileEntity } from 'src/modules/acount';
+import { ProfileModel } from 'src/modules/acount';
 import type { PrismaTransactionOrContext } from 'src/modules/prisma';
 
 import type { BaseRequestContext, TxRequestContext } from './request-context.types';
@@ -29,7 +29,7 @@ export class BaseRequestContextImpl implements BaseRequestContext {
   #resolverLocale: string | null = null;
 
   static fromRequest(request: Request): BaseRequestContext {
-    const profile = request.user instanceof ProfileEntity ? request.user : null;
+    const profile = request.user instanceof ProfileModel ? request.user : null;
 
     return BaseRequestContextImpl.from({
       accountId: profile?.accountId || null,

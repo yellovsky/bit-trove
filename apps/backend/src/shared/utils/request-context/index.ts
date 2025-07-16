@@ -1,6 +1,5 @@
 export {
   makeMockRequestContext,
-  makeMockTxRequestContext,
   ReqCtx,
   requestContextFromRequest,
 } from './request-context.helpers';

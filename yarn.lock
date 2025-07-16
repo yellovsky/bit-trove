@@ -1364,13 +1364,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@golevelup/ts-vitest@npm:0.5.2":
-  version: 0.5.2
-  resolution: "@golevelup/ts-vitest@npm:0.5.2"
-  checksum: 10c0/88b509e2056ef9752b12e9d730ac1d47e3f4ab533e46b434aa2533cc0d6f9fb23115c9cc675d0ef05eb79f5b1d8c1fa99af9581367dc68d5a96084ee4a02e8fc
-  languageName: node
-  linkType: hard
-
 "@hono/node-server@npm:^1.14.0, @hono/node-server@npm:^1.14.2":
   version: 1.15.0
   resolution: "@hono/node-server@npm:1.15.0"
@@ -6460,7 +6453,6 @@ __metadata:
   dependencies:
     "@biomejs/biome": "npm:2.0.6"
     "@faker-js/faker": "npm:9.9.0"
-    "@golevelup/ts-vitest": "npm:0.5.2"
     "@nestjs/cli": "npm:11.0.7"
     "@nestjs/common": "npm:11.1.3"
     "@nestjs/config": "npm:4.0.2"
@@ -8961,7 +8953,6 @@ __metadata:
     tailwindcss: "npm:4.1.11"
     tiptap-extension-code-block-shiki: "npm:0.5.1"
     typescript: "npm:5.8.3"
-    use-debounce: "npm:10.0.5"
     usehooks-ts: "npm:3.1.1"
     vite: "npm:7.0.4"
     vite-plugin-babel: "npm:1.3.2"
@@ -14812,15 +14803,6 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 10c0/f887488c6e6075cdad4962979da1714b217bcb1ee009a9e57ce9a844bcfc4c3a99e93983dfc2e5af9e0913824d24e730090ff255e902c516dcb58d2d3837e01c
-  languageName: node
-  linkType: hard
-
-"use-debounce@npm:10.0.5":
-  version: 10.0.5
-  resolution: "use-debounce@npm:10.0.5"
-  peerDependencies:
-    react: "*"
-  checksum: 10c0/8232538aa2e2b1252716ef2918204709f16bd53661b56a3a29ad790bf61bc7cbf3bb1126d888408db276a2b05fa6a941e9452149be14bfe438aa22054ccf4e4a
   languageName: node
   linkType: hard
 

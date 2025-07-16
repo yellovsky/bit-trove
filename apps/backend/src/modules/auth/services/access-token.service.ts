@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { Effect } from 'effect';
 
 import type { IdentifierOf } from 'src/shared/utils/injectable-identifier';
 
@@ -22,21 +23,18 @@ export class AccessTokenServiceImpl implements AccessTokenService {
     private readonly appConfigSrv: IdentifierOf<typeof APP_CONFIG_SRV>
   ) {}
 
-  async generate(payload: JWTTokenPayload): Promise<string> {
-    return this.jwtSrv.signAsync(payload, { secret: this.appConfigSrv.jwtSecret });
+  generate(payload: JWTTokenPayload): Effect.Effect<string, Error> {
+    return Effect.tryPromise(() => this.jwtSrv.signAsync(payload, { secret: this.appConfigSrv.jwtSecret }));
   }
 
-  async parse(token: string): Promise<JWTTokenPayload> {
-    try {
-      const payload = await this.jwtSrv.verifyAsync(token, { secret: this.appConfigSrv.jwtSecret });
-      return this.validate(payload);
-    } catch {
-      throw new AuthInvalidTokenError();
-    }
+  parse(token: string): Effect.Effect<JWTTokenPayload, Error> {
+    return Effect.tryPromise(() => this.jwtSrv.verifyAsync(token, { secret: this.appConfigSrv.jwtSecret }));
   }
 
-  async validate(payload: unknown): Promise<JWTTokenPayload> {
-    if (!isJWTTokenPayload(payload)) throw new AuthInvalidTokenError();
-    return payload;
+  validate(payload: unknown): Effect.Effect<JWTTokenPayload, Error> {
+    return Effect.gen(this, function* () {
+      if (!isJWTTokenPayload(payload)) return yield* Effect.fail(new AuthInvalidTokenError());
+      return payload;
+    });
   }
 }
