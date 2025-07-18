@@ -2,7 +2,7 @@ import { ChevronDown } from 'lucide-react';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Button } from '@repo/ui/components/button';
+import { Button } from '@repo/ui/components/Button';
 import {
   DropdownMenu,
   DropdownMenuContent,

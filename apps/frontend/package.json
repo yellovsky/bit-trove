@@ -14,7 +14,7 @@
 		"test:ui": "vitest --ui --browser.headless",
 		"test:cov": "vitest run --coverage --browser.headless",
 		"typegen": "react-router typegen",
-		"postinstall": "yarn typegen",
+		"prebuild": "yarn typegen",
 		"storybook": "storybook dev -p 6006",
 		"build-storybook": "storybook build"
 	},

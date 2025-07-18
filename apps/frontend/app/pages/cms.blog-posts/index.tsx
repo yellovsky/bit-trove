@@ -11,8 +11,8 @@ import { Fragment } from 'react/jsx-runtime';
 import { useTranslation } from 'react-i18next';
 
 import { type ShortBlogPost, shortArticlesGetSortSchema } from '@repo/api-models';
-import { Button } from '@repo/ui/components/button';
-import { Link } from '@repo/ui/components/link';
+import { Button } from '@repo/ui/components/Button';
+import { Link } from '@repo/ui/components/Link';
 import {
   Pagination,
   PaginationContent,

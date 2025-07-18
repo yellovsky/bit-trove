@@ -5,7 +5,7 @@ import type { To } from 'react-router';
 
 import type { ShortArticle } from '@repo/api-models';
 import * as GridCardPrimitive from '@repo/ui/components/GridCard';
-import { Link } from '@repo/ui/components/link';
+import { Link } from '@repo/ui/components/Link';
 
 import { useRelativeDate } from '@shared/lib/use-relative-date';
 

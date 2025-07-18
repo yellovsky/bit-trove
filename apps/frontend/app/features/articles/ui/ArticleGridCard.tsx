@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import type { To } from 'react-router';
 
 import type { ShortArticle } from '@repo/api-models';
+import { Link } from '@repo/ui/components/Link';
 import * as ListCardPrimitive from '@repo/ui/components/ListCard';
-import { Link } from '@repo/ui/components/link';
 import { Skeleton } from '@repo/ui/components/Skeleton';
 
 import { useRelativeDate } from '@shared/lib/use-relative-date';

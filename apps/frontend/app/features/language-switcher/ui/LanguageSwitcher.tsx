@@ -3,7 +3,7 @@ import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router';
 
-import { Link } from '@repo/ui/components/link';
+import { Link } from '@repo/ui/components/Link';
 import { Popover, PopoverContent, PopoverTrigger } from '@repo/ui/components/Popover';
 import { Toggle } from '@repo/ui/components/Toggle';
 

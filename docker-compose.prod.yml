@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  bittrove:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: bittrove-app
+    ports:
+      - "80:80"
+    environment:
+      # Database configuration - Use external PostgreSQL
+      - DATABASE_URL=${DATABASE_URL}
+
+      # API configuration
+      - API_PORT=${API_PORT:-3001}
+      - REMIX_PUBLIC_API_HOST=${REMIX_PUBLIC_API_HOST}
+
+      # Client configuration
+      - PORT=${PORT:-3000}
+      - REMIX_PUBLIC_CLIENT_HOST=${REMIX_PUBLIC_CLIENT_HOST}
+
+      # Security configuration
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN:-7d}
+      - SESSION_SECRET=${SESSION_SECRET}
+
+      # CORS configuration
+      - CORS_ORIGIN=${CORS_ORIGIN}
+
+      # Application configuration
+      - NODE_ENV=production
+
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - bittrove-network
+
+networks:
+  bittrove-network:
+    driver: bridge

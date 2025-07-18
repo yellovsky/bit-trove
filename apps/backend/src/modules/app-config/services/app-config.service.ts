@@ -14,11 +14,7 @@ export class AppConfigServiceImpl implements AppConfigService {
     return this.configService.getOrThrow<string>('JWT_SECRET');
   }
 
-  get webClientHostname(): string {
-    return this.configService.getOrThrow<string>('WEB_CLIENT_HOSTNAME');
-  }
-
-  get redisUrl(): string {
-    return this.configService.getOrThrow<string>('REDIS_URL');
+  get corsOrigin(): string {
+    return this.configService.getOrThrow<string>('CORS_ORIGIN');
   }
 }

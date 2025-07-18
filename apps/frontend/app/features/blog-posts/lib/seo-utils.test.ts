@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import type { BlogPost } from '@repo/api-models';
 
@@ -32,6 +32,11 @@ const mockBlogPost: BlogPost = {
   title: 'Test Blog Post',
   type: 'blog_post',
 };
+
+// Mock the addClientHost function
+vi.mock('@shared/lib/link', () => ({
+  addClientHost: vi.fn((path: string) => `https://bittrove.com${path}`),
+}));
 
 describe('Blog Posts SEO Utils', () => {
   describe('getBlogPostsOgMeta', () => {

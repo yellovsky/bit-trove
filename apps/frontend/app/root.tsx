@@ -56,17 +56,8 @@ export const handle = {
 };
 
 export default function App({ loaderData }: Route.ComponentProps) {
-  const { lang, clientEnv } = loaderData;
-
-  useChangeLanguage(lang);
-
-  return (
-    <>
-      {/** biome-ignore lint/security/noDangerouslySetInnerHtml: just set evn variables */}
-      <script dangerouslySetInnerHTML={{ __html: `window.env = ${JSON.stringify(clientEnv)}` }} />
-      <Outlet />
-    </>
-  );
+  useChangeLanguage(loaderData.lang);
+  return <Outlet />;
 }
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -83,7 +74,14 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
   const enhanceTo: EnhanceTo = useMakeEnhancedTo();
 
   return (
-    <html data-theme={colorScheme} dir={i18n.dir()} lang={i18n.language}>
+    <html
+      data-app-env={loaderData.clientEnv.APP_ENV}
+      data-public-api-host={loaderData.clientEnv.REMIX_PUBLIC_API_HOST}
+      data-public-client-host={loaderData.clientEnv.REMIX_PUBLIC_CLIENT_HOST}
+      data-theme={colorScheme}
+      dir={i18n.dir()}
+      lang={i18n.language}
+    >
       <head>
         <ClientHintCheck />
         <meta charSet="utf-8" />

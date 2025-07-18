@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Button } from '@repo/ui/components/Button';
-import { Link } from '@repo/ui/components/link';
+import { Link } from '@repo/ui/components/Link';
 
 import { SectionHeader } from '@shared/ui/SectionHeader';
 

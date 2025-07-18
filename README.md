@@ -67,9 +67,11 @@ bit-trove/
 ## Environment Variables
 
 Backend (apps/backend/.env):
-- `API_PORT` - API server port
+- `API_PORT` - API server port (internal communication)
 - `SESSION_SECRET` - Session encryption key
-- `WEB_CLIENT_HOSTNAME` - Frontend URL for CORS
+- `CORS_ORIGIN` - Allowed origins for CORS (comma-separated)
+- `REMIX_PUBLIC_API_HOST` - Public API URL (for client requests)
+- `REMIX_PUBLIC_CLIENT_HOST` - Public client URL (for SEO, canonical URLs)
 - Database configuration from docker-compose.yml
 
 ## Documentation

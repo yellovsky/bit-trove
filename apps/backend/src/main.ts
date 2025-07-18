@@ -1,5 +1,3 @@
-import 'winston-daily-rotate-file';
-
 import { ClassSerializerInterceptor, ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';
 import type { NestExpressApplication } from '@nestjs/platform-express';
@@ -26,7 +24,7 @@ const API_PORT = process.env.API_PORT;
 // biome-ignore lint/style/noProcessEnv: get process env in main
 const SESSION_SECRET = process.env.SESSION_SECRET;
 // biome-ignore lint/style/noProcessEnv: get process env in main
-const WEB_CLIENT_HOSTNAME = process.env.WEB_CLIENT_HOSTNAME;
+const CORS_ORIGIN = process.env.CORS_ORIGIN;
 
 const getSwaggerOptions = () =>
   new DocumentBuilder()
@@ -40,21 +38,6 @@ const getSwaggerOptions = () =>
 const winstonLogger = WinstonModule.createLogger({
   level: 'debug',
   transports: [
-    new transports.DailyRotateFile({
-      datePattern: 'YYYY-MM-DD',
-      filename: 'logs/%DATE%-error.log',
-      format: format.combine(format.timestamp(), format.json()),
-      level: 'error',
-      maxFiles: '30d',
-      zippedArchive: false,
-    }),
-    new transports.DailyRotateFile({
-      datePattern: 'YYYY-MM-DD',
-      filename: 'logs/%DATE%-combined.log',
-      format: format.combine(format.timestamp(), format.json()),
-      maxFiles: '30d',
-      zippedArchive: false,
-    }),
     new transports.Console({
       format: format.combine(
         format.splat(),
@@ -71,16 +54,19 @@ const winstonLogger = WinstonModule.createLogger({
 async function bootstrap() {
   if (!SESSION_SECRET) throw new Error('Define SESSION_SECRET process variable');
 
-  if (typeof WEB_CLIENT_HOSTNAME !== 'string') {
-    throw new Error('process.env.WEB_CLIENT_HOSTNAME must be provided');
+  if (typeof CORS_ORIGIN !== 'string') {
+    throw new Error('process.env.CORS_ORIGIN must be provided');
   }
 
+  // Parse CORS origins (comma-separated)
+  const corsOrigins = CORS_ORIGIN.split(',').map((origin) => origin.trim());
+
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    cors: { origin: [WEB_CLIENT_HOSTNAME] },
+    cors: { origin: corsOrigins },
     logger: winstonLogger,
   });
 
-  app.enableCors({ credentials: true, origin: WEB_CLIENT_HOSTNAME });
+  app.enableCors({ credentials: true, origin: corsOrigins });
   app.set('trust proxy', 1);
   app.set('query parser', 'extended');
 
@@ -111,6 +97,9 @@ async function bootstrap() {
 
   if (!API_PORT) throw new Error('process.env.API_PORT must be provided');
   await app.listen(API_PORT);
+
+  // biome-ignore lint/suspicious/noConsole: ignore
+  console.log(`Backend is running on port ${API_PORT}`);
 }
 
 bootstrap();

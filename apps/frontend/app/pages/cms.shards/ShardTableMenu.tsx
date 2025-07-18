@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@repo/ui/components/DropdownMenu';
-import { Link } from '@repo/ui/components/link';
+import { Link } from '@repo/ui/components/Link';
 import { Toggle } from '@repo/ui/components/Toggle';
 
 import { getEditShardLink } from '@features/shards';

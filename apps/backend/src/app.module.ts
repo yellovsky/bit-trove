@@ -7,13 +7,13 @@ import * as winston from 'winston';
 import { AppConfigModule } from 'src/modules/app-config';
 import { ArticlesModule } from 'src/modules/articles';
 import { AuthModule, JwtGuard, JwtStrategy } from 'src/modules/auth';
-import { AppCacheModule } from 'src/modules/cache';
 import { CasbinModule } from 'src/modules/casbin';
+import { HealthModule } from 'src/modules/health/health.module';
 import { I18nModule } from 'src/modules/i18n';
 import { PermissionPoliciesModule } from 'src/modules/permission-policies';
 import { PrismaModule } from 'src/modules/prisma';
+import { TagsModule } from 'src/modules/tags';
 
-import { TagsModule } from './modules/tags';
 import { RequestLoggerMiddleware } from './request-logger.middleware';
 
 @Module({
@@ -41,7 +41,7 @@ import { RequestLoggerMiddleware } from './request-logger.middleware';
     AuthModule,
     CasbinModule,
     PermissionPoliciesModule,
-    AppCacheModule,
+    HealthModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: JwtGuard }, JwtStrategy],
 })

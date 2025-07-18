@@ -41,9 +41,9 @@ npx prisma migrate dev
 
 Create a `.env` file with:
 ```
-API_PORT=3000
+API_PORT=3001
 SESSION_SECRET=your-secret
-WEB_CLIENT_HOSTNAME=http://localhost:5173
+CORS_ORIGIN=http://localhost:5173
 DATABASE_URL=postgresql://postgres:password@localhost:5432/bolierplate
 ```
 

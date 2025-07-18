@@ -10,8 +10,7 @@
 	"scripts": {
 		"biome": "biome check",
 		"lint": "biome check",
-		"build:libs": "tsup src/index.ts --format cjs,esm --dts --sourcemap",
-		"postinstall": "yarn build:libs"
+		"build:libs": "tsup src/index.ts --format cjs,esm --dts --sourcemap"
 	},
 	"dependencies": {
 		"@tiptap/pm": "3.0.0",
