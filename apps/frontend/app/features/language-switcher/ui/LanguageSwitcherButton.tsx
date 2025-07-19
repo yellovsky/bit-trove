@@ -17,11 +17,18 @@ export const LanguageSwitcherButton: FC<LanguageSwitcherButtonProps> = ({ classN
   const { i18n } = useTranslation();
 
   return (
-    <Toggle aria-label={ariaLabel || `Current language: ${i18n.language}`} className={className} variant="dimmed">
+    <Toggle
+      aria-label={ariaLabel || `Current language: ${i18n.language}`}
+      className={cx(
+        'relative transition-all duration-200 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        className
+      )}
+      variant="dimmed"
+    >
       <div
         className={cx(
           styles.flag,
-          'h-4 w-4',
+          'h-4 w-4 rounded-sm shadow-sm transition-all duration-200',
           i18n.language === 'en' && styles.enUs,
           i18n.language === 'ru' && styles.ru
         )}
