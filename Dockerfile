@@ -131,6 +131,7 @@ USER nodejs
 
 # Expose port 80 for Nginx
 EXPOSE 80
+EXPOSE 443
 
 # Health check endpoint
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
