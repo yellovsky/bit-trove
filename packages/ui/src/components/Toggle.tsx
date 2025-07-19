@@ -34,7 +34,7 @@ export const toggleVariants = cva(
       },
       variant: {
         dimmed:
-          'hover:brightness-[1.08] active:brightness-[0.9] data-[state=off]:bg-transparent data-[state=on]:bg-primary-9 data-[state=off]:text-gray-12 data-[state=on]:text-primary-contrast data-[state=off]:hover:bg-gray-surface [&]:disabled:text-gray-9',
+          'hover:bg-muted hover:text-muted-foreground active:brightness-[0.9] disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-accent data-[state=off]:text-gray-12 data-[state=on]:text-accent-foreground data-[state=on]:text-primary-contrast [&]:disabled:text-gray-9',
       },
     },
   }

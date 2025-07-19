@@ -75,6 +75,14 @@ export default {
     en: 'English',
     ru: 'Русский',
   },
+  language_switcher: {
+    all: 'All',
+    content_language: 'Content Language',
+    help_text: 'No languages selected. All content will be shown.',
+    interface_language: 'Interface Language',
+    'show content in {{count}} languages':
+      'Showing content in {count, plural, one {one language} other {{count} languages}}.',
+  },
   loading: 'Loading...',
   menu_items: {
     blog: {

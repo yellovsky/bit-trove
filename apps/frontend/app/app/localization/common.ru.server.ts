@@ -79,6 +79,14 @@ export default {
     en: 'English',
     ru: 'Русский',
   },
+  language_switcher: {
+    all: 'Все',
+    content_language: 'Язык контента',
+    help_text: 'Ничего не выбрано. Будет показан весь контент.',
+    interface_language: 'Язык интерфейса',
+    'show content in {{count}} languages':
+      'Показывается контент на {count, plural, one {одном языке} other {{count} языках}}.',
+  },
   loading: 'Загрузка...',
   menu_items: {
     blog: {

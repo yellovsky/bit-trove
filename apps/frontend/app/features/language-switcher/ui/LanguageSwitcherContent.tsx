@@ -1,4 +1,3 @@
-import { cx } from 'class-variance-authority';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router';
@@ -6,7 +5,7 @@ import { useLocation } from 'react-router';
 import { Link } from '@repo/ui/components/Link';
 import { Separator } from '@repo/ui/components/Separator';
 import { Toggle } from '@repo/ui/components/Toggle';
-import { useMobile } from '@repo/ui/hooks/use-mobile';
+import { cn } from '@repo/ui/lib/utils';
 
 import { ContentLanguageSelector } from './ContentLanguageSelector';
 import styles from './LanguageSwitcher.module.css';
@@ -17,55 +16,42 @@ interface LanguageSwitcherContentProps {
 }
 
 export const LanguageSwitcherContent: FC<LanguageSwitcherContentProps> = ({ className }) => {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const location = useLocation();
-  const isMobile = useMobile();
 
   return (
-    <div className={cx('flex flex-col gap-1 p-3', isMobile ? 'gap-2' : 'gap-1', className)}>
+    <div className={cn('flex w-dvw flex-col gap-1 px-8 py-6 sm:w-80 sm:px-3 sm:py-3', className)}>
       {/* UI Language Section */}
       <div className="space-y-1">
-        <h3 className={cx('mb-2 font-medium text-muted-foreground', isMobile ? 'text-base' : 'text-sm')}>
-          Interface Language
-        </h3>
+        <h3 className="mb-2 font-medium text-muted-foreground text-sm">{t('language_switcher.interface_language')}</h3>
 
-        <Toggle asChild variant="dimmed">
-          <Link
-            className={cx(
-              'flex items-center gap-3 rounded-md px-3 py-2.5 font-medium text-sm transition-all duration-200',
-              'hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-              'data-[state=active]:bg-accent data-[state=active]:text-accent-foreground',
-              isMobile ? 'py-3 text-base' : 'py-2.5 text-sm'
-            )}
-            data-state={i18n.language === 'en' ? 'active' : 'inactive'}
-            language="en"
-            onClick={() => i18n.changeLanguage('en')}
-            to={`${location.pathname}`}
-          >
-            <div className={cx(styles.flag, 'h-5 w-5 rounded-sm shadow-sm', styles.enUs)} />
-            <span className="flex-1 text-left">English</span>
-            {i18n.language === 'en' && <div className="h-1.5 w-1.5 rounded-full bg-primary" />}
-          </Link>
-        </Toggle>
+        <div className="grid grid-cols-2 gap-2">
+          <Toggle asChild isActive={i18n.language === 'en'} variant="dimmed">
+            <Link
+              className={cn('flex items-center gap-3 px-3 py-2.5 font-medium text-sm ')}
+              language="en"
+              onClick={() => i18n.changeLanguage('en')}
+              to={`${location.pathname}`}
+            >
+              <div className={cn(styles.flag, 'h-5 w-5 rounded-sm shadow-sm', styles.enUs)} />
+              <span className="flex-1 text-left">English</span>
+              {i18n.language === 'en' && <div className="h-1.5 w-1.5 rounded-full bg-primary" />}
+            </Link>
+          </Toggle>
 
-        <Toggle asChild variant="dimmed">
-          <Link
-            className={cx(
-              'flex items-center gap-3 rounded-md px-3 py-2.5 font-medium text-sm transition-all duration-200',
-              'hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-              'data-[state=active]:bg-accent data-[state=active]:text-accent-foreground',
-              isMobile ? 'py-3 text-base' : 'py-2.5 text-sm'
-            )}
-            data-state={i18n.language === 'ru' ? 'active' : 'inactive'}
-            language="ru"
-            onClick={() => i18n.changeLanguage('ru')}
-            to={`${location.pathname}`}
-          >
-            <div className={cx(styles.flag, 'h-5 w-5 rounded-sm shadow-sm', styles.ru)} />
-            <span className="flex-1 text-left">Русский</span>
-            {i18n.language === 'ru' && <div className="h-1.5 w-1.5 rounded-full bg-primary" />}
-          </Link>
-        </Toggle>
+          <Toggle asChild isActive={i18n.language === 'ru'} variant="dimmed">
+            <Link
+              className={cn('flex items-center gap-3 px-3 py-2.5 font-medium text-sm')}
+              language="ru"
+              onClick={() => i18n.changeLanguage('ru')}
+              to={`${location.pathname}`}
+            >
+              <div className={cn(styles.flag, 'h-5 w-5 rounded-sm shadow-sm', styles.ru)} />
+              <span className="flex-1 text-left">Русский</span>
+              {i18n.language === 'ru' && <div className="h-1.5 w-1.5 rounded-full bg-primary" />}
+            </Link>
+          </Toggle>
+        </div>
       </div>
 
       {/* Separator */}

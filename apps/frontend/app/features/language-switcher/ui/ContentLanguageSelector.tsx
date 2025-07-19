@@ -1,9 +1,9 @@
-import { cx } from 'class-variance-authority';
 import { useAtom } from 'jotai';
 import type { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Checkbox } from '@repo/ui/components/Checkbox';
-import { useMobile } from '@repo/ui/hooks/use-mobile';
+import { cn } from '@repo/ui/lib/utils';
 
 import {
   ALL_CONTENT_LANGUAGES,
@@ -20,7 +20,7 @@ interface ContentLanguageSelectorProps {
 
 export const ContentLanguageSelector: FC<ContentLanguageSelectorProps> = ({ className }) => {
   const [selectedLanguages, setSelectedLanguages] = useAtom(selectedContentLanguagesAtom);
-  const isMobile = useMobile();
+  const { t } = useTranslation();
 
   const handleLanguageToggle = (language: ContentLanguage, checked: boolean) => {
     let newSelection: ContentLanguage[];
@@ -55,22 +55,20 @@ export const ContentLanguageSelector: FC<ContentLanguageSelectorProps> = ({ clas
   const indeterminate = someSelected && !allSelected;
 
   return (
-    <div className={cx('space-y-3', className)}>
+    <div className={cn('space-y-3', className)}>
       {/* Section Header */}
       <div className="flex items-center justify-between">
-        <h3 className={cx('font-medium text-muted-foreground', isMobile ? 'text-base' : 'text-sm')}>
-          Content Languages
-        </h3>
+        <h3 className="font-medium text-muted-foreground text-sm">{t('language_switcher.content_language')}</h3>
         <Checkbox
           checked={indeterminate ? 'indeterminate' : allSelected}
           className="h-4 w-4"
-          label="All"
+          label={t('language_switcher.all')}
           onCheckedChange={handleSelectAll}
         />
       </div>
 
       {/* Language Options */}
-      <div className={cx('space-y-2', isMobile ? 'space-y-3' : 'space-y-2')}>
+      <div className="space-y-2">
         {ALL_CONTENT_LANGUAGES.map((language) => (
           <Checkbox
             checked={selectedLanguages.includes(language)}
@@ -79,14 +77,14 @@ export const ContentLanguageSelector: FC<ContentLanguageSelectorProps> = ({ clas
             label={
               <div className="flex items-center gap-2">
                 <div
-                  className={cx(
+                  className={cn(
                     styles.flag,
                     'h-4 w-4 rounded-sm shadow-sm',
                     language === 'en' && styles.enUs,
                     language === 'ru' && styles.ru
                   )}
                 />
-                <span className={isMobile ? 'text-base' : 'text-sm'}>{language === 'en' ? 'English' : 'Русский'}</span>
+                <span>{language === 'en' ? 'English' : 'Русский'}</span>
               </div>
             }
             onCheckedChange={(checked) => handleLanguageToggle(language, checked as boolean)}
@@ -95,10 +93,12 @@ export const ContentLanguageSelector: FC<ContentLanguageSelectorProps> = ({ clas
       </div>
 
       {/* Help Text */}
-      <p className={cx('text-muted-foreground text-xs leading-relaxed', isMobile ? 'text-sm' : 'text-xs')}>
+      <p className="text-balance text-muted-foreground text-xs leading-relaxed">
         {selectedLanguages.length === 0
-          ? 'No languages selected. All content will be shown.'
-          : `Showing content in ${selectedLanguages.length === 1 ? '1 language' : `${selectedLanguages.length} languages`}.`}
+          ? t('language_switcher.help_text')
+          : t('language_switcher.show content in {{count}} languages', {
+              count: selectedLanguages.length,
+            })}
       </p>
     </div>
   );
