@@ -26,6 +26,8 @@ import { ErrorScreen } from '@shared/ui/error-route';
 import { AppSuspenseWarning } from '@app/app-suspense-warning';
 import { ClientHintCheck, getHints } from '@app/client-hints';
 
+import { getCookieStringContentLanguages } from '@features/language-switcher/lib/content-language-cookie';
+import { selectedContentLanguagesAtom } from '@features/language-switcher/model/content-language-atom';
 import { getCookieStringColorScheme } from '@features/theme';
 
 import type { Route } from './+types/root';
@@ -48,7 +50,9 @@ export async function loader({ context, request }: Route.LoaderArgs) {
   const storedTheme = getCookieStringColorScheme(cookieHeader);
   const selectedColorScheme = isColorScheme(storedTheme) ? storedTheme : null;
 
-  return { clientEnv, hints, lang, selectedColorScheme };
+  const storedContentLanguages = getCookieStringContentLanguages(cookieHeader);
+
+  return { clientEnv, hints, lang, selectedColorScheme, selectedContentLanguages: storedContentLanguages };
 }
 
 export const handle = {
@@ -68,6 +72,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
     [queryClientAtom, queryClient],
     [fallbackColorSchemeAtom, loaderData.hints.theme],
     [selectedColorSchemeAtom, loaderData.selectedColorScheme],
+    [selectedContentLanguagesAtom, loaderData.selectedContentLanguages],
   ]);
 
   const colorScheme = useAtomValue(colorSchemeAtom);
