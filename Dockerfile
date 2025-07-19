@@ -48,6 +48,20 @@ RUN yarn install --immutable
 
 # Copy source code and build applications
 COPY --from=builder /app/out/full/ .
+
+
+RUN echo "DATABASE_URL=${DATABASE_URL}"
+RUN echo "API_PORT=${API_PORT}"
+RUN echo "REMIX_PUBLIC_API_HOST=${REMIX_PUBLIC_API_HOST}"
+RUN echo "REMIX_PUBLIC_CLIENT_HOST=${REMIX_PUBLIC_CLIENT_HOST}"
+RUN echo "PORT=${PORT}"
+RUN echo "JWT_SECRET=${JWT_SECRET}"
+RUN echo "JWT_EXPIRES_IN=${JWT_EXPIRES_IN}"
+RUN echo "SESSION_SECRET=${SESSION_SECRET}"
+RUN echo "CORS_ORIGIN=${CORS_ORIGIN}"
+RUN echo "NODE_ENV=${NODE_ENV}"
+
+
 RUN yarn turbo run build
 
 # =============================================================================
@@ -92,12 +106,12 @@ RUN chmod +x /app/scripts/*.sh
 # Frontend application
 COPY --from=installer /app/apps/frontend/build /app/apps/frontend/build
 COPY --from=installer /app/apps/frontend/public /app/apps/frontend/public
-COPY --from=installer /app/apps/frontend/node_modules /app/apps/frontend/node_modules
+# COPY --from=installer /app/apps/frontend/node_modules /app/apps/frontend/node_modules
 COPY --from=installer /app/apps/frontend/package.json /app/apps/frontend/package.json
 
 # Backend application
 COPY --from=installer /app/apps/backend/dist /app/apps/backend/dist
-COPY --from=installer /app/apps/backend/node_modules /app/apps/backend/node_modules
+# COPY --from=installer /app/apps/backend/node_modules /app/apps/backend/node_modules
 COPY --from=installer /app/apps/backend/prisma /app/apps/backend/prisma
 COPY --from=installer /app/apps/backend/package.json /app/apps/backend/package.json
 COPY --from=installer /app/apps/backend/model.conf /app/apps/backend/model.conf
