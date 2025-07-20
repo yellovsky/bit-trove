@@ -74,7 +74,7 @@ HorizontalRule.displayName = 'HorizontalRule';
  * -----------------------------------------------------------------------------------------------*/
 const TEXT_LINK_NAME = 'TextLink';
 
-const textLinkVariants = cva('', {
+const textLinkVariants = cva('focus-visible-outline focus-visible:rounded-default', {
   compoundVariants: [
     {
       active: true,
