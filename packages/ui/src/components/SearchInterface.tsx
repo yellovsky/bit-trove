@@ -1,7 +1,7 @@
 import { CommandIcon, SearchIcon, SearchXIcon, XIcon } from 'lucide-react';
 import type { ComponentProps, FC } from 'react';
 
-import { Button } from '@repo/ui/components/Button';
+import { IconButton } from '@repo/ui/components/IconButton';
 import { ScrollArea } from '@repo/ui/components/ScrollArea';
 import { TextInput, type TextInputProps } from '@repo/ui/components/TextInput';
 import { Kbd } from '@repo/ui/components/Typography';
@@ -55,9 +55,9 @@ const SearchInterfaceInput: FC<SearchInterfaceInputProps> = ({ onClear, classNam
     <div className="relative flex flex-1 gap-1">
       <SearchIcon className="-translate-y-1/2 absolute top-1/2 left-3 h-4 w-4 transform text-muted-foreground" />
       <TextInput className="flex-1" data-slot="search-interface-input" type="text" {...props} />
-      <Button aria-label="Clear search" onClick={onClear} size="icon" type="button" variant="ghost">
+      <IconButton aria-label="Clear search" onClick={onClear} size="md" type="button" variant="ghost">
         <XIcon className="h-4 w-4 text-muted-foreground" />
-      </Button>
+      </IconButton>
     </div>
   </div>
 );

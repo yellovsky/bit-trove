@@ -3,6 +3,7 @@ import { Bell, Info, Mail, Settings, User } from 'lucide-react';
 import { useState } from 'react';
 
 import { Button } from './Button';
+import { IconButton } from './IconButton';
 import { Popover, PopoverContent, PopoverTrigger } from './Popover';
 import popoverMdx from './Popover.mdx';
 
@@ -78,9 +79,9 @@ export const WithIcon: Story = {
   render: () => (
     <Popover>
       <PopoverTrigger asChild>
-        <Button aria-label="Settings" size="icon" variant="outline">
-          <Settings className="size-4" />
-        </Button>
+        <IconButton aria-label="Settings" variant="outline">
+          <Settings />
+        </IconButton>
       </PopoverTrigger>
       <PopoverContent className="w-80">
         <div className="grid gap-4">
@@ -118,9 +119,9 @@ export const UserProfile: Story = {
   render: () => (
     <Popover>
       <PopoverTrigger asChild>
-        <Button aria-label="User profile" size="icon" variant="ghost">
-          <User className="size-4" />
-        </Button>
+        <IconButton aria-label="User profile" variant="ghost">
+          <User />
+        </IconButton>
       </PopoverTrigger>
       <PopoverContent align="end" className="w-80">
         <div className="flex items-center gap-4">
@@ -160,12 +161,12 @@ export const Notifications: Story = {
   render: () => (
     <Popover>
       <PopoverTrigger asChild>
-        <Button aria-label="Notifications" className="relative" size="icon" variant="ghost">
-          <Bell className="size-4" />
+        <IconButton aria-label="Notifications" className="relative" variant="ghost">
+          <Bell />
           <span className="-top-1 -right-1 absolute flex h-3 w-3 items-center justify-center rounded-full bg-destructive text-destructive-foreground text-xs">
             3
           </span>
-        </Button>
+        </IconButton>
       </PopoverTrigger>
       <PopoverContent align="end" className="w-80">
         <div className="space-y-2">
@@ -211,9 +212,9 @@ export const InfoTooltip: Story = {
   render: () => (
     <Popover>
       <PopoverTrigger asChild>
-        <Button aria-label="Information" size="icon" variant="ghost">
-          <Info className="size-4" />
-        </Button>
+        <IconButton aria-label="Information" variant="ghost">
+          <Info />
+        </IconButton>
       </PopoverTrigger>
       <PopoverContent className="w-80">
         <div className="space-y-2">

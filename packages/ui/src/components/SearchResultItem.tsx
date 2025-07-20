@@ -2,8 +2,8 @@ import { Slot } from '@radix-ui/react-slot';
 import { ArrowRightIcon, CalendarIcon, ClockIcon, FolderIcon, UserIcon } from 'lucide-react';
 import type { ComponentProps, FC, ReactNode } from 'react';
 
-import { cn } from '../lib/utils';
-import { Badge } from './Badge';
+import { Badge } from '@repo/ui/components/Badge';
+import { cn } from '@repo/ui/lib/utils';
 
 /* -------------------------------------------------------------------------------------------------
  * Types

@@ -34,12 +34,12 @@ function ColorSchemeWrapper({ children }: { children: React.ReactNode; }) {
 
 	useEffect(() => {
 		document.body.setAttribute('data-theme', colorScheme);
-		document.body.classList.add(...getPaletteClassName('primary').split(' '));
+		document.body.classList.add(...getPaletteClassName('brand').split(' '));
 	}, [colorScheme]);
 
 	console.log(document.querySelectorAll('.docs-story').forEach(el => el.classList.add('bg-background')))
 
-  return <div data-tmp className={getPaletteClassName('primary')}>{children}</div>;
+  return <div data-tmp className={getPaletteClassName('brand')}>{children}</div>;
 }
 
 

@@ -1,8 +1,8 @@
 import { type FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { IconButton } from '@repo/ui/components/IconButton';
 import { Popover, PopoverContent, PopoverTrigger } from '@repo/ui/components/Popover';
-import { Toggle } from '@repo/ui/components/Toggle';
 import { useMobile } from '@repo/ui/hooks/use-mobile';
 import { cn } from '@repo/ui/lib/utils';
 
@@ -17,7 +17,7 @@ export const LanguageSwitcher: FC = () => {
   return (
     <Popover onOpenChange={setOpen} open={open}>
       <PopoverTrigger asChild>
-        <Toggle aria-label={`Current language: ${i18n.language}`} isActive={open} variant="dimmed">
+        <IconButton aria-label={`Current language: ${i18n.language}`} variant={open ? 'soft' : 'ghost'}>
           <div
             className={cn(
               styles.flag,
@@ -26,7 +26,7 @@ export const LanguageSwitcher: FC = () => {
               i18n.language === 'ru' && styles.ru
             )}
           />
-        </Toggle>
+        </IconButton>
       </PopoverTrigger>
 
       <PopoverContent align={'end'} className="p-0" side={isMobile ? 'bottom' : undefined}>

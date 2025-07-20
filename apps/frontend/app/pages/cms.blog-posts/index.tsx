@@ -139,7 +139,7 @@ const Page = () => {
           {t('menu_items.blog.title')}
         </Heading>
 
-        <Button asChild>
+        <Button asChild variant="soft">
           <Link to={getCreateBlogPostLink()}>
             <PlusCircle />
             {tBlogPosts('create_blog_post_button.text')}

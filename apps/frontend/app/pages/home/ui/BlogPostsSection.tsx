@@ -6,7 +6,7 @@ import { Link } from '@repo/ui/components/Link';
 
 import { SectionHeader } from '@shared/ui/SectionHeader';
 
-import { BlogPostCard } from '@features/blog-posts';
+import { BlogPostListCard } from '@features/blog-posts';
 
 import { type ShortBlogPostsGetVariables, useInfiniteShortBlogPostsQuery } from '@entities/blog-posts';
 
@@ -23,7 +23,7 @@ export const BlogPostsSection: FC<BlogPostsSectionProps> = ({ blogPostsVars }) =
     <section aria-labelledby="blog-posts-heading">
       <SectionHeader
         action={
-          <Button asChild size="sm" variant="dimmed">
+          <Button asChild variant="ghost">
             <Link to="/blog">{t('See all')}</Link>
           </Button>
         }
@@ -34,7 +34,7 @@ export const BlogPostsSection: FC<BlogPostsSectionProps> = ({ blogPostsVars }) =
 
       <div className="grid @2xl:grid-cols-2 grid-cols-1 gap-4">
         {blogPosts?.slice(0, 4).map((blogPost) => (
-          <BlogPostCard blogPost={blogPost} key={blogPost.id} />
+          <BlogPostListCard blogPost={blogPost} key={blogPost.id} />
         ))}
       </div>
     </section>

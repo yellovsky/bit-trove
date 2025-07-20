@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { Button } from './Button';
 import { Checkbox } from './Checkbox';
+import { IconButton } from './IconButton';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from './Table';
 import tableMdx from './Table.mdx';
 
@@ -315,9 +316,9 @@ export const SelectableTable: Story = {
                 </span>
               </TableCell>
               <TableCell>
-                <Button aria-label="More options" size="icon" variant="ghost">
+                <IconButton aria-label="More options" variant="ghost">
                   <MoreHorizontal className="size-4" />
-                </Button>
+                </IconButton>
               </TableCell>
             </TableRow>
           ))}
@@ -358,16 +359,15 @@ export const ExpandableTable: Story = {
             <>
               <TableRow key={user.id}>
                 <TableCell>
-                  <Button
+                  <IconButton
                     aria-label={expandedRows.has(user.id) ? 'Collapse row' : 'Expand row'}
                     onClick={() => toggleRow(user.id)}
-                    size="icon"
                     variant="ghost"
                   >
                     <ChevronDown
                       className={`size-4 transition-transform ${expandedRows.has(user.id) ? 'rotate-180' : ''}`}
                     />
-                  </Button>
+                  </IconButton>
                 </TableCell>
                 <TableCell className="font-medium">{user.name}</TableCell>
                 <TableCell>{user.email}</TableCell>

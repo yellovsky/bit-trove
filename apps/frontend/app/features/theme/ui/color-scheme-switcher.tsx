@@ -2,7 +2,7 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import { MoonIcon, SunIcon } from 'lucide-react';
 import type { FC } from 'react';
 
-import { Toggle } from '@repo/ui/components/Toggle';
+import { IconButton } from '@repo/ui/components/IconButton';
 import { colorSchemeAtom, selectedColorSchemeAtom } from '@repo/ui/lib/color-scheme-atom';
 
 import { updateDocumentCookieColorScheme } from '../lib/theme-cookie';
@@ -19,8 +19,8 @@ export const ColorSchemeSwitcher: FC = () => {
   };
 
   return (
-    <Toggle aria-label="Color scheme" color="gray" onClick={toggleColorScheme}>
+    <IconButton aria-label="Color scheme" onClick={toggleColorScheme} variant="ghost">
       {colorScheme === 'dark' ? <MoonIcon /> : <SunIcon />}
-    </Toggle>
+    </IconButton>
   );
 };

@@ -13,11 +13,11 @@ import {
   useState,
 } from 'react';
 
+import { IconButton, type IconButtonProps } from '@repo/ui/components/IconButton';
 import { Separator } from '@repo/ui/components/Separator';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@repo/ui/components/Sheet';
 import { Skeleton } from '@repo/ui/components/Skeleton';
 import { TextInput } from '@repo/ui/components/TextInput';
-import { Toggle } from '@repo/ui/components/Toggle';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@repo/ui/components/Tooltip';
 import { useMobile } from '@repo/ui/hooks/use-mobile';
 import { cn } from '@repo/ui/lib/utils';
@@ -245,30 +245,24 @@ export const Sidebar: FC<SidebarProps> = ({
   );
 };
 
-type SidebarTriggerProps = ComponentProps<typeof Toggle> & {
+type SidebarTriggerProps = IconButtonProps & {
   className?: string;
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
-export const SidebarTrigger: FC<SidebarTriggerProps> = ({ className, onClick, ...props }) => {
+export const SidebarTrigger: FC<SidebarTriggerProps> = ({ onClick, ...props }) => {
   const { toggleSidebar } = useSidebar();
 
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    onClick?.(event);
+    toggleSidebar();
+  };
+
   return (
-    <Toggle
-      className={cn('size-7', className)}
-      data-sidebar="trigger"
-      data-slot="sidebar-trigger"
-      onClick={(event) => {
-        onClick?.(event);
-        toggleSidebar();
-      }}
-      size="md"
-      variant="dimmed"
-      {...props}
-    >
+    <IconButton data-sidebar="trigger" data-slot="sidebar-trigger" onClick={handleClick} variant="ghost" {...props}>
       <PanelLeftIcon />
       <span className="sr-only">Toggle Sidebar</span>
-    </Toggle>
+    </IconButton>
   );
 };
 

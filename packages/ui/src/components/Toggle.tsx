@@ -6,7 +6,7 @@ import { getPaletteClassName, type Palette } from '@repo/ui/lib/palette';
 import { cn } from '@repo/ui/lib/utils';
 
 export const toggleVariants = cva(
-  "inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap font-medium text-sm outline-none transition-[color,box-shadow] focus-visible:inset-ring-2 focus-visible:inset-ring-focus-ring disabled:pointer-events-none aria-invalid:border-destructive aria-invalid:focus-visible:inset-ring-destructive [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+  "focus-visible-outline inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap font-medium text-sm transition-[color,box-shadow] disabled:pointer-events-none aria-invalid:border-destructive aria-invalid:focus-visible:inset-ring-destructive [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
   {
     defaultVariants: {
       radius: 'default',
@@ -26,15 +26,13 @@ export const toggleVariants = cva(
       },
 
       size: {
-        lg: 'h-9 min-w-9 px-2',
-        md: 'h-8 min-w-8 px-1',
-        sm: 'h-7 min-w-7 px-1',
-        xl: 'h-10.5 min-w-10.5 px-3',
-        xs: 'h-6 min-w-6 px-0.5',
+        lg: 'h-10 gap-3 px-4 text-base',
+        md: 'h-8 gap-2 px-3 text-sm',
+        sm: 'h-6 gap-1 px-2 text-xs',
       },
       variant: {
         dimmed:
-          'hover:bg-muted hover:text-muted-foreground active:brightness-[0.9] disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-accent data-[state=off]:text-gray-12 data-[state=on]:text-accent-foreground data-[state=on]:text-primary-contrast [&]:disabled:text-gray-9',
+          'font-medium disabled:text-gray-a8 data-[state=on]:bg-primary-a3 data-[state=off]:text-gray-a12 data-[state=on]:text-gray-a12 data-[state=on]:active:bg-primary-a5 not-disabled:data-[state=off]:active:bg-primary-a4 data-[state=on]:hover:bg-primary-a4 not-disabled:data-[state=off]:hover:bg-primary-a3',
       },
     },
   }
@@ -45,11 +43,7 @@ export type ToggleProps = ComponentProps<typeof TogglePrimitive.Root> &
 
 export const Toggle: FC<ToggleProps> = ({ className, variant, size, palette, isActive, radius, ...props }) => (
   <TogglePrimitive.Root
-    className={cn(
-      toggleVariants({ className, radius, size, variant }),
-      palette && getPaletteClassName(palette),
-      className
-    )}
+    className={cn(toggleVariants({ radius, size, variant }), palette && getPaletteClassName(palette), className)}
     data-slot="toggle"
     {...props}
     data-state={isActive ? 'on' : 'off'}

@@ -15,6 +15,7 @@
 @import "./slate.palette.css";
 @import "./gray.palette.css";
 @import "./light-blue.palette.css";
+@import "./brand.palette.css";
 
 /* 3. Primary Color Variants */
 @import "./primary-teal.palette.css";
@@ -25,6 +26,7 @@
 @import "./primary-gray.palette.css";
 @import "./primary-blue.palette.css";
 @import "./primary-light-blue.palette.css";
+@import "./primary-brand.palette.css";
 
 /* 4. Component System */
 @import "./components.palette.css";
@@ -53,6 +55,38 @@
   --radius-default: 0.25rem;
 
   /* Color Palette Variables - Required for Tailwind utilities */
+  /* Brand Colors */
+  --color-brand-1: var(--color-brand-1);
+  --color-brand-2: var(--color-brand-2);
+  --color-brand-3: var(--color-brand-3);
+  --color-brand-4: var(--color-brand-4);
+  --color-brand-5: var(--color-brand-5);
+  --color-brand-6: var(--color-brand-6);
+  --color-brand-7: var(--color-brand-7);
+  --color-brand-8: var(--color-brand-8);
+  --color-brand-9: var(--color-brand-9);
+  --color-brand-10: var(--color-brand-10);
+  --color-brand-11: var(--color-brand-11);
+  --color-brand-12: var(--color-brand-12);
+
+  --color-brand-a1: var(--color-brand-a1);
+  --color-brand-a2: var(--color-brand-a2);
+  --color-brand-a3: var(--color-brand-a3);
+  --color-brand-a4: var(--color-brand-a4);
+  --color-brand-a5: var(--color-brand-a5);
+  --color-brand-a6: var(--color-brand-a6);
+  --color-brand-a7: var(--color-brand-a7);
+  --color-brand-a8: var(--color-brand-a8);
+  --color-brand-a9: var(--color-brand-a9);
+  --color-brand-a10: var(--color-brand-a10);
+  --color-brand-a11: var(--color-brand-a11);
+  --color-brand-a12: var(--color-brand-a12);
+
+  --color-brand-contrast: var(--color-brand-contrast);
+  --color-brand-surface: var(--color-brand-surface);
+  --color-brand-indicator: var(--color-brand-indicator);
+  --color-brand-track: var(--color-brand-track);
+
   /* Primary Colors */
   --color-primary-1: var(--color-primary-1);
   --color-primary-2: var(--color-primary-2);
@@ -359,6 +393,7 @@
   --color-accent: var(--color-primary-9);
   --color-accent-foreground: var(--color-primary-contrast);
   --color-input: var(--color-gray-surface);
+
   /* TODO remove */
   --color-input-bg: var(--color-gray-surface);
   --color-border: var(--color-gray-a5);
@@ -413,5 +448,11 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .focus-visible-outline {
+    @apply focus-visible:outline-2 focus-visible:outline-primary-8 focus-visible:outline-offset-2;
   }
 }

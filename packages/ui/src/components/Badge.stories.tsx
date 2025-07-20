@@ -2,10 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Hash, Tag, User } from 'lucide-react';
 import { Link } from 'react-router';
 
+import { Badge } from '@repo/ui/components/Badge';
+import BadgeMdx from '@repo/ui/components/Badge.mdx';
 import { PALETTES } from '@repo/ui/lib/palette';
-
-import { Badge } from './Badge';
-import BadgeMdx from './Badge.mdx';
 
 const meta = {
   args: {

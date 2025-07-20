@@ -3,8 +3,8 @@ import { Slot } from 'radix-ui';
 import type { ComponentProps, FC } from 'react';
 import { Link as RouterLink } from 'react-router';
 
-import { useEnhanceTo } from '../hooks/enhance-to';
-import { cn } from '../lib/utils';
+import { useEnhanceTo } from '@repo/ui/hooks/enhance-to';
+import { cn } from '@repo/ui/lib/utils';
 
 export const Blockquote: FC<ComponentProps<'blockquote'>> = ({ className, ...props }) => (
   <blockquote {...props} className={cn('typography-blockquote', className)} />
@@ -69,10 +69,46 @@ export const HorizontalRule: FC<ComponentProps<'hr'>> = ({ className, ...props }
 );
 HorizontalRule.displayName = 'HorizontalRule';
 
-type TextLinkProps = ComponentProps<typeof RouterLink>;
-export const TextLink: FC<TextLinkProps> = ({ className, ...props }) => {
+/* -------------------------------------------------------------------------------------------------
+ * Button
+ * -----------------------------------------------------------------------------------------------*/
+const TEXT_LINK_NAME = 'TextLink';
+
+const textLinkVariants = cva('', {
+  compoundVariants: [
+    {
+      active: true,
+      className: 'font-medium text-primary-a11',
+      variant: 'dimmed',
+    },
+  ],
+  defaultVariants: {
+    variant: 'primary',
+  },
+  variants: {
+    active: {
+      true: '',
+    },
+    variant: {
+      dimmed:
+        'text-muted-foreground transition-colors hover:text-primary-a11 active:brightness-[0.92] active:saturate-[1.1]',
+      primary: 'typography-link',
+    },
+  },
+});
+
+type TextLinkProps = ComponentProps<typeof RouterLink> & VariantProps<typeof textLinkVariants>;
+
+const TextLink: FC<TextLinkProps> = ({ className, variant, active, ...props }) => {
   const enhanceTo = useEnhanceTo();
   const echancedLink = enhanceTo ? enhanceTo(props.to) : props.to;
-  return <RouterLink {...props} className={cn('typography-link', className)} to={echancedLink} />;
+  return <RouterLink {...props} className={cn(textLinkVariants({ active, variant }), className)} to={echancedLink} />;
 };
-TextLink.displayName = 'TextLink';
+
+TextLink.displayName = TEXT_LINK_NAME;
+
+/* -----------------------------------------------------------------------------------------------*/
+
+export { TextLink };
+
+export type { TextLinkProps };

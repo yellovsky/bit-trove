@@ -16,7 +16,12 @@ export {
 } from './lib/seo-utils';
 export { BackToBlogListButton } from './ui/BackToBlogListButton';
 export { BlogPostBreadcrumbs } from './ui/BlogPostBreadcrumbs';
-export { BlogPostCard } from './ui/BlogPostCard';
+export {
+  BlogPostGridCard,
+  BlogPostGridCardPending,
+  BlogPostListCard,
+  BlogPostListCardPending,
+} from './ui/BlogPostCard';
 export { BlogPostDetailSkeleton } from './ui/BlogPostDetailSkeleton';
 export { BlogPostErrorState } from './ui/BlogPostErrorState';
 export { BlogPostMetadata } from './ui/BlogPostMetadata';

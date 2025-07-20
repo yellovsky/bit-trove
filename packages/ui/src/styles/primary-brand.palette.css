@@ -1,0 +1,32 @@
+.primary-brand {
+  --color-primary-1: var(--color-brand-1);
+  --color-primary-2: var(--color-brand-2);
+  --color-primary-3: var(--color-brand-3);
+  --color-primary-4: var(--color-brand-4);
+  --color-primary-5: var(--color-brand-5);
+  --color-primary-6: var(--color-brand-6);
+  --color-primary-7: var(--color-brand-7);
+  --color-primary-8: var(--color-brand-8);
+  --color-primary-9: var(--color-brand-9);
+  --color-primary-10: var(--color-brand-10);
+  --color-primary-11: var(--color-brand-11);
+  --color-primary-12: var(--color-brand-12);
+
+  --color-primary-a1: var(--color-brand-a1);
+  --color-primary-a2: var(--color-brand-a2);
+  --color-primary-a3: var(--color-brand-a3);
+  --color-primary-a4: var(--color-brand-a4);
+  --color-primary-a5: var(--color-brand-a5);
+  --color-primary-a6: var(--color-brand-a6);
+  --color-primary-a7: var(--color-brand-a7);
+  --color-primary-a8: var(--color-brand-a8);
+  --color-primary-a9: var(--color-brand-a9);
+  --color-primary-a10: var(--color-brand-a10);
+  --color-primary-a11: var(--color-brand-a11);
+  --color-primary-a12: var(--color-brand-a12);
+
+  --color-primary-contrast: var(--color-brand-contrast);
+  --color-primary-surface: var(--color-brand-surface);
+  --color-primary-indicator: var(--color-brand-indicator);
+  --color-primary-track: var(--color-brand-track);
+}

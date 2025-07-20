@@ -3,7 +3,6 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { BookOpenIcon, NewspaperIcon } from 'lucide-react';
 import type { ComponentProps, FC, ReactNode } from 'react';
 
-import { cn } from '../lib/utils';
 import {
   CardAuthor,
   type CardAuthorProps,
@@ -25,8 +24,9 @@ import {
   CardTagsList,
   type CardTagsListProps,
   CardTextWithIcon,
-} from './Card';
-import { Progress } from './Progress';
+} from '@repo/ui/components/Card';
+import { Progress } from '@repo/ui/components/Progress';
+import { cn } from '@repo/ui/lib/utils';
 
 /* -------------------------------------------------------------------------------------------------
  * GridCard
@@ -42,7 +42,7 @@ const GridCard: FC<GridCardProps> = ({ asChild, className, ...rest }) => {
     <Comp
       {...rest}
       className={cn(
-        '@container group block cursor-pointer rounded-default border border-border bg-card transition-all duration-200 hover:border-primary/50 hover:bg-accent/50 hover:shadow-lg',
+        '@container group block cursor-pointer rounded-default border border-border bg-card transition-all duration-200 hover:border-primary-a11/50 hover:bg-accent/50 hover:shadow-md',
         className
       )}
       data-slot="grid-card"
@@ -191,7 +191,7 @@ const GridCardTitle: FC<GridCardTitleProps> = ({ className, ...rest }) => (
   <h3
     {...rest}
     className={cn(
-      'mb-2 line-clamp-2 font-semibold text-foreground transition-colors group-hover:text-primary',
+      'mb-2 line-clamp-2 font-semibold text-foreground transition-colors group-hover:text-primary-a11 group-active:brightness-[0.92] group-active:saturate-[1.1]',
       className
     )}
     data-slot="grid-card-title"

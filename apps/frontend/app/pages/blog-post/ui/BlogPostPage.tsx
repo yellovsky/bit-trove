@@ -11,7 +11,6 @@ import { TableOfContents, type TableOfContentsItem } from '@widgets/blog-post-si
 
 import { RelatedArticles } from '@features/articles/ui/RelatedArticles';
 import {
-  BackToBlogListButton,
   BlogPostBreadcrumbs,
   BlogPostDetailSkeleton,
   BlogPostErrorState,
@@ -88,10 +87,7 @@ export const BlogPostPage: FC<{ blogPostVariables: BlogPostGetVariables }> = ({ 
 
       <ContentWithSidebar sidebar={sidebar}>
         {/* Navigation section */}
-        <nav aria-label="Blog post navigation" className="mb-6 flex items-center justify-between">
-          <BlogPostBreadcrumbs blogPost={blogPost} />
-          <BackToBlogListButton />
-        </nav>
+        <BlogPostBreadcrumbs blogPost={blogPost} className="mb-6" />
 
         <article aria-labelledby="blog-post-title">
           {/* Blog post header */}

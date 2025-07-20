@@ -60,7 +60,7 @@ const PaginationLink: FC<PaginationLinkProps> = ({ className, isActive, ...props
     aria-current={isActive ? 'page' : undefined}
     className={cn(
       buttonVariants({
-        variant: isActive ? 'outline' : 'dimmed',
+        variant: isActive ? 'outline' : 'ghost',
       }),
       className
     )}

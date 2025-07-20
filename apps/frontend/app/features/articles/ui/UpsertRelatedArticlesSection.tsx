@@ -6,6 +6,7 @@ import type { ArticleRelationType } from '@repo/api-models';
 import { Button } from '@repo/ui/components/Button';
 import { Divider } from '@repo/ui/components/Divider';
 import { Fieldset } from '@repo/ui/components/Fieldset';
+import { IconButton } from '@repo/ui/components/IconButton';
 import { Label } from '@repo/ui/components/Label';
 import { Paper } from '@repo/ui/components/Paper';
 import * as Select from '@repo/ui/components/Select';
@@ -38,9 +39,9 @@ const RelatedArticleRow = ({ articleId, relationType, onDelete }: RelatedArticle
         </Label>{' '}
         <span>{article.data?.data.title}</span>
       </div>
-      <Button aria-label="Delete" onClick={onDelete} size="icon" type="button" variant="ghost">
-        <Trash2Icon className="h-4 w-4" />
-      </Button>
+      <IconButton aria-label="Delete" onClick={onDelete} palette="red" size="md" type="button" variant="soft">
+        <Trash2Icon />
+      </IconButton>
     </Paper>
   );
 };

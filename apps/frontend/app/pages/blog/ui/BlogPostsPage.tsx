@@ -6,7 +6,7 @@ import { BlogPostsErrorState, EmptyBlogPostsState } from '@shared/ui/ErrorStates
 import { BlogPostsLoadingState, EndOfContentState, InfiniteScrollLoadingState } from '@shared/ui/LoadingStates';
 import { SectionHeader } from '@shared/ui/SectionHeader';
 
-import { BlogPostCard, BlogSortingDropdown } from '@features/blog-posts';
+import { BlogPostListCard, BlogSortingDropdown } from '@features/blog-posts';
 import { type AppBreadcrumb, Breadcrumbs } from '@features/breadcrumbs';
 
 import { type ShortBlogPostsGetVariables, useInfiniteShortBlogPostsQuery } from '@entities/blog-posts';
@@ -102,7 +102,7 @@ export const BlogPostsPage: FC<BlogPostsPageProps> = ({ blogPostsVars }) => {
         <ul className="grid @2xl:grid-cols-3 @4xl:grid-cols-4 @md:grid-cols-2 grid-cols-1 gap-4">
           {blogPosts.map((blogPost) => (
             <li className="contents" key={blogPost.id}>
-              <BlogPostCard blogPost={blogPost} />
+              <BlogPostListCard blogPost={blogPost} />
             </li>
           ))}
         </ul>

@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import type { ShortShard } from '@repo/api-models';
 
-import { ShardHorizontalCard } from './ShardHorizontalCard';
+import { ShardListCard } from './ShardCard';
 
 const makeFakeShard = (): ShortShard => {
   return {
@@ -30,9 +30,9 @@ const meta = {
   args: {
     shard: makeFakeShard(),
   },
-  component: ShardHorizontalCard,
-  title: 'Components/ShardHorizontalCard',
-} satisfies Meta<typeof ShardHorizontalCard>;
+  component: ShardListCard,
+  title: 'Components/ShardListCard',
+} satisfies Meta<typeof ShardListCard>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

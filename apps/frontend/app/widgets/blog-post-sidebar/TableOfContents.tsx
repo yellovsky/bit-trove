@@ -3,8 +3,8 @@ import type { FC, ReactNode } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Link } from '@repo/ui/components/Link';
 import { Paper } from '@repo/ui/components/Paper';
+import { TextLink } from '@repo/ui/components/Typography';
 import { cn } from '@repo/ui/lib/utils';
 
 export interface TableOfContentsItem {
@@ -57,7 +57,7 @@ export const TableOfContents: FC<TableOfContentsProps> = ({ items = [], classNam
 
   return (
     <Paper className={cn('sticky max-h-96 overflow-y-auto', className)}>
-      <div className="mb-3 flex cursor-pointer items-center justify-between">
+      <div className="mb-3 flex items-center justify-between">
         <h3 className="flex items-center space-x-2 font-semibold text-foreground">
           <TableOfContentsIcon />
           <span>{t('Table of Contents')}</span>
@@ -66,19 +66,16 @@ export const TableOfContents: FC<TableOfContentsProps> = ({ items = [], classNam
 
       <nav aria-label="Table of contents navigation" className="space-y-1" ref={navRef}>
         {items.map((item) => (
-          <Link
+          <TextLink
+            active={activeId === item.id}
             aria-label={`Jump to section: ${item.title}`}
-            className={cn('block text-sm transition-colors hover:text-primary', {
-              'font-medium text-primary': activeId === item.id,
-              'ps-3': item.level === 2,
-              'ps-6': item.level === 3,
-              'text-muted-foreground': activeId !== item.id,
-            })}
+            className={cn('block text-sm', { 'ps-3': item.level === 2, 'ps-6': item.level === 3 })}
             key={item.id}
             to={{ hash: item.id }}
+            variant="dimmed"
           >
             {item.title}
-          </Link>
+          </TextLink>
         ))}
       </nav>
     </Paper>

@@ -8,8 +8,8 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from './Breadcrumb';
-import BreadcrumbMdx from './Breadcrumb.mdx';
+} from '@repo/ui/components/Breadcrumb';
+import BreadcrumbMdx from '@repo/ui/components/Breadcrumb.mdx';
 
 const meta: Meta<typeof Breadcrumb> = {
   argTypes: {},

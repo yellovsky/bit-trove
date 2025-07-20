@@ -63,7 +63,7 @@ const CodeBlock: FC<CodeBlockProps> = (props) => {
             onClick={handleCopy}
             size="sm"
             type="button"
-            variant="dimmed"
+            variant="ghost"
           >
             {copied ? 'Copied!' : 'Copy'}
           </Button>

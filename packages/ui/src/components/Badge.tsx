@@ -2,9 +2,8 @@ import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 import type { ComponentProps, FC } from 'react';
 
+import { getPaletteClassName, type WithPalette } from '@repo/ui/lib/palette';
 import { cn } from '@repo/ui/lib/utils';
-
-import { getPaletteClassName, type WithPalette } from '../lib/palette';
 
 /* -------------------------------------------------------------------------------------------------
  * Badge

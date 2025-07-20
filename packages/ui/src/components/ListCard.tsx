@@ -2,7 +2,6 @@ import { Slot } from '@radix-ui/react-slot';
 import { ChevronRightIcon } from 'lucide-react';
 import type { ComponentProps, FC } from 'react';
 
-import { cn } from '../lib/utils';
 import {
   CardAuthor,
   type CardAuthorProps,
@@ -23,8 +22,9 @@ import {
   CardTagsList,
   type CardTagsListProps,
   CardTextWithIcon,
-} from './Card';
-import { Progress } from './Progress';
+} from '@repo/ui/components/Card';
+import { Progress } from '@repo/ui/components/Progress';
+import { cn } from '@repo/ui/lib/utils';
 
 /* -------------------------------------------------------------------------------------------------
  * ListCard
@@ -40,7 +40,7 @@ const ListCard: FC<ListCardProps> = ({ asChild, className, ...rest }) => {
     <Comp
       {...rest}
       className={cn(
-        '@container group flex cursor-pointer items-center space-x-4 rounded-lg border border-border p-4 transition-all duration-200 hover:border-primary/50 hover:bg-accent/50',
+        '@container group flex cursor-pointer items-center space-x-4 rounded-lg border border-border p-4 transition-all duration-200 hover:border-primary-a11/50 hover:bg-accent/50 hover:shadow-md',
         className
       )}
       data-slot="list-card"
@@ -85,12 +85,12 @@ type ListCardTitleProps = ComponentProps<'h3'>;
 
 const ListCardTitle: FC<ListCardTitleProps> = ({ className, ...rest }) => (
   <h3
-    {...rest}
     className={cn(
-      'className="truncate font-medium text-foreground transition-colors group-hover:text-primary',
+      'className="truncate font-medium text-foreground transition-colors group-hover:text-primary-a11 group-active:brightness-[0.92] group-active:saturate-[1.1]',
       className
     )}
     data-slot="list-card-title"
+    {...rest}
   />
 );
 
@@ -152,7 +152,11 @@ const LIST_CARD_ARROW_NAME = 'ListCardArrow';
 type ListCardArrowProps = ComponentProps<typeof ChevronRightIcon>;
 
 const ListCardArrow: FC<ListCardArrowProps> = ({ className, ...rest }) => (
-  <ChevronRightIcon {...rest} className={cn('group-hover:text-primary', className)} data-slot="list-card-arrow" />
+  <ChevronRightIcon
+    {...rest}
+    className={cn('group-hover:text-primary-a11 group-active:brightness-[0.92] group-active:saturate-[1.1]', className)}
+    data-slot="list-card-arrow"
+  />
 );
 
 ListCardArrow.displayName = LIST_CARD_ARROW_NAME;

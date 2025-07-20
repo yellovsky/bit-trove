@@ -7,7 +7,7 @@ import { Link } from '@repo/ui/components/Link';
 
 import { SectionHeader } from '@shared/ui/SectionHeader';
 
-import { ShardHorizontalCard, ShardHorizontalCardPending } from '@features/shards';
+import { ShardGridCard, ShardGridCardPending } from '@features/shards';
 
 import { type ShortShardsGetVariables, useInfiniteShortShardsQuery } from '@entities/shards';
 
@@ -31,7 +31,7 @@ export const ShardsSection: FC<ShardsSectionProps> = ({ variables }) => {
     <section aria-labelledby="recent-shards-heading" className="@container">
       <SectionHeader
         action={
-          <Button asChild size="sm" variant="dimmed">
+          <Button asChild variant="ghost">
             <Link to="/shards">{t('See all')}</Link>
           </Button>
         }
@@ -42,14 +42,14 @@ export const ShardsSection: FC<ShardsSectionProps> = ({ variables }) => {
 
       <div className="grid @2xl:grid-cols-2 grid-cols-1 gap-4">
         {shards?.slice(0, 4).map((shard) => (
-          <ShardHorizontalCard key={shard.id} shard={shard} />
+          <ShardGridCard key={shard.id} shard={shard} />
         ))}
         {query.isPending && (
           <>
-            <ShardHorizontalCardPending />
-            <ShardHorizontalCardPending />
-            <ShardHorizontalCardPending />
-            <ShardHorizontalCardPending />
+            <ShardGridCardPending />
+            <ShardGridCardPending />
+            <ShardGridCardPending />
+            <ShardGridCardPending />
           </>
         )}
       </div>

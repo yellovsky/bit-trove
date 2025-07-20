@@ -2,8 +2,8 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { CalendarIcon, UserIcon } from 'lucide-react';
 import type { ComponentProps, FC, ReactNode } from 'react';
 
-import { cn } from '../lib/utils';
-import { Badge } from './Badge';
+import { Badge } from '@repo/ui/components/Badge';
+import { cn } from '@repo/ui/lib/utils';
 
 const icons = ['📘', '📄', '🦀', '💡', '📝', '💭'] as const;
 

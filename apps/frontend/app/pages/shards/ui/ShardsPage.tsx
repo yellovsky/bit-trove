@@ -5,7 +5,7 @@ import { useIntersectionObserver } from 'usehooks-ts';
 import { SectionHeader } from '@shared/ui/SectionHeader';
 
 import { type AppBreadcrumb, Breadcrumbs } from '@features/breadcrumbs';
-import { ShardHorizontalCard, ShardHorizontalCardPending, ShardsSortingDropdown } from '@features/shards';
+import { ShardListCard, ShardListCardPending, ShardsSortingDropdown } from '@features/shards';
 
 import { type ShortShardsGetVariables, useInfiniteShortShardsQuery } from '@entities/shards';
 
@@ -36,13 +36,13 @@ export const ShardsPage: FC<ShardsPageProps> = ({ shardsVariables, breadcrumbs }
 
       <div className="flex flex-col gap-2">
         {shardsQuery.data?.pages.map((page) =>
-          page.data.items.map((shard) => <ShardHorizontalCard key={shard.id} shard={shard} />)
+          page.data.items.map((shard) => <ShardListCard key={shard.id} shard={shard} />)
         )}
 
         {shardsQuery.isPending && (
           <>
-            <ShardHorizontalCardPending />
-            <ShardHorizontalCardPending />
+            <ShardListCardPending />
+            <ShardListCardPending />
           </>
         )}
       </div>

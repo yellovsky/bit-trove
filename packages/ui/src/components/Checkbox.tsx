@@ -1,4 +1,5 @@
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
+import { cva, type VariantProps } from 'class-variance-authority';
 import { CheckIcon, MinusIcon } from 'lucide-react';
 import { type ComponentProps, type FC, type ReactNode, useId } from 'react';
 
@@ -9,12 +10,29 @@ import { cn } from '@repo/ui/lib/utils';
  * -----------------------------------------------------------------------------------------------*/
 const NAME = 'Checkbox';
 
-interface CheckboxProps extends ComponentProps<typeof CheckboxPrimitive.Root> {
-  label?: ReactNode;
-  description?: ReactNode;
-}
+const checkoboxVariants = cva(
+  "peer focus-visible-outline size-4 shrink-0 rounded-[3px] disabled:cursor-not-allowed [&_svg:not([class*='size-'])]:size-3",
+  {
+    defaultVariants: {
+      variant: 'surface',
+    },
+    variants: {
+      variant: {
+        soft: 'bg-primary-a5 text-primary-a11',
+        surface:
+          'bg-primary-surface text-primary-contrast disabled:inset-ring-gray-a6 disabled:bg-gray-a3 data-[state=unchecked]:inset-ring data-[state=unchecked]:inset-ring-input not-disabled:data-[state=checked]:bg-primary-indicator not-disabled:data-[state=indeterminate]:bg-primary-indicator data-[state=unchecked]:aria-invalid:inset-ring-destructive data-[state=checked]:aria-invalid:bg-destructive',
+      },
+    },
+  }
+);
 
-const Checkbox: FC<CheckboxProps> = ({ className, label, description, id: propsId, ...props }) => {
+type CheckboxProps = ComponentProps<typeof CheckboxPrimitive.Root> &
+  VariantProps<typeof checkoboxVariants> & {
+    label?: ReactNode;
+    description?: ReactNode;
+  };
+
+const Checkbox: FC<CheckboxProps> = ({ className, label, description, id: propsId, variant, ...props }) => {
   const hookId = useId();
   const id = propsId ?? hookId;
 
@@ -22,23 +40,21 @@ const Checkbox: FC<CheckboxProps> = ({ className, label, description, id: propsI
     <div className="flex items-start space-x-2">
       <CheckboxPrimitive.Root
         checked={props.checked}
-        className={cn(
-          'peer h-4 w-4 shrink-0 rounded-sm border border-input-border bg-input-bg ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground',
-          className
-        )}
+        className={checkoboxVariants({ className, variant })}
         data-slot="checkbox"
         id={id}
         {...props}
       >
         <CheckboxPrimitive.Indicator className={cn('flex items-center justify-center text-current')}>
-          {props.checked === 'indeterminate' ? <MinusIcon className="h-3 w-3" /> : <CheckIcon className="h-3 w-3" />}
+          {props.checked === 'indeterminate' ? <MinusIcon strokeWidth={3} /> : <CheckIcon strokeWidth={3} />}
         </CheckboxPrimitive.Indicator>
       </CheckboxPrimitive.Root>
+
       {(label || description) && (
         <div className="grid gap-1.5 leading-none">
           {label && (
             <label
-              className="font-medium text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
               htmlFor={id}
             >
               {label}

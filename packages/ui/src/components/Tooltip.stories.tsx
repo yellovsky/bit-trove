@@ -3,6 +3,7 @@ import { Info, Mail, Settings, User } from 'lucide-react';
 
 import { Button } from '@repo/ui/components/Button';
 
+import { IconButton } from './IconButton';
 import { Tooltip, TooltipContent, type TooltipContentProps, type TooltipProps, TooltipTrigger } from './Tooltip';
 import TooltipMdx from './Tooltip.mdx';
 
@@ -249,9 +250,9 @@ export const WithIcon: Story = {
   render: (args: TooltipContentProps & TooltipProps) => (
     <Tooltip>
       <TooltipTrigger asChild>
-        <Button aria-label="User tooltip" size="icon" variant="ghost">
+        <IconButton aria-label="User tooltip" variant="ghost">
           <User />
-        </Button>
+        </IconButton>
       </TooltipTrigger>
       <TooltipContent {...args} />
     </Tooltip>
@@ -275,9 +276,9 @@ export const InfoTooltip: Story = {
   render: (args: TooltipContentProps & TooltipProps) => (
     <Tooltip>
       <TooltipTrigger asChild>
-        <Button aria-label="Info tooltip" size="icon" variant="ghost">
+        <IconButton aria-label="Info tooltip" variant="ghost">
           <Info />
-        </Button>
+        </IconButton>
       </TooltipTrigger>
       <TooltipContent {...args} />
     </Tooltip>
@@ -301,9 +302,9 @@ export const SettingsTooltip: Story = {
   render: (args) => (
     <Tooltip>
       <TooltipTrigger asChild>
-        <Button aria-label="Settings tooltip" size="icon" variant="ghost">
+        <IconButton aria-label="Settings tooltip" variant="ghost">
           <Settings />
-        </Button>
+        </IconButton>
       </TooltipTrigger>
       <TooltipContent {...args} />
     </Tooltip>
@@ -327,9 +328,9 @@ export const MailTooltip: Story = {
   render: (args: TooltipContentProps & TooltipProps) => (
     <Tooltip>
       <TooltipTrigger asChild>
-        <Button aria-label="Mail tooltip" size="icon" variant="ghost">
+        <IconButton aria-label="Mail tooltip" variant="ghost">
           <Mail />
-        </Button>
+        </IconButton>
       </TooltipTrigger>
       <TooltipContent {...args} />
     </Tooltip>
@@ -403,9 +404,9 @@ export const MultipleTooltips: Story = {
 
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button aria-label="Information tooltip" size="icon" variant="ghost">
+          <IconButton aria-label="Information tooltip" variant="ghost">
             <Info />
-          </Button>
+          </IconButton>
         </TooltipTrigger>
         <TooltipContent>Information tooltip</TooltipContent>
       </Tooltip>

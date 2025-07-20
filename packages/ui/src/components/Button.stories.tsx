@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { MailIcon, Newspaper, Send } from 'lucide-react';
+import { Newspaper, Send } from 'lucide-react';
 import { Link } from 'react-router';
 
 import { PALETTES } from '@repo/ui/lib/palette';
@@ -7,14 +7,14 @@ import { PALETTES } from '@repo/ui/lib/palette';
 import { Button } from './Button';
 import ButtonMdx from './Button.mdx';
 
-const variants = ['default', 'destructive', 'dimmed', 'ghost', 'link', 'outline', 'secondary'] as const;
+const variants = ['solid', 'ghost', 'outline', 'soft', 'surface'] as const;
 
 const meta = {
   args: {
     children: 'Button',
     radius: 'sm',
-    size: 'default',
-    variant: 'default',
+    size: 'md',
+    variant: 'solid',
   },
   argTypes: {
     children: {
@@ -93,7 +93,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     children: 'Button',
-    variant: 'default',
+    variant: 'solid',
   },
 };
 
@@ -103,7 +103,8 @@ export const Default: Story = {
 export const Destructive: Story = {
   args: {
     children: 'Delete',
-    variant: 'destructive',
+    palette: 'red',
+    variant: 'solid',
   },
   parameters: {
     docs: {
@@ -149,30 +150,13 @@ export const Ghost: Story = {
 };
 
 /**
- * Link variant for navigation-like interactions.
- */
-export const LinkVariant: Story = {
-  args: {
-    children: 'Learn More',
-    variant: 'link',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Link variant for navigation-like interactions that look like text links.',
-      },
-    },
-  },
-};
-
-/**
  * Button with an icon on the left side.
  */
 export const WithLeftIcon: Story = {
   args: {
     children: (
       <>
-        <Newspaper strokeWidth={1.5} />
+        <Newspaper />
         Read Article
       </>
     ),
@@ -194,7 +178,7 @@ export const WithRightIcon: Story = {
     children: (
       <>
         Send
-        <Send strokeWidth={1.5} />
+        <Send />
       </>
     ),
   },
@@ -214,9 +198,9 @@ export const WithLeftAndRightIcon: Story = {
   args: {
     children: (
       <>
-        <Newspaper strokeWidth={1.5} />
+        <Newspaper />
         Share Article
-        <Send strokeWidth={1.5} />
+        <Send />
       </>
     ),
   },
@@ -242,58 +226,6 @@ export const AsLink: Story = {
       description: {
         story:
           'Button rendered as a link element for navigation purposes. Maintains accessibility and keyboard navigation.',
-      },
-    },
-  },
-};
-
-/**
- * Icon-only button for compact interfaces.
- */
-export const IconOnly: Story = {
-  args: {
-    'aria-label': 'Mail',
-    children: <MailIcon />,
-    size: 'icon',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Icon-only button for compact interfaces where space is limited.',
-      },
-    },
-  },
-};
-
-/**
- * Small button for compact layouts.
- */
-export const Small: Story = {
-  args: {
-    children: 'Small',
-    size: 'sm',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Small button variant for compact layouts and secondary actions.',
-      },
-    },
-  },
-};
-
-/**
- * Large button for prominent actions.
- */
-export const Large: Story = {
-  args: {
-    children: 'Large Button',
-    size: 'lg',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Large button variant for prominent actions that need extra emphasis.',
       },
     },
   },
@@ -339,33 +271,4 @@ export const PaletteVariations: Story = {
       ))}
     </div>
   ),
-};
-
-/**
- * Interactive test story for accessibility and functionality testing.
- */
-export const InteractiveTest: Story = {
-  args: {
-    children: 'Click me',
-    variant: 'default',
-  },
-  parameters: {
-    a11y: {
-      config: {
-        rules: [
-          {
-            enabled: true,
-            id: 'color-contrast',
-          },
-        ],
-      },
-    },
-    chromatic: { disableSnapshot: false },
-    docs: {
-      description: {
-        story:
-          'Interactive test story for accessibility and functionality testing. Use Storybook interactions to test keyboard navigation and focus states.',
-      },
-    },
-  },
 };

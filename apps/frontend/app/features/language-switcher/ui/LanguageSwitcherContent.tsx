@@ -34,8 +34,8 @@ export const LanguageSwitcherContent: FC<LanguageSwitcherContentProps> = ({ clas
               to={`${location.pathname}`}
             >
               <div className={cn(styles.flag, 'h-5 w-5 rounded-sm shadow-sm', styles.enUs)} />
-              <span className="flex-1 text-left">English</span>
-              {i18n.language === 'en' && <div className="h-1.5 w-1.5 rounded-full bg-primary" />}
+              <span className="flex-1">English</span>
+              {i18n.language === 'en' && <div className="size-1.5 rounded-full bg-primary-11" />}
             </Link>
           </Toggle>
 
@@ -47,8 +47,8 @@ export const LanguageSwitcherContent: FC<LanguageSwitcherContentProps> = ({ clas
               to={`${location.pathname}`}
             >
               <div className={cn(styles.flag, 'h-5 w-5 rounded-sm shadow-sm', styles.ru)} />
-              <span className="flex-1 text-left">Русский</span>
-              {i18n.language === 'ru' && <div className="h-1.5 w-1.5 rounded-full bg-primary" />}
+              <span className="flex-1">Русский</span>
+              {i18n.language === 'ru' && <div className="size-1.5 rounded-full bg-primary-11" />}
             </Link>
           </Toggle>
         </div>

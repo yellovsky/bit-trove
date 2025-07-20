@@ -112,6 +112,6 @@
 
   /* Link Styles */
   .typography-link {
-    @apply cursor-pointer underline-offset-4 text-primary-a11 decoration-1 decoration-primary-a5 hover:underline active:text-primary-a10;
+    @apply cursor-pointer transition-colors underline-offset-4 text-primary-a11 decoration-1 decoration-primary-a5 hover:underline active:brightness-[0.92] active:saturate-[1.1];
   }
 }

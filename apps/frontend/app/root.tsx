@@ -95,7 +95,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         <Links />
       </head>
 
-      <body className={cx('h-full w-full', getPaletteClassName('primary'), colorScheme)}>
+      <body className={cx('h-full w-full', getPaletteClassName('brand'), colorScheme)}>
         <Suspense fallback={<AppSuspenseWarning />}>
           <QueryClientProvider client={queryClient}>
             <EnhanceToProvider value={enhanceTo}>

@@ -2,8 +2,8 @@ import { NodeViewContent, type NodeViewProps, NodeViewWrapper } from '@tiptap/re
 import { InfoIcon } from 'lucide-react';
 import type { FC } from 'react';
 
-import { Button } from '@repo/ui/components/Button';
 import { type CalloutType, calloutIcons } from '@repo/ui/components/Callout';
+import { IconButton } from '@repo/ui/components/IconButton';
 import { Popover, PopoverContent, PopoverTrigger } from '@repo/ui/components/Popover';
 
 const calloutTypes = [
@@ -34,15 +34,14 @@ const IconOption: FC<IconOptionProps> = ({ type, updateAttributes }) => {
   const Icon = getIconComponent(type);
 
   return (
-    <Button
+    <IconButton
       aria-label={`Set ${type} callout`}
       onClick={() => updateAttributes({ calloutType: type })}
-      size="icon"
       type="button"
-      variant="dimmed"
+      variant="soft"
     >
       <Icon />
-    </Button>
+    </IconButton>
   );
 };
 

@@ -4,54 +4,67 @@ import { useTranslation } from 'react-i18next';
 import type { To } from 'react-router';
 
 import type { ShortArticle } from '@repo/api-models';
-import { Link } from '@repo/ui/components/Link';
-import * as ListCardPrimitive from '@repo/ui/components/ListCard';
+import * as GridCardPrimitive from '@repo/ui/components/GridCard';
+import { Link } from '@repo/ui/components/link';
 import { Skeleton } from '@repo/ui/components/Skeleton';
 
 import { useRelativeDate } from '@shared/lib/use-relative-date';
 
-interface ArticleGridCardProps extends ListCardPrimitive.ListCardProps {
+interface ArticleGridCardProps extends GridCardPrimitive.GridCardProps {
   article: ShortArticle;
   to: To;
 }
 
 export const ArticleGridCard: FC<ArticleGridCardProps> = ({ article, to, ...props }) => {
   const { t } = useTranslation();
-  const relativeDate = useRelativeDate(article.publishedAt ?? article.createdAt);
+  const filename = [article.title.replace(/ /g, '-').toLowerCase(), '.md'].join('');
+  const relativeDate = useRelativeDate(article.publishedAt ?? '');
 
   return (
-    <ListCardPrimitive.Root asChild {...props}>
-      <Link aria-label={article.title} to={to}>
-        <ListCardPrimitive.CardContent>
-          <ListCardPrimitive.CardHeader>
-            <ListCardPrimitive.CardTitle>{article.title}</ListCardPrimitive.CardTitle>
-            <ListCardPrimitive.ListCardHeaderBadge color="blue">Article</ListCardPrimitive.ListCardHeaderBadge>
-          </ListCardPrimitive.CardHeader>
-          <ListCardPrimitive.ListCardDescription>{article.shortDescription}</ListCardPrimitive.ListCardDescription>
-          <ListCardPrimitive.ListCardFooter>
-            {article.author && (
-              <ListCardPrimitive.ListCardAuthor>{article.author.name}</ListCardPrimitive.ListCardAuthor>
-            )}
-            <ListCardPrimitive.ListCardDate>{relativeDate}</ListCardPrimitive.ListCardDate>
-            <ListCardPrimitive.CardTextWithIcon icon={<ClockIcon size={14} strokeWidth={1.5} />}>
-              <span>{t('{{number}} min read', { number: article.readingTime })}</span>
-            </ListCardPrimitive.CardTextWithIcon>
-          </ListCardPrimitive.ListCardFooter>
-        </ListCardPrimitive.CardContent>
+    <GridCardPrimitive.Root asChild {...props}>
+      <Link
+        aria-label={article.title}
+        className="focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        to={to}
+      >
+        <GridCardPrimitive.CardHeader>
+          <GridCardPrimitive.CardHeaderContent>
+            <GridCardPrimitive.CardIcon generateOn={filename} />
+            <GridCardPrimitive.CardHeaderText className="@lg:text-xs @sm:text-sm">
+              {filename}
+            </GridCardPrimitive.CardHeaderText>
+          </GridCardPrimitive.CardHeaderContent>
+          <GridCardPrimitive.CardHeaderBullet generateOn={filename} />
+        </GridCardPrimitive.CardHeader>
 
-        <ListCardPrimitive.CardAside>
-          {!article.tags.length ? null : (
-            <ListCardPrimitive.ListCardTagsList>
-              {article.tags.map((tag) => (
-                <ListCardPrimitive.ListCardTag key={tag.id}>{tag.name}</ListCardPrimitive.ListCardTag>
-              ))}
-            </ListCardPrimitive.ListCardTagsList>
-          )}
-        </ListCardPrimitive.CardAside>
-        <ListCardPrimitive.CardArrow />
+        <GridCardPrimitive.CardContent className="@lg:p-4 @sm:p-3">
+          <GridCardPrimitive.CardTitle className="@lg:text-lg @sm:text-base @xl:text-xl">
+            {article.title}
+          </GridCardPrimitive.CardTitle>
+          <GridCardPrimitive.CardDescription className="@lg:text-base @sm:text-sm @xl:text-sm">
+            {article.shortDescription}
+          </GridCardPrimitive.CardDescription>
+
+          <GridCardPrimitive.CardFooter className="@lg:mt-3 @sm:mt-2">
+            <GridCardPrimitive.CardFooterGroup>
+              <GridCardPrimitive.CardDate className="@lg:text-sm @sm:text-xs">
+                {relativeDate}
+              </GridCardPrimitive.CardDate>
+            </GridCardPrimitive.CardFooterGroup>
+
+            {!article.readingTime ? null : (
+              <GridCardPrimitive.CardTextWithIcon
+                className="@lg:text-sm @sm:text-xs"
+                icon={<ClockIcon size={14} strokeWidth={1.5} />}
+              >
+                {t('{{number}} min read', { number: article.readingTime })}
+              </GridCardPrimitive.CardTextWithIcon>
+            )}
+          </GridCardPrimitive.CardFooter>
+        </GridCardPrimitive.CardContent>
       </Link>
-    </ListCardPrimitive.Root>
+    </GridCardPrimitive.Root>
   );
 };
 
-export const ShardHorizontalCardPending: FC = () => <Skeleton className="h-28" />;
+export const ArticleGridCardPending: FC = () => <Skeleton className="h-28" />;
