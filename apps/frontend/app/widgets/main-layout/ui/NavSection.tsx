@@ -10,6 +10,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from '@repo/ui/components/Sidebar';
 
 export interface NavigationItem {
@@ -20,6 +21,7 @@ export interface NavigationItem {
 }
 
 const NavSectionItem: FC<{ item: NavigationItem }> = ({ item }) => {
+  const { setOpenMobile } = useSidebar();
   const pathname = typeof item.to === 'string' ? item.to : item.to.pathname;
   const pathPattern: PathPattern<string> =
     pathname === '/'
@@ -29,7 +31,7 @@ const NavSectionItem: FC<{ item: NavigationItem }> = ({ item }) => {
   const isActive = !!useMatch(pathPattern);
 
   return (
-    <SidebarMenuButton asChild isActive={isActive}>
+    <SidebarMenuButton asChild isActive={isActive} onClick={() => setOpenMobile(false)} size="lg">
       <Link to={item.to}>
         {item.icon && <item.icon />}
         <span className="flex-1">{item.title}</span>

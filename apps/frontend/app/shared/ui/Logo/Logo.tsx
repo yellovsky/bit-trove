@@ -1,13 +1,22 @@
-import type { FC } from 'react';
+import type { ComponentProps, FC } from 'react';
 
 import logoUrl from './images/logo.svg?url';
 import logoShortUrl from './images/logo-short.svg?url';
 
-interface LogoProps {
-  short?: boolean;
-  className?: string;
-}
+/* -------------------------------------------------------------------------------------------------
+ * Logo
+ * -----------------------------------------------------------------------------------------------*/
+const NAME = 'Logo';
 
-export const Logo: FC<LogoProps> = (props) => (
-  <img alt="logo" className={props.className} src={props.short ? logoShortUrl : logoUrl} />
+type LogoProps = Omit<ComponentProps<'img'>, 'src'> & { short?: boolean };
+
+const Logo: FC<LogoProps> = ({ short, alt, ...rest }) => (
+  <img alt={alt} src={short ? logoShortUrl : logoUrl} {...rest} />
 );
+
+Logo.displayName = NAME;
+
+/* -----------------------------------------------------------------------------------------------*/
+
+export { Logo };
+export type { LogoProps };

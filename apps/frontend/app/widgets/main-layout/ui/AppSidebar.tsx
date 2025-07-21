@@ -14,6 +14,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
+  useSidebar,
 } from '@repo/ui/components/Sidebar';
 
 import { Logo } from '@shared/ui/Logo';
@@ -52,6 +53,7 @@ export const AppSidebar: React.FC<ComponentProps<typeof Sidebar>> = ({ ...props 
   const navItems = useNavItems();
   const signOutMutation = useAtomValue(signOutMutationAtom);
   const navItemsCms = useNavItemsCms();
+  const { setOpenMobile } = useSidebar();
 
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -75,14 +77,21 @@ export const AppSidebar: React.FC<ComponentProps<typeof Sidebar>> = ({ ...props 
         {isAuthorized && (
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton className="cursor-pointer" onClick={() => signOutMutation.mutate()}>
+              <SidebarMenuButton
+                className="cursor-pointer"
+                onClick={() => {
+                  signOutMutation.mutate();
+                  setOpenMobile(false);
+                }}
+                size="lg"
+              >
                 <LogOutIcon />
                 <span className="flex-1">{tAuth('sign_out_menu_item.text')}</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
         )}
-        <div className="border-t border-t-border pt-2 text-center text-gray-a11 text-xs opacity-50">
+        <div className="border-t border-t-border pt-2 text-center text-gray-a11 text-xs opacity-50 [[data-state=collapsed]_&]:hidden">
           {t('{{year}} all rights reserved', { year: new Date().getFullYear() })}
         </div>
       </SidebarFooter>
