@@ -1,0 +1,47 @@
+import { Meta, Title, Primary, Controls, Stories } from '@storybook/addon-docs/blocks';
+
+<Meta isTemplate />
+
+<Title />
+
+Switch component for toggling between enabled and disabled states.
+
+The Switch component provides a user interface control for binary options, such as turning settings on or off. It is built on top of Radix UI's Switch and styled with Tailwind CSS for accessibility and consistency.
+
+## Features
+- Accessible toggle for boolean values
+- Keyboard and screen reader support
+- Customizable size and color via Tailwind classes
+- Supports controlled and uncontrolled usage
+- Disabled state
+
+## Usage
+```tsx
+import { Switch } from '@repo/ui/components/Switch';
+
+// Basic usage
+<Switch />
+
+// Controlled usage
+const [isChecked, setIsChecked] = useState(false);
+<Switch checked={isChecked} onCheckedChange={setIsChecked} />
+
+// Disabled
+<Switch disabled />
+```
+
+<Primary />
+
+## Inputs
+
+The component accepts the following inputs (props):
+
+<Controls />
+
+---
+
+## Additional variations
+
+Listed below are additional variations of the component.
+
+<Stories />
