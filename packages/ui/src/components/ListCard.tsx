@@ -40,7 +40,7 @@ const ListCard: FC<ListCardProps> = ({ asChild, className, ...rest }) => {
     <Comp
       {...rest}
       className={cn(
-        '@container group flex cursor-pointer items-center space-x-4 rounded-lg border border-border p-4 transition-all duration-200 hover:border-primary-a11/50 hover:bg-accent/50 hover:shadow-md',
+        '@container group flex cursor-pointer items-center space-x-4 rounded-lg border border-border bg-card p-4 transition-all duration-200 hover:border-primary-a11/50 hover:shadow-md',
         className
       )}
       data-slot="list-card"

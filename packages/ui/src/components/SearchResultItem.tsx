@@ -321,7 +321,7 @@ const SEARCH_RESULT_ITEM_TAG_NAME = 'SearchResultItemTag';
 type SearchResultItemTagProps = ComponentProps<typeof Badge>;
 
 const SearchResultItemTag: FC<SearchResultItemTagProps> = (props) => (
-  <Badge {...props} className="font-mono text-xs" data-slot="search-result-item-tag" variant="secondary" />
+  <Badge {...props} className="font-mono text-xs" data-slot="search-result-item-tag" variant="soft" />
 );
 
 SearchResultItemTag.displayName = SEARCH_RESULT_ITEM_TAG_NAME;

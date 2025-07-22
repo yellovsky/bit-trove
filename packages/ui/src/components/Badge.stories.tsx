@@ -9,7 +9,7 @@ import { PALETTES } from '@repo/ui/lib/palette';
 const meta = {
   args: {
     children: 'Badge',
-    variant: 'default',
+    variant: 'solid',
   },
   argTypes: {
     children: {
@@ -41,7 +41,7 @@ const meta = {
     variant: {
       control: 'select',
       description: 'The visual style variant of the badge',
-      options: ['default', 'destructive', 'outline', 'secondary'],
+      options: ['outline', 'soft', 'solid', 'surface'],
       table: {
         category: 'Appearance',
         defaultValue: { summary: 'default' },
@@ -68,17 +68,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     children: 'Badge',
-    variant: 'default',
-  },
-};
-
-/**
- * Badge with destructive styling for error states or warnings.
- */
-export const Destructive: Story = {
-  args: {
-    children: 'Error',
-    variant: 'destructive',
+    variant: 'solid',
   },
 };
 
@@ -95,10 +85,10 @@ export const Outline: Story = {
 /**
  * Secondary variant for less prominent badges.
  */
-export const Secondary: Story = {
+export const Soft: Story = {
   args: {
     children: 'Info',
-    variant: 'secondary',
+    variant: 'soft',
   },
 };
 
@@ -199,7 +189,7 @@ export const PaletteVariations: Story = {
 export const InteractiveTest: Story = {
   args: {
     children: 'Click me',
-    variant: 'default',
+    variant: 'solid',
   },
   parameters: {
     a11y: {

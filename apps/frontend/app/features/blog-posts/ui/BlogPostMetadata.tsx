@@ -39,7 +39,7 @@ export const BlogPostMetadata: FC<BlogPostMetadataProps> = ({
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-muted-foreground text-sm">Tags:</span>
           {tags.map((tag) => (
-            <Badge className="text-xs" key={tag.id} variant="secondary">
+            <Badge className="text-xs" key={tag.id} variant="soft">
               {tag.name}
             </Badge>
           ))}

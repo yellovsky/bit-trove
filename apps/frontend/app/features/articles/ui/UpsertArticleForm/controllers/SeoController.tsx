@@ -12,7 +12,7 @@ export const SeoController: FC<ControlProps> = ({ control }) => {
   const { t: tCmsArticles } = useTranslation('cms_articles');
 
   return (
-    <UiFieldset legend={tCmsArticles('upsert_article_form.seo_fieldset_title')}>
+    <UiFieldset legend={tCmsArticles('upsert_article_form.seo_fieldset_title')} variant="filled">
       <FormField
         control={control}
         name="seoTitle"

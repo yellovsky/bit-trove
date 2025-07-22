@@ -42,7 +42,7 @@ const GridCard: FC<GridCardProps> = ({ asChild, className, ...rest }) => {
     <Comp
       {...rest}
       className={cn(
-        '@container group block cursor-pointer rounded-default border border-border bg-card transition-all duration-200 hover:border-primary-a11/50 hover:bg-accent/50 hover:shadow-md',
+        '@container group block cursor-pointer rounded-default border border-border bg-card transition-all duration-200 hover:border-primary-a11/50 hover:shadow-md',
         className
       )}
       data-slot="grid-card"

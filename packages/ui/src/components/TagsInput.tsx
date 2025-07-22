@@ -64,7 +64,7 @@ const TagsInput: FC<TagsInputProps> = ({ options, value, onChange, placeholder }
       <div className="group rounded-default border border-border px-3 py-2 text-sm ring-offset-background focus-within:inset-ring-2 focus-within:inset-ring-focus-ring">
         <div className="flex flex-wrap gap-1">
           {selected.map((framework) => (
-            <Badge key={framework.value} variant="secondary">
+            <Badge key={framework.value}>
               {framework.label}
               <button
                 className="ml-1 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2"

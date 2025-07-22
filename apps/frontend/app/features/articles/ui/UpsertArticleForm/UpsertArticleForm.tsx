@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import { failedResponseSchema } from '@repo/api-models';
 import { Button } from '@repo/ui/components/Button';
+import { Fieldset } from '@repo/ui/components/Fieldset';
 import { Form as UiForm } from '@repo/ui/components/Form';
 
 import { useEditor } from '@widgets/editor';
@@ -49,20 +50,24 @@ const UpsertArticleForm: React.FC<CreateArticleFormProps> = (props) => {
   return (
     <UiForm {...form}>
       <form className="space-y-6" onSubmit={form.handleSubmit(submitHandler)}>
-        <TitleController control={form.control} />
-        <TagsController control={form.control} />
+        <Fieldset className="space-y-4" legend="General" variant="filled">
+          <TitleController control={form.control} />
+          <TagsController control={form.control} />
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <SlugController control={form.control} id={props.id} />
+            </div>
+            <div>
+              <LanguageCodeController control={form.control} />
+            </div>
+          </div>
+
+          <ShortDescriptionController control={form.control} />
+        </Fieldset>
+
         <PublishController control={form.control} />
 
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <SlugController control={form.control} id={props.id} />
-          </div>
-          <div>
-            <LanguageCodeController control={form.control} />
-          </div>
-        </div>
-
-        <ShortDescriptionController control={form.control} />
         <SeoController control={form.control} />
         <RelatedArticlesController control={form.control} />
 

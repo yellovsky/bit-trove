@@ -11,18 +11,22 @@ import { cn } from '@repo/ui/lib/utils';
 const NAME = 'Badge';
 
 const badgeVariants = cva(
-  'inline-flex w-fit shrink-0 items-center justify-center gap-1 overflow-hidden whitespace-nowrap rounded-md border px-2 py-0.5 font-medium text-xs transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&>svg]:pointer-events-none [&>svg]:size-3 [a&,button&]:cursor-pointer',
+  'focus-visible-outline inline-flex w-fit shrink-0 items-center justify-center gap-1.5 overflow-hidden whitespace-nowrap px-1.5 py-0.5 font-medium text-xs tracking-[0.0025em] transition-[color,box-shadow] aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&>svg]:pointer-events-none [&>svg]:size-3 [a&,button&]:cursor-pointer',
   {
     defaultVariants: {
-      variant: 'default',
+      radius: 'default',
+      variant: 'solid',
     },
     variants: {
+      radius: {
+        default: 'rounded-default',
+        full: 'rounded-full',
+      },
       variant: {
-        default: 'border-transparent bg-primary text-primary-foreground [a&,button&]:hover:bg-primary/90',
-        destructive:
-          'border-transparent bg-destructive text-white focus-visible:ring-destructive/20 dark:bg-destructive/60 dark:focus-visible:ring-destructive/40 [a&,button&]:hover:bg-destructive/90',
-        outline: 'text-foreground [a&,button&]:hover:bg-accent [a&,button&]:hover:text-accent-foreground',
-        secondary: 'border-transparent bg-secondary text-secondary-foreground [a&,button&]:hover:bg-secondary/90',
+        outline: 'inset-ring inset-ring-primary-a8 text-primary-a11',
+        soft: 'bg-primary-a3 text-primary-a11',
+        solid: 'bg-primary-9 text-primary-contrast',
+        surface: 'inset-ring inset-ring-primary-a6 bg-primary-surface text-primary-a11',
       },
     },
   }

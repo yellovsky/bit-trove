@@ -1,11 +1,21 @@
-import type { FC, PropsWithChildren } from 'react';
+import type { ComponentProps, FC } from 'react';
 
 import { cn } from '@repo/ui/lib/utils';
 
-interface PaperProps extends PropsWithChildren {
-  className?: string;
-}
+/* -------------------------------------------------------------------------------------------------
+ * Paper
+ * -----------------------------------------------------------------------------------------------*/
+const NAME = 'Paper';
 
-export const Paper: FC<PaperProps> = ({ children, className }) => {
-  return <div className={cn('rounded-default border border-border bg-card p-4', className)}>{children}</div>;
-};
+type PaperProps = ComponentProps<'div'>;
+
+const Paper: FC<PaperProps> = ({ className, ...rest }) => (
+  <div className={cn('rounded-default border border-border bg-panel p-4', className)} {...rest} />
+);
+
+Paper.displayName = NAME;
+
+/* -----------------------------------------------------------------------------------------------*/
+
+export { Paper };
+export type { PaperProps };

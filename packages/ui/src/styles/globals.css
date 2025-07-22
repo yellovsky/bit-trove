@@ -394,6 +394,11 @@
   --color-accent-foreground: var(--color-primary-contrast);
   --color-input: var(--color-gray-surface);
 
+  --color-panel-solid: var(--color-gray-2);
+  --color-panel-translucent: var(--color-gray-a2);
+  --color-panel: var(--color-panel-translucent);
+  /* --backdrop-filter-panel: blur(64px); */
+
   /* TODO remove */
   --color-input-bg: var(--color-gray-surface);
   --color-border: var(--color-gray-a5);
@@ -405,7 +410,7 @@
 /* TODO move to component */
 :root,
 [data-theme="light"] {
-  --sidebar: #fcfcfc;
+  --sidebar: #f2f5f8;
   --sidebar-foreground: hsl(240 5.3% 26.1%);
   --sidebar-primary: hsl(240 5.9% 10%);
   --sidebar-primary-foreground: hsl(0 0% 98%);
@@ -416,7 +421,7 @@
 }
 
 [data-theme="dark"] {
-  --sidebar: #191b1f;
+  --sidebar: #0c1221;
   --sidebar-foreground: var(--color-gray-a11);
   --sidebar-primary: var(--color-primary-9);
   --sidebar-primary-foreground: var(--color-gray-12);

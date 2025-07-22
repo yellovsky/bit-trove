@@ -470,7 +470,7 @@ export const SidebarMenuItem: FC<SidebarMenuItemProps> = ({ className, ...props 
 };
 
 const sidebarMenuButtonVariants = cva(
-  'peer/menu-button group flex w-full cursor-pointer items-center space-x-2 rounded p-2 text-start font-medium text-base text-foreground transition-[width,height,padding] hover:bg-accent group-has-data-[sidebar=menu-action]/menu-item:pr-8 data-[active=true]:bg-accent data-[active=true]:font-medium data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg]:shrink-0 [&>svg]:text-primary-a11 [[data-state=collapsed]_&>svg]:text-muted-foreground',
+  'peer/menu-button group flex w-full cursor-pointer items-center space-x-2 rounded p-2 text-start font-medium text-base text-foreground transition-[width,height,padding] hover:bg-primary-a3 active:brightness-[0.92] active:saturate-[1.1] group-has-data-[sidebar=menu-action]/menu-item:pr-8 data-[active=true]:bg-primary-a3 data-[active=true]:font-medium data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg]:shrink-0 [&>svg]:text-primary-a11 [[data-state=collapsed]_&>svg]:text-muted-foreground',
   {
     defaultVariants: {
       size: 'default',
@@ -478,7 +478,7 @@ const sidebarMenuButtonVariants = cva(
     variants: {
       size: {
         default: 'h-8 text-sm [&>svg]:size-4',
-        lg: 'h-12 text-sm group-data-[collapsible=icon]:p-1! [&>svg]:size-5',
+        lg: 'h-12 text-sm group-data-[collapsible=icon]:p-1.5! [&>svg]:size-5',
         sm: 'h-7 text-xs',
       },
     },
