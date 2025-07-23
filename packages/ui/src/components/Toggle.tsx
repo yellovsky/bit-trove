@@ -5,7 +5,12 @@ import type { ComponentProps, FC } from 'react';
 import { getPaletteClassName, type Palette } from '@repo/ui/lib/palette';
 import { cn } from '@repo/ui/lib/utils';
 
-export const toggleVariants = cva(
+/* -------------------------------------------------------------------------------------------------
+ * Toggle
+ * -----------------------------------------------------------------------------------------------*/
+const NAME = 'Toggle';
+
+const toggleVariants = cva(
   "focus-visible-outline inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap font-medium text-sm transition-[color,box-shadow] disabled:pointer-events-none aria-invalid:border-destructive aria-invalid:focus-visible:inset-ring-destructive [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
   {
     defaultVariants: {
@@ -38,10 +43,10 @@ export const toggleVariants = cva(
   }
 );
 
-export type ToggleProps = ComponentProps<typeof TogglePrimitive.Root> &
+type ToggleProps = ComponentProps<typeof TogglePrimitive.Root> &
   VariantProps<typeof toggleVariants> & { palette?: Palette; isActive?: boolean };
 
-export const Toggle: FC<ToggleProps> = ({ className, variant, size, palette, isActive, radius, ...props }) => (
+const Toggle: FC<ToggleProps> = ({ className, variant, size, palette, isActive, radius, ...props }) => (
   <TogglePrimitive.Root
     className={cn(toggleVariants({ radius, size, variant }), palette && getPaletteClassName(palette), className)}
     data-slot="toggle"
@@ -49,3 +54,10 @@ export const Toggle: FC<ToggleProps> = ({ className, variant, size, palette, isA
     data-state={isActive ? 'on' : 'off'}
   />
 );
+
+Toggle.displayName = NAME;
+
+/* -----------------------------------------------------------------------------------------------*/
+
+export { Toggle };
+export type { ToggleProps };

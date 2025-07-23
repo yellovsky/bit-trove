@@ -3,7 +3,12 @@ import { Toaster as Sonner, type ToasterProps } from 'sonner';
 
 import { useColorScheme } from '@repo/ui/lib/color-scheme-atom';
 
-export const Toaster: FC<ToasterProps> = ({ ...props }) => {
+/* -------------------------------------------------------------------------------------------------
+ * Toaster
+ * -----------------------------------------------------------------------------------------------*/
+const NAME = 'Toaster';
+
+const Toaster: FC<ToasterProps> = ({ ...props }) => {
   const colorScheme = useColorScheme();
 
   return (
@@ -21,3 +26,10 @@ export const Toaster: FC<ToasterProps> = ({ ...props }) => {
     />
   );
 };
+
+Toaster.displayName = NAME;
+
+/* -----------------------------------------------------------------------------------------------*/
+
+export { Toaster };
+export type { ToasterProps };

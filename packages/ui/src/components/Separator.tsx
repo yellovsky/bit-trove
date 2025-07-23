@@ -1,9 +1,14 @@
 import * as SeparatorPrimitive from '@radix-ui/react-separator';
-import type { ComponentProps, FC } from 'react';
+import type { FC } from 'react';
 
 import { cn } from '@repo/ui/lib/utils';
 
-export const Separator: FC<ComponentProps<typeof SeparatorPrimitive.Root>> = ({
+/* -------------------------------------------------------------------------------------------------
+ * Separator
+ * -----------------------------------------------------------------------------------------------*/
+const NAME = 'Separator';
+
+const Separator: FC<SeparatorPrimitive.SeparatorProps> = ({
   className,
   orientation = 'horizontal',
   decorative = true,
@@ -20,3 +25,11 @@ export const Separator: FC<ComponentProps<typeof SeparatorPrimitive.Root>> = ({
     {...props}
   />
 );
+
+Separator.displayName = NAME;
+
+/* -----------------------------------------------------------------------------------------------*/
+
+export { Separator };
+
+export type { SeparatorProps } from '@radix-ui/react-separator';
