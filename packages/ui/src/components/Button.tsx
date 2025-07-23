@@ -11,7 +11,7 @@ import { cn } from '@repo/ui/lib/utils';
 const NAME = 'Button';
 
 const buttonVariants = cva(
-  "focus-visible-outline inline-flex cursor-pointer flex-nowrap items-center gap-2 disabled:cursor-not-allowed [&_svg:not([class*='size-'])]:size-4",
+  "focus-visible-outline inline-flex cursor-pointer flex-nowrap items-center justify-center gap-2 disabled:cursor-not-allowed [&_svg:not([class*='size-'])]:size-4",
   {
     defaultVariants: {
       radius: 'default',

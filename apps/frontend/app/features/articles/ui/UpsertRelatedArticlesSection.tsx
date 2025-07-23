@@ -107,7 +107,7 @@ const AddNewRelation = ({ onAdd }: AddNewRelationProps) => {
         </div>
       </div>
 
-      <Button className="w-full" onClick={handleClick} type="button">
+      <Button onClick={handleClick} type="button">
         {tCmsArticles('upsert_article_form.related_articles_section.add_button')}
       </Button>
     </div>
