@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { ErrorScreen } from '@shared/ui/error-route';
+import { ErrorScreen } from '@shared/ui/ErrorScreen';
 
 export default function NotFoundPage() {
   const { t, i18n } = useTranslation();

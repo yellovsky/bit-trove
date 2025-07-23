@@ -1,7 +1,7 @@
 import { SearchIcon } from 'lucide-react';
 import { useCallback, useState } from 'react';
 
-import { TextInput } from '@repo/ui/components/TextInput';
+import * as TextInput from '@repo/ui/components/TextInput';
 
 import { SearchCommand } from '@features/search';
 
@@ -19,8 +19,11 @@ export const HeaderSearchInput = () => {
   return (
     <>
       <div className="relative max-w-md flex-1">
-        <TextInput className="cursor-pointer pl-9" onClick={handleInputClick} placeholder="Search shards..." readOnly />
-        <SearchIcon className="-translate-y-1/2 absolute top-1/2 left-3 h-4 w-4 text-muted-foreground" />
+        <TextInput.Root className="cursor-pointer" onClick={handleInputClick} placeholder="Search shards..." readOnly>
+          <TextInput.StartSection>
+            <SearchIcon />
+          </TextInput.StartSection>
+        </TextInput.Root>
       </div>
 
       <SearchCommand onOpenChange={handleSearchClose} open={isSearchOpen} />

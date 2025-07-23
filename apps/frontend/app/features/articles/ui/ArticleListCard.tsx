@@ -27,7 +27,18 @@ export const ArticleListCard: FC<ArticleListCardProps> = ({ article, to, ...prop
             <ListCardPrimitive.CardTitle>{article.title}</ListCardPrimitive.CardTitle>
             <ListCardPrimitive.ListCardHeaderBadge color="blue">Article</ListCardPrimitive.ListCardHeaderBadge>
           </ListCardPrimitive.CardHeader>
-          <ListCardPrimitive.ListCardDescription>{article.shortDescription}</ListCardPrimitive.ListCardDescription>
+          <ListCardPrimitive.ListCardDescription className="mb-4">
+            {article.shortDescription}
+          </ListCardPrimitive.ListCardDescription>
+
+          {!article.tags.length ? null : (
+            <ListCardPrimitive.ListCardTagsList>
+              {article.tags.map((tag) => (
+                <ListCardPrimitive.ListCardTag key={tag.id}>{tag.name}</ListCardPrimitive.ListCardTag>
+              ))}
+            </ListCardPrimitive.ListCardTagsList>
+          )}
+
           <ListCardPrimitive.ListCardFooter>
             {article.author && (
               <ListCardPrimitive.ListCardAuthor>{article.author.name}</ListCardPrimitive.ListCardAuthor>
@@ -39,15 +50,6 @@ export const ArticleListCard: FC<ArticleListCardProps> = ({ article, to, ...prop
           </ListCardPrimitive.ListCardFooter>
         </ListCardPrimitive.CardContent>
 
-        <ListCardPrimitive.CardAside>
-          {!article.tags.length ? null : (
-            <ListCardPrimitive.ListCardTagsList>
-              {article.tags.map((tag) => (
-                <ListCardPrimitive.ListCardTag key={tag.id}>{tag.name}</ListCardPrimitive.ListCardTag>
-              ))}
-            </ListCardPrimitive.ListCardTagsList>
-          )}
-        </ListCardPrimitive.CardAside>
         <ListCardPrimitive.CardArrow />
       </Link>
     </ListCardPrimitive.Root>

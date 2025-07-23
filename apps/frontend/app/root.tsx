@@ -21,7 +21,7 @@ import { getPaletteClassName } from '@repo/ui/lib/palette';
 
 import { getQueryClient } from '@shared/lib/query-client';
 import { useMakeEnhancedTo } from '@shared/lib/use-make-enhanced-to';
-import { ErrorScreen } from '@shared/ui/error-route';
+import { ErrorScreen } from '@shared/ui/ErrorScreen';
 
 import { AppSuspenseWarning } from '@app/app-suspense-warning';
 import { ClientHintCheck, getHints } from '@app/client-hints';

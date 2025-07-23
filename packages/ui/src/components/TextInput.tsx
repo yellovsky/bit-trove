@@ -57,7 +57,7 @@ type TextInputSectionProps = ComponentProps<'div'>;
 const TextInputSection: FC<TextInputSectionProps> = ({ className, ...rest }) => (
   <div
     className={cn(
-      "flex shrink-0 cursor-text items-center gap-2 px-2 text-gray-a11 group-has-[input:disabled]:cursor-not-allowed group-has-[[aria-invalid=true]]:text-red-a11 [&_svg:not([class*='size-'])]:size-4",
+      "flex shrink-0 cursor-text items-center gap-2 px-2 text-gray-a10 group-has-[input:disabled]:cursor-not-allowed group-has-[[aria-invalid=true]]:text-red-a11 [&_svg:not([class*='size-'])]:size-4",
       className
     )}
     {...rest}

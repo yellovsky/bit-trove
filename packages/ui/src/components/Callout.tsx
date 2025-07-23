@@ -87,7 +87,7 @@ const calloutVariants = cva(
     variants: {
       variant: {
         outline: 'inset-ring inset-ring-primary-a7',
-        soft: 'bg-primary-a3',
+        soft: 'bg-primary-a3 dark:bg-primary-a4/30',
         surface: 'inset-ring inset-ring-primary-a6 bg-primary-a2',
       },
     },

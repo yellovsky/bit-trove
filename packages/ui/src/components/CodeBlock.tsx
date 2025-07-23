@@ -57,15 +57,7 @@ const CodeBlock: FC<CodeBlockProps> = (props) => {
           )}
         </div>
         {showCopyButton && (
-          <Button
-            aria-label="Copy code"
-            // className="ml-2 rounded px-2 py-0.5 font-medium text-gray-11 text-xs hover:bg-gray-10 focus:outline-none focus:ring-2 focus:ring-primary-7"
-            onClick={handleCopy}
-            size="sm"
-            tabIndex={-1}
-            type="button"
-            variant="ghost"
-          >
+          <Button aria-label="Copy code" onClick={handleCopy} size="sm" tabIndex={-1} type="button" variant="ghost">
             {copied ? 'Copied!' : 'Copy'}
           </Button>
         )}
@@ -78,7 +70,7 @@ const CodeBlock: FC<CodeBlockProps> = (props) => {
           dangerouslySetInnerHTML={{ __html: html }}
         />
       ) : (
-        <div className="[&>pre]:rounded-b-default [&>pre]:bg-[#2e3440] [&>pre]:px-6 [&>pre]:py-5">
+        <div className="[&>pre]:rounded-b-default [&>pre]:bg-white [&>pre]:px-6 [&>pre]:py-5 dark:[&>pre]:bg-[#24292f]">
           <pre>
             <code>{children}</code>
           </pre>

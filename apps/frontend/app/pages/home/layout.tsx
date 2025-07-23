@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Outlet, useRouteError } from 'react-router';
 
-import { ErrorScreen } from '@shared/ui/error-route';
+import { ErrorScreen } from '@shared/ui/ErrorScreen';
 
 import { MainLayout } from '@widgets/main-layout';
 
