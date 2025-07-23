@@ -50,7 +50,7 @@ const UpsertArticleForm: React.FC<CreateArticleFormProps> = (props) => {
   return (
     <UiForm {...form}>
       <form className="space-y-6" onSubmit={form.handleSubmit(submitHandler)}>
-        <Fieldset className="space-y-4" legend="General" variant="filled">
+        <Fieldset className="space-y-6" legend="General" variant="filled">
           <TitleController control={form.control} />
           <TagsController control={form.control} />
 

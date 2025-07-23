@@ -1,56 +1,101 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Check, Hash, Mail } from 'lucide-react';
+import { EyeClosedIcon, LockIcon } from 'lucide-react';
 
-import { TextInput, type TextInputProps } from './TextInput';
-
-const render = (args: TextInputProps) => (
-  <>
-    <div style={{ display: 'grid', gap: '0.5rem', gridTemplateColumns: 'min-content 1fr' }}>
-      <div className="text-nowrap text-sm">Plain</div>
-      <div>
-        <TextInput {...args} />
-      </div>
-
-      <div className="text-nowrap text-sm">With Left Element</div>
-      <div>
-        <TextInput {...args} leftElement={<Mail />} />
-      </div>
-
-      <div className="text-nowrap text-sm">With Right Element</div>
-      <div>
-        <TextInput {...args} rightElement={<Check />} />
-      </div>
-
-      <div className="text-nowrap text-sm">Both Elements</div>
-      <div>
-        <TextInput {...args} leftElement={<Mail />} rightElement={<Check />} />
-      </div>
-    </div>
-  </>
-);
+import { IconButton } from './IconButton';
+import { TextInput, TextInputEndSection, TextInputStartSection } from './TextInput';
 
 const meta = {
   args: {
-    disabled: false,
-    placeholder: 'Placeholder text',
+    className: '',
   },
-  argTypes: {},
+  argTypes: {
+    variant: {
+      control: 'select',
+      options: ['soft', 'surface'],
+    },
+  },
   component: TextInput,
-  render,
-  title: 'UI/TextInput',
+  parameters: {
+    layout: 'centered',
+  },
+  tags: ['autodocs'],
+  title: 'UI/TextInput1',
 } satisfies Meta<typeof TextInput>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {};
-export const WithIcon: Story = {
+export const Default: Story = {};
+
+export const WithStartSection: Story = {
+  args: {
+    children: (
+      <TextInputStartSection>
+        <LockIcon />
+      </TextInputStartSection>
+    ),
+  },
+};
+
+export const WithEndSection: Story = {
+  args: {
+    children: (
+      <TextInputEndSection>
+        <EyeClosedIcon />
+      </TextInputEndSection>
+    ),
+  },
+};
+
+export const WithStartAndEndSection: Story = {
   args: {
     children: (
       <>
-        <Hash />
-        Badge
+        <TextInputStartSection>
+          <LockIcon />
+        </TextInputStartSection>
+        <TextInputEndSection>
+          <IconButton size="sm" variant="ghost">
+            <EyeClosedIcon />
+          </IconButton>
+        </TextInputEndSection>
       </>
     ),
+  },
+};
+
+export const Invalid: Story = {
+  args: {
+    'aria-invalid': true,
+    children: (
+      <>
+        <TextInputStartSection>
+          <LockIcon />
+        </TextInputStartSection>
+        <TextInputEndSection>
+          <IconButton size="sm" variant="ghost">
+            <EyeClosedIcon />
+          </IconButton>
+        </TextInputEndSection>
+      </>
+    ),
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    children: (
+      <>
+        <TextInputStartSection>
+          <LockIcon />
+        </TextInputStartSection>
+        <TextInputEndSection>
+          <IconButton size="sm" variant="ghost">
+            <EyeClosedIcon />
+          </IconButton>
+        </TextInputEndSection>
+      </>
+    ),
+    disabled: true,
   },
 };

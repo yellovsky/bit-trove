@@ -12,14 +12,28 @@ import { cn } from '@repo/ui/lib/utils';
 const NAME = 'IconButton';
 
 const iconButtonVariants = cva('justify-center', {
+  compoundVariants: [
+    {
+      className: '-m-1',
+      size: 'sm',
+      variant: 'ghost',
+    },
+  ],
   defaultVariants: {
     size: 'md',
   },
   variants: {
     size: {
-      lg: 'w-6 p-0.5',
+      lg: 'w-10 p-2',
       md: 'w-8 p-1',
-      sm: 'w-10 p-2',
+      sm: 'w-6 p-0.5',
+    },
+    variant: {
+      ghost: '',
+      outline: '',
+      soft: '',
+      solid: '',
+      surface: '',
     },
   },
 });
@@ -36,7 +50,7 @@ const IconButton: FC<IconButtonProps> = ({ className, variant, size, palette, as
     <Comp
       className={cn(
         buttonVariants({ size, variant }),
-        iconButtonVariants({ size }),
+        iconButtonVariants({ size, variant }),
         palette && getPaletteClassName(palette),
         className
       )}

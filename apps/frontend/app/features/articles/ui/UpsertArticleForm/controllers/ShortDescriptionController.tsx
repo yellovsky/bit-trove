@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@repo/ui/components/Form';
-import { TextInput as UiTextInput } from '@repo/ui/components/TextInput';
+import { TextInput } from '@repo/ui/components/TextInput';
 
 import type { ControlProps } from '../types';
 import { nullableStringTransform } from '../utils/form-utils';
@@ -18,7 +18,7 @@ export const ShortDescriptionController: FC<ControlProps> = ({ control }) => {
         <FormItem>
           <FormLabel required>{tCmsArticles('upsert_article_form.short_description_control.label')}</FormLabel>
           <FormControl>
-            <UiTextInput
+            <TextInput
               {...field}
               aria-label={tCmsArticles('upsert_article_form.short_description_control.aria_label')}
               disabled={formState.isSubmitting}

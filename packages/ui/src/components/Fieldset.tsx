@@ -30,7 +30,7 @@ type FieldsetProps = ComponentProps<'fieldset'> & VariantProps<typeof fieldsetVa
 
 export const Fieldset: FC<FieldsetProps> = ({ children, className, legend, variant, radius, ...rest }) => (
   <fieldset className={cn(className, fieldsetVariants({ radius, variant }))} {...rest}>
-    {legend ? <legend className="font-medium text-muted-foreground text-sm">{legend}</legend> : null}
+    {legend ? <legend className="mb-0 font-medium text-muted-foreground text-sm">{legend}</legend> : null}
     {children}
   </fieldset>
 );

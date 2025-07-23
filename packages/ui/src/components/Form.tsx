@@ -25,7 +25,7 @@ export const FormItem: FC<ComponentProps<'div'>> = ({ className, ...props }) => 
 
   return (
     <FormItemProvider id={id}>
-      <div className={cn('grid gap-1', className)} data-slot="form-item" {...props} />
+      <div className={cn('grid gap-1.5', className)} data-slot="form-item" {...props} />
     </FormItemProvider>
   );
 };
@@ -34,7 +34,7 @@ interface FormLabelProps extends ComponentProps<typeof Label.Root> {
   required?: boolean;
 }
 
-export const FormLabel: FC<FormLabelProps> = ({ className, required, ...props }) => {
+export const FormLabel: FC<FormLabelProps> = (props) => {
   const { error, formItemId } = useFormField();
   return <Label.Root data-error={!!error} data-slot="form-label" htmlFor={formItemId} {...props} />;
 };
@@ -58,7 +58,7 @@ export const FormDescription: FC<ComponentProps<'p'>> = ({ className, ...props }
 
   return (
     <p
-      className={cn('text-muted-foreground text-xs', className)}
+      className={cn('text-gray-a11 text-xs', className)}
       data-slot="form-description"
       id={formDescriptionId}
       {...props}
@@ -71,7 +71,7 @@ export const FormMessage: FC<ComponentProps<'p'>> = ({ className, ...props }) =>
   const body = error ? String(error?.message ?? '') : props.children;
 
   return !body ? null : (
-    <p className={cn('text-destructive text-sm', className)} data-slot="form-message" id={formMessageId} {...props}>
+    <p className={cn('text-red-a10 text-sm', className)} data-slot="form-message" id={formMessageId} {...props}>
       {body}
     </p>
   );

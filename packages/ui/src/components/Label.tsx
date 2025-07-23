@@ -16,8 +16,8 @@ const Label: FC<LabelProps> = ({ className, required, ...props }) => (
   <LabelPrimitive.Root
     className={cn(
       className,
-      'font-medium text-sm data-[error=true]:text-destructive',
-      required && 'after:text-red-10 after:content-["_*"]'
+      'font-medium text-sm data-[error=true]:text-red-a10',
+      required && 'after:text-red-a10 after:content-["_*"]'
     )}
     {...props}
   />

@@ -129,7 +129,7 @@ export const UpsertRelatedArticlesSection = ({
   className,
   legend,
 }: RelatedArticlesSectionProps) => (
-  <Fieldset className={className} legend={legend}>
+  <Fieldset className={className} legend={legend} variant="filled">
     <RelatedArticles articlesWithRelation={articlesWithRelation} onDelete={onDelete} />
     <Divider className="my-4" />
     <AddNewRelation onAdd={onAdd} />

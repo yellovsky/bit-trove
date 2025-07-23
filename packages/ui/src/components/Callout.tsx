@@ -10,9 +10,8 @@ import {
 } from 'lucide-react';
 import type { ComponentProps, FC } from 'react';
 
+import { getPaletteClassName, type Palette } from '@repo/UI/lib/palette';
 import { cn } from '@repo/ui/lib/utils';
-
-import { getPaletteClassName, type Palette } from '../lib/palette';
 
 export const CALLOUT_TYPES = ['info', 'question', 'warning', 'danger', 'code', 'success', 'recommendation'] as const;
 export type CalloutType = (typeof CALLOUT_TYPES)[number];
