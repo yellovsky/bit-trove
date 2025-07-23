@@ -4,7 +4,8 @@ import type { UpsertArticleVariables } from '../types';
 
 export const nullableStringTransform = {
   input: (value: string | null) => value || '',
-  output: (event: ChangeEvent<HTMLInputElement>): string | null => event.target.value.trim() || null,
+  output: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): string | null =>
+    event.target.value.trim() || null,
 };
 
 export const getDefaultValues = (languageCode: string): UpsertArticleVariables => ({

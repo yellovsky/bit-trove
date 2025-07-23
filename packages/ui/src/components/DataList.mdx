@@ -1,0 +1,48 @@
+import { Meta, Title, Primary, Controls, Stories } from '@storybook/addon-docs/blocks';
+
+<Meta isTemplate />
+
+<Title />
+
+DataList component for displaying pairs of labels and values in a structured, accessible way.
+
+The DataList component is useful for presenting key-value pairs, such as user profile details, metadata, or summary information. It is composed of Root, Item, Label, and Value subcomponents for flexible composition.
+
+## Features
+- Semantic HTML structure using `<dl>`, `<dt>`, and `<dd>`
+- Flexible layout with CSS grid
+- Customizable styling via className
+- Supports wrapping and long content
+- Composable subcomponents for clear structure
+
+## Usage
+```tsx
+import { DataList, DataListItem, DataListLabel, DataListValue } from '@repo/ui/components/DataList';
+
+<DataList>
+  <DataListItem>
+    <DataListLabel>Name</DataListLabel>
+    <DataListValue>Jane Doe</DataListValue>
+  </DataListItem>
+  <DataListItem>
+    <DataListLabel>Email</DataListLabel>
+    <DataListValue>jane@example.com</DataListValue>
+  </DataListItem>
+</DataList>
+```
+
+<Primary />
+
+## Inputs
+
+The component accepts the following inputs (props):
+
+<Controls />
+
+---
+
+## Additional variations
+
+Listed below are additional variations of the component.
+
+<Stories />

@@ -1,0 +1,49 @@
+import { Meta, Title, Primary, Controls, Stories } from '@storybook/addon-docs/blocks';
+
+<Meta isTemplate />
+
+<Title />
+
+TextArea component for multi-line user text entry, with support for theming, accessibility, and resizing.
+
+The TextArea component provides a styled multi-line input field. It supports visual variants, palette theming, accessibility features for error and disabled states, and can be resized by the user.
+
+## Features
+- Multi-line text input
+- Soft and surface visual variants
+- Palette support for theming
+- Accessible error and disabled states
+- Resizable by default (can be controlled with CSS)
+
+## Usage
+```tsx
+import { TextArea } from '@repo/ui/components/TextArea';
+
+// Basic usage
+<TextArea placeholder="Enter your message" />
+
+// Error state
+<TextArea aria-invalid placeholder="Invalid input" />
+
+// Disabled
+<TextArea disabled placeholder="Disabled input" />
+
+// Custom rows and resizing
+<TextArea rows={6} style={{ resize: 'vertical' }} />
+```
+
+<Primary />
+
+## Inputs
+
+The component accepts the following inputs (props):
+
+<Controls />
+
+---
+
+## Additional variations
+
+Listed below are additional variations of the component.
+
+<Stories />

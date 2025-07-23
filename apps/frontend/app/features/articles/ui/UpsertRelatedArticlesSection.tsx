@@ -4,10 +4,10 @@ import { useTranslation } from 'react-i18next';
 
 import type { ArticleRelationType } from '@repo/api-models';
 import { Button } from '@repo/ui/components/Button';
+import * as DataList from '@repo/ui/components/DataList';
 import { Divider } from '@repo/ui/components/Divider';
 import { Fieldset } from '@repo/ui/components/Fieldset';
 import { IconButton } from '@repo/ui/components/IconButton';
-import { Label } from '@repo/ui/components/Label';
 import { Paper } from '@repo/ui/components/Paper';
 import * as Select from '@repo/ui/components/Select';
 import { cn } from '@repo/ui/lib/utils';
@@ -28,17 +28,19 @@ const RelatedArticleRow = ({ articleId, relationType, onDelete }: RelatedArticle
   const article = useArticleQuery({ locale: i18n.language, slugOrId: articleId, type: 'blog_post' });
 
   return (
-    <Paper className="flex items-center gap-2 ">
-      <div className="grid flex-1 grid-cols-[min-content_1fr] gap-x-4 gap-y-2 text-sm">
-        <Label className="text-muted-foreground">
-          {tCmsArticles('upsert_article_form.related_articles_section.article_type')}
-        </Label>{' '}
-        <span>{relationType}</span>
-        <Label className="text-muted-foreground">
-          {tCmsArticles('upsert_article_form.related_articles_section.article_title')}
-        </Label>{' '}
-        <span>{article.data?.data.title}</span>
-      </div>
+    <Paper className="flex gap-2 ">
+      <DataList.Root className="grow">
+        <DataList.Item>
+          <DataList.Label>{tCmsArticles('upsert_article_form.related_articles_section.article_type')}</DataList.Label>
+          <DataList.Value>{relationType}</DataList.Value>
+        </DataList.Item>
+
+        <DataList.Item>
+          <DataList.Label>{tCmsArticles('upsert_article_form.related_articles_section.article_title')}</DataList.Label>
+          <DataList.Value>{article.data?.data.title}</DataList.Value>
+        </DataList.Item>
+      </DataList.Root>
+
       <IconButton aria-label="Delete" onClick={onDelete} palette="red" size="md" type="button" variant="soft">
         <Trash2Icon />
       </IconButton>

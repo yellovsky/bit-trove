@@ -61,7 +61,7 @@ const TagsInput: FC<TagsInputProps> = ({ options, value, onChange, placeholder }
 
   return (
     <Command className="overflow-visible bg-transparent" onKeyDown={handleKeyDown}>
-      <div className="group rounded-default border border-border px-3 py-2 text-sm ring-offset-background focus-within:inset-ring-2 focus-within:inset-ring-focus-ring">
+      <div className="group inset-ring inset-ring-gray-a7 rounded-default bg-gray-surface px-3 py-2 text-sm ring-offset-background focus-within:outline-2 focus-within:outline-primary-8 focus-within:outline-offset-2">
         <div className="flex flex-wrap gap-1">
           {selected.map((framework) => (
             <Badge key={framework.value}>
@@ -87,7 +87,7 @@ const TagsInput: FC<TagsInputProps> = ({ options, value, onChange, placeholder }
 
           {/* Avoid having the "Search" Icon */}
           <CommandPrimitive.Input
-            className="ml-2 flex-1 bg-transparent outline-none placeholder:text-muted-foreground"
+            className="ml-2 flex-1 bg-transparent outline-none placeholder:text-gray-a10"
             onBlur={() => setOpen(false)}
             onFocus={() => setOpen(true)}
             onValueChange={setInputValue}

@@ -33,34 +33,65 @@
 }
 
 [data-theme="dark"] {
-  --color-brand-1: oklch(20.8% 0.0372 265.6);
-  --color-brand-2: oklch(22% 0.0454 265.6);
-  --color-brand-3: oklch(27.9% 0.1043 265.6);
-  --color-brand-4: oklch(32.2% 0.1402 265.6);
-  --color-brand-5: oklch(36.3% 0.1572 265.6);
-  --color-brand-6: oklch(40.4% 0.1663 265.6);
-  --color-brand-7: oklch(45.1% 0.1809 265.6);
-  --color-brand-8: oklch(50.3% 0.2064 265.6);
-  --color-brand-9: oklch(42.4% 0.1809 265.6);
-  --color-brand-10: oklch(36.7% 0.1572 265.6);
-  --color-brand-11: oklch(77.7% 0.1855 265.6);
-  --color-brand-12: oklch(91.1% 0.0644 265.6);
+  /* --color-brand-1: oklch(20.8% 0.0311 266.9);
+  --color-brand-2: oklch(22% 0.038 266.9);
+  --color-brand-3: oklch(27.9% 0.0873 266.9);
+  --color-brand-4: oklch(32.2% 0.1174 266.9);
+  --color-brand-5: oklch(36.3% 0.1316 266.9);
+  --color-brand-6: oklch(40.4% 0.1392 266.9);
+  --color-brand-7: oklch(45.1% 0.1514 266.9);
+  --color-brand-8: oklch(50.3% 0.1728 266.9);
+  --color-brand-9: oklch(54.4% 0.2088 266.9);
+  --color-brand-10: oklch(49.7% 0.1728 266.9);
+  --color-brand-11: oklch(77.7% 0.1552 266.9);
+  --color-brand-12: oklch(91.1% 0.0539 266.9);
 
-  --color-brand-a1: color(display-p3 0.0706 0.0902 0.0039 / 0.025);
-  --color-brand-a2: color(display-p3 0.2314 0.5804 0.9804 / 0.024);
-  --color-brand-a3: color(display-p3 0.1216 0.3059 1 / 0.22);
-  --color-brand-a4: color(display-p3 0.1255 0.2824 0.9961 / 0.351);
-  --color-brand-a5: color(display-p3 0.1725 0.3137 1 / 0.454);
-  --color-brand-a6: color(display-p3 0.2157 0.3608 1 / 0.533);
-  --color-brand-a7: color(display-p3 0.2431 0.3882 1 / 0.636);
-  --color-brand-a8: color(display-p3 0.2431 0.3961 1 / 0.776);
-  --color-brand-a9: color(display-p3 0.2039 0.3529 1 / 0.599);
-  --color-brand-a10: color(display-p3 0.1804 0.3216 1 / 0.458);
-  --color-brand-a11: color(display-p3 0.6 0.7176 1 / 0.972);
-  --color-brand-a12: color(display-p3 0.8353 0.8941 1 / 0.986);
+  --color-brand-a1: color(display-p3 0.8549 0.0902 0 / 0.005);
+  --color-brand-a2: color(display-p3 0.9725 0.9961 0.7647 / 0.013);
+  --color-brand-a3: color(display-p3 0.2196 0.3725 1 / 0.183);
+  --color-brand-a4: color(display-p3 0.2235 0.349 0.9961 / 0.304);
+  --color-brand-a5: color(display-p3 0.2588 0.3922 1 / 0.393);
+  --color-brand-a6: color(display-p3 0.302 0.4314 1 / 0.472);
+  --color-brand-a7: color(display-p3 0.3176 0.451 1 / 0.566);
+  --color-brand-a8: color(display-p3 0.3255 0.4549 1 / 0.697);
+  --color-brand-a9: color(display-p3 0.2902 0.4235 1 / 0.851);
+  --color-brand-a10: color(display-p3 0.3216 0.451 1 / 0.687);
+  --color-brand-a11: color(display-p3 0.6078 0.7137 1 / 0.972);
+  --color-brand-a12: color(display-p3 0.8431 0.8902 1 / 0.986);
 
   --color-brand-contrast: #fff;
-  --color-brand-surface: color(display-p3 0.0706 0.102 0.1961 / 0.5);
-  --color-brand-indicator: oklch(42.4% 0.1809 265.6);
-  --color-brand-track: oklch(42.4% 0.1809 265.6);
+  --color-brand-surface: color(display-p3 0.0863 0.1098 0.1725 / 0.5);
+  --color-brand-indicator: oklch(54.4% 0.2088 266.9);
+  --color-brand-track: oklch(54.4% 0.2088 266.9); */
+
+  --color-brand-1: oklch(20.8% 0.0315 267.1);
+  --color-brand-2: oklch(22% 0.0384 267.1);
+  --color-brand-3: oklch(27.9% 0.0882 267.1);
+  --color-brand-4: oklch(32.2% 0.1186 267.1);
+  --color-brand-5: oklch(36.3% 0.1323 267.1);
+  --color-brand-6: oklch(40.4% 0.1323 267.1);
+  --color-brand-7: oklch(45.1% 0.1323 267.1);
+  --color-brand-8: oklch(50.3% 0.1323 267.1);
+  --color-brand-9: oklch(54.4% 0.1323 267.1);
+  --color-brand-10: oklch(49.7% 0.1323 267.1);
+  --color-brand-11: oklch(77.7% 0.1323 267.1);
+  --color-brand-12: oklch(91.1% 0.0545 267.1);
+
+  --color-brand-a1: color(display-p3 0.8549 0.0902 0 / 0.005);
+  --color-brand-a2: color(display-p3 0.851 0.8745 0.949 / 0.015);
+  --color-brand-a3: color(display-p3 0.2196 0.3725 1 / 0.183);
+  --color-brand-a4: color(display-p3 0.2196 0.3451 1 / 0.309);
+  --color-brand-a5: color(display-p3 0.2588 0.3922 1 / 0.393);
+  --color-brand-a6: color(display-p3 0.3176 0.4431 1 / 0.454);
+  --color-brand-a7: color(display-p3 0.3765 0.502 0.9961 / 0.524);
+  --color-brand-a8: color(display-p3 0.4235 0.549 1 / 0.603);
+  --color-brand-a9: color(display-p3 0.4588 0.5765 1 / 0.659);
+  --color-brand-a10: color(display-p3 0.4157 0.549 1 / 0.594);
+  --color-brand-a11: color(display-p3 0.6118 0.7137 1 / 0.972);
+  --color-brand-a12: color(display-p3 0.8431 0.8902 1 / 0.986);
+
+  --color-brand-contrast: #fff;
+  --color-brand-surface: color(display-p3 0.0863 0.1098 0.1725 / 0.5);
+  --color-brand-indicator: oklch(54.4% 0.1323 267.1);
+  --color-brand-track: oklch(54.4% 0.1323 267.1);
 }

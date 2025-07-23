@@ -5,7 +5,7 @@ import { cn } from '@repo/ui/lib/utils';
 
 const fieldsetVariants = cva('relative rounded', {
   defaultVariants: {
-    radius: 'default',
+    radius: 'md',
     variant: 'default',
   },
   variants: {
@@ -29,7 +29,7 @@ const fieldsetVariants = cva('relative rounded', {
 type FieldsetProps = ComponentProps<'fieldset'> & VariantProps<typeof fieldsetVariants> & { legend?: ReactNode };
 
 export const Fieldset: FC<FieldsetProps> = ({ children, className, legend, variant, radius, ...rest }) => (
-  <fieldset className={cn(className, fieldsetVariants({ radius, variant }))} {...rest}>
+  <fieldset className={cn(fieldsetVariants({ radius, variant }), className)} {...rest}>
     {legend ? <legend className="mb-0 font-medium text-muted-foreground text-sm">{legend}</legend> : null}
     {children}
   </fieldset>

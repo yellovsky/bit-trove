@@ -36,7 +36,7 @@ const TextInput: FC<TextInputProps> = ({ className, variant, children, palette, 
       data-slot="text-input-root"
     >
       <input
-        className="flex w-full items-center rounded-default indent-2 text-inherit focus:outline-none disabled:cursor-not-allowed disabled:text-gray-a11"
+        className="flex w-full items-center rounded-default indent-2 text-inherit placeholder:text-gray-10 focus:outline-none disabled:cursor-not-allowed disabled:text-gray-a11"
         data-slot="text-input"
         {...rest}
       />

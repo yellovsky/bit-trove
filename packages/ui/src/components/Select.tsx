@@ -33,7 +33,8 @@ const SelectTrigger: FC<SelectPrimitive.SelectTriggerProps> = ({ className, chil
   return (
     <SelectPrimitive.Trigger
       className={cn(
-        "flex w-fit cursor-pointer items-center justify-between gap-2 whitespace-nowrap rounded-default border border-input-border bg-transparent px-3 py-2 text-sm shadow-xs outline-none transition-[color,box-shadow] hover:not-disabled:bg-input/50 focus-visible:inset-ring-2 focus-visible:inset-ring-focus-ring disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:text-destructive-foreground aria-invalid:ring-destructive aria-invalid:focus-visible:inset-ring-destructive data-[size=default]:h-9 data-[size=sm]:h-8 data-[placeholder]:text-muted-foreground *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        'focus-visible-outline inset-ring inset-ring-gray-a7 inline-flex h-8 shrink-0 cursor-pointer select-none items-center justify-between gap-1.5 whitespace-nowrap rounded-default bg-gray-surface bg-clip-content px-2 text-start align-top text-gray-12 text-sm leading-[20px] hover:inset-ring-gray-a8 disabled:inset-ring-gray-a6 disabled:cursor-not-allowed disabled:bg-gray-a2 data-[placeholder]:text-gray-a10 [aria-invalid=true]:inset-ring-red-a7',
+        "*:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0",
         className
       )}
       data-slot="select-trigger"
@@ -60,7 +61,7 @@ const SelectContent: FC<SelectPrimitive.SelectContentProps> = ({
   <SelectPrimitive.Portal>
     <SelectPrimitive.Content
       className={cn(
-        'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 relative z-50 max-h-(--radix-select-content-available-height) min-w-[8rem] origin-(--radix-select-content-transform-origin) overflow-y-auto overflow-x-hidden rounded-default border border-input-border bg-popover text-gray-12 shadow-md data-[state=closed]:animate-out data-[state=open]:animate-in',
+        'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 relative inset-ring inset-ring-gray-a7 z-50 max-h-(--radix-select-content-available-height) min-w-[8rem] origin-(--radix-select-content-transform-origin) overflow-y-auto overflow-x-hidden rounded-default bg-panel-solid shadow-md data-[state=closed]:animate-out data-[state=open]:animate-in',
 
         position === 'popper' &&
           'data-[side=left]:-translate-x-1 data-[side=top]:-translate-y-1 data-[side=right]:translate-x-1 data-[side=bottom]:translate-y-1',
@@ -76,7 +77,7 @@ const SelectContent: FC<SelectPrimitive.SelectContentProps> = ({
         className={cn(
           'p-1',
           position === 'popper' &&
-            'h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)] scroll-my-1'
+            'h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)] scroll-my-1 p-2'
         )}
       >
         {children}
@@ -103,15 +104,15 @@ const SelectLabel: FC<SelectPrimitive.SelectLabelProps> = ({ className, ...props
 const SelectItem: FC<SelectPrimitive.SelectItemProps> = ({ className, children, ...props }) => (
   <SelectPrimitive.Item
     className={cn(
-      "relative flex w-full cursor-default select-none items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden data-[disabled]:pointer-events-none data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[disabled]:opacity-50 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
+      'relative flex h-8 cursor-pointer select-none scroll-m-1 items-center rounded-default px-5 outline-none data-[disabled]:cursor-default data-[highlighted]:bg-primary-9 data-[disabled]:text-gray-a8 data-[highlighted]:text-primary-contrast',
       className
     )}
     data-slot="select-item"
     {...props}
   >
-    <span className="absolute right-2 flex size-3.5 items-center justify-center">
+    <span className="absolute left-0 inline-flex w-5 items-center justify-center">
       <SelectPrimitive.ItemIndicator>
-        <CheckIcon className="size-4" />
+        <CheckIcon className="size-3.5" />
       </SelectPrimitive.ItemIndicator>
     </span>
     <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
@@ -123,7 +124,7 @@ const SelectItem: FC<SelectPrimitive.SelectItemProps> = ({ className, children, 
  * -----------------------------------------------------------------------------------------------*/
 const SelectSeparator: FC<SelectPrimitive.SelectSeparatorProps> = ({ className, ...props }) => (
   <SelectPrimitive.Separator
-    className={cn('-mx-1 pointer-events-none my-1 h-px bg-gray-a6', className)}
+    className={cn('pointer-events-none my-2 ms-5 h-px bg-gray-a6', className)}
     data-slot="select-separator"
     {...props}
   />

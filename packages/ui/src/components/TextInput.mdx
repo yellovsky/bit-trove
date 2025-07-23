@@ -1,0 +1,72 @@
+import { Meta, Title, Primary, Controls, Stories } from '@storybook/addon-docs/blocks';
+
+<Meta isTemplate />
+
+<Title />
+
+TextInput component for user text entry, with support for icons, sections, and accessibility.
+
+The TextInput component provides a styled input field with optional start and end sections for icons or actions. It supports variants, palette theming, and accessibility features for error and disabled states.
+
+## Features
+- Start and end sections for icons or actions
+- Soft and surface visual variants
+- Palette support for theming
+- Accessible error and disabled states
+- Composable with IconButton and other UI primitives
+
+## Usage
+```tsx
+import { TextInput, TextInputStartSection, TextInputEndSection } from '@repo/ui/components/TextInput';
+
+// Basic usage
+<TextInput placeholder="Enter text" />
+
+// With start section
+<TextInput>
+  <TextInputStartSection>
+    <LockIcon />
+  </TextInputStartSection>
+</TextInput>
+
+// With end section
+<TextInput>
+  <TextInputEndSection>
+    <EyeClosedIcon />
+  </TextInputEndSection>
+</TextInput>
+
+// With both sections
+<TextInput>
+  <TextInputStartSection>
+    <LockIcon />
+  </TextInputStartSection>
+  <TextInputEndSection>
+    <IconButton size="sm" variant="ghost">
+      <EyeClosedIcon />
+    </IconButton>
+  </TextInputEndSection>
+</TextInput>
+
+// Invalid state
+<TextInput aria-invalid />
+
+// Disabled
+<TextInput disabled />
+```
+
+<Primary />
+
+## Inputs
+
+The component accepts the following inputs (props):
+
+<Controls />
+
+---
+
+## Additional variations
+
+Listed below are additional variations of the component.
+
+<Stories />
