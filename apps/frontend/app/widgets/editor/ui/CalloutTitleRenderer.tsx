@@ -1,8 +1,7 @@
 import { NodeViewContent, type NodeViewProps, NodeViewWrapper } from '@tiptap/react';
-import { InfoIcon } from 'lucide-react';
 import type { FC } from 'react';
 
-import { type CalloutType, calloutIcons } from '@repo/ui/components/Callout';
+import { type CalloutType, getCalloutIconByType } from '@repo/ui/components/Callout';
 import { IconButton } from '@repo/ui/components/IconButton';
 import { Popover, PopoverContent, PopoverTrigger } from '@repo/ui/components/Popover';
 
@@ -16,10 +15,6 @@ const calloutTypes = [
   'recommendation',
 ] as const satisfies CalloutType[];
 
-const getIconComponent = (type: CalloutType) => {
-  return type in calloutIcons ? calloutIcons[type as keyof typeof calloutIcons] : InfoIcon;
-};
-
 /* -------------------------------------------------------------------------------------------------
  * IconOption
  * -----------------------------------------------------------------------------------------------*/
@@ -31,7 +26,7 @@ interface IconOptionProps {
 }
 
 const IconOption: FC<IconOptionProps> = ({ type, updateAttributes }) => {
-  const Icon = getIconComponent(type);
+  const Icon = getCalloutIconByType(type);
 
   return (
     <IconButton
@@ -57,7 +52,7 @@ interface CalloutTitleRendererProps extends NodeViewProps {
 }
 
 const CalloutTitleRenderer: FC<CalloutTitleRendererProps> = ({ className, ...rest }) => {
-  const IconComponent = getIconComponent(rest.node.attrs.calloutType);
+  const IconComponent = getCalloutIconByType(rest.node.attrs.calloutType);
 
   return (
     <NodeViewWrapper className="callout-header" data-callout-type={rest.node.attrs.calloutType}>

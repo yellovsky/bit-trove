@@ -20,7 +20,7 @@ const fieldsetVariants = cva('relative rounded', {
     },
     variant: {
       default: 'border border-border px-4.5 pt-3 pb-4',
-      filled: 'border border-border bg-primary-2 px-4.5 pt-3 pb-4',
+      filled: 'border border-border bg-panel px-4.5 pt-3 pb-4',
       unstyled: '',
     },
   },

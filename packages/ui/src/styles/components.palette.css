@@ -59,7 +59,7 @@
   &:is([data-theme="dark"]),
   [data-theme="dark"] & {
     /* Background Colors */
-    --color-background: #0f172a;
+    --color-background: #111113;
     --color-foreground: #f3f4f6;
 
     /* Primary Colors */

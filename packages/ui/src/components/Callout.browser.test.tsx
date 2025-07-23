@@ -21,7 +21,7 @@ describe('Callout', () => {
   it('renders with title', () => {
     render(
       <Root data-callout-type="info">
-        <Title type="info">Test Title</Title>
+        <Title>Test Title</Title>
         <Content>
           <p>Test content</p>
         </Content>
@@ -64,40 +64,40 @@ describe('Callout', () => {
     for (const type of calloutTypes) {
       const { container } = render(
         <Root data-callout-type={type}>
-          <Title type={type}>Test Title</Title>
+          <Title>Test Title</Title>
           <Content>
             <p>Test content</p>
           </Content>
         </Root>
       );
 
-      const iconElement = container.querySelector('.callout-icon');
+      // The icon is rendered as an SVG in the first grid column
+      const iconElement = container.querySelector('svg');
       expect(iconElement).toBeInTheDocument();
     }
   });
 
-  it('renders header with icon and title', () => {
+  it('renders title and content in correct structure', () => {
     const { container } = render(
       <Root data-callout-type="info">
-        <Title type="info">Test Title</Title>
+        <Title>Test Title</Title>
         <Content>
           <p>Test content</p>
         </Content>
       </Root>
     );
 
-    const headerElement = container.querySelector('.callout-header');
-    const iconElement = container.querySelector('.callout-icon');
-    const titleElement = container.querySelector('.callout-title');
+    // Check that title and content are rendered
+    expect(screen.getByText('Test Title')).toBeInTheDocument();
+    expect(screen.getByText('Test content')).toBeInTheDocument();
 
-    expect(headerElement).toBeInTheDocument();
+    // Check that icon is present
+    const iconElement = container.querySelector('svg');
     expect(iconElement).toBeInTheDocument();
-    expect(titleElement).toBeInTheDocument();
-    expect(titleElement).toHaveTextContent('Test Title');
   });
 
   it('renders content area', () => {
-    const { container } = render(
+    render(
       <Root data-callout-type="info">
         <Content>
           <p>Test content</p>
@@ -105,9 +105,8 @@ describe('Callout', () => {
       </Root>
     );
 
-    const contentElement = container.querySelector('.callout-content');
-    expect(contentElement).toBeInTheDocument();
-    expect(contentElement).toHaveTextContent('Test content');
+    // Content should be rendered
+    expect(screen.getByText('Test content')).toBeInTheDocument();
   });
 
   it('passes through additional props to root element', () => {
@@ -127,7 +126,7 @@ describe('Callout', () => {
   it('renders complex content', () => {
     render(
       <Root data-callout-type="warning">
-        <Title type="warning">Complex Content</Title>
+        <Title>Complex Content</Title>
         <Content>
           <div>
             <p>First paragraph</p>
@@ -149,43 +148,42 @@ describe('Callout', () => {
   });
 
   it('renders empty content', () => {
-    const { container } = render(
+    render(
       <Root data-callout-type="info">
-        <Title type="info">Empty Content</Title>
+        <Title>Empty Content</Title>
         <Content>{/* Empty content */}</Content>
       </Root>
     );
 
-    const contentElement = container.querySelector('.callout-content');
-    expect(contentElement).toBeInTheDocument();
-    expect(contentElement?.textContent).toBe('');
+    // Title should still be rendered
+    expect(screen.getByText('Empty Content')).toBeInTheDocument();
   });
 
   it('has correct icon size', () => {
     const { container } = render(
       <Root data-callout-type="info">
-        <Title type="info">Test Title</Title>
+        <Title>Test Title</Title>
         <Content>
           <p>Test content</p>
         </Content>
       </Root>
     );
 
-    const iconElement = container.querySelector('.callout-icon svg');
+    const iconElement = container.querySelector('svg');
     expect(iconElement).toBeInTheDocument();
   });
 
-  it('renders title with correct data-callout-type attribute', () => {
+  it('renders with correct data-callout-type attribute', () => {
     const { container } = render(
       <Root data-callout-type="warning">
-        <Title type="warning">Test Title</Title>
+        <Title>Test Title</Title>
         <Content>
           <p>Test content</p>
         </Content>
       </Root>
     );
 
-    const titleElement = container.querySelector('.callout-header');
-    expect(titleElement).toHaveAttribute('data-callout-type', 'warning');
+    const calloutElement = container.firstChild as HTMLElement;
+    expect(calloutElement).toHaveAttribute('data-callout-type', 'warning');
   });
 });

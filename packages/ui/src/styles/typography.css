@@ -60,6 +60,14 @@
   .typography-root:is(p),
   .typography-paragraph {
     @apply mt-0 mb-6;
+
+    &:last-child {
+      @apply mb-0;
+    }
+
+    &:first-child {
+      @apply mt-0;
+    }
   }
 
   /* List Styles */
@@ -67,6 +75,14 @@
   .typography-root:is(ol, ul),
   .typography-list {
     @apply mx-0 mt-4 mb-6 pl-6 [&_p]:m-0;
+
+    &:last-child {
+      @apply mb-0;
+    }
+
+    &:first-child {
+      @apply mt-0;
+    }
 
     &:is(ol) {
       @apply list-decimal;

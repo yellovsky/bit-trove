@@ -30,7 +30,6 @@
 
 /* 4. Component System */
 @import "./components.palette.css";
-@import "./components.callout.css";
 
 /* 5. Source Paths for Tailwind */
 @source "../../../apps/**/*.{ts,tsx}";
@@ -421,7 +420,7 @@
 }
 
 [data-theme="dark"] {
-  --sidebar: #0c1221;
+  --sidebar: #19191e;
   --sidebar-foreground: var(--color-gray-a11);
   --sidebar-primary: var(--color-primary-9);
   --sidebar-primary-foreground: var(--color-gray-12);

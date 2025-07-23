@@ -29,9 +29,9 @@ export const builtInExtensions = [
   Link.configure({ HTMLAttributes: { class: 'typography-link' }, openOnClick: false }),
   TextAlign.configure({ types: ['heading', 'paragraph'] }),
   Image.configure({ allowBase64: true }),
-  Callout.configure({ HTMLAttributes: { class: 'callout' }, persist: true }),
-  CalloutContent.configure({ HTMLAttributes: { class: 'callout-content' } }),
-  CalloutTitle.configure({ HTMLAttributes: { class: 'callout-title' } }),
+  Callout.configure({ persist: true }),
+  CalloutContent.configure(),
+  CalloutTitle.configure(),
 ] as const satisfies Extensions;
 
 export const getExtensions = (extensions?: Extensions): Extensions => [...builtInExtensions, ...(extensions || [])];

@@ -93,14 +93,8 @@ export function renderPoseNode(node: JSONContent): React.ReactNode {
     }
 
     case 'calloutTitle': {
-      const type = node.attrs?.type || 'info';
       const title = node.attrs?.title;
-
-      return (
-        <Callout.Title title={title} type={type}>
-          {renderPoseContent(node.content)}
-        </Callout.Title>
-      );
+      return <Callout.Title title={title}>{renderPoseContent(node.content)}</Callout.Title>;
     }
 
     case 'calloutContent': {

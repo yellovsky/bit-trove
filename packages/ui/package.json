@@ -64,7 +64,6 @@
 	"exports": {
 		"./globals.css": "./src/styles/globals.css",
 		"./typography.css": "./src/styles/typography.css",
-		"./components.callout.css": "./src/styles/components.callout.css",
 		"./postcss.config": "./postcss.config.mjs",
 		"./lib/*": "./src/lib/*.ts",
 		"./components/*": "./src/components/*.tsx",

@@ -3,7 +3,6 @@
 ## Relevant Files
 
 - `packages/ui/src/components/Callout.tsx` - Main Callout component for rendering callouts with type-based styling and icons
-- `packages/ui/src/styles/components.callout.css` - CSS styles for callout component with type-specific theming
 - `packages/ui/src/components/Callout.browser.test.tsx` - Unit tests for Callout component
 - `packages/ui/src/components/Callout.stories.tsx` - Storybook stories for Callout component
 - `apps/frontend/app/features/editor/extensions/callout.ts` - TipTap extension for callout node definition and commands

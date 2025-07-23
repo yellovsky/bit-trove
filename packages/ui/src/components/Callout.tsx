@@ -1,28 +1,117 @@
-import { AlertOctagon, AlertTriangle, CheckCircle, Code, HelpCircle, Info, Lightbulb } from 'lucide-react';
-import type { ComponentProps, FC, ReactNode } from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import {
+  AlertOctagonIcon,
+  AlertTriangleIcon,
+  CheckCircleIcon,
+  CodeIcon,
+  HelpCircleIcon,
+  InfoIcon,
+  LightbulbIcon,
+} from 'lucide-react';
+import type { ComponentProps, FC } from 'react';
 
 import { cn } from '@repo/ui/lib/utils';
 
-export type CalloutType = 'info' | 'question' | 'warning' | 'danger' | 'code' | 'success' | 'recommendation';
+import { getPaletteClassName, type Palette } from '../lib/palette';
 
-export const calloutIcons = {
-  code: Code,
-  danger: AlertOctagon,
-  info: Info,
-  question: HelpCircle,
-  recommendation: Lightbulb,
-  success: CheckCircle,
-  warning: AlertTriangle,
-} as const;
+export const CALLOUT_TYPES = ['info', 'question', 'warning', 'danger', 'code', 'success', 'recommendation'] as const;
+export type CalloutType = (typeof CALLOUT_TYPES)[number];
+const isCalloutType = (type: string): type is CalloutType => CALLOUT_TYPES.includes(type as CalloutType);
+
+export const getCalloutIconByType = (type: string) => {
+  switch (type) {
+    case 'code':
+      return CodeIcon;
+
+    case 'danger':
+      return AlertOctagonIcon;
+
+    case 'info':
+      return InfoIcon;
+
+    case 'question':
+      return HelpCircleIcon;
+
+    case 'recommendation':
+      return LightbulbIcon;
+
+    case 'success':
+      return CheckCircleIcon;
+
+    case 'warning':
+      return AlertTriangleIcon;
+
+    default:
+      return InfoIcon;
+  }
+};
+
+export const getCalloutPaletteByType = (type: string): Palette => {
+  switch (type) {
+    case 'code':
+      return 'gray';
+
+    case 'danger':
+      return 'red';
+
+    case 'info':
+      return 'brand';
+
+    case 'question':
+      return 'gray';
+
+    case 'recommendation':
+      return 'teal';
+
+    case 'success':
+      return 'green';
+
+    case 'warning':
+      return 'amber';
+
+    default:
+      return 'brand';
+  }
+};
 
 /* -------------------------------------------------------------------------------------------------
  * Callout
  * -----------------------------------------------------------------------------------------------*/
 const NAME = 'Callout';
 
-type CalloutProps = ComponentProps<'div'>;
+const calloutVariants = cva(
+  'grid items-start justify-start gap-x-3 gap-y-2 rounded-lg p-4 text-left text-primary-a11',
+  {
+    defaultVariants: {
+      variant: 'soft',
+    },
+    variants: {
+      variant: {
+        outline: 'inset-ring inset-ring-primary-a7',
+        soft: 'bg-primary-a3',
+        surface: 'inset-ring inset-ring-primary-a6 bg-primary-a2',
+      },
+    },
+  }
+);
 
-const Callout: FC<CalloutProps> = ({ className, ...rest }) => <div className={cn('callout', className)} {...rest} />;
+type CalloutProps = ComponentProps<'div'> & VariantProps<typeof calloutVariants>;
+
+const Callout: FC<CalloutProps> = ({ className, variant, children, ...rest }) => {
+  const propsType = 'data-callout-type' in rest ? rest['data-callout-type'] : 'info';
+  const calloutType = typeof propsType === 'string' && isCalloutType(propsType) ? propsType : 'info';
+  const IconComponent = getCalloutIconByType(calloutType);
+  const palette = getCalloutPaletteByType(calloutType);
+
+  return (
+    <div className={cn(calloutVariants({ variant }), getPaletteClassName(palette), className)} {...rest}>
+      <div className="-col-start-2 flex h-6 w-4 items-center">
+        <IconComponent />
+      </div>
+      <div className="-col-start-1">{children}</div>
+    </div>
+  );
+};
 
 Callout.displayName = NAME;
 
@@ -31,25 +120,10 @@ Callout.displayName = NAME;
  * -----------------------------------------------------------------------------------------------*/
 const CALLOUT_TITLE_NAME = 'CalloutTitle';
 
-interface CalloutTitleProps extends ComponentProps<'div'> {
-  type: CalloutType;
-  children: ReactNode;
-}
+type CalloutTitleProps = ComponentProps<'div'>;
 
-const CalloutTitle: FC<CalloutTitleProps> = ({ type, children, className, ...rest }) => {
-  const IconComponent = calloutIcons[type];
-
-  return (
-    <div className={cn('callout-header', className)} data-callout-type={type} {...rest}>
-      <div className="callout-icon">
-        <IconComponent />
-      </div>
-      <div className="flex-1">
-        <span className="callout-title">{children}</span>
-      </div>
-    </div>
-  );
-};
+const CalloutTitle: FC<CalloutTitleProps> = ({ className, ...rest }) =>
+  rest.children ? <div className={cn('mb-3 font-bold uppercase', className)} {...rest} /> : null;
 
 CalloutTitle.displayName = CALLOUT_TITLE_NAME;
 
@@ -60,9 +134,7 @@ const CALLOUT_CONTENT_NAME = 'CalloutContent';
 
 type CalloutContentProps = ComponentProps<'div'>;
 
-const CalloutContent: FC<CalloutContentProps> = ({ className, ...rest }) => (
-  <div className={cn('callout-content', className)} {...rest} />
-);
+const CalloutContent: FC<CalloutContentProps> = (props) => <div {...props} />;
 
 CalloutContent.displayName = CALLOUT_CONTENT_NAME;
 
