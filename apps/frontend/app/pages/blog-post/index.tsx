@@ -3,6 +3,7 @@ import i18next from 'i18next';
 import type { MetaDescriptor } from 'react-router';
 
 import { getApiClient } from '@shared/lib/api-client';
+import { filterParentMeta } from '@shared/lib/meta';
 import { getQueryClient } from '@shared/lib/query-client';
 
 import appI18next from '@app/localization/i18n.server';
@@ -31,7 +32,8 @@ export async function clientLoader(args: Route.ClientLoaderArgs) {
 }
 
 export function meta(params: Route.MetaArgs): MetaDescriptor[] {
-  return params.data?.meta ?? [];
+  const parentMeta = filterParentMeta(params.matches.flatMap((m) => m?.meta ?? []));
+  return [...parentMeta, { title: 'Blog Post' }];
 }
 
 export default function BlogPostRoure(props: Route.ComponentProps) {

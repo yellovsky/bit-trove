@@ -2,6 +2,7 @@ import { HydrationBoundary } from '@tanstack/react-query';
 import i18next from 'i18next';
 
 import { getApiClient } from '@shared/lib/api-client';
+import { filterParentMeta } from '@shared/lib/meta';
 import { getQueryClient } from '@shared/lib/query-client';
 
 import appI18next from '@app/localization/i18n.server';
@@ -34,7 +35,8 @@ export async function clientLoader(args: Route.ClientLoaderArgs) {
 }
 
 export function meta(params: Route.MetaArgs) {
-  return params.data?.meta ?? [];
+  const parentMeta = filterParentMeta(params.matches.flatMap((m) => m?.meta ?? []));
+  return [...parentMeta, { title: 'Shards' }];
 }
 
 export default function ShardsRoute(props: Route.ComponentProps) {

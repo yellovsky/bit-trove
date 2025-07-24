@@ -60,7 +60,7 @@ const PaginationLink: FC<PaginationLinkProps> = ({ className, isActive, ...props
     aria-current={isActive ? 'page' : undefined}
     className={cn(
       buttonVariants({
-        variant: isActive ? 'outline' : 'ghost',
+        variant: isActive ? 'solid' : 'ghost',
       }),
       className
     )}
@@ -82,7 +82,6 @@ type PaginationPreviousProps = ComponentProps<typeof PaginationLink>;
 const PaginationPrevious: FC<PaginationPreviousProps> = ({ className, ...props }) => (
   <PaginationLink aria-label="Go to previous page" className={cn('gap-1 px-2.5 sm:pl-2.5', className)} {...props}>
     <ChevronLeftIcon />
-    <span className="hidden sm:block">Previous</span>
   </PaginationLink>
 );
 
@@ -97,7 +96,6 @@ type PaginationNextProps = ComponentProps<typeof PaginationLink>;
 
 const PaginationNext: FC<PaginationNextProps> = ({ className, ...props }) => (
   <PaginationLink aria-label="Go to next page" className={cn('gap-1 px-2.5 sm:pr-2.5', className)} {...props}>
-    <span className="hidden sm:block">Next</span>
     <ChevronRightIcon />
   </PaginationLink>
 );

@@ -33,37 +33,6 @@
 }
 
 [data-theme="dark"] {
-  /* --color-brand-1: oklch(20.8% 0.0311 266.9);
-  --color-brand-2: oklch(22% 0.038 266.9);
-  --color-brand-3: oklch(27.9% 0.0873 266.9);
-  --color-brand-4: oklch(32.2% 0.1174 266.9);
-  --color-brand-5: oklch(36.3% 0.1316 266.9);
-  --color-brand-6: oklch(40.4% 0.1392 266.9);
-  --color-brand-7: oklch(45.1% 0.1514 266.9);
-  --color-brand-8: oklch(50.3% 0.1728 266.9);
-  --color-brand-9: oklch(54.4% 0.2088 266.9);
-  --color-brand-10: oklch(49.7% 0.1728 266.9);
-  --color-brand-11: oklch(77.7% 0.1552 266.9);
-  --color-brand-12: oklch(91.1% 0.0539 266.9);
-
-  --color-brand-a1: color(display-p3 0.8549 0.0902 0 / 0.005);
-  --color-brand-a2: color(display-p3 0.9725 0.9961 0.7647 / 0.013);
-  --color-brand-a3: color(display-p3 0.2196 0.3725 1 / 0.183);
-  --color-brand-a4: color(display-p3 0.2235 0.349 0.9961 / 0.304);
-  --color-brand-a5: color(display-p3 0.2588 0.3922 1 / 0.393);
-  --color-brand-a6: color(display-p3 0.302 0.4314 1 / 0.472);
-  --color-brand-a7: color(display-p3 0.3176 0.451 1 / 0.566);
-  --color-brand-a8: color(display-p3 0.3255 0.4549 1 / 0.697);
-  --color-brand-a9: color(display-p3 0.2902 0.4235 1 / 0.851);
-  --color-brand-a10: color(display-p3 0.3216 0.451 1 / 0.687);
-  --color-brand-a11: color(display-p3 0.6078 0.7137 1 / 0.972);
-  --color-brand-a12: color(display-p3 0.8431 0.8902 1 / 0.986);
-
-  --color-brand-contrast: #fff;
-  --color-brand-surface: color(display-p3 0.0863 0.1098 0.1725 / 0.5);
-  --color-brand-indicator: oklch(54.4% 0.2088 266.9);
-  --color-brand-track: oklch(54.4% 0.2088 266.9); */
-
   --color-brand-1: oklch(20.8% 0.0315 267.1);
   --color-brand-2: oklch(22% 0.0384 267.1);
   --color-brand-3: oklch(27.9% 0.0882 267.1);
