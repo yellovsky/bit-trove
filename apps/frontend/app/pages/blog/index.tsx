@@ -6,6 +6,7 @@ import appI18next from '@app/localization/i18n.server';
 
 import { getBlogPostsJsonLdMeta, getBlogPostsOgMeta, getBlogPostsTwitterMeta } from '@features/blog-posts';
 import { getMetaBreadcrumbs } from '@features/breadcrumbs';
+import { useContentLanguage } from '@features/language-switcher';
 
 import type { Route } from './+types';
 import { loadBlogPostsRouteData } from './lib/load-data';
@@ -37,13 +38,25 @@ export function meta(params: Route.MetaArgs): MetaDescriptor[] {
     ...getBlogPostsTwitterMeta(),
     getBlogPostsJsonLdMeta(),
     getMetaBreadcrumbs(params.data.breadcrumbs, params.params.locale),
+    // Canonical URL
+    { href: params.data.canonicalUrl, rel: 'canonical' },
   ];
 }
 
 export default function BlogRoure(props: Route.ComponentProps) {
+  const { languages } = useContentLanguage();
+
+  const filteredBlogPostsVars = {
+    ...props.loaderData.blogPostsVars,
+    filter: {
+      ...props.loaderData.blogPostsVars.filter,
+      languageCodeIn: languages,
+    },
+  };
+
   return (
     <HydrationBoundary state={props.loaderData.dehydratedState}>
-      <BlogPostsPage blogPostsVars={props.loaderData.blogPostsVars} />
+      <BlogPostsPage blogPostsVars={filteredBlogPostsVars} />
     </HydrationBoundary>
   );
 }

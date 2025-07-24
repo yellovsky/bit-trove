@@ -45,6 +45,9 @@ export function meta(params: Route.MetaArgs): MetaDescriptor[] {
 
     // JSON-LD structured data
     getBlogPostJsonLdMeta(blogPost),
+
+    // Canonical URL
+    { href: params.data.canonicalUrl, rel: 'canonical' },
   ];
 }
 

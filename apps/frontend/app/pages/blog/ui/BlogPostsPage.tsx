@@ -1,3 +1,4 @@
+import { keepPreviousData } from '@tanstack/query-core';
 import { type FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useIntersectionObserver } from 'usehooks-ts';
@@ -17,7 +18,7 @@ interface BlogPostsPageProps {
 
 export const BlogPostsPage: FC<BlogPostsPageProps> = ({ blogPostsVars }) => {
   const { t } = useTranslation();
-  const blogPostsQuery = useInfiniteShortBlogPostsQuery(blogPostsVars);
+  const blogPostsQuery = useInfiniteShortBlogPostsQuery(blogPostsVars, { placeholderData: keepPreviousData });
   const blogPosts = blogPostsQuery.data?.pages.flatMap((p) => p.data.items);
   const { ref, entry } = useIntersectionObserver({ threshold: 0 });
 

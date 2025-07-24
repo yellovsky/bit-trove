@@ -42,6 +42,9 @@ export function meta(params: Route.MetaArgs): MetaDescriptor[] {
 
     // JSON-LD structured data
     getShardJsonJdMeta(shard),
+
+    // Canonical URL
+    { href: params.data.canonicalUrl, rel: 'canonical' },
   ];
 }
 

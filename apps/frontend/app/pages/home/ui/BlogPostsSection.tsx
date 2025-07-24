@@ -1,3 +1,4 @@
+import { keepPreviousData } from '@tanstack/query-core';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -16,7 +17,7 @@ interface BlogPostsSectionProps {
 
 export const BlogPostsSection: FC<BlogPostsSectionProps> = ({ blogPostsVars }) => {
   const { t } = useTranslation();
-  const query = useInfiniteShortBlogPostsQuery(blogPostsVars);
+  const query = useInfiniteShortBlogPostsQuery(blogPostsVars, { placeholderData: keepPreviousData });
   const blogPosts = query.data?.pages.at(0)?.data.items;
 
   return (

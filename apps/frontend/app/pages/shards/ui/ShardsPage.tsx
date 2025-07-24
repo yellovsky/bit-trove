@@ -1,3 +1,4 @@
+import { keepPreviousData } from '@tanstack/query-core';
 import { type FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useIntersectionObserver } from 'usehooks-ts';
@@ -15,7 +16,7 @@ interface ShardsPageProps {
 }
 
 export const ShardsPage: FC<ShardsPageProps> = ({ shardsVariables, breadcrumbs }) => {
-  const shardsQuery = useInfiniteShortShardsQuery(shardsVariables);
+  const shardsQuery = useInfiniteShortShardsQuery(shardsVariables, { placeholderData: keepPreviousData });
   const { t } = useTranslation();
   const { ref, entry } = useIntersectionObserver({ threshold: 0 });
 

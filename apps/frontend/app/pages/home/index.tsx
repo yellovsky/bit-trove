@@ -1,8 +1,10 @@
 import { HydrationBoundary } from '@tanstack/react-query';
 import i18next from 'i18next';
-import { useLoaderData } from 'react-router';
 
 import appI18next from '@app/localization/i18n.server';
+
+import { getMetaBreadcrumbs } from '@features/breadcrumbs';
+import { useContentLanguage } from '@features/language-switcher';
 
 import type { Route } from './+types';
 import { getHomeJsonLdMeta, getHomeOgMeta, getHomeTwitterMeta } from './lib/seo-utils';
@@ -37,14 +39,32 @@ export function meta(params: Route.MetaArgs) {
     ...getHomeTwitterMeta(),
     // JSON-LD structured data
     getHomeJsonLdMeta(),
+    // breadcrumbs
+    getMetaBreadcrumbs(params.data.breadcrumbs, params.params.locale),
   ];
 }
 
-export default function HomeRoute() {
-  const { dehydratedState, shardsVariables, blogPostsVariables } = useLoaderData<typeof loader>();
+export default function HomeRoute(props: Route.ComponentProps) {
+  const { languages } = useContentLanguage();
+
+  const blogPostsVariables = {
+    ...props.loaderData.blogPostsVariables,
+    filter: {
+      ...props.loaderData.blogPostsVariables.filter,
+      languageCodeIn: languages,
+    },
+  };
+
+  const shardsVariables = {
+    ...props.loaderData.shardsVariables,
+    filter: {
+      ...props.loaderData.shardsVariables.filter,
+      languageCodeIn: languages,
+    },
+  };
 
   return (
-    <HydrationBoundary state={dehydratedState}>
+    <HydrationBoundary state={props.loaderData.dehydratedState}>
       <HomePage blogPostsVariables={blogPostsVariables} shardsVariables={shardsVariables} />
     </HydrationBoundary>
   );

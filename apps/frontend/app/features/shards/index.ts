@@ -1,3 +1,4 @@
+export { DEFAULT_SHARDS_SORT } from './config/default-sort';
 export { SHARDS_NS } from './config/localization';
 export { getCmsShardsLink, getCreateShardLink, getEditShardLink, getShardLink, getShardsLink } from './lib/links';
 export { ShardBreadcrumbs } from './ui/ShardBreadcrumbs';

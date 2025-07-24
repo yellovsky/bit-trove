@@ -1,9 +1,10 @@
 import { dehydrate } from '@tanstack/query-core';
 
-import { isShard } from '@repo/api-models';
-
 import { getApiClient } from '@shared/lib/api-client';
+import { addClientHost, addLocaleToPathname } from '@shared/lib/link';
 import { getQueryClient } from '@shared/lib/query-client';
+
+import { getShardLink } from '@features/shards';
 
 import { prefetchShardQuery, type ShardGetVariables } from '@entities/shards';
 
@@ -20,8 +21,10 @@ export const loadShardRouteData = async ({ params }: Route.LoaderArgs | Route.Cl
 
   const shardResponse = await prefetchShardQuery(apiClient, queryClient, shardVariables);
   const shard = shardResponse.data;
+  const canonicalUrl = addClientHost(addLocaleToPathname(getShardLink(shard), params.locale));
 
   return {
+    canonicalUrl,
     dehydratedState: dehydrate(queryClient),
     shard,
     shardVariables,

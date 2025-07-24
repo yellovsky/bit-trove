@@ -28,6 +28,11 @@ export const getCookieStringContentLanguages = (cookieString: string | null | un
   return ALL_CONTENT_LANGUAGES; // Default to all languages
 };
 
+export const getRequestCookieHeader = (request: Request) => {
+  const header = request.headers.get('Cookie');
+  return getCookieStringContentLanguages(header);
+};
+
 export const updateDocumentCookieContentLanguages = (contentLanguages: ContentLanguage[]) => {
   if (!contentLanguages.length) {
     Cookies.remove(CONTENT_LANGUAGE_COOKIE_NAME);

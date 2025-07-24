@@ -11,6 +11,7 @@ import {
   updateDocumentCookieContentLanguages,
 } from '../lib/content-language-cookie';
 import { selectedContentLanguagesAtom } from '../model/content-language-atom';
+import { useContentLanguage } from './ContentLanguageProvider';
 import styles from './LanguageSwitcher.module.css';
 
 interface ContentLanguageSelectorProps {
@@ -20,6 +21,7 @@ interface ContentLanguageSelectorProps {
 
 export const ContentLanguageSelector: FC<ContentLanguageSelectorProps> = ({ className }) => {
   const [selectedLanguages, setSelectedLanguages] = useAtom(selectedContentLanguagesAtom);
+  const { setLanguages } = useContentLanguage();
   const { t } = useTranslation();
 
   const handleLanguageToggle = (language: ContentLanguage, checked: boolean) => {
@@ -37,6 +39,7 @@ export const ContentLanguageSelector: FC<ContentLanguageSelectorProps> = ({ clas
     setSelectedLanguages(newSelection);
 
     // Update cookie
+    setLanguages(newSelection);
     updateDocumentCookieContentLanguages(newSelection);
   };
 

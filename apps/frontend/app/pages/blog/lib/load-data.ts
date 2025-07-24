@@ -1,22 +1,66 @@
-import { dehydrate } from '@tanstack/query-core';
+import { dehydrate, type QueryClient } from '@tanstack/query-core';
 import type { TFunction } from 'i18next';
 
-import { getApiClient } from '@shared/lib/api-client';
+import { type ShortArticlesGetSort, shortArticlesGetSortSchema } from '@repo/api-models';
+
+import { type ApiClient, getApiClient } from '@shared/lib/api-client';
+import { addClientHost, addLocaleToPathname } from '@shared/lib/link';
 import { combineMetaKeywords, getMetaTitle } from '@shared/lib/meta';
 import { getQueryClient } from '@shared/lib/query-client';
 
+import { getBlogPostsLink } from '@features/blog-posts';
 import { DEFAULT_BLOG_POST_SORT } from '@features/blog-posts/lib/sorting';
+import { getRequestCookieHeader } from '@features/language-switcher';
 
 import { prefetchInfiniteShortBlogPosts, type ShortBlogPostsGetVariables } from '@entities/blog-posts';
 
 import type { Route } from '../+types';
 
-// Valid sort values for blog posts
-const VALID_SORT_VALUES = ['createdAt', '-createdAt', 'publishedAt', '-publishedAt', 'title', '-title'] as const;
-type ValidSortValue = (typeof VALID_SORT_VALUES)[number];
+type LoadPlogPostsOptions = {
+  apiClient: ApiClient;
+  queryClient: QueryClient;
+  request: Request;
+  params: Route.LoaderArgs['params'];
+};
 
-const isValidSortValue = (value: string): value is ValidSortValue => {
-  return VALID_SORT_VALUES.includes(value as ValidSortValue);
+const loadPlogPosts = async ({ apiClient, queryClient, request, params }: LoadPlogPostsOptions) => {
+  // Extract sort parameter from URL and validate it
+  const url = new URL(request.url);
+  const sortParam = shortArticlesGetSortSchema.safeParse(url.searchParams.get('sort'));
+  const validatedSort: ShortArticlesGetSort = sortParam.data || DEFAULT_BLOG_POST_SORT;
+
+  const blogPostsVars: ShortBlogPostsGetVariables = {
+    locale: params.locale,
+    sort: validatedSort,
+  };
+
+  const contentLanguages = getRequestCookieHeader(request);
+  if (contentLanguages.length) {
+    blogPostsVars.filter = {
+      ...blogPostsVars.filter,
+      languageCodeIn: contentLanguages,
+    };
+  }
+
+  await prefetchInfiniteShortBlogPosts(apiClient, queryClient, blogPostsVars);
+
+  return { blogPostsVars };
+};
+
+const loadMeta = async (t: TFunction, tBlogPosts: TFunction<'blog_posts'>, params: Route.LoaderArgs['params']) => {
+  // Breadcrumbs: Home → Blog
+  const breadcrumbs = [
+    { label: t('menu_items.home.title'), to: '/' },
+    { label: t('menu_items.blog.title'), to: '/blog' },
+  ];
+
+  return {
+    breadcrumbs,
+    canonicalUrl: addClientHost(addLocaleToPathname(getBlogPostsLink(), params.locale)),
+    metaDescription: tBlogPosts('blog_posts_meta_description'),
+    metaKeywords: combineMetaKeywords(t('meta_general_keywords'), tBlogPosts('blog_posts_meta_keywords')),
+    metaTitle: getMetaTitle(tBlogPosts('blog_posts_meta_title'), t('meta_title_suffix')),
+  };
 };
 
 export const loadBlogPostsRouteData = async (
@@ -27,30 +71,14 @@ export const loadBlogPostsRouteData = async (
   const apiClient = getApiClient();
   const queryClient = getQueryClient();
 
-  // Extract sort parameter from URL and validate it
-  const url = new URL(request.url);
-  const sortParam = url.searchParams.get('sort') || DEFAULT_BLOG_POST_SORT;
-  const validatedSort = isValidSortValue(sortParam) ? sortParam : DEFAULT_BLOG_POST_SORT;
-
-  // Breadcrumbs: Home → Blog
-  const breadcrumbs = [
-    { label: t('menu_items.home.title'), to: '/' },
-    { label: t('menu_items.blog.title'), to: '/blog' },
-  ];
-
-  const blogPostsVars: ShortBlogPostsGetVariables = {
-    locale: params.locale,
-    sort: validatedSort,
-  };
-
-  await prefetchInfiniteShortBlogPosts(apiClient, queryClient, blogPostsVars);
+  const [shortBlogPostsLoadResult, metaLoadResult] = await Promise.all([
+    loadPlogPosts({ apiClient, params, queryClient, request }),
+    loadMeta(t, tBlogPosts, params),
+  ]);
 
   return {
-    blogPostsVars,
-    breadcrumbs,
+    ...shortBlogPostsLoadResult,
+    ...metaLoadResult,
     dehydratedState: dehydrate(queryClient),
-    metaDescription: tBlogPosts('blog_posts_meta_description'),
-    metaKeywords: combineMetaKeywords(t('meta_general_keywords'), tBlogPosts('blog_posts_meta_keywords')),
-    metaTitle: getMetaTitle(tBlogPosts('blog_posts_meta_title'), t('meta_title_suffix')),
   };
 };

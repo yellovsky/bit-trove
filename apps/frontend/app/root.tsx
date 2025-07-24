@@ -26,6 +26,7 @@ import { ErrorScreen } from '@shared/ui/ErrorScreen';
 import { AppSuspenseWarning } from '@app/app-suspense-warning';
 import { ClientHintCheck, getHints } from '@app/client-hints';
 
+import { ContentLanguageProvider } from '@features/language-switcher';
 import { getCookieStringContentLanguages } from '@features/language-switcher/lib/content-language-cookie';
 import { selectedContentLanguagesAtom } from '@features/language-switcher/model/content-language-atom';
 import { getCookieStringColorScheme } from '@features/theme';
@@ -99,9 +100,11 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         <Suspense fallback={<AppSuspenseWarning />}>
           <QueryClientProvider client={queryClient}>
             <EnhanceToProvider value={enhanceTo}>
-              {children}
-              <Toaster />
-              <ReactQueryDevtools />
+              <ContentLanguageProvider languages={loaderData.selectedContentLanguages}>
+                {children}
+                <Toaster />
+                <ReactQueryDevtools />
+              </ContentLanguageProvider>
             </EnhanceToProvider>
           </QueryClientProvider>
         </Suspense>
