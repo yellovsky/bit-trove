@@ -169,7 +169,11 @@ type GridCardSeriesInfoProps = ComponentProps<'div'> & {
 };
 
 const GridCardSeriesInfo: FC<GridCardSeriesInfoProps> = ({ className, title, progress, total, ...rest }) => (
-  <div {...rest} className="mb-3 flex items-center space-x-1.5 text-primary text-sm" data-slot="grid-card-series-info">
+  <div
+    {...rest}
+    className="mb-3 flex items-center space-x-1.5 text-primary-a11 text-sm"
+    data-slot="grid-card-series-info"
+  >
     <BookOpenIcon className="@sm:block hidden" size={16} strokeWidth={1.5} />
     <span className="font-medium">{title}</span>
     <span className="text-muted-foreground">
@@ -267,6 +271,8 @@ const GridCardSeriesDetail: FC<GridCardSeriesDetailProps> = ({
 );
 
 GridCardSeriesDetail.displayName = GRID_CARD_SERIES_DETAIL_NAME;
+
+/* ------------------------------------------------------------------------------------------------- */
 
 const Root = GridCard;
 

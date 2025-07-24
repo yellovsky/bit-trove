@@ -10,6 +10,8 @@ export default {
   edit_shard_page: {
     title: 'Редактировать фрагмент',
   },
+  'Failed to load shards': 'Не удалось загрузить фрагменты',
+  'No shards found': 'Фрагменты не найдены',
   'Publish shard failed': 'Не удалось опубликовать фрагмент',
   'Publish shard success': 'Фрагмент успешно опубликован',
   shards_meta_description:

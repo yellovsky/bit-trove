@@ -17,12 +17,14 @@ export default {
     description: 'Загляните позже для новых статей и руководств.',
     title: 'Статей пока нет',
   },
+  'Failed to load blog posts': 'Не удалось загрузить статьи',
   'Loading blog post': 'Загрузка статьи...',
   loading: {
-    end_of_content: 'Вы достигли дна',
+    end_of_content: 'Вы достигли конца',
     more_posts: 'Загрузка дополнительных статей...',
     no_more_posts: 'Тут больше ничего нет',
   },
+  'No blog posts found': 'Статьи не найдены',
   network_error: {
     description: 'Не удалось загрузить статьи. Проверьте подключение к интернету и попробуйте снова.',
     title: 'Ошибка сети',

@@ -17,12 +17,15 @@ export default {
     description: 'Check back later for new articles and tutorials.',
     title: 'No blog posts yet',
   },
+  'Failed to load blog posts': 'Failed to load blog posts',
   'Loading blog post': 'Loading blog post...',
   loading: {
     end_of_content: 'You’ve hit rock bottom',
     more_posts: 'Loading more posts...',
     no_more_posts: 'There’s nothing more to load',
   },
+
+  'No blog posts found': 'No blog posts found',
   network_error: {
     description: 'Unable to load blog posts. Please check your internet connection and try again.',
     title: 'Network Error',

@@ -10,6 +10,8 @@ export default {
   edit_shard_page: {
     title: 'Edit shard',
   },
+  'Failed to load shards': 'Failed to load shards',
+  'No shards found': 'No shards found',
   'Publish shard failed': 'Publish shard failed',
   'Publish shard success': 'Publish shard success',
   shards_meta_description:
