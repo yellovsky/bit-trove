@@ -9,18 +9,23 @@ import { ReadingProgress } from '@shared/ui/ReadingProgress';
 
 import { TableOfContents, type TableOfContentsItem } from '@widgets/blog-post-sidebar';
 
-import { RelatedArticles } from '@features/articles/ui/RelatedArticles';
+import { RelatedArticles } from '@features/articles';
 import {
-  BlogPostBreadcrumbs,
   BlogPostDetailSkeleton,
   BlogPostErrorState,
   BlogPostMetadata,
   BlogPostNotFoundState,
 } from '@features/blog-posts';
+import { type AppBreadcrumb, Breadcrumbs } from '@features/breadcrumbs';
 
 import { type BlogPostGetVariables, useBlogPostQuery } from '@entities/blog-posts';
 
-export const BlogPostPage: FC<{ blogPostVariables: BlogPostGetVariables }> = ({ blogPostVariables }) => {
+interface BlogPostPageProps {
+  blogPostVariables: BlogPostGetVariables;
+  breadcrumbs: AppBreadcrumb[];
+}
+
+export const BlogPostPage: FC<BlogPostPageProps> = ({ blogPostVariables, breadcrumbs }) => {
   const blogPostResponse = useBlogPostQuery(blogPostVariables);
   const blogPost = blogPostResponse.data?.data;
 
@@ -87,7 +92,7 @@ export const BlogPostPage: FC<{ blogPostVariables: BlogPostGetVariables }> = ({ 
 
       <ContentWithSidebar sidebar={sidebar}>
         {/* Navigation section */}
-        <BlogPostBreadcrumbs blogPost={blogPost} className="mb-6" />
+        <Breadcrumbs className="mb-6" items={breadcrumbs} />
 
         <article aria-labelledby="blog-post-title">
           {/* Blog post header */}

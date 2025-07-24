@@ -13,4 +13,3 @@ export { usePublishShardMutation } from './api/publish-shard';
 export type { UnpublishShardVariables } from './api/unpublish-shard';
 export { useUnpublishShardMutation } from './api/unpublish-shard';
 export { type ShardUpdateVariables, useShardUpdateMutation } from './api/update-shard';
-export { getShardJsonJdMeta, getShardOgMeta, getShardTwitterMeta } from './lib/meta';

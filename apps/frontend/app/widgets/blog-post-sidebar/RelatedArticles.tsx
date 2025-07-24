@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
-import { RelatedArticles as RelatedArticlesComponent } from '@features/articles/ui/RelatedArticles';
+import { RelatedArticles as RelatedArticlesComponent } from '@features/articles';
 
 interface RelatedArticlesProps {
   articleId?: string;

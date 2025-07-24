@@ -1,57 +1,43 @@
 import { HydrationBoundary } from '@tanstack/react-query';
+import i18next from 'i18next';
 import type { MetaDescriptor } from 'react-router';
 
-import { getGlobal } from '@shared/lib/get-global';
+import { getApiClient } from '@shared/lib/api-client';
+import { getQueryClient } from '@shared/lib/query-client';
 
-import { getShardLink } from '@features/shards';
-
-import { getShardJsonJdMeta, getShardOgMeta, getShardTwitterMeta } from '@entities/shards';
+import appI18next from '@app/localization/i18n.server';
 
 import type { Route } from './+types';
-import { loadShardRouteData } from './lib/load-data';
+import { loadShardRouteData } from './model/load-data';
 import { ShardPage } from './ui/ShardPage';
 
-export async function loader(args: Route.LoaderArgs) {
-  return loadShardRouteData(args);
+export async function loader(loaderArgs: Route.LoaderArgs) {
+  const apiClient = getApiClient();
+  const queryClient = getQueryClient();
+
+  const t = await appI18next.getFixedT(loaderArgs.params.locale);
+
+  return loadShardRouteData({ apiClient, loaderArgs, queryClient, t });
 }
 
-export async function clientLoader(args: Route.ClientLoaderArgs) {
-  return loadShardRouteData(args);
+export async function clientLoader(loaderArgs: Route.ClientLoaderArgs) {
+  const apiClient = getApiClient();
+  const queryClient = getQueryClient();
+
+  await i18next.loadNamespaces('blog_posts');
+
+  const t = i18next.getFixedT(loaderArgs.params.locale);
+  return loadShardRouteData({ apiClient, loaderArgs, queryClient, t });
 }
 
 export function meta(params: Route.MetaArgs): MetaDescriptor[] {
-  if (!params.data) return [];
-
-  const shard = params.data.shard;
-  const clientHost = getGlobal('REMIX_PUBLIC_CLIENT_HOST');
-
-  return [
-    // Basic meta tags
-    { title: shard.seo?.title || shard.title },
-    { content: shard.seo?.keywords || '', name: 'keywords' },
-    { content: shard.seo?.description || shard.shortDescription || '', name: 'description' },
-
-    // Canonical URL
-    { href: `${clientHost}${getShardLink(shard)}`, rel: 'canonical' },
-
-    // Open Graph meta tags
-    ...getShardOgMeta(shard),
-
-    // Twitter Card meta tags
-    ...getShardTwitterMeta(shard),
-
-    // JSON-LD structured data
-    getShardJsonJdMeta(shard),
-
-    // Canonical URL
-    { href: params.data.canonicalUrl, rel: 'canonical' },
-  ];
+  return params.data?.meta ?? [];
 }
 
 export default function ShardRoute(props: Route.ComponentProps) {
   return (
     <HydrationBoundary state={props.loaderData?.dehydratedState}>
-      <ShardPage shardVariables={props.loaderData.shardVariables} />
+      <ShardPage breadcrumbs={props.loaderData.breadcrumbs} shardVariables={props.loaderData.getOneShardVars} />
     </HydrationBoundary>
   );
 }

@@ -9,7 +9,7 @@ import { UpsertArticleForm, type UpsertArticleVariables } from '@features/articl
 import { getCmsBlogPostsLink } from '@features/blog-posts';
 import { type AppBreadcrumb, Breadcrumbs } from '@features/breadcrumbs';
 
-import { useRelatedArticlesQuery } from '@entities/articles/api/article-relation.api';
+import { useRelatedArticlesQuery } from '@entities/articles';
 import { useBlogPostUpdateMutation, useMyBlogPostQuery } from '@entities/blog-posts';
 
 export const handle = {

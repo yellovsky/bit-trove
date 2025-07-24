@@ -19,8 +19,7 @@ import {
 
 import { Logo } from '@shared/ui/Logo';
 
-import { useIsAuthorized } from '@features/auth';
-import { signOutMutationAtom } from '@features/auth/model/sign-out-atom';
+import { signOutMutationAtom, useIsAuthorized } from '@features/auth';
 import { getCmsBlogPostsLink } from '@features/blog-posts';
 import { getCmsShardsLink } from '@features/shards';
 

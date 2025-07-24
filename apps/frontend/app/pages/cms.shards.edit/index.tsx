@@ -8,7 +8,7 @@ import { UpsertArticleForm, type UpsertArticleVariables } from '@features/articl
 import { type AppBreadcrumb, Breadcrumbs } from '@features/breadcrumbs';
 import { getCmsShardsLink, getEditShardLink } from '@features/shards';
 
-import { useRelatedArticlesQuery } from '@entities/articles/api/article-relation.api';
+import { useRelatedArticlesQuery } from '@entities/articles';
 import { useMyShardQuery, useShardUpdateMutation } from '@entities/shards';
 
 import type { Route } from './+types';

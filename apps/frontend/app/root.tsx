@@ -26,9 +26,11 @@ import { ErrorScreen } from '@shared/ui/ErrorScreen';
 import { AppSuspenseWarning } from '@app/app-suspense-warning';
 import { ClientHintCheck, getHints } from '@app/client-hints';
 
-import { ContentLanguageProvider } from '@features/language-switcher';
-import { getCookieStringContentLanguages } from '@features/language-switcher/lib/content-language-cookie';
-import { selectedContentLanguagesAtom } from '@features/language-switcher/model/content-language-atom';
+import {
+  ContentLanguageProvider,
+  getCookieStringContentLanguages,
+  selectedContentLanguagesAtom,
+} from '@features/language-switcher';
 import { getCookieStringColorScheme } from '@features/theme';
 
 import type { Route } from './+types/root';

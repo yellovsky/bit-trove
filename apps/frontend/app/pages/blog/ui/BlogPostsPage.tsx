@@ -13,20 +13,15 @@ import { type AppBreadcrumb, Breadcrumbs } from '@features/breadcrumbs';
 import { type ShortBlogPostsGetVariables, useInfiniteShortBlogPostsQuery } from '@entities/blog-posts';
 
 interface BlogPostsPageProps {
+  breadcrumbs: AppBreadcrumb[];
   blogPostsVars: ShortBlogPostsGetVariables;
 }
 
-export const BlogPostsPage: FC<BlogPostsPageProps> = ({ blogPostsVars }) => {
+export const BlogPostsPage: FC<BlogPostsPageProps> = ({ blogPostsVars, breadcrumbs }) => {
   const { t } = useTranslation();
   const blogPostsQuery = useInfiniteShortBlogPostsQuery(blogPostsVars, { placeholderData: keepPreviousData });
   const blogPosts = blogPostsQuery.data?.pages.flatMap((p) => p.data.items);
   const { ref, entry } = useIntersectionObserver({ threshold: 0 });
-
-  // Breadcrumbs: Home → Blog
-  const breadcrumbs: AppBreadcrumb[] = [
-    { label: t('menu_items.home.title'), to: '/' },
-    { label: t('menu_items.blog.title'), to: '/blog' },
-  ];
 
   useEffect(() => {
     if (entry?.isIntersecting && !blogPostsQuery.isFetchingNextPage && blogPostsQuery.hasNextPage)

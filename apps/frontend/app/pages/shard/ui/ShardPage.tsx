@@ -9,18 +9,18 @@ import { ReadingProgress } from '@shared/ui/ReadingProgress';
 
 import { TableOfContents, type TableOfContentsItem } from '@widgets/blog-post-sidebar';
 
-import { RelatedArticles } from '@features/articles/ui/RelatedArticles';
-import {
-  ShardBreadcrumbs,
-  ShardDetailSkeleton,
-  ShardErrorState,
-  ShardMetadata,
-  ShardNotFoundState,
-} from '@features/shards';
+import { RelatedArticles } from '@features/articles';
+import { type AppBreadcrumb, Breadcrumbs } from '@features/breadcrumbs';
+import { ShardDetailSkeleton, ShardErrorState, ShardMetadata, ShardNotFoundState } from '@features/shards';
 
 import { type ShardGetVariables, useShardQuery } from '@entities/shards';
 
-export const ShardPage: FC<{ shardVariables: ShardGetVariables }> = ({ shardVariables }) => {
+interface ShardPageProps {
+  shardVariables: ShardGetVariables;
+  breadcrumbs: AppBreadcrumb[];
+}
+
+export const ShardPage: FC<ShardPageProps> = ({ shardVariables, breadcrumbs }) => {
   const shardResponse = useShardQuery(shardVariables);
   const shard = shardResponse.data?.data;
 
@@ -86,7 +86,7 @@ export const ShardPage: FC<{ shardVariables: ShardGetVariables }> = ({ shardVari
       <ReadingProgress />
 
       <ContentWithSidebar sidebar={sidebar}>
-        <ShardBreadcrumbs className="mb-6" shard={shard} />
+        <Breadcrumbs className="mb-6" items={breadcrumbs} />
 
         <article aria-labelledby="shard-title">
           {/* Shard header */}

@@ -1,60 +1,46 @@
 import { HydrationBoundary } from '@tanstack/react-query';
+import i18next from 'i18next';
 import type { MetaDescriptor } from 'react-router';
 
-import { getGlobal } from '@shared/lib/get-global';
+import { getApiClient } from '@shared/lib/api-client';
+import { getQueryClient } from '@shared/lib/query-client';
 
-import {
-  getBlogPostJsonLdMeta,
-  getBlogPostLink,
-  getBlogPostOgMeta,
-  getBlogPostTwitterMeta,
-} from '@features/blog-posts';
+import appI18next from '@app/localization/i18n.server';
 
 import type { Route } from './+types';
-import { loadBlogPostRouteData } from './lib/load-data';
+import { loadBlogPostRouteData } from './model/load-data';
 import { BlogPostPage } from './ui/BlogPostPage';
 
 export async function loader(args: Route.LoaderArgs) {
-  return loadBlogPostRouteData(args);
+  const apiClient = getApiClient();
+  const queryClient = getQueryClient();
+
+  const t = await appI18next.getFixedT(args.params.locale);
+
+  return loadBlogPostRouteData({ apiClient, loaderArgs: args, queryClient, t });
 }
 
 export async function clientLoader(args: Route.ClientLoaderArgs) {
-  return loadBlogPostRouteData(args);
+  const apiClient = getApiClient();
+  const queryClient = getQueryClient();
+
+  await i18next.loadNamespaces('blog_posts');
+
+  const t = i18next.getFixedT(args.params.locale);
+  return loadBlogPostRouteData({ apiClient, loaderArgs: args, queryClient, t });
 }
 
 export function meta(params: Route.MetaArgs): MetaDescriptor[] {
-  if (!params.data) return [];
-
-  const blogPost = params.data.blogPost;
-  const clientHost = getGlobal('REMIX_PUBLIC_CLIENT_HOST');
-
-  return [
-    // Basic meta tags
-    { title: blogPost.seo?.title || blogPost.title },
-    { content: blogPost.seo?.keywords || '', name: 'keywords' },
-    { content: blogPost.seo?.description || blogPost.shortDescription || '', name: 'description' },
-
-    // Canonical URL
-    { href: `${clientHost}${getBlogPostLink(blogPost)}`, rel: 'canonical' },
-
-    // Open Graph meta tags
-    ...getBlogPostOgMeta(blogPost),
-
-    // Twitter Card meta tags
-    ...getBlogPostTwitterMeta(blogPost),
-
-    // JSON-LD structured data
-    getBlogPostJsonLdMeta(blogPost),
-
-    // Canonical URL
-    { href: params.data.canonicalUrl, rel: 'canonical' },
-  ];
+  return params.data?.meta ?? [];
 }
 
 export default function BlogPostRoure(props: Route.ComponentProps) {
   return (
     <HydrationBoundary state={props.loaderData?.dehydratedState}>
-      <BlogPostPage blogPostVariables={props.loaderData.getOneBlogPostVars} />
+      <BlogPostPage
+        blogPostVariables={props.loaderData.getOneBlogPostVars}
+        breadcrumbs={props.loaderData.breadcrumbs}
+      />
     </HydrationBoundary>
   );
 }

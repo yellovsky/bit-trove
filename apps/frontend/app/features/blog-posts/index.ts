@@ -1,4 +1,5 @@
 export { BLOG_POSTS_NS } from './config/localization';
+export { getBlogBreadcrumbs, getBlogPostBreadcrumbs } from './lib/breadcrumbs';
 export {
   getBlogPostLink,
   getBlogPostsLink,
@@ -14,8 +15,8 @@ export {
   getBlogPostsTwitterMeta,
   getBlogPostTwitterMeta,
 } from './lib/seo-utils';
+export { DEFAULT_BLOG_POST_SORT } from './lib/sorting';
 export { BackToBlogListButton } from './ui/BackToBlogListButton';
-export { BlogPostBreadcrumbs } from './ui/BlogPostBreadcrumbs';
 export {
   BlogPostGridCard,
   BlogPostGridCardPending,

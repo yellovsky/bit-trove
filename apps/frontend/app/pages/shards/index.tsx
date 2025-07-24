@@ -1,41 +1,40 @@
 import { HydrationBoundary } from '@tanstack/react-query';
 import i18next from 'i18next';
 
+import { getApiClient } from '@shared/lib/api-client';
+import { getQueryClient } from '@shared/lib/query-client';
+
 import appI18next from '@app/localization/i18n.server';
 
-import { getMetaBreadcrumbs } from '@features/breadcrumbs';
 import { useContentLanguage } from '@features/language-switcher';
 
 import type { Route } from './+types';
-import { loadShardsRouteData } from './lib/load-data';
+import { loadShardsRouteData } from './model/load-data';
 import { ShardsPage } from './ui/ShardsPage';
 
 export async function loader(args: Route.LoaderArgs) {
+  const apiClient = getApiClient();
+  const queryClient = getQueryClient();
+
   const t = await appI18next.getFixedT(args.params.locale);
   const tShards = await appI18next.getFixedT(args.params.locale, 'shards');
 
-  return loadShardsRouteData(t, tShards, args);
+  return loadShardsRouteData({ apiClient, loaderArgs: args, queryClient, t, tShards });
 }
 
 export async function clientLoader(args: Route.ClientLoaderArgs) {
+  const apiClient = getApiClient();
+  const queryClient = getQueryClient();
+
   await i18next.loadNamespaces('shards');
   const t = i18next.getFixedT(args.params.locale);
   const tShards = i18next.getFixedT(args.params.locale, 'shards');
 
-  return loadShardsRouteData(t, tShards, args);
+  return loadShardsRouteData({ apiClient, loaderArgs: args, queryClient, t, tShards });
 }
 
 export function meta(params: Route.MetaArgs) {
-  if (!params.data) return [];
-
-  return [
-    { title: params.data.metaTitle },
-    { content: params.data.metaKeywords, name: 'keywords' },
-    { content: params.data.metaDescription, name: 'description' },
-    getMetaBreadcrumbs(params.data.breadcrumbs, params.params.locale),
-    // Canonical URL
-    { href: params.data.canonicalUrl, rel: 'canonical' },
-  ];
+  return params.data?.meta ?? [];
 }
 
 export default function ShardsRoute(props: Route.ComponentProps) {

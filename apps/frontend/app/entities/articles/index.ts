@@ -1,3 +1,4 @@
+export { useRelatedArticlesQuery } from './api/article-relation.api';
 export { checkArticleSlugAvailability } from './api/check-article-slug-availability';
 export { type ArticleCreateVariables, createArticle, useArticleCreateMutation } from './api/create-article';
 export {

@@ -12,7 +12,7 @@ import { useRelativeDate } from '@shared/lib/use-relative-date';
 import { getBlogPostLink } from '@features/blog-posts';
 import { getShardLink } from '@features/shards';
 
-import { useRelatedArticlesQuery } from '@entities/articles/api/article-relation.api';
+import { useRelatedArticlesQuery } from '@entities/articles';
 
 import { filterRelatedArticlesByType } from '../model/article-relation.model';
 
