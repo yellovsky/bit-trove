@@ -4,7 +4,7 @@ export default {
     'Explore comprehensive articles, tutorials, and insights on programming, development, and technology. In-depth content on React, TypeScript, architecture, and more.',
   blog_posts_meta_keywords:
     'programming articles, development tutorials, React guides, TypeScript tips, software architecture, web development, coding tutorials, technical articles',
-  blog_posts_meta_title: 'Blog Posts – Comprehensive Programming Articles & Tutorials',
+  blog_posts_meta_title: 'Blog',
   'Create blog post failed': 'Create blog post failed',
   'Create blog post success': 'Create blog post success',
   create_blog_post_button: {

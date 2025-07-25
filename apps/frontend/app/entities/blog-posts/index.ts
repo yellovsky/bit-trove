@@ -4,6 +4,7 @@ export { type BlogPostGetVariables, prefetchBlogPostQuery, useBlogPostQuery } fr
 export { type MyBlogPostGetVariables, useMyBlogPostQuery } from './api/get-my-blog-post';
 export { type MyShortBlogPostsGetVariables, useMyShortBlogPostsQuery } from './api/get-my-short-blog-posts';
 export {
+  fetchShortBlogPosts,
   prefetchInfiniteShortBlogPosts,
   type ShortBlogPostsGetVariables,
   useInfiniteShortBlogPostsQuery,

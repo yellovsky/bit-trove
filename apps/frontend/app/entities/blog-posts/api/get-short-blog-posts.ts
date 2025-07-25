@@ -37,7 +37,7 @@ const toBlogPostsVariables = (variables: ShortBlogPostsGetVariables): ShortArtic
 const createShortBlogPostsGetKey = (variables: ShortBlogPostsGetVariables): ShortArticlesQueryKey =>
   createShortArticlesGetKey(toBlogPostsVariables(variables));
 
-const fetchShortBlogPosts =
+export const fetchShortBlogPosts =
   (apiClient: ApiClient): QueryFunction<ShortBlogPostsGetResponse, ShortArticlesQueryKey, PageRequest> =>
   async (params) => {
     const response = await getShortArticles(apiClient)(params);

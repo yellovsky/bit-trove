@@ -32,7 +32,7 @@ export async function clientLoader(args: Route.ClientLoaderArgs) {
 
 export function meta(params: Route.MetaArgs) {
   const parentMeta = filterParentMeta(params.matches.flatMap((m) => m?.meta ?? []));
-  return [...parentMeta, { title: 'Home' }];
+  return [...parentMeta, ...(params.data?.meta ?? [])];
 }
 
 export default function HomeRoute(props: Route.ComponentProps) {

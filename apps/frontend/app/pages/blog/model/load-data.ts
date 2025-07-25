@@ -6,7 +6,7 @@ import { type ShortArticlesGetSort, shortArticlesGetSortSchema } from '@repo/api
 
 import type { ApiClient } from '@shared/lib/api-client';
 import { addClientHost, addLocaleToPathname } from '@shared/lib/link';
-import { combineMetaKeywords, getMetaTitle } from '@shared/lib/meta';
+import { combineMetaKeywords, getAlternateMetaDescriptors, getMetaTitle } from '@shared/lib/meta';
 
 import {
   DEFAULT_BLOG_POST_SORT,
@@ -89,6 +89,7 @@ const loadMeta = async ({ t, tBlogPosts, loaderArgs }: LoadMetaParams) => {
     getBlogPostsJsonLdMeta(),
     getMetaBreadcrumbs(breadcrumbs, params.locale),
     { href: addClientHost(addLocaleToPathname(getBlogPostsLink(), params.locale)), rel: 'canonical' },
+    ...getAlternateMetaDescriptors(params.locale, getBlogPostsLink()),
   ];
 
   return { breadcrumbs, meta };

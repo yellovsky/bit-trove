@@ -33,7 +33,7 @@ export async function clientLoader(args: Route.ClientLoaderArgs) {
 
 export function meta(params: Route.MetaArgs): MetaDescriptor[] {
   const parentMeta = filterParentMeta(params.matches.flatMap((m) => m?.meta ?? []));
-  return [...parentMeta, { title: 'Blog Post' }];
+  return [...parentMeta, ...(params.data?.meta ?? [])];
 }
 
 export default function BlogPostRoure(props: Route.ComponentProps) {

@@ -6,6 +6,7 @@ import type { Shard } from '@repo/api-models';
 
 import type { ApiClient } from '@shared/lib/api-client';
 import { addClientHost, addLocaleToPathname } from '@shared/lib/link';
+import { getMetaTitle } from '@shared/lib/meta';
 
 import { getMetaBreadcrumbs } from '@features/breadcrumbs';
 import {
@@ -61,7 +62,7 @@ const loadMeta = async ({ t, loaderArgs, shard }: LoadMetaParams) => {
 
   const meta: MetaDescriptor[] = [
     // Basic meta tags
-    { title: shard.seo?.title || shard.title },
+    { title: getMetaTitle(shard.seo?.title || shard.title, t('meta_title_suffix')) },
     { content: shard.seo?.keywords || '', name: 'keywords' },
     { content: shard.seo?.description || shard.shortDescription || '', name: 'description' },
 

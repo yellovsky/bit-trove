@@ -18,7 +18,7 @@ export default {
     'Explore concise programming ideas, tips, and code snippets on Bottrove. Shards are bite-sized thoughts on React, TypeScript, architecture, and more.',
   shards_meta_keywords:
     'programming ideas, code snippets, dev notes, React tips, TypeScript, frontend architecture, small articles, JavaScript thoughts, bottrove shards',
-  shards_meta_title: 'Shards – Short Programming Ideas, Notes & Experiments',
+  shards_meta_title: 'Shards',
   'Unpublish shard failed': 'Unpublish shard failed',
   'Unpublish shard success': 'Unpublish shard success',
   'Update shard failed': 'Update shard failed',

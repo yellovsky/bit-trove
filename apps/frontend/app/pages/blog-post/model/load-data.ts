@@ -6,6 +6,7 @@ import type { BlogPost } from '@repo/api-models';
 
 import type { ApiClient } from '@shared/lib/api-client';
 import { addClientHost, addLocaleToPathname } from '@shared/lib/link';
+import { getMetaTitle } from '@shared/lib/meta';
 
 import {
   getBlogPostBreadcrumbs,
@@ -61,7 +62,7 @@ const loadMeta = async ({ t, loaderArgs, blogPost }: LoadMetaParams) => {
 
   const meta: MetaDescriptor[] = [
     // Basic meta tags
-    { title: blogPost.seo?.title || blogPost.title },
+    { title: getMetaTitle(blogPost.seo?.title || blogPost.title, t('meta_title_suffix')) },
     { content: blogPost.seo?.keywords || '', name: 'keywords' },
     { content: blogPost.seo?.description || blogPost.shortDescription || '', name: 'description' },
 

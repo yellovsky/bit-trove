@@ -15,10 +15,10 @@ export default {
   'Publish shard failed': 'Не удалось опубликовать фрагмент',
   'Publish shard success': 'Фрагмент успешно опубликован',
   shards_meta_description:
-    'Короткие заметки, идеи и кодовые фрагменты о программировании. Shards — это мысли о React, TypeScript, архитектуре и других темах.',
+    'Короткие заметки, идеи и кодовые фрагменты о программировании. Фрагменты — это мысли о React, TypeScript, архитектуре и других темах.',
   shards_meta_keywords:
     'идеи о программировании, заметки разработчика, фрагменты кода, советы по React, TypeScript, архитектура фронтенда, маленькие статьи, JavaScript, shards Bottrove',
-  shards_meta_title: 'Shards — Короткие идеи и заметки о программировании',
+  shards_meta_title: 'Фрагменты',
   'Unpublish shard failed': 'Не удалось снять с публикации фрагмент',
   'Unpublish shard success': 'Фрагмент успешно снят с публикации',
   'Update shard failed': 'Не удалось обновить фрагмент',

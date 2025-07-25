@@ -36,7 +36,7 @@ export async function clientLoader(args: Route.ClientLoaderArgs) {
 
 export function meta(params: Route.MetaArgs) {
   const parentMeta = filterParentMeta(params.matches.flatMap((m) => m?.meta ?? []));
-  return [...parentMeta, { title: 'Shards' }];
+  return [...parentMeta, ...(params.data?.meta ?? [])];
 }
 
 export default function ShardsRoute(props: Route.ComponentProps) {

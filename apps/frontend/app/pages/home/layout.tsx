@@ -1,9 +1,17 @@
 import { useTranslation } from 'react-i18next';
 import { Outlet, useRouteError } from 'react-router';
 
+import { filterParentMeta } from '@shared/lib/meta';
 import { ErrorScreen } from '@shared/ui/ErrorScreen';
 
 import { MainLayout } from '@widgets/main-layout';
+
+import type { Route } from './+types';
+
+export function meta(params: Route.MetaArgs) {
+  const parentMeta = filterParentMeta(params.matches.flatMap((m) => m?.meta ?? []));
+  return [...parentMeta, { content: params.params.locale, httpEquiv: 'content-language' }];
+}
 
 export default function HomeLayout() {
   return (

@@ -54,14 +54,13 @@ export default {
     '404': {
       button_text: 'Go back to the homepage.',
       subtitle:
-        'The page you’re looking for doesn’t exist. It might have been removed, renamed, or the URL might be incorrect. If you believe this is a mistake, please reach out to support.',
+        'The page you’re looking for doesn’t exist. It might have been removed, renamed, or the URL might be incorrect.',
       title: 'There’s nothing here.',
     },
 
     '500': {
       button_text: 'Return to the homepage.',
-      subtitle:
-        'An unexpected error occurred while processing your request. Please try again later. If the problem persists, contact support.',
+      subtitle: 'An unexpected error occurred while processing your request. Please try again later.',
       title: 'Something went wrong on our end.',
     },
   },

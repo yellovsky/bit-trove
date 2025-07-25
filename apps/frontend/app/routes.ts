@@ -34,4 +34,9 @@ export default [
       route('*', 'pages/not-found/index.tsx'),
     ])
   ),
+
+  route('sitemap.xml', 'pages/sitemap/index.ts'),
+  route('sitemap/pages.xml', 'pages/sitemap/sitemap-pages.ts'),
+  route('sitemap/articles.xml', 'pages/sitemap/sitemap-articles.ts'),
+  route('sitemap/articles/:index.xml', 'pages/sitemap/sitemap-articles-page.ts'),
 ] satisfies RouteConfig;
