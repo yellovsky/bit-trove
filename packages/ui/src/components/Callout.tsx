@@ -8,7 +8,7 @@ import {
   InfoIcon,
   LightbulbIcon,
 } from 'lucide-react';
-import type { ComponentProps, FC } from 'react';
+import type { ComponentProps, FC, ReactNode } from 'react';
 
 import { getPaletteClassName, type Palette } from '@repo/UI/lib/palette';
 import { cn } from '@repo/ui/lib/utils';
@@ -94,9 +94,10 @@ const calloutVariants = cva(
   }
 );
 
-type CalloutProps = ComponentProps<'div'> & VariantProps<typeof calloutVariants>;
+type CalloutProps = ComponentProps<'div'> &
+  VariantProps<typeof calloutVariants> & { asChild?: boolean; icon?: ReactNode };
 
-const Callout: FC<CalloutProps> = ({ className, variant, children, ...rest }) => {
+const Callout: FC<CalloutProps> = ({ className, variant, children, asChild, icon, ...rest }) => {
   const propsType = 'data-callout-type' in rest ? rest['data-callout-type'] : 'info';
   const calloutType = typeof propsType === 'string' && isCalloutType(propsType) ? propsType : 'info';
   const IconComponent = getCalloutIconByType(calloutType);
@@ -104,9 +105,7 @@ const Callout: FC<CalloutProps> = ({ className, variant, children, ...rest }) =>
 
   return (
     <div className={cn(calloutVariants({ variant }), getPaletteClassName(palette), className)} {...rest}>
-      <div className="-col-start-2 flex h-6 w-4 items-center">
-        <IconComponent />
-      </div>
+      <div className="-col-start-2 flex h-6 w-4 items-center">{icon ?? <IconComponent />}</div>
       <div className="-col-start-1">{children}</div>
     </div>
   );

@@ -1,6 +1,6 @@
 import { mergeAttributes, Node, ReactNodeViewRenderer } from '@tiptap/react';
 
-import { CalloutContentRenderer } from '../../ui/CalloutContentRenderer';
+import { CalloutContentRenderer } from '../../ui/CalloutRenderer';
 
 export interface CalloutContentOptions {
   /**

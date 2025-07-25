@@ -40,6 +40,16 @@ declare module '@tiptap/core' {
 }
 
 export const Callout = Node.create<CalloutOptions>({
+  addAttributes() {
+    return {
+      calloutType: {
+        default: 'info',
+        parseHTML: (element) => element.getAttribute('data-callout-type') || 'info',
+        renderHTML: ({ calloutType }) => ({ 'data-callout-type': calloutType }),
+      },
+    };
+  },
+
   addCommands() {
     return {
       setCallout:

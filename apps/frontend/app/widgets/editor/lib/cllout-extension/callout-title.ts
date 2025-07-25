@@ -1,7 +1,7 @@
 import { mergeAttributes, Node } from '@tiptap/core';
 import { ReactNodeViewRenderer } from '@tiptap/react';
 
-import { CalloutTitleRenderer } from '../../ui/CalloutTitleRenderer';
+import { CalloutTitleRenderer } from '../../ui/CalloutRenderer';
 
 export interface CalloutTitleOptions {
   /**
@@ -13,16 +13,6 @@ export interface CalloutTitleOptions {
 }
 
 export const CalloutTitle = Node.create<CalloutTitleOptions>({
-  addAttributes() {
-    return {
-      calloutType: {
-        default: 'info',
-        parseHTML: (element) => element.getAttribute('data-callout-type') || 'info',
-        renderHTML: ({ calloutType }) => ({ 'data-callout-type': calloutType }),
-      },
-    };
-  },
-
   addNodeView() {
     return ReactNodeViewRenderer(CalloutTitleRenderer);
   },
@@ -37,7 +27,7 @@ export const CalloutTitle = Node.create<CalloutTitleOptions>({
   name: 'calloutTitle',
 
   parseHTML() {
-    return [{ tag: 'div[data-type="calloutTitle"]' }];
+    return [{ tag: 'div' }];
   },
 
   renderHTML({ HTMLAttributes }) {
