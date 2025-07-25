@@ -8,13 +8,18 @@ import { useInfiniteShortArticlesQuery } from '@entities/articles';
 
 import { ArticleSearchResult } from './ArticleSearchResult';
 
+/* -------------------------------------------------------------------------------------------------
+ * SearchCommand
+ * -----------------------------------------------------------------------------------------------*/
+const NAME = 'SearchCommand';
+
 interface SearchCommandProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   initialQuery?: string;
 }
 
-export const SearchCommand = ({ open, onOpenChange, initialQuery = '' }: SearchCommandProps) => {
+const SearchCommand = ({ open, onOpenChange, initialQuery = '' }: SearchCommandProps) => {
   const [query, setQuery] = useState(initialQuery);
   const { i18n, t } = useTranslation();
 
@@ -25,14 +30,10 @@ export const SearchCommand = ({ open, onOpenChange, initialQuery = '' }: SearchC
 
   const articles = articlesQuery.data?.pages.flatMap((page) => page.data.items) ?? [];
 
-  const handleInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setQuery(e.target.value);
-  };
+  const handleInputChange: ChangeEventHandler<HTMLInputElement> = (e) => setQuery(e.target.value);
 
   const handleRetry = () => {
-    if (query.length >= 3) {
-      articlesQuery.refetch();
-    }
+    if (query.length >= 3) articlesQuery.refetch();
   };
 
   const isLoading = articlesQuery.isLoading;
@@ -90,3 +91,10 @@ export const SearchCommand = ({ open, onOpenChange, initialQuery = '' }: SearchC
     </Dialog.Root>
   );
 };
+
+SearchCommand.displayName = NAME;
+
+/* -----------------------------------------------------------------------------------------------*/
+
+export { SearchCommand };
+export type { SearchCommandProps };

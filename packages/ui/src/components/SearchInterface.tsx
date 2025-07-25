@@ -3,7 +3,7 @@ import type { ComponentProps, FC } from 'react';
 
 import { IconButton } from '@repo/ui/components/IconButton';
 import { ScrollArea } from '@repo/ui/components/ScrollArea';
-import { TextInput, type TextInputProps } from '@repo/ui/components/TextInput';
+import * as TextInput from '@repo/ui/components/TextInput';
 import { Kbd } from '@repo/ui/components/Typography';
 import { cn } from '@repo/ui/lib/utils';
 
@@ -45,7 +45,7 @@ SearchInterfaceRoot.displayName = SEARCH_INTERFACE_ROOT_NAME;
  * -----------------------------------------------------------------------------------------------*/
 const SEARCH_INTERFACE_INPUT_NAME = 'SearchInterfaceInput';
 
-type SearchInterfaceInputProps = TextInputProps & {
+type SearchInterfaceInputProps = TextInput.TextInputProps & {
   onClear?: () => void;
 };
 
@@ -53,8 +53,12 @@ const SearchInterfaceInput: FC<SearchInterfaceInputProps> = ({ onClear, classNam
   <div className={cn('flex items-center space-x-3 border-border border-b bg-muted/30 p-4', className)}>
     <CommandIcon className="h-5 w-5 text-muted-foreground" />
     <div className="relative flex flex-1 gap-1">
-      <SearchIcon className="-translate-y-1/2 absolute top-1/2 left-3 h-4 w-4 transform text-muted-foreground" />
-      <TextInput className="flex-1" data-slot="search-interface-input" type="text" {...props} />
+      <TextInput.Root className="flex-1" data-slot="search-interface-input" type="text" {...props}>
+        <TextInput.StartSection>
+          <SearchIcon />
+        </TextInput.StartSection>
+      </TextInput.Root>
+
       <IconButton aria-label="Clear search" onClick={onClear} size="md" type="button" variant="ghost">
         <XIcon className="h-4 w-4 text-muted-foreground" />
       </IconButton>
