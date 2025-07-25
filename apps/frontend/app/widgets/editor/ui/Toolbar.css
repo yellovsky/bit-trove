@@ -1,4 +1,4 @@
-@reference '../../../../root.css';
+@reference '../../../root.css';
 
 .tiptap-toolbar {
   @apply rounded-t-default bg-background;

@@ -20,15 +20,10 @@ import {
 } from '@repo/ui/components/DropdownMenu';
 import { cn } from '@repo/ui/lib/utils';
 
-import { useEditorSync } from '../../model/hooks/use-editor-sync';
-import { useTiptapEditor } from '../../model/hooks/use-tiptap-editor';
-import { ToolbarButton } from '../Toolbar/ToolbarButton';
+import { useEditorSync } from '../model/hooks/use-editor-sync';
+import { useTiptapEditor } from '../model/hooks/use-tiptap-editor';
 import { ShortcutKey } from './ShortcutKey';
-
-interface SectionOneProps {
-  editor?: Editor;
-  levels?: Level[];
-}
+import { ToolbarButton } from './ToolbarButton';
 
 const levelIcons = {
   1: Heading1Icon,
@@ -57,12 +52,23 @@ const shortcutKeys = {
   6: ['mod', 'alt', '6'],
 };
 
+const getDisabled = (editor: Editor | null, levels: Level[]) =>
+  !levels.some((level) => editor?.can().toggleNode('heading', 'paragraph', { level }));
+
+const getActiveLevel = (editor: Editor | null, levels: Level[]) =>
+  levels.find((level) => editor?.isActive('heading', { level }));
+
+/* -------------------------------------------------------------------------------------------------
+ * HeadingMenuItem
+ * -----------------------------------------------------------------------------------------------*/
+const HEADING_MENU_ITEM_NAME = 'HeadingMenuItem';
+
 interface HeadingMenuItemProps {
   level: Level;
   editor: Editor | null;
 }
 
-const HeadingMenuItem = ({ level, editor }: HeadingMenuItemProps) => {
+const HeadingMenuItem: FC<HeadingMenuItemProps> = ({ level, editor }) => {
   const isActive = useEditorSync(editor, (e) => e.isActive('heading', { level }), false);
   const handleClick = () => editor?.chain().focus().toggleHeading({ level }).run();
   const Icon = levelIcons[level];
@@ -76,13 +82,22 @@ const HeadingMenuItem = ({ level, editor }: HeadingMenuItemProps) => {
   );
 };
 
-const getDisabled = (editor: Editor | null, levels: Level[]) =>
-  !levels.some((level) => editor?.can().toggleNode('heading', 'paragraph', { level }));
+HeadingMenuItem.displayName = HEADING_MENU_ITEM_NAME;
 
-const getActiveLevel = (editor: Editor | null, levels: Level[]) =>
-  levels.find((level) => editor?.isActive('heading', { level }));
+/* -------------------------------------------------------------------------------------------------
+ * HeadingToolbarSection
+ * -----------------------------------------------------------------------------------------------*/
+const NAME = 'HeadingToolbarSection';
 
-export const HeadingToolbarSection: FC<SectionOneProps> = ({ editor: providedEditor, levels = [1, 2, 3, 4, 5, 6] }) => {
+interface HeadingToolbarSectionProps {
+  editor?: Editor;
+  levels?: Level[];
+}
+
+const HeadingToolbarSection: FC<HeadingToolbarSectionProps> = ({
+  editor: providedEditor,
+  levels = [1, 2, 3, 4, 5, 6],
+}) => {
   const editor = useTiptapEditor(providedEditor);
   const activeLevel = useEditorSync(editor, (e) => getActiveLevel(e, levels), null);
   const ActiveIcon = activeLevel ? levelIcons[activeLevel] : HeadingIcon;
@@ -92,12 +107,7 @@ export const HeadingToolbarSection: FC<SectionOneProps> = ({ editor: providedEdi
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <ToolbarButton aria-label="Text styles" disabled={disabled} tooltip="Text styles">
-          {
-            <ActiveIcon
-              className={cn('size-4', { 'text-primary-11': activeLevel })}
-              strokeWidth={activeLevel ? 2 : 1}
-            />
-          }
+          {<ActiveIcon className={cn('size-4', { 'text-primary-11': activeLevel })} />}
           <ChevronDownIcon className="size-3" />
         </ToolbarButton>
       </DropdownMenuTrigger>
@@ -111,4 +121,9 @@ export const HeadingToolbarSection: FC<SectionOneProps> = ({ editor: providedEdi
   );
 };
 
-HeadingToolbarSection.displayName = 'HeadingToolbarSection';
+HeadingToolbarSection.displayName = NAME;
+
+/* -----------------------------------------------------------------------------------------------*/
+
+export { HeadingToolbarSection };
+export type { HeadingToolbarSectionProps };

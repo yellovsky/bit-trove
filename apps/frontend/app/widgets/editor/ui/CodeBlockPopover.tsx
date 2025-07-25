@@ -6,12 +6,12 @@ import { Popover, PopoverContent, PopoverTrigger } from '@repo/ui/components/Pop
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@repo/ui/components/Select';
 import { TextInput } from '@repo/ui/components/TextInput';
 
-import { LANGUAGE_OPTIONS } from '../../config/languages';
-import { getShortcutKey, isNodeInSchema } from '../../lib';
-import { useCodeBlockHandler } from '../../model/hooks/use-code-block-handler';
-import { useEditorSync } from '../../model/hooks/use-editor-sync';
-import { useTiptapEditor } from '../../model/hooks/use-tiptap-editor';
-import { ToolbarButton } from '../Toolbar';
+import { LANGUAGE_OPTIONS } from '../config/languages';
+import { getShortcutKey, isNodeInSchema } from '../lib';
+import { useCodeBlockHandler } from '../model/hooks/use-code-block-handler';
+import { useEditorSync } from '../model/hooks/use-editor-sync';
+import { useTiptapEditor } from '../model/hooks/use-tiptap-editor';
+import { ToolbarButton } from './ToolbarButton';
 
 /* -------------------------------------------------------------------------------------------------
  * CodeBlockMain
@@ -229,7 +229,7 @@ const CodeBlockButton: FC<CodeBlockButtonProps> = (props) => {
       tooltip={tooltip}
       {...buttonProps}
     >
-      {children || <CodeSquareIcon strokeWidth={isActive ? 2 : 1} />}
+      {children || <CodeSquareIcon />}
     </ToolbarButton>
   );
 };

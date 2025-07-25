@@ -15,23 +15,16 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from '@repo/ui/components/Popover';
 import { TextInput } from '@repo/ui/components/TextInput';
 
-import { isMarkInSchema, sanitizeUrl } from '../../lib';
-import { useEditorSync } from '../../model/hooks/use-editor-sync';
-import { useTiptapEditor } from '../../model/hooks/use-tiptap-editor';
-import { ToolbarButton } from '../Toolbar/ToolbarButton';
+import { isMarkInSchema, sanitizeUrl } from '../lib';
+import { useEditorSync } from '../model/hooks/use-editor-sync';
+import { useTiptapEditor } from '../model/hooks/use-tiptap-editor';
+import type { ToolbarButtonProps } from '../types';
+import { ToolbarButton } from './ToolbarButton';
 
 export interface LinkHandlerProps {
   editor: Editor | null;
   onSetLink?: () => void;
   onLinkActive?: () => void;
-}
-
-export interface LinkMainProps {
-  url: string;
-  setUrl: Dispatch<SetStateAction<string | null>>;
-  setLink: () => void;
-  removeLink: () => void;
-  isActive: boolean;
 }
 
 export const useLinkHandler = (props: LinkHandlerProps) => {
@@ -81,26 +74,36 @@ export const useLinkHandler = (props: LinkHandlerProps) => {
 
   const isActive = useEditorSync(editor, (e) => e.isActive('link'), false);
 
-  return {
-    isActive,
-    removeLink,
-    setLink,
-    setUrl,
-    url: url || '',
-  };
+  return { isActive, removeLink, setLink, setUrl, url: url || '' };
 };
 
-export const LinkButton: FC<ComponentProps<typeof ToolbarButton>> = ({ className, children, ...props }) => (
+/* -------------------------------------------------------------------------------------------------
+ * LinkButton
+ * -----------------------------------------------------------------------------------------------*/
+const LINK_BUTTON_NAME = 'LinkButton';
+
+type LinkButtonProps = ToolbarButtonProps;
+
+const LinkButton: FC<ComponentProps<typeof ToolbarButton>> = ({ className, children, ...props }) => (
   <ToolbarButton aria-label="Link" className={className} tabIndex={-1} tooltip="Link" type="button" {...props}>
-    {children || <LinkIcon className="size-4" strokeWidth={props.isActive ? 2 : 1} />}
+    {children || <LinkIcon className="size-4" />}
   </ToolbarButton>
 );
 
-export const LinkContent: FC<{ editor?: Editor | null }> = ({ editor: providedEditor }) => {
-  const editor = useTiptapEditor(providedEditor);
-  const linkHandler = useLinkHandler({ editor: editor });
-  return <LinkMain {...linkHandler} />;
-};
+LinkButton.displayName = LINK_BUTTON_NAME;
+
+/* -------------------------------------------------------------------------------------------------
+ * LinkMain
+ * -----------------------------------------------------------------------------------------------*/
+const LINK_MAIN_NAME = 'LinkMain';
+
+interface LinkMainProps {
+  url: string;
+  setUrl: Dispatch<SetStateAction<string | null>>;
+  setLink: () => void;
+  removeLink: () => void;
+  isActive: boolean;
+}
 
 const LinkMain: FC<LinkMainProps> = ({ url, setUrl, setLink, removeLink, isActive }) => {
   const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = (event) => {
@@ -140,7 +143,29 @@ const LinkMain: FC<LinkMainProps> = ({ url, setUrl, setLink, removeLink, isActiv
   );
 };
 
-export interface LinkPopoverProps extends ComponentProps<typeof ToolbarButton> {
+LinkMain.displayName = LINK_MAIN_NAME;
+
+/* -------------------------------------------------------------------------------------------------
+ * LinkContent
+ * -----------------------------------------------------------------------------------------------*/
+const LINK_CONTENT_NAME = 'LinkContent';
+
+type LinkContentProps = { editor?: Editor | null };
+
+const LinkContent: FC<LinkContentProps> = ({ editor: providedEditor }) => {
+  const editor = useTiptapEditor(providedEditor);
+  const linkHandler = useLinkHandler({ editor: editor });
+  return <LinkMain {...linkHandler} />;
+};
+
+LinkContent.displayName = LINK_CONTENT_NAME;
+
+/* -------------------------------------------------------------------------------------------------
+ * LinkPopover
+ * -----------------------------------------------------------------------------------------------*/
+const LINK_POPOVER_NAME = 'LinkPopover';
+
+interface LinkPopoverProps extends ComponentProps<typeof ToolbarButton> {
   /**
    * The TipTap editor instance.
    */
@@ -164,7 +189,7 @@ export interface LinkPopoverProps extends ComponentProps<typeof ToolbarButton> {
   autoOpenOnLinkActive?: boolean;
 }
 
-export const LinkPopover: FC<LinkPopoverProps> = ({
+const LinkPopover: FC<LinkPopoverProps> = ({
   editor: providedEditor,
   hideWhenUnavailable = false,
   onOpenChange,
@@ -230,4 +255,9 @@ export const LinkPopover: FC<LinkPopoverProps> = ({
   );
 };
 
-LinkButton.displayName = 'LinkButton';
+LinkPopover.displayName = LINK_POPOVER_NAME;
+
+/* -----------------------------------------------------------------------------------------------*/
+
+export { LinkButton, LinkContent, LinkPopover };
+export type { LinkButtonProps, LinkContentProps, LinkPopoverProps };

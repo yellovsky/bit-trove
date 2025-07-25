@@ -1,16 +1,7 @@
 import type { Node } from '@tiptap/pm/model';
 import { type Editor, isNodeSelection } from '@tiptap/react';
 
-import { findNodePosition, isEmptyNode, isMarkInSchema } from '../../lib';
-import { useTiptapEditor } from '../../model/hooks/use-tiptap-editor';
-import './ColorHighlightButton.css';
-
-import type { ComponentProps, FC } from 'react';
-
-import { cn } from '@repo/ui/lib/utils';
-
-import { useEditorSync } from '../../model/hooks/use-editor-sync';
-import { ToolbarButton } from '../Toolbar/ToolbarButton';
+import { findNodePosition, isEmptyNode } from './tiptap-utils';
 
 export const HIGHLIGHT_COLORS = [
   {
@@ -64,45 +55,6 @@ export const HIGHLIGHT_COLORS = [
     value: 'var(--tt-color-highlight-red)',
   },
 ];
-
-export interface ColorHighlightButtonProps extends Omit<ComponentProps<typeof ToolbarButton>, 'type'> {
-  /**
-   * The TipTap editor instance.
-   */
-  editor?: Editor | null;
-
-  /**
-   * The node to apply highlight to
-   */
-  node?: Node | null;
-
-  /**
-   * The position of the node in the document
-   */
-  nodePos?: number | null;
-
-  /**
-   * The color to apply when toggling the highlight.
-   * If not provided, it will use the default color from the extension.
-   */
-  color: string;
-
-  /**
-   * Optional text to display alongside the icon.
-   */
-  text?: string;
-
-  /**
-   * Whether the button should hide when the mark is not available.
-   * @default false
-   */
-  hideWhenUnavailable?: boolean;
-
-  /**
-   * Called when the highlight is applied.
-   */
-  onApplied?: (color: string) => void;
-}
 
 /**
  * Checks if highlight can be toggled in the current editor state
@@ -189,80 +141,14 @@ export const shouldShowColorHighlightButton = (
   return true;
 };
 
-/**
- * Custom hook to manage highlight button state
- */
-export const useHighlightState = (
-  editor: Editor | null,
-  color: string,
-  disabled = false,
-  hideWhenUnavailable = false
-) => {
-  const highlightInSchema = useEditorSync(editor, (e) => isMarkInSchema('highlight', e), false);
-  const isDisabled = useEditorSync(editor, (e) => isColorHighlightButtonDisabled(e, disabled), false);
-  const isActive = useEditorSync(editor, (e) => isHighlightActive(e, color), false);
-  const shouldShow = useEditorSync(
-    editor,
-    (e) => shouldShowColorHighlightButton(e, hideWhenUnavailable, highlightInSchema),
-    false
-  );
-  return { highlightInSchema, isActive, isDisabled, shouldShow };
+export const shouldShowColorHighlightPopover = (params: {
+  editor: Editor | null;
+  hideWhenUnavailable: boolean;
+  nodeInSchema: boolean;
+  canToggle: boolean;
+}): boolean => {
+  const { editor, hideWhenUnavailable, nodeInSchema, canToggle } = params;
+  if (!nodeInSchema || !editor) return false;
+  if (hideWhenUnavailable && (isNodeSelection(editor.state.selection) || !canToggle)) return false;
+  return Boolean(editor?.isEditable);
 };
-
-/**
- * ColorHighlightButton component for TipTap editor
- */
-export const ColorHighlightButton: FC<ColorHighlightButtonProps> = ({
-  editor: providedEditor,
-  node,
-  nodePos,
-  color,
-  text,
-  hideWhenUnavailable = false,
-  disabled,
-  onClick,
-  onApplied,
-  children,
-  style,
-  ...buttonProps
-}) => {
-  const editor = useTiptapEditor(providedEditor);
-  const { isDisabled, isActive, shouldShow } = useHighlightState(editor, color, disabled, hideWhenUnavailable);
-
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    onClick?.(e);
-
-    if (!e.defaultPrevented && !isDisabled && editor) {
-      toggleHighlight(editor, color, node, nodePos);
-      onApplied?.(color);
-    }
-  };
-
-  const buttonStyle = { ...style, '--highlight-color': color } as React.CSSProperties;
-
-  if (!shouldShow || !editor || !editor.isEditable) return null;
-
-  return (
-    <ToolbarButton
-      aria-label={`${color} highlight color`}
-      disabled={isDisabled}
-      isActive={isActive}
-      onClick={handleClick}
-      style={buttonStyle}
-      tabIndex={-1}
-      {...buttonProps}
-    >
-      {children || (
-        <>
-          <span
-            className={cn('tiptap-button-highlight', 'rounded-full')}
-            style={{ '--highlight-color': color } as React.CSSProperties}
-          />
-          {text && <span>{text}</span>}
-        </>
-      )}
-    </ToolbarButton>
-  );
-};
-
-ColorHighlightButton.displayName = 'ColorHighlightButton';

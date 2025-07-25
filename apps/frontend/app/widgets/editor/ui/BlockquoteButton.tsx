@@ -1,13 +1,25 @@
-import { type Editor, isNodeSelection } from '@tiptap/react';
+import type { Editor } from '@tiptap/react';
 import { TextQuoteIcon } from 'lucide-react';
 import type { ComponentProps, FC, MouseEvent } from 'react';
 
-import { getShortcutKey, isNodeInSchema } from '../../lib';
-import { useEditorSync } from '../../model/hooks/use-editor-sync';
-import { useTiptapEditor } from '../../model/hooks/use-tiptap-editor';
-import { ToolbarButton } from '../Toolbar/ToolbarButton';
+import { getShortcutKey, isNodeInSchema } from '../lib';
+import {
+  canToggleBlockquote,
+  isBlockquoteActive,
+  isBlockquoteButtonDisabled,
+  shouldShowBlockquoteButton,
+  toggleBlockquote,
+} from '../lib/blockquote';
+import { useEditorSync } from '../model/hooks/use-editor-sync';
+import { useTiptapEditor } from '../model/hooks/use-tiptap-editor';
+import { ToolbarButton } from './ToolbarButton';
 
-export interface BlockquoteButtonProps extends ComponentProps<typeof ToolbarButton> {
+/* -------------------------------------------------------------------------------------------------
+ * BlockquoteButton
+ * -----------------------------------------------------------------------------------------------*/
+const NAME = 'BlockquoteButton';
+
+interface BlockquoteButtonProps extends ComponentProps<typeof ToolbarButton> {
   /**
    * The TipTap editor instance.
    */
@@ -25,43 +37,7 @@ export interface BlockquoteButtonProps extends ComponentProps<typeof ToolbarButt
   hideWhenUnavailable?: boolean;
 }
 
-export const canToggleBlockquote = (editor: Editor | null): boolean => {
-  if (!editor) return false;
-
-  try {
-    return editor.can().toggleWrap('blockquote');
-  } catch {
-    return false;
-  }
-};
-
-export const isBlockquoteActive = (editor: Editor | null): boolean => {
-  if (!editor) return false;
-  return editor.isActive('blockquote');
-};
-
-export const toggleBlockquote = (editor: Editor | null): boolean => {
-  if (!editor) return false;
-  return editor.chain().focus().toggleWrap('blockquote').run();
-};
-
-export const isBlockquoteButtonDisabled = (editor: Editor | null, canToggle: boolean, userDisabled = false): boolean =>
-  !editor || userDisabled || !canToggle;
-
-export const shouldShowBlockquoteButton = (params: {
-  editor: Editor | null;
-  hideWhenUnavailable: boolean;
-  nodeInSchema: boolean;
-  canToggle: boolean;
-}): boolean => {
-  const { editor, hideWhenUnavailable, nodeInSchema, canToggle } = params;
-
-  if (!nodeInSchema || !editor) return false;
-  if (hideWhenUnavailable && (isNodeSelection(editor.state.selection) || !canToggle)) return false;
-  return Boolean(editor?.isEditable);
-};
-
-export const useBlockquoteState = (editor: Editor | null, disabled = false, hideWhenUnavailable = false) => {
+const useBlockquoteState = (editor: Editor | null, disabled = false, hideWhenUnavailable = false) => {
   const nodeInSchema = useEditorSync(editor, (e) => isNodeInSchema('blockquote', e), false);
   const canToggle = useEditorSync(editor, (e) => canToggleBlockquote(e), false);
   const isDisabled = useEditorSync(editor, (e) => isBlockquoteButtonDisabled(e, canToggle, disabled), false);
@@ -81,7 +57,7 @@ export const useBlockquoteState = (editor: Editor | null, disabled = false, hide
   return { canToggle, handleToggle, isActive, isDisabled, label, nodeInSchema, shortcutKeys, shouldShow };
 };
 
-export const BlockquoteButton: FC<BlockquoteButtonProps> = ({
+const BlockquoteButton: FC<BlockquoteButtonProps> = ({
   editor: providedEditor,
   text,
   hideWhenUnavailable = false,
@@ -111,6 +87,7 @@ export const BlockquoteButton: FC<BlockquoteButtonProps> = ({
     <ToolbarButton
       aria-label={label}
       disabled={isDisabled}
+      icon
       isActive={isActive}
       onClick={handleClick}
       tabIndex={-1}
@@ -119,7 +96,7 @@ export const BlockquoteButton: FC<BlockquoteButtonProps> = ({
     >
       {children || (
         <>
-          <TextQuoteIcon strokeWidth={isActive ? 2 : 1} />
+          <TextQuoteIcon />
           {text && <span>{text}</span>}
         </>
       )}
@@ -127,4 +104,9 @@ export const BlockquoteButton: FC<BlockquoteButtonProps> = ({
   );
 };
 
-BlockquoteButton.displayName = 'BlockquoteButton';
+BlockquoteButton.displayName = NAME;
+
+/* -----------------------------------------------------------------------------------------------*/
+
+export { BlockquoteButton };
+export type { BlockquoteButtonProps };

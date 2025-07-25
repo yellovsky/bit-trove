@@ -10,12 +10,21 @@ import {
 } from '@repo/ui/components/DropdownMenu';
 import { cn } from '@repo/ui/lib/utils';
 
-import { useEditorSync } from '../../model/hooks/use-editor-sync';
-import { useTiptapEditor } from '../../model/hooks/use-tiptap-editor';
-import { ToolbarButton } from '../Toolbar/ToolbarButton';
+import { useEditorSync } from '../model/hooks/use-editor-sync';
+import { useTiptapEditor } from '../model/hooks/use-tiptap-editor';
 import { ShortcutKey } from './ShortcutKey';
+import { ToolbarButton } from './ToolbarButton';
 
-export const ListToolbarButton: FC<{ editor?: Editor | null }> = ({ editor: providedEditor }) => {
+/* -------------------------------------------------------------------------------------------------
+ * ListToolbarButton
+ * -----------------------------------------------------------------------------------------------*/
+const NAME = 'ListToolbarButton';
+
+interface ListToolbarButtonProps {
+  editor?: Editor | null;
+}
+
+const ListToolbarButton: FC<ListToolbarButtonProps> = ({ editor: providedEditor }) => {
   const editor = useTiptapEditor(providedEditor);
   const unorderedListIsActive = useEditorSync(editor, (e) => e.isActive('bulletList'), false);
   const orderedListIsActive = useEditorSync(editor, (e) => e.isActive('orderedList'), false);
@@ -38,10 +47,7 @@ export const ListToolbarButton: FC<{ editor?: Editor | null }> = ({ editor: prov
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <ToolbarButton aria-label="Text styles" disabled={disabled} tooltip="Text styles">
-          <Icon
-            className={cn('size-4', { 'text-primary-11': unorderedListIsActive || orderedListIsActive })}
-            strokeWidth={unorderedListIsActive || orderedListIsActive ? 2 : 1}
-          />
+          <Icon className={cn('size-4', { 'text-primary-11': unorderedListIsActive || orderedListIsActive })} />
           <ChevronDownIcon className="size-3" />
         </ToolbarButton>
       </DropdownMenuTrigger>
@@ -62,4 +68,9 @@ export const ListToolbarButton: FC<{ editor?: Editor | null }> = ({ editor: prov
   );
 };
 
-ListToolbarButton.displayName = 'ListToolbarButton';
+ListToolbarButton.displayName = NAME;
+
+/* -----------------------------------------------------------------------------------------------*/
+
+export { ListToolbarButton };
+export type { ListToolbarButtonProps };

@@ -1,33 +1,9 @@
 import type { Editor } from '@tiptap/react';
 import { Redo2Icon, Undo2Icon } from 'lucide-react';
-import type { ComponentProps, FC, MouseEventHandler } from 'react';
 
-import { getShortcutKey } from '../../lib';
-import { useEditorSync } from '../../model/hooks/use-editor-sync';
-import { useTiptapEditor } from '../../model/hooks/use-tiptap-editor';
-import { ToolbarButton } from '../Toolbar/ToolbarButton';
+import { useEditorSync } from '../model/hooks/use-editor-sync';
 
 export type HistoryAction = 'undo' | 'redo';
-
-/**
- * Props for the UndoRedoButton component.
- */
-export interface UndoRedoButtonProps extends ComponentProps<typeof ToolbarButton> {
-  /**
-   * The TipTap editor instance.
-   */
-  editor?: Editor | null;
-
-  /**
-   * Optional text to display alongside the icon.
-   */
-  text?: string;
-
-  /**
-   * The history action to perform (undo or redo).
-   */
-  action: HistoryAction;
-}
 
 export const historyIcons = {
   redo: Redo2Icon,
@@ -105,40 +81,3 @@ export function useHistoryAction(editor: Editor | null, action: HistoryAction, d
 
   return { actionLabel, canExecute, handleAction, Icon, isDisabled, shortcutKeys };
 }
-
-/**
- * Button component for triggering undo/redo actions in a TipTap editor.
- */
-export const UndoRedoButton: FC<UndoRedoButtonProps> = (props) => {
-  const { editor: providedEditor, action, text, disabled, onClick, children, ...buttonProps } = props;
-  const editor = useTiptapEditor(providedEditor);
-  const { isDisabled, handleAction, Icon, actionLabel, shortcutKeys } = useHistoryAction(editor, action, disabled);
-  const tooltip = [actionLabel, shortcutKeys?.map((s) => getShortcutKey(s).symbol).join(' ')].filter(Boolean).join(' ');
-
-  const handleClick: MouseEventHandler<HTMLButtonElement> = (e) => {
-    onClick?.(e);
-    if (!e.defaultPrevented && !disabled) handleAction();
-  };
-
-  if (!editor || !editor.isEditable) return null;
-
-  return (
-    <ToolbarButton
-      aria-label={actionLabel}
-      disabled={isDisabled}
-      onClick={handleClick}
-      tabIndex={-1}
-      tooltip={tooltip}
-      {...buttonProps}
-    >
-      {children || (
-        <>
-          <Icon strokeWidth={1} />
-          {text && <span>{text}</span>}
-        </>
-      )}
-    </ToolbarButton>
-  );
-};
-
-UndoRedoButton.displayName = 'UndoRedoButton';

@@ -9,18 +9,20 @@ import { useWindowSize } from '@repo/ui/hooks/use-window-size';
 
 import './Editor.css';
 
-import { BlockquoteButton, HeadingToolbarSection, ListToolbarButton, MarkButton, UndoRedoButton } from './Buttons';
-import { CalloutButton } from './Buttons/CalloutButton';
+import { BlockquoteButton } from './BlockquoteButton';
+import { CalloutButton } from './CalloutButton';
+import { CodeBlockPopover } from './CodeBlockPopover';
 import {
-  CodeBlockPopover,
   ColorHighlightPopover,
   ColorHighlightPopoverButton,
   ColorHighlightPopoverContent,
-  LinkButton,
-  LinkContent,
-  LinkPopover,
-} from './Popovers';
+} from './ColorHighlightPopover';
+import { HeadingToolbarSection } from './HeadingToolbarSection';
+import { LinkButton, LinkContent, LinkPopover } from './LinkPopover';
+import { ListToolbarButton } from './ListToolbarButton';
+import { MarkButton } from './MarkButton';
 import { Toolbar, ToolbarGroup, ToolbarSeparator } from './Toolbar';
+import { UndoRedoButton } from './UndoRedoButton';
 
 interface MainToolbarContentProps {
   onHighlighterClick: () => void;
