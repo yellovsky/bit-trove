@@ -1,6 +1,5 @@
 export { useRelatedArticlesQuery } from './api/article-relation.api';
 export { checkArticleSlugAvailability } from './api/check-article-slug-availability';
-export { type ArticleCreateVariables, createArticle, useArticleCreateMutation } from './api/create-article';
 export {
   type ArticleGetVariables,
   type ArticleQueryKey,
@@ -33,9 +32,14 @@ export {
   useInfiniteShortArticlesQuery,
 } from './api/get-short-articles';
 export {
-  type MyArticleUpdateVariables as ArticleUpdateVariables,
+  createMyArticle as createArticle,
+  type MyArticleCreateVariables,
+  useMyArticleCreateMutation,
+} from './api/my-article-create';
+export {
+  type MyArticleUpdateVariables,
   myArticleUpdate as updateArticle,
-  useMyArticleUpdateMutation as useArticleUpdateMutation,
+  useMyArticleUpdateMutation,
 } from './api/my-artticle-update';
 export { type PublishArticleVariables, publishArticle, usePublishArticleMutation } from './api/publish-article';
 export { type UnpublishArticleVariables, useUnpublishArticleMutation } from './api/unpublish-article';

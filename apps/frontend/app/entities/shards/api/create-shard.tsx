@@ -12,9 +12,9 @@ import { type FailedResponse, isShardGetResponse, type ShardUpsertResponse } fro
 import { type ApiClient, useApiClient } from '@shared/lib/api-client';
 import { getQueryClient } from '@shared/lib/query-client';
 
-import { type ArticleCreateVariables, createArticle, invalidateArticlesQuery } from '@entities/articles';
+import { createArticle, invalidateArticlesQuery, type MyArticleCreateVariables } from '@entities/articles';
 
-export type ShardCreateVariables = Omit<ArticleCreateVariables, 'type'>;
+export type ShardCreateVariables = Omit<MyArticleCreateVariables, 'type'>;
 
 const createShard =
   (apiClient: ApiClient): MutationFunction<ShardUpsertResponse, ShardCreateVariables> =>

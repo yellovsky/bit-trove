@@ -12,12 +12,12 @@ import { type FailedResponse, isShardGetResponse, type ShardUpsertResponse } fro
 import { type ApiClient, useApiClient } from '@shared/lib/api-client';
 import { getQueryClient } from '@shared/lib/query-client';
 
-import { type ArticleUpdateVariables, invalidateArticlesQuery, updateArticle } from '@entities/articles';
+import { invalidateArticlesQuery, type MyArticleUpdateVariables, updateArticle } from '@entities/articles';
 
-export type ShardUpdateVariables = Omit<ArticleUpdateVariables, 'type'>;
+export type ShardUpdateVariables = Omit<MyArticleUpdateVariables, 'type'>;
 
 const updateShard =
-  (apiClient: ApiClient): MutationFunction<ShardUpsertResponse, ArticleUpdateVariables> =>
+  (apiClient: ApiClient): MutationFunction<ShardUpsertResponse, MyArticleUpdateVariables> =>
   async (params) => {
     const response = await updateArticle(apiClient)(params);
     if (!isShardGetResponse(response)) throw new Response('Internal server error', { status: 500 });
@@ -25,12 +25,12 @@ const updateShard =
   };
 
 export const useShardUpdateMutation = (
-  options?: Partial<UseMutationOptions<ShardUpsertResponse, FailedResponse, ArticleUpdateVariables>>
-): UseMutationResult<ShardUpsertResponse, FailedResponse, ArticleUpdateVariables> => {
+  options?: Partial<UseMutationOptions<ShardUpsertResponse, FailedResponse, MyArticleUpdateVariables>>
+): UseMutationResult<ShardUpsertResponse, FailedResponse, MyArticleUpdateVariables> => {
   const apiClient = useApiClient();
   const { t: tShards } = useTranslation('shards');
 
-  return useMutation<ShardUpsertResponse, FailedResponse, ArticleUpdateVariables>({
+  return useMutation<ShardUpsertResponse, FailedResponse, MyArticleUpdateVariables>({
     ...options,
     mutationFn: updateShard(apiClient),
     onError: (error, ...rest) => {

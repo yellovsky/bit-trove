@@ -12,9 +12,9 @@ import { type BlogPostUpsertResponse, type FailedResponse, isBlogPostGetResponse
 import { type ApiClient, useApiClient } from '@shared/lib/api-client';
 import { getQueryClient } from '@shared/lib/query-client';
 
-import { type ArticleCreateVariables, createArticle, invalidateArticlesQuery } from '@entities/articles';
+import { createArticle, invalidateArticlesQuery, type MyArticleCreateVariables } from '@entities/articles';
 
-export type BlogPostCreateVariables = Omit<ArticleCreateVariables, 'type'>;
+export type BlogPostCreateVariables = Omit<MyArticleCreateVariables, 'type'>;
 
 const createBlogPost =
   (apiClient: ApiClient): MutationFunction<BlogPostUpsertResponse, BlogPostCreateVariables> =>

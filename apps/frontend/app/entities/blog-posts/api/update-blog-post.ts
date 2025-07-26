@@ -12,12 +12,12 @@ import { type BlogPostUpsertResponse, type FailedResponse, isBlogPostGetResponse
 import { type ApiClient, useApiClient } from '@shared/lib/api-client';
 import { getQueryClient } from '@shared/lib/query-client';
 
-import { type ArticleUpdateVariables, invalidateArticlesQuery, updateArticle } from '@entities/articles';
+import { invalidateArticlesQuery, type MyArticleUpdateVariables, updateArticle } from '@entities/articles';
 
-export type BlogPostUpdateVariables = Omit<ArticleUpdateVariables, 'type'>;
+export type BlogPostUpdateVariables = Omit<MyArticleUpdateVariables, 'type'>;
 
 const updateBlogPost =
-  (apiClient: ApiClient): MutationFunction<BlogPostUpsertResponse, ArticleUpdateVariables> =>
+  (apiClient: ApiClient): MutationFunction<BlogPostUpsertResponse, MyArticleUpdateVariables> =>
   async (params) => {
     const response = await updateArticle(apiClient)(params);
     if (!isBlogPostGetResponse(response)) throw new Response('Internal server error', { status: 500 });
@@ -25,12 +25,12 @@ const updateBlogPost =
   };
 
 export const useBlogPostUpdateMutation = (
-  options?: Partial<UseMutationOptions<BlogPostUpsertResponse, FailedResponse, ArticleUpdateVariables>>
-): UseMutationResult<BlogPostUpsertResponse, FailedResponse, ArticleUpdateVariables> => {
+  options?: Partial<UseMutationOptions<BlogPostUpsertResponse, FailedResponse, MyArticleUpdateVariables>>
+): UseMutationResult<BlogPostUpsertResponse, FailedResponse, MyArticleUpdateVariables> => {
   const apiClient = useApiClient();
   const { t: tBlogPosts } = useTranslation('blog_posts');
 
-  return useMutation<BlogPostUpsertResponse, FailedResponse, ArticleUpdateVariables>({
+  return useMutation<BlogPostUpsertResponse, FailedResponse, MyArticleUpdateVariables>({
     ...options,
     mutationFn: updateBlogPost(apiClient),
     onError: (error, ...rest) => {
