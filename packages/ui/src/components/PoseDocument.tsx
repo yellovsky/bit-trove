@@ -19,6 +19,8 @@ import {
 } from '@repo/ui/components/Typography';
 import { cn } from '@repo/ui/lib/utils';
 
+import { getLanguageIcon } from './ProgrammingLanguageIcon';
+
 export const getJsonContentTitleString = (c: JSONContent): string =>
   c.type === 'text' ? c.text || '' : c.content?.length ? c.content.map(getJsonContentTitleString).join('') : '';
 
@@ -80,9 +82,10 @@ export function renderPoseNode(node: JSONContent): React.ReactNode {
       const language = node.attrs?.language;
       const fileName = node.attrs?.fileName;
       const code = node.content?.[0]?.text;
+      const Icon = getLanguageIcon(language);
 
       return code ? (
-        <CodeBlock fileName={fileName} language={language}>
+        <CodeBlock fileName={fileName} icon={Icon ? <Icon /> : undefined} language={language}>
           {code}
         </CodeBlock>
       ) : null;

@@ -11,7 +11,7 @@ import './Editor.css';
 
 import { BlockquoteButton } from './BlockquoteButton';
 import { CalloutButton } from './CalloutButton';
-import { CodeBlockPopover } from './CodeBlockPopover';
+import { CodeBlockButton } from './CodeBlockPopover';
 import {
   ColorHighlightPopover,
   ColorHighlightPopoverButton,
@@ -43,7 +43,7 @@ const MainToolbarContent: FC<MainToolbarContentProps> = ({ onHighlighterClick, o
       <HeadingToolbarSection levels={[1, 2, 3]} />
       <ListToolbarButton />
       <BlockquoteButton />
-      <CodeBlockPopover />
+      <CodeBlockButton />
     </ToolbarGroup>
 
     <ToolbarSeparator />

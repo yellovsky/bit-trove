@@ -1,5 +1,8 @@
 import { type Command, mergeAttributes } from '@tiptap/core';
+import { ReactNodeViewRenderer } from '@tiptap/react';
 import CodeBlockShiki from 'tiptap-extension-code-block-shiki';
+
+import { CodeBlockRenderer } from '../ui/CodeBlockRenderer';
 
 export const EnhancedCodeBlock = CodeBlockShiki.extend({
   addAttributes() {
@@ -101,6 +104,10 @@ export const EnhancedCodeBlock = CodeBlockShiki.extend({
         types: ['codeBlock'],
       },
     ];
+  },
+
+  addNodeView() {
+    return ReactNodeViewRenderer(CodeBlockRenderer);
   },
 
   parseHTML() {

@@ -17,7 +17,7 @@ import {
   shouldShowColorHighlightPopover,
   toggleHighlight,
 } from '../lib/color-highlight';
-import { useEditorSync } from '../model';
+import { useEditorSync } from '../model/hooks/use-editor-sync';
 import { useMenuNavigation } from '../model/hooks/use-menu-navigation';
 import { useTiptapEditor } from '../model/hooks/use-tiptap-editor';
 import { Separator } from './Separator';
