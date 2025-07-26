@@ -128,24 +128,13 @@ export function renderPoseContent(content: JSONContent[] | undefined): React.Rea
 
 export const renderPoseTitle = (node: JSONContent): ReactNode => {
   switch (node.type) {
+    // NOTE: do not handle link here
     case 'text': {
       const className = cn({
         'font-bold': node.marks?.some((m) => m.type === 'bold'),
         italic: node.marks?.some((m) => m.type === 'italic'),
         underline: node.marks?.some((m) => m.type === 'underline'),
       });
-
-      const linkMark = node.marks?.find((m) => m.type === 'link');
-      if (linkMark) {
-        // biome-ignore lint/suspicious/noExplicitAny: suppose it's ok
-        const { href, ...restAttrs } = linkMark.attrs as any;
-
-        return (
-          <TextLink {...restAttrs} className={className} to={href}>
-            {node.text}
-          </TextLink>
-        );
-      }
 
       const kbdMark = node.marks?.find((m) => m.type === 'kbd');
       if (kbdMark) return <Kbd>{node.text}</Kbd>;

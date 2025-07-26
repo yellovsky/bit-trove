@@ -1,4 +1,5 @@
 import { cva, type VariantProps } from 'class-variance-authority';
+import { ExternalLinkIcon } from 'lucide-react';
 import { Slot } from 'radix-ui';
 import type { ComponentProps, FC } from 'react';
 import { Link as RouterLink } from 'react-router';
@@ -166,10 +167,16 @@ const textLinkVariants = cva('focus-visible-outline focus-visible:rounded-defaul
 
 type TextLinkProps = ComponentProps<typeof RouterLink> & VariantProps<typeof textLinkVariants>;
 
-const TextLink: FC<TextLinkProps> = ({ className, variant, active, ...props }) => {
+const TextLink: FC<TextLinkProps> = ({ className, variant, active, children, ...props }) => {
   const enhanceTo = useEnhanceTo();
   const echancedLink = enhanceTo ? enhanceTo(props.to) : props.to;
-  return <RouterLink {...props} className={cn(textLinkVariants({ active, variant }), className)} to={echancedLink} />;
+
+  return (
+    <RouterLink {...props} className={cn(textLinkVariants({ active, variant }), className)} to={echancedLink}>
+      {children}
+      {props.target === '_blank' && <ExternalLinkIcon className="ml-0.5 inline-block size-3 align-top" />}
+    </RouterLink>
+  );
 };
 
 TextLink.displayName = TEXT_LINK_NAME;
