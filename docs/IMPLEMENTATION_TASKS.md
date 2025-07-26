@@ -83,22 +83,26 @@ interface RateLimitingService {
 }
 ```
 
-#### Task 1.1.3: Add Security Headers
+#### Task 1.1.3: Add Application Security Headers (Helmet.js)
 **Priority**: 🔴 High
 **Complexity**: Low
 **Estimated Time**: 1 day
 **Architecture Layer**: Backend (Security)
 
-**Description**: Implement comprehensive security headers for all responses.
+**Description**: Implement comprehensive security headers for all responses using Helmet.js.
+
+**Current Status**: ✅ Infrastructure-level security headers implemented in Nginx
+**Missing**: Application-level security headers
 
 **Tasks**:
-- [ ] Add Helmet.js integration
+- [ ] Add Helmet.js integration to NestJS
 - [ ] Configure Content Security Policy
 - [ ] Add X-Frame-Options header
 - [ ] Add X-Content-Type-Options header
 - [ ] Add Referrer-Policy header
 - [ ] Add Permissions-Policy header
 - [ ] Test security headers
+- [ ] Ensure compatibility with existing Nginx headers
 
 **Implementation**:
 ```typescript
@@ -155,36 +159,42 @@ async refreshToken(@Body() body: RefreshTokenDto): Promise<RefreshTokenResponse>
 }
 ```
 
-### 1.2 Monitoring & Health Checks
+### 1.2 Enhanced Monitoring & Health Checks
 
-#### Task 1.2.1: Add Health Check Endpoints
+#### Task 1.2.1: Enhance Health Check Endpoints
 **Priority**: 🔴 High
 **Complexity**: Low
 **Estimated Time**: 2 days
 **Architecture Layer**: Backend (Monitoring)
 
-**Description**: Implement comprehensive health check endpoints for all system components.
+**Description**: Enhance existing health check endpoints to include database and Redis health.
+
+**Current Status**: ✅ Basic health check implemented at `/api/health`
+**Missing**: Database and Redis health checks
 
 **Tasks**:
-- [ ] Create health check module
-- [ ] Add database health check
-- [ ] Add Redis health check
-- [ ] Add application health check
-- [ ] Create health check aggregation
+- [ ] Add database health check to existing health endpoint
+- [ ] Add Redis health check to existing health endpoint
+- [ ] Create detailed health check response with component status
 - [ ] Add health check metrics
 - [ ] Create health check documentation
+- [ ] Update startup script to validate all health components
 
 **Implementation**:
 ```typescript
-// apps/backend/src/modules/health/health.module.ts
-// apps/backend/src/modules/health/controllers/health.controller.ts
 // apps/backend/src/modules/health/services/health.service.ts
-
 interface HealthService {
   checkDatabaseHealth(): Promise<HealthStatus>;
   checkRedisHealth(): Promise<HealthStatus>;
   checkApplicationHealth(): Promise<HealthStatus>;
   getOverallHealth(): Promise<HealthReport>;
+}
+
+// apps/backend/src/modules/health/controllers/health.controller.ts
+@Get()
+@Public()
+async check(): Promise<HealthReport> {
+  return this.healthService.getOverallHealth();
 }
 ```
 
@@ -625,11 +635,11 @@ interface SearchQuery {
 ## Success Criteria
 
 ### Phase 1 Completion Criteria
-- [ ] All security vulnerabilities addressed
-- [ ] Health check endpoints functional
-- [ ] Basic monitoring in place
-- [ ] Rate limiting implemented
-- [ ] Security headers configured
+- [ ] All security vulnerabilities addressed (Casbin eval() replaced)
+- [ ] Rate limiting implemented for all critical endpoints
+- [ ] Helmet.js integrated for application-level security headers
+- [ ] Enhanced health checks functional (database, Redis, application)
+- [ ] JWT refresh tokens implemented with shorter expiration
 
 ### Phase 2 Completion Criteria
 - [ ] Meta-blog section fully functional
