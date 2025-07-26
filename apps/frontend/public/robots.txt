@@ -1,0 +1,25 @@
+# BitTrove - Personal Programming Blog
+# https://bit-trove.com
+
+User-agent: *
+Allow: /
+
+# Allow crawling of public content
+Allow: /blog/
+Allow: /shards/
+Allow: /home/
+Allow: /sitemap/
+
+# Allow crawling of static assets
+Allow: /favicon.ico
+Allow: /resources/
+
+# Disallow private/admin areas
+Disallow: /cms/
+Disallow: /api/
+
+# Crawl delay for respectful crawling
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://bit-trove.com/sitemap.xml
