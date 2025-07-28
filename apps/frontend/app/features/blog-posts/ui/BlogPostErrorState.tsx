@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Button } from '@repo/ui/components/Button';
 import { Heading } from '@repo/ui/components/Typography';
+import { cn } from '@repo/ui/lib/utils';
 
 interface BlogPostErrorStateProps {
   error?: Error | null;
@@ -15,7 +16,7 @@ export const BlogPostErrorState: FC<BlogPostErrorStateProps> = ({ error, onRetry
   const { t } = useTranslation();
 
   return (
-    <div className={`mx-auto max-w-4xl ${className}`}>
+    <div className={cn('mx-auto max-w-4xl', className)}>
       <div className="flex flex-col items-center justify-center py-12 text-center">
         <AlertCircleIcon className="mb-4 h-12 w-12 text-destructive" />
         <Heading className="mb-2" order={2}>

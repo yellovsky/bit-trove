@@ -1,13 +1,14 @@
 import type { FC } from 'react';
 
 import { Skeleton } from '@repo/ui/components/Skeleton';
+import { cn } from '@repo/ui/lib/utils';
 
 interface BlogPostDetailSkeletonProps {
   className?: string;
 }
 
 export const BlogPostDetailSkeleton: FC<BlogPostDetailSkeletonProps> = ({ className }) => (
-  <div className={`mx-auto max-w-4xl ${className}`}>
+  <div className={cn('mx-auto max-w-4xl', className)}>
     {/* Breadcrumbs skeleton */}
     <div className="mb-6 flex items-center space-x-2">
       <Skeleton className="h-4 w-16" />

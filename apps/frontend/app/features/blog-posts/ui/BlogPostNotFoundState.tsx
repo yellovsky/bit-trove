@@ -3,6 +3,7 @@ import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Heading } from '@repo/ui/components/Typography';
+import { cn } from '@repo/ui/lib/utils';
 
 import { BackToBlogListButton } from './BackToBlogListButton';
 
@@ -14,7 +15,7 @@ export const BlogPostNotFoundState: FC<BlogPostNotFoundStateProps> = ({ classNam
   const { t } = useTranslation();
 
   return (
-    <div className={`mx-auto max-w-4xl ${className}`}>
+    <div className={cn('mx-auto max-w-4xl', className)}>
       <div className="flex flex-col items-center justify-center py-12 text-center">
         <FileQuestionIcon className="mb-4 h-12 w-12 text-muted-foreground" />
         <Heading className="mb-2" order={2}>

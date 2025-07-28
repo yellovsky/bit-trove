@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 
 import { Badge } from '@repo/ui/components/Badge';
+import { cn } from '@repo/ui/lib/utils';
 
 import { AuthorLabelIcon, DateLabelIcon, ReadingTimeLabelIcon } from '@shared/ui/LabeledIcon';
 
@@ -26,7 +27,7 @@ export const BlogPostMetadata: FC<BlogPostMetadataProps> = ({
   className = '',
 }) => {
   return (
-    <div className={`space-y-4 ${className}`}>
+    <div className={cn('space-y-4', className)}>
       {/* Author and date information */}
       <div className="flex items-center gap-4 text-muted-foreground text-sm">
         {author && <AuthorLabelIcon author={author.name} />}
