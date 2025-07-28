@@ -11,6 +11,8 @@ import { useRelativeDate } from '@shared/lib/use-relative-date';
 import { getBlogPostLink } from '@features/blog-posts';
 import { getShardLink } from '@features/shards';
 
+import { makeArticleFilename } from '@entities/articles';
+
 /* -------------------------------------------------------------------------------------------------
  * ArticleSearchResult
  * -----------------------------------------------------------------------------------------------*/
@@ -25,7 +27,8 @@ const ArticleSearchResult: FC<ArticleSearchResultProps> = ({ article, ...rest })
   const date = useRelativeDate(article.createdAt);
 
   const to = isBlogPost(article) ? getBlogPostLink(article) : isShard(article) ? getShardLink(article) : '/';
-  const filename = [article.title.replace(/ /g, '-').toLowerCase(), '.md'].join('');
+  const filename = makeArticleFilename(article.title);
+
   return (
     <SearchResultItem.Root {...rest} asChild>
       <Link to={to}>

@@ -44,3 +44,4 @@ export {
 export { type PublishArticleVariables, publishArticle, usePublishArticleMutation } from './api/publish-article';
 export { type UnpublishArticleVariables, useUnpublishArticleMutation } from './api/unpublish-article';
 export { invalidateArticlesQuery } from './lib/invalidate-articles';
+export { makeArticleFilename } from './lib/make-article-filename';

@@ -10,6 +10,8 @@ import { Skeleton } from '@repo/ui/components/Skeleton';
 
 import { useRelativeDate } from '@shared/lib/use-relative-date';
 
+import { makeArticleFilename } from '@entities/articles';
+
 /* -------------------------------------------------------------------------------------------------
  * ArticleGridCard
  * -----------------------------------------------------------------------------------------------*/
@@ -22,7 +24,7 @@ interface ArticleGridCardProps extends GridCardPrimitive.GridCardProps {
 
 const ArticleGridCard: FC<ArticleGridCardProps> = ({ article, to, ...props }) => {
   const { t } = useTranslation();
-  const filename = [article.title.replace(/ /g, '-').toLowerCase(), '.md'].join('');
+  const filename = makeArticleFilename(article.title);
   const relativeDate = useRelativeDate(article.publishedAt ?? '');
 
   return (
