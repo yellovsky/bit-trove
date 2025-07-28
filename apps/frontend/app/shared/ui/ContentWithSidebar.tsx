@@ -1,5 +1,7 @@
 import type { FC, PropsWithChildren } from 'react';
 
+import { cn } from '@repo/ui/lib/utils';
+
 /* -------------------------------------------------------------------------------------------------
  * ContentWithSidebar
  * -----------------------------------------------------------------------------------------------*/
@@ -11,7 +13,7 @@ interface ContentWithSidebarProps extends PropsWithChildren {
 }
 
 const ContentWithSidebar: FC<ContentWithSidebarProps> = ({ children, sidebar, className }) => (
-  <div className={`mx-auto max-w-7xl ${className}`}>
+  <div className={cn('mx-auto max-w-7xl', className)}>
     {/* Main content area with responsive layout */}
     <div className="grid grid-cols-1 gap-8 xl:grid-cols-[1fr_300px]">
       {/* Main content */}

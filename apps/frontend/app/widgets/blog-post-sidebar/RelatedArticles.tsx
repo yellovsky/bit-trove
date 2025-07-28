@@ -1,14 +1,18 @@
-import type { FC } from 'react';
+import type { ComponentProps, FC } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
 import { RelatedArticles as RelatedArticlesComponent } from '@features/articles';
 
-interface RelatedArticlesProps {
-  articleId?: string;
-  className?: string;
-}
+/* -------------------------------------------------------------------------------------------------
+ * RelatedArticles
+ * -----------------------------------------------------------------------------------------------*/
+const NAME = 'RelatedArticles';
 
-export const RelatedArticles: FC<RelatedArticlesProps> = ({ articleId, className = '' }) => {
+type RelatedArticlesProps = ComponentProps<'section'> & {
+  articleId?: string;
+};
+
+const RelatedArticles: FC<RelatedArticlesProps> = ({ articleId, className, ...rest }) => {
   const [isVisible, setIsVisible] = useState(false);
   const containerRef = useRef<HTMLElement>(null);
 
@@ -31,11 +35,17 @@ export const RelatedArticles: FC<RelatedArticlesProps> = ({ articleId, className
     return () => observer.disconnect();
   }, []);
 
-  if (!articleId) return null;
-
-  return (
-    <section aria-label="Related articles" className={className} ref={containerRef}>
+  return !articleId ? null : (
+    <section aria-label="Related articles" className={className} ref={containerRef} {...rest}>
       {isVisible && <RelatedArticlesComponent articleId={articleId} className="space-y-3" />}
     </section>
   );
 };
+
+RelatedArticles.displayName = NAME;
+
+/* -----------------------------------------------------------------------------------------------*/
+
+export { RelatedArticles };
+
+export type { RelatedArticlesProps };

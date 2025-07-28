@@ -3,8 +3,6 @@ import type { FC } from 'react';
 
 import { TableHead } from '@repo/ui/components/Table';
 
-import styles from './SortableTableHeader.module.css';
-
 interface SorttableTableHeaderProps {
   children: React.ReactNode;
   reversed: boolean;
@@ -16,11 +14,11 @@ export const SortableTableHeader: FC<SorttableTableHeaderProps> = ({ children, r
   const Icon = sorted ? (reversed ? IconChevronUp : IconChevronDown) : IconSelector;
 
   return (
-    <TableHead className={styles.th}>
-      <button className={styles.control} onClick={onSort} type="button">
+    <TableHead className="p-0 font-bold">
+      <button className="w-full p-2 hover:bg-gray-2" onClick={onSort} type="button">
         <div className="flex flex-nowrap justify-between">
           <div className="font-bold text-sm">{children}</div>
-          <div className={styles.icon}>
+          <div className="size-5 rounded-full">
             <Icon size={16} stroke={1.5} />
           </div>
         </div>

@@ -4,18 +4,24 @@ import { useTranslation } from 'react-i18next';
 
 import { Button } from '@repo/ui/components/Button';
 import { Heading } from '@repo/ui/components/Typography';
+import { cn } from '@repo/ui/lib/utils';
 
-interface BlogPostsErrorStateProps {
+/* -------------------------------------------------------------------------------------------------
+ * BlogPostsErrorState
+ * -----------------------------------------------------------------------------------------------*/
+const BLOG_POSTS_ERROR_STATE_NAME = 'BlogPostsErrorState';
+
+type BlogPostsErrorStateProps = {
   error?: Error | null;
   onRetry?: () => void;
   className?: string;
-}
+};
 
-export const BlogPostsErrorState: FC<BlogPostsErrorStateProps> = ({ error, onRetry, className }) => {
+const BlogPostsErrorState: FC<BlogPostsErrorStateProps> = ({ error, onRetry, className }) => {
   const { t } = useTranslation();
 
   return (
-    <div className={`flex flex-col items-center justify-center py-12 text-center ${className}`}>
+    <div className={cn('flex flex-col items-center justify-center py-12 text-center', className)}>
       <AlertCircleIcon className="mb-4 h-12 w-12 text-destructive" />
       <Heading className="mb-2" order={2}>
         {t('error_loading_data')}
@@ -31,18 +37,22 @@ export const BlogPostsErrorState: FC<BlogPostsErrorStateProps> = ({ error, onRet
   );
 };
 
-interface EmptyBlogPostsStateProps {
-  className?: string;
-}
+BlogPostsErrorState.displayName = BLOG_POSTS_ERROR_STATE_NAME;
 
-export const EmptyBlogPostsState: FC<EmptyBlogPostsStateProps> = ({ className }) => {
+/* -------------------------------------------------------------------------------------------------
+ * EmptyBlogPostsState
+ * -----------------------------------------------------------------------------------------------*/
+const EMPTY_BLOG_POSTS_STATE_NAME = 'EmptyBlogPostsState';
+
+type EmptyBlogPostsStateProps = {
+  className?: string;
+};
+
+const EmptyBlogPostsState: FC<EmptyBlogPostsStateProps> = ({ className }) => {
   const { t } = useTranslation('blog_posts');
 
   return (
-    <div className={`flex flex-col items-center justify-center py-12 text-center ${className}`}>
-      <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
-        <span className="text-2xl">📝</span>
-      </div>
+    <div className={cn('flex flex-col items-center justify-center py-12 text-center', className)}>
       <Heading className="mb-2" order={2}>
         {t('empty.title')}
       </Heading>
@@ -51,27 +61,10 @@ export const EmptyBlogPostsState: FC<EmptyBlogPostsStateProps> = ({ className })
   );
 };
 
-interface NetworkErrorStateProps {
-  onRetry?: () => void;
-  className?: string;
-}
+EmptyBlogPostsState.displayName = EMPTY_BLOG_POSTS_STATE_NAME;
 
-export const NetworkErrorState: FC<NetworkErrorStateProps> = ({ onRetry, className }) => {
-  const { t } = useTranslation('blog_posts');
+/* -----------------------------------------------------------------------------------------------*/
 
-  return (
-    <div className={`flex flex-col items-center justify-center py-12 text-center ${className}`}>
-      <AlertCircleIcon className="mb-4 h-12 w-12 text-destructive" />
-      <Heading className="mb-2" order={2}>
-        {t('network_error.title')}
-      </Heading>
-      <p className="mb-6 text-muted-foreground">{t('network_error.description')}</p>
-      {onRetry && (
-        <Button onClick={onRetry} variant="outline">
-          <RefreshCwIcon className="mr-2 h-4 w-4" />
-          {t('network_error.try_again')}
-        </Button>
-      )}
-    </div>
-  );
-};
+export { BlogPostsErrorState, EmptyBlogPostsState };
+
+export type { BlogPostsErrorStateProps, EmptyBlogPostsStateProps };

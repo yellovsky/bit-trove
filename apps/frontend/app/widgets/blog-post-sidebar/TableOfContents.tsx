@@ -3,22 +3,26 @@ import type { FC, ReactNode } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Paper } from '@repo/ui/components/Paper';
+import { Paper, type PaperProps } from '@repo/ui/components/Paper';
 import { TextLink } from '@repo/ui/components/Typography';
 import { cn } from '@repo/ui/lib/utils';
 
-export interface TableOfContentsItem {
+/* -------------------------------------------------------------------------------------------------
+ * TableOfContents
+ * -----------------------------------------------------------------------------------------------*/
+const NAME = 'TableOfContents';
+
+type TableOfContentsItem = {
   id: string;
   title: ReactNode;
   level: number;
-}
+};
 
-interface TableOfContentsProps {
+type TableOfContentsProps = PaperProps & {
   items?: TableOfContentsItem[];
-  className?: string;
-}
+};
 
-export const TableOfContents: FC<TableOfContentsProps> = ({ items = [], className }) => {
+const TableOfContents: FC<TableOfContentsProps> = ({ items = [], className, ...rest }) => {
   const { t } = useTranslation();
   const navRef = useRef<HTMLElement>(null);
   const [activeId, setActiveId] = useState<string>('');
@@ -56,7 +60,7 @@ export const TableOfContents: FC<TableOfContentsProps> = ({ items = [], classNam
   if (items.length === 0) return null;
 
   return (
-    <Paper className={cn('sticky max-h-96 overflow-y-auto', className)}>
+    <Paper className={cn('sticky max-h-96 overflow-y-auto', className)} {...rest}>
       <div className="mb-3 flex items-center justify-between">
         <h3 className="flex items-center space-x-2 font-semibold text-foreground">
           <TableOfContentsIcon />
@@ -81,3 +85,11 @@ export const TableOfContents: FC<TableOfContentsProps> = ({ items = [], classNam
     </Paper>
   );
 };
+
+TableOfContents.displayName = NAME;
+
+/* -----------------------------------------------------------------------------------------------*/
+
+export { TableOfContents };
+
+export type { TableOfContentsProps, TableOfContentsItem };
