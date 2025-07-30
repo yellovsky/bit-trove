@@ -124,13 +124,5 @@ export const ErrorBoundary = () => {
   const loaderData = useLoaderData<typeof loader>();
   console.warn('loaderData in error boundary', loaderData);
 
-  return (
-    <ErrorScreen
-      buttonText={t('error_page.500.button_text')}
-      code={500}
-      onButtonClick={() => window.location.reload()}
-      subtitle={t('error_page.500.subtitle')}
-      title={t('error_page.500.title')}
-    />
-  );
+  return <ErrorScreen code={500} subtitle={t('error_page.500.subtitle')} title={t('error_page.500.title')} />;
 };

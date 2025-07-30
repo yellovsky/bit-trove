@@ -1,6 +1,7 @@
 import { HydrationBoundary } from '@tanstack/react-query';
 import i18next from 'i18next';
-import type { MetaDescriptor } from 'react-router';
+import { Suspense } from 'react';
+import { type MetaDescriptor, useRouteError } from 'react-router';
 
 import { getApiClient } from '@shared/lib/api-client';
 import { filterParentMeta } from '@shared/lib/meta';
@@ -10,7 +11,7 @@ import appI18next from '@app/localization/i18n.server';
 
 import type { Route } from './+types';
 import { loadShardRouteData } from './model/load-data';
-import { ShardPage } from './ui/ShardPage';
+import * as ShardPage from './ui/ShardPage';
 
 export async function loader(loaderArgs: Route.LoaderArgs) {
   const apiClient = getApiClient();
@@ -38,8 +39,19 @@ export function meta(params: Route.MetaArgs): MetaDescriptor[] {
 
 export default function ShardRoute(props: Route.ComponentProps) {
   return (
-    <HydrationBoundary state={props.loaderData?.dehydratedState}>
-      <ShardPage breadcrumbs={props.loaderData.breadcrumbs} shardVariables={props.loaderData.getOneShardVars} />
-    </HydrationBoundary>
+    <Suspense fallback={<ShardPage.Loading />}>
+      <HydrationBoundary state={props.loaderData?.dehydratedState}>
+        <ShardPage.Root breadcrumbs={props.loaderData.breadcrumbs} shardVariables={props.loaderData.getOneShardVars} />
+      </HydrationBoundary>
+    </Suspense>
   );
 }
+
+export const ErrorBoundary = () => {
+  const routeError = useRouteError();
+  const isNotFound =
+    routeError && typeof routeError === 'object' && 'status' in routeError && routeError.status === 404;
+
+  if (isNotFound) return <ShardPage.NotFound />;
+  return <ShardPage.ErrorState />;
+};

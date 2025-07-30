@@ -13,7 +13,7 @@ type ReadingProgressProps = {
   className?: string;
 };
 
-const ReadingProgress: FC<ReadingProgressProps> = ({ className = '' }) => {
+const ReadingProgress: FC<ReadingProgressProps> = ({ className }) => {
   const progress = useMainContentScroll();
 
   return (

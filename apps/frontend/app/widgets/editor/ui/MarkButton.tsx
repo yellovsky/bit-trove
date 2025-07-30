@@ -59,7 +59,7 @@ const MarkButton: FC<MarkButtonProps> = ({
   type,
   text,
   hideWhenUnavailable = false,
-  className = '',
+  className,
   disabled,
   onClick,
   children,

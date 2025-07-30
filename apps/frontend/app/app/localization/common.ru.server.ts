@@ -66,6 +66,7 @@ export default {
       title: 'Что-то пошло не так на нашей стороне.',
     },
   },
+  'Go back to the homepage': 'Вернуться на главную страницу',
 
   home_page: {
     description:

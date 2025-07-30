@@ -1,4 +1,5 @@
 export default {
+  'Back to shards': 'Вернуться к фрагментам',
   'Create shard failed': 'Не удалось создать фрагмент',
   'Create shard success': 'Фрагмент успешно создан',
   create_shard_button: {

@@ -64,6 +64,7 @@ export default {
       title: 'Something went wrong on our end.',
     },
   },
+  'Go back to the homepage': 'Go back to the homepage',
   home_page: {
     description:
       'It’s not a serious project (at least for now), just a place where I share thoughts, ideas, and experiments. Some posts might be useful, others just things I’m curious about. BitTrove is my playground for exploring new concepts, tools, and anything else that sparks interest.',

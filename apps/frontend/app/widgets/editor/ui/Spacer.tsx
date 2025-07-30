@@ -12,7 +12,7 @@ type SpacerProps = ComponentProps<'div'> & {
   size?: string | number;
 };
 
-const Spacer: FC<SpacerProps> = ({ orientation = 'horizontal', size, className = '', style = {}, ...props }) => {
+const Spacer: FC<SpacerProps> = ({ orientation = 'horizontal', size, className, style = {}, ...props }) => {
   const computedStyle = {
     ...style,
     ...(orientation === 'horizontal' && !size && { flex: 1 }),

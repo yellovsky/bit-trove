@@ -8,6 +8,7 @@ import { Skeleton } from '@repo/ui/components/Skeleton';
 import { cn } from '@repo/ui/lib/utils';
 
 import { useRelativeDate } from '@shared/lib/use-relative-date';
+import { ErrorBoundary } from '@shared/ui/ErrorBoundary';
 
 import { getBlogPostLink } from '@features/blog-posts';
 import { getShardLink } from '@features/shards';
@@ -51,35 +52,54 @@ const RelatedArticleCard: FC<RelatedArticleCardProps> = ({ relation }) => {
 RelatedArticleCard.displayName = RELATED_ARTICLE_CARD_NAME;
 
 /* -------------------------------------------------------------------------------------------------
- * RelatedArticleCard
+ * RelatedArticlesUnsafe
  * -----------------------------------------------------------------------------------------------*/
-const RELATED_ARTICLES_NAME = 'RelatedArticles';
+const RELATED_ARTICLES_UNSAFE_NAME = 'RelatedArticlesUnsafe';
 
-interface RelatedArticlesProps {
+interface RelatedArticlesUnsafeProps {
   articleId: string;
   className?: string;
 }
 
-const RelatedArticles: FC<RelatedArticlesProps> = ({ articleId, className }) => {
+const RelatedArticlesUnsafe: FC<RelatedArticlesUnsafeProps> = ({ articleId, className }) => {
   const { t, i18n } = useTranslation();
   const { data, isLoading } = useRelatedArticlesQuery({ id: articleId, locale: i18n.language });
   const relatedArticles = filterRelatedArticlesByType('related', data?.data ?? []).slice(0, 6);
 
-  return !isLoading && !relatedArticles.length ? null : (
-    <div className={cn('@container', className)}>
-      <h2 className="mb-4 font-semibold text-xl">{t('Related Articles')}</h2>
+  const content =
+    !isLoading && !relatedArticles.length ? null : (
+      <div className={cn('@container', className)}>
+        <h2 className="mb-4 font-semibold text-xl">{t('Related Articles')}</h2>
 
-      <div className="grid @sm:grid-cols-2 grid-cols-1 gap-4">
-        {isLoading
-          ? Array.from({ length: 4 }).map((_, i) => (
-              // biome-ignore lint/suspicious/noArrayIndexKey: it's a skeleton
-              <Skeleton className="h-20 w-full" key={i} />
-            ))
-          : relatedArticles.map((article) => <RelatedArticleCard key={article.id} relation={article} />)}
+        <div className="grid @sm:grid-cols-2 grid-cols-1 gap-4">
+          {isLoading
+            ? Array.from({ length: 4 }).map((_, i) => (
+                // biome-ignore lint/suspicious/noArrayIndexKey: it's a skeleton
+                <Skeleton className="h-20 w-full" key={i} />
+              ))
+            : relatedArticles.map((article) => <RelatedArticleCard key={article.id} relation={article} />)}
+        </div>
       </div>
-    </div>
-  );
+    );
+
+  return <ErrorBoundary>{content}</ErrorBoundary>;
 };
+
+RelatedArticlesUnsafe.displayName = RELATED_ARTICLES_UNSAFE_NAME;
+
+/* -------------------------------------------------------------------------------------------------
+ * RelatedArticles
+ * -----------------------------------------------------------------------------------------------*/
+const RELATED_ARTICLES_NAME = 'RelatedArticles';
+
+type RelatedArticlesProps = RelatedArticlesUnsafeProps;
+
+const RelatedArticles: FC<RelatedArticlesProps> = (props) => (
+  <ErrorBoundary fallback={null}>
+    <RelatedArticlesUnsafe {...props} />
+  </ErrorBoundary>
+);
+
 RelatedArticles.displayName = RELATED_ARTICLES_NAME;
 
 /* -----------------------------------------------------------------------------------------------*/

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { data, type MetaDescriptor, useNavigate } from 'react-router';
+import { data, type MetaDescriptor } from 'react-router';
 
 import { filterParentMeta } from '@shared/lib/meta';
 import { ErrorScreen } from '@shared/ui/ErrorScreen';
@@ -20,20 +20,7 @@ export function meta(params: Route.MetaArgs): MetaDescriptor[] {
 }
 
 export default function NotFoundPage() {
-  const { t, i18n } = useTranslation();
-  const navigate = useNavigate();
+  const { t } = useTranslation();
 
-  const handleButtonClick = () => {
-    navigate(`/${i18n.language}`);
-  };
-
-  return (
-    <ErrorScreen
-      buttonText={t('error_page.404.button_text')}
-      code={404}
-      onButtonClick={handleButtonClick}
-      subtitle={t('error_page.404.subtitle')}
-      title={t('error_page.404.title')}
-    />
-  );
+  return <ErrorScreen code={404} subtitle={t('error_page.404.subtitle')} title={t('error_page.404.title')} />;
 }

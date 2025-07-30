@@ -1,4 +1,5 @@
 export default {
+  'Back to shards': 'Back to shards',
   'Create shard failed': 'Create shard failed',
   'Create shard success': 'Create shard success',
   create_shard_button: {

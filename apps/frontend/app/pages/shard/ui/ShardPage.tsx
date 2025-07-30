@@ -1,123 +1,162 @@
-import slugify from '@sindresorhus/slugify';
+import { ArrowLeftIcon } from 'lucide-react';
 import type { FC } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router';
 
-import { getJsonContentTitleString, PoseDocument, renderPoseTitle } from '@repo/ui/components/PoseDocument';
-import { Heading } from '@repo/ui/components/Typography';
+import type { FailedResponse, Shard } from '@repo/api-models';
 
-import { ContentWithSidebar } from '@shared/ui/ContentWithSidebar';
+import { ErrorScreen } from '@shared/ui/ErrorScreen';
 import { ReadingProgress } from '@shared/ui/ReadingProgress';
 
-import { TableOfContents, type TableOfContentsItem } from '@widgets/blog-post-sidebar';
-
-import { RelatedArticles } from '@features/articles';
-import { type AppBreadcrumb, Breadcrumbs } from '@features/breadcrumbs';
-import { ShardDetailSkeleton, ShardErrorState, ShardMetadata, ShardNotFoundState } from '@features/shards';
+import { ArticlePageContent } from '@features/articles';
+import { ArticlePageContentLoading, type ArticlePageContentProps } from '@features/articles/ui/ArticlePageContent';
+import type { AppBreadcrumb } from '@features/breadcrumbs';
+import { getShardsLink, SHARDS_NS } from '@features/shards';
 
 import { type ShardGetVariables, useShardQuery } from '@entities/shards';
+
+/* -------------------------------------------------------------------------------------------------
+ * ShardPageNotFound
+ * -----------------------------------------------------------------------------------------------*/
+const SHARD_PAGE_NOT_FOUND_NAME = 'ShardPageNotFound';
+
+const ShardPageNotFound: FC = () => {
+  const { t } = useTranslation();
+  const { t: tShards } = useTranslation(SHARDS_NS);
+
+  return (
+    <>
+      <ReadingProgress />
+      <ErrorScreen
+        button={
+          <Link to={getShardsLink()}>
+            <ArrowLeftIcon />
+            <span>{tShards('Back to shards')}</span>
+          </Link>
+        }
+        code={404}
+        subtitle={t('error_page.404.subtitle')}
+        title={t('error_page.404.title')}
+      />
+    </>
+  );
+};
+
+ShardPageNotFound.displayName = SHARD_PAGE_NOT_FOUND_NAME;
+
+/* -------------------------------------------------------------------------------------------------
+ * ShardPageError
+ * -----------------------------------------------------------------------------------------------*/
+const SHARD_PAGE_ERROR_NAME = 'ShardPageError';
+
+type ShardPageErrorStateProps = {
+  error?: FailedResponse;
+};
+
+const ShardPageErrorState: FC<ShardPageErrorStateProps> = ({ error }) => {
+  const { t } = useTranslation();
+
+  if (error?.error?.httpCode === 404) return <ShardPageNotFound />;
+
+  return (
+    <>
+      <ReadingProgress />
+      <ErrorScreen code={500} subtitle={t('error_page.500.subtitle')} title={t('error_page.500.title')} />
+    </>
+  );
+};
+
+ShardPageErrorState.displayName = SHARD_PAGE_ERROR_NAME;
+
+/* -------------------------------------------------------------------------------------------------
+ * ShardPageLoading
+ * -----------------------------------------------------------------------------------------------*/
+const SHARD_PAGE_LOADING_NAME = 'ShardPageLoading';
+
+const ShardPageLoading: FC = (props) => <ArticlePageContentLoading {...props} />;
+
+ShardPageLoading.displayName = SHARD_PAGE_LOADING_NAME;
+
+/* -------------------------------------------------------------------------------------------------
+ * ShardPageContent
+ * -----------------------------------------------------------------------------------------------*/
+const SHARD_PAGE_CONTENT_NAME = 'ShardPageContent';
+
+type ShardPageContentProps = ArticlePageContentProps;
+
+const ShardPageContent: FC<ShardPageContentProps> = (props) => <ArticlePageContent {...props} />;
+
+ShardPageContent.displayName = SHARD_PAGE_CONTENT_NAME;
+
+/* -------------------------------------------------------------------------------------------------
+ * ShardPageView
+ * -----------------------------------------------------------------------------------------------*/
+const SHARD_PAGE_VIEW_NAME = 'ShardPageView';
+
+interface ShardPageViewProps {
+  shard: Shard | null | undefined;
+  breadcrumbs: AppBreadcrumb[];
+  error: FailedResponse | null | undefined;
+  pending: boolean;
+}
+
+const ShardPageView: FC<ShardPageViewProps> = ({ shard, breadcrumbs, error, pending }) => {
+  if (pending) return <ShardPageLoading />;
+  if (error) return <ShardPageErrorState error={error} />;
+  if (!shard) return <ShardPageNotFound />;
+  return <ShardPageContent article={shard} breadcrumbs={breadcrumbs} />;
+};
+
+ShardPageView.displayName = SHARD_PAGE_VIEW_NAME;
+
+/* -------------------------------------------------------------------------------------------------
+ * ShardPage
+ * -----------------------------------------------------------------------------------------------*/
+const SHARD_PAGE_NAME = 'ShardPage';
 
 interface ShardPageProps {
   shardVariables: ShardGetVariables;
   breadcrumbs: AppBreadcrumb[];
 }
 
-export const ShardPage: FC<ShardPageProps> = ({ shardVariables, breadcrumbs }) => {
+const ShardPage: FC<ShardPageProps> = ({ shardVariables, breadcrumbs }) => {
   const shardResponse = useShardQuery(shardVariables);
-  const shard = shardResponse.data?.data;
-
-  const headings = shard?.contentJSON?.content?.filter((c) => c.type === 'heading');
-  const tocItems: TableOfContentsItem[] | undefined = !headings?.length
-    ? undefined
-    : [
-        {
-          id: slugify(shard?.title ?? ''),
-          level: 1,
-          title: shard?.title,
-        },
-        ...headings.map((c) => ({
-          id: slugify(getJsonContentTitleString(c)),
-          level: c.attrs?.level ?? 2,
-          title: renderPoseTitle(c),
-        })),
-      ];
-
-  const sidebar = (
-    <>
-      <TableOfContents items={tocItems} />
-      {shard?.id && <RelatedArticles articleId={shard.id} />}
-    </>
-  );
-
-  // Handle loading state
-  if (shardResponse.isPending) {
-    return (
-      <>
-        <ReadingProgress />
-        <ContentWithSidebar sidebar={sidebar}>
-          <ShardDetailSkeleton />
-        </ContentWithSidebar>
-      </>
-    );
-  }
-
-  // Handle error state
-  if (shardResponse.isError) {
-    const errorMessage = shardResponse.error?.error?.message || 'An error occurred while loading the shard';
-    return (
-      <>
-        <ReadingProgress />
-        <ShardErrorState error={{ message: errorMessage } as Error} onRetry={() => shardResponse.refetch()} />
-      </>
-    );
-  }
-
-  // Handle not found state
-  if (!shard) {
-    return (
-      <>
-        <ReadingProgress />
-        <ShardNotFoundState />
-      </>
-    );
-  }
 
   return (
-    <>
-      {/* Reading progress indicator */}
-      <ReadingProgress />
-
-      <ContentWithSidebar sidebar={sidebar}>
-        <Breadcrumbs className="mb-6" items={breadcrumbs} />
-
-        <article aria-labelledby="shard-title">
-          {/* Shard header */}
-          <header className="mb-8">
-            <Heading className="mb-6 text-balance" id={slugify(shard?.title ?? '')} order={1}>
-              {shard.title}
-            </Heading>
-
-            <ShardMetadata
-              author={shard.author}
-              publishedAt={shard.publishedAt}
-              readingTime={shard.readingTime}
-              tags={shard.tags}
-            />
-          </header>
-
-          {/* Shard content */}
-          {shard.contentJSON ? (
-            <PoseDocument doc={shard.contentJSON} />
-          ) : (
-            <output aria-live="polite" className="py-12 text-center">
-              <p className="text-muted-foreground">No content available for this shard.</p>
-            </output>
-          )}
-        </article>
-
-        {/* Related articles at the bottom */}
-        <section className="mt-12 border-t pt-8">
-          <RelatedArticles articleId={shard.id} className="space-y-4" />
-        </section>
-      </ContentWithSidebar>
-    </>
+    <ShardPageView
+      breadcrumbs={breadcrumbs}
+      error={shardResponse.error}
+      pending={shardResponse.isPending}
+      shard={shardResponse.data?.data}
+    />
   );
 };
+
+ShardPage.displayName = SHARD_PAGE_NAME;
+
+/* -----------------------------------------------------------------------------------------------*/
+
+const Root = ShardPage;
+const Content = ShardPageContent;
+const Loading = ShardPageLoading;
+const ErrorState = ShardPageErrorState;
+const View = ShardPageView;
+const NotFound = ShardPageNotFound;
+
+export {
+  Root,
+  Content,
+  Loading,
+  ErrorState,
+  View,
+  NotFound,
+  //
+  ShardPage,
+  ShardPageContent,
+  ShardPageLoading,
+  ShardPageErrorState,
+  ShardPageView,
+  ShardPageNotFound,
+};
+
+export type { ShardPageProps, ShardPageContentProps, ShardPageViewProps };

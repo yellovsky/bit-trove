@@ -14,7 +14,7 @@ type SeparatorProps = ComponentProps<'div'> & {
   decorative?: boolean;
 };
 
-const Separator: FC<SeparatorProps> = ({ decorative, orientation = 'vertical', className = '', ...rest }) => {
+const Separator: FC<SeparatorProps> = ({ decorative, orientation = 'vertical', className, ...rest }) => {
   const ariaOrientation = orientation === 'vertical' ? orientation : undefined;
   const semanticProps = decorative ? { role: 'none' } : { 'aria-orientation': ariaOrientation, role: 'separator' };
 

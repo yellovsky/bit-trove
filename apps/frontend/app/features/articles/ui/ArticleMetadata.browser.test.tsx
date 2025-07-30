@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
-import { BlogPostMetadata } from './BlogPostMetadata';
+import { ArticleMetadata } from './ArticleMetadata';
 
 // Mock the translation hook
 vi.mock('react-i18next', () => ({
@@ -18,7 +18,7 @@ vi.mock('react-i18next', () => ({
   }),
 }));
 
-describe('BlogPostMetadata', () => {
+describe('ArticleMetadata', () => {
   it('renders complete metadata with all information', () => {
     const props = {
       author: { name: 'John Doe' },
@@ -30,7 +30,7 @@ describe('BlogPostMetadata', () => {
       ],
     };
 
-    render(<BlogPostMetadata {...props} />);
+    render(<ArticleMetadata {...props} />);
 
     expect(screen.getByText('John Doe')).toBeInTheDocument();
     expect(screen.getByText('Tags:')).toBeInTheDocument();
@@ -48,7 +48,7 @@ describe('BlogPostMetadata', () => {
       tags: [{ id: '1', name: 'React', slug: 'react' }],
     };
 
-    render(<BlogPostMetadata {...props} />);
+    render(<ArticleMetadata {...props} />);
 
     expect(screen.queryByText('John Doe')).not.toBeInTheDocument();
     expect(screen.getByText('Tags:')).toBeInTheDocument();
@@ -63,7 +63,7 @@ describe('BlogPostMetadata', () => {
       readingTime: 5,
     };
 
-    render(<BlogPostMetadata {...props} />);
+    render(<ArticleMetadata {...props} />);
 
     expect(screen.getByText('John Doe')).toBeInTheDocument();
     expect(screen.queryByText('Tags:')).not.toBeInTheDocument();
@@ -77,7 +77,7 @@ describe('BlogPostMetadata', () => {
       tags: [{ id: '1', name: 'React', slug: 'react' }],
     };
 
-    render(<BlogPostMetadata {...props} />);
+    render(<ArticleMetadata {...props} />);
 
     expect(screen.getByText('John Doe')).toBeInTheDocument();
     expect(screen.getByText('Tags:')).toBeInTheDocument();
@@ -92,7 +92,7 @@ describe('BlogPostMetadata', () => {
       tags: [{ id: '1', name: 'React', slug: 'react' }],
     };
 
-    render(<BlogPostMetadata {...props} />);
+    render(<ArticleMetadata {...props} />);
 
     expect(screen.getByText('John Doe')).toBeInTheDocument();
     expect(screen.getByText('Tags:')).toBeInTheDocument();
@@ -108,7 +108,7 @@ describe('BlogPostMetadata', () => {
       readingTime: 5,
     };
 
-    const { container } = render(<BlogPostMetadata {...props} />);
+    const { container } = render(<ArticleMetadata {...props} />);
 
     expect(container.firstChild).toHaveClass('custom-class');
   });
@@ -124,7 +124,7 @@ describe('BlogPostMetadata', () => {
       ],
     };
 
-    render(<BlogPostMetadata {...props} />);
+    render(<ArticleMetadata {...props} />);
 
     expect(screen.getByText('React')).toBeInTheDocument();
     expect(screen.getByText('TypeScript')).toBeInTheDocument();
@@ -138,7 +138,7 @@ describe('BlogPostMetadata', () => {
       tags: [],
     };
 
-    render(<BlogPostMetadata {...props} />);
+    render(<ArticleMetadata {...props} />);
 
     expect(screen.getByText('John Doe')).toBeInTheDocument();
     expect(screen.queryByText('Tags:')).not.toBeInTheDocument();
@@ -151,7 +151,7 @@ describe('BlogPostMetadata', () => {
       tags: [{ id: '1', name: 'React', slug: 'react' }],
     };
 
-    render(<BlogPostMetadata {...props} />);
+    render(<ArticleMetadata {...props} />);
 
     expect(screen.queryByText('John Doe')).not.toBeInTheDocument();
     expect(screen.getByText('Tags:')).toBeInTheDocument();
@@ -166,7 +166,7 @@ describe('BlogPostMetadata', () => {
       tags: [{ id: '1', name: 'React', slug: 'react' }],
     };
 
-    render(<BlogPostMetadata {...props} />);
+    render(<ArticleMetadata {...props} />);
 
     expect(screen.getByText('John Doe')).toBeInTheDocument();
     expect(screen.getByText('Tags:')).toBeInTheDocument();

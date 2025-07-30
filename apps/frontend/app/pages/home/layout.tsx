@@ -30,21 +30,9 @@ export const ErrorBoundary = () => {
   return (
     <MainLayout>
       {notFound ? (
-        <ErrorScreen
-          buttonText={t('error_page.404.button_text')}
-          code={404}
-          onButtonClick={() => window.location.reload()}
-          subtitle={t('error_page.404.subtitle')}
-          title={t('error_page.404.title')}
-        />
+        <ErrorScreen code={404} subtitle={t('error_page.404.subtitle')} title={t('error_page.404.title')} />
       ) : (
-        <ErrorScreen
-          buttonText={t('error_page.500.button_text')}
-          code={500}
-          onButtonClick={() => window.location.reload()}
-          subtitle={t('error_page.500.subtitle')}
-          title={t('error_page.500.title')}
-        />
+        <ErrorScreen code={500} subtitle={t('error_page.500.subtitle')} title={t('error_page.500.title')} />
       )}
     </MainLayout>
   );

@@ -1,4 +1,5 @@
 export default {
+  'Back to blog': 'Назад к блогу',
   'Blog post not found': 'Статья не найдена',
   blog_posts_meta_description:
     'Подробные статьи, руководства и обзоры по программированию, разработке и технологиям. Глубокий контент о React, TypeScript, архитектуре и многом другом.',

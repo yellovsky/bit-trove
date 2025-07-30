@@ -48,10 +48,10 @@ export function renderPoseNode(node: JSONContent): React.ReactNode {
       const linkMark = node.marks?.find((m) => m.type === 'link');
       if (linkMark) {
         // biome-ignore lint/suspicious/noExplicitAny: suppose it's ok
-        const { href, ...restAttrs } = linkMark.attrs as any;
+        const { href, class: attrsClassName, ...restAttrs } = linkMark.attrs as any;
 
         return (
-          <TextLink {...restAttrs} className={className} to={href}>
+          <TextLink {...restAttrs} className={cn(className, attrsClassName)} to={href}>
             {node.text}
           </TextLink>
         );
@@ -126,7 +126,7 @@ export function renderPoseContent(content: JSONContent[] | undefined): React.Rea
   return content.map((child, index) => <Fragment key={index}>{renderPoseNode(child)}</Fragment>);
 }
 
-export const renderPoseTitle = (node: JSONContent): ReactNode => {
+export const renderPoseTitleNode = (node: JSONContent): ReactNode => {
   switch (node.type) {
     // NOTE: do not handle link here
     case 'text': {
@@ -146,9 +146,16 @@ export const renderPoseTitle = (node: JSONContent): ReactNode => {
     }
 
     default:
-      return <>{node.content?.map(renderPoseTitle)}</>;
+      return renderPoseTitle(node.content);
   }
 };
+
+export function renderPoseTitle(content: JSONContent[] | undefined): React.ReactNode {
+  if (!content) return null;
+
+  // biome-ignore lint/suspicious/noArrayIndexKey: it's ok =(
+  return content.map((child, index) => <Fragment key={index}>{renderPoseTitleNode(child)}</Fragment>);
+}
 
 export interface PoseDocumentProps extends ComponentProps<'div'> {
   doc: JSONContent;

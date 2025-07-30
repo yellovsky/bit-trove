@@ -1,4 +1,5 @@
 export default {
+  'Back to blog': 'Back to blog',
   'Blog post not found': 'Blog post not found',
   blog_posts_meta_description:
     'Explore comprehensive articles, tutorials, and insights on programming, development, and technology. In-depth content on React, TypeScript, architecture, and more.',

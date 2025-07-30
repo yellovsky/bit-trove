@@ -1,127 +1,162 @@
-import slugify from '@sindresorhus/slugify';
+import { ArrowLeftIcon } from 'lucide-react';
 import type { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
-import { getJsonContentTitleString, PoseDocument, renderPoseTitle } from '@repo/ui/components/PoseDocument';
-import { Heading } from '@repo/ui/components/Typography';
+import type { BlogPost, FailedResponse } from '@repo/api-models';
+import { Link } from '@repo/ui/components/Link';
 
-import { ContentWithSidebar } from '@shared/ui/ContentWithSidebar';
+import { ErrorScreen } from '@shared/ui/ErrorScreen';
 import { ReadingProgress } from '@shared/ui/ReadingProgress';
 
-import { TableOfContents, type TableOfContentsItem } from '@widgets/blog-post-sidebar';
-
-import { RelatedArticles } from '@features/articles';
-import {
-  BlogPostDetailSkeleton,
-  BlogPostErrorState,
-  BlogPostMetadata,
-  BlogPostNotFoundState,
-} from '@features/blog-posts';
-import { type AppBreadcrumb, Breadcrumbs } from '@features/breadcrumbs';
+import { ArticlePageContent, type ArticlePageContentProps } from '@features/articles';
+import { ArticlePageContentLoading } from '@features/articles/ui/ArticlePageContent';
+import { BLOG_POSTS_NS, getBlogPostsLink } from '@features/blog-posts';
+import type { AppBreadcrumb } from '@features/breadcrumbs';
 
 import { type BlogPostGetVariables, useBlogPostQuery } from '@entities/blog-posts';
+
+/* -------------------------------------------------------------------------------------------------
+ * BlogPostPageNotFound
+ * -----------------------------------------------------------------------------------------------*/
+const BLOG_POST_PAGE_NOT_FOUND_NAME = 'BlogPostPageNotFound';
+
+const BlogPostPageNotFound: FC = () => {
+  const { t } = useTranslation();
+  const { t: tBlogPosts } = useTranslation(BLOG_POSTS_NS);
+
+  return (
+    <>
+      <ReadingProgress />
+      <ErrorScreen
+        button={
+          <Link to={getBlogPostsLink()}>
+            <ArrowLeftIcon />
+            <span>{tBlogPosts('Back to blog')}</span>
+          </Link>
+        }
+        code={404}
+        subtitle={t('error_page.404.subtitle')}
+        title={t('error_page.404.title')}
+      />
+    </>
+  );
+};
+
+BlogPostPageNotFound.displayName = BLOG_POST_PAGE_NOT_FOUND_NAME;
+
+/* -------------------------------------------------------------------------------------------------
+ * BlogPostPageError
+ * -----------------------------------------------------------------------------------------------*/
+const BLOG_POST_PAGE_ERROR_NAME = 'BlogPostPageError';
+
+type BlogPostPageErrorStateProps = {
+  error?: FailedResponse;
+};
+
+const BlogPostPageErrorState: FC<BlogPostPageErrorStateProps> = ({ error }) => {
+  const { t } = useTranslation();
+
+  if (error?.error?.httpCode === 404) return <BlogPostPageNotFound />;
+
+  return (
+    <>
+      <ReadingProgress />
+      <ErrorScreen code={500} subtitle={t('error_page.500.subtitle')} title={t('error_page.500.title')} />
+    </>
+  );
+};
+
+BlogPostPageErrorState.displayName = BLOG_POST_PAGE_ERROR_NAME;
+
+/* -------------------------------------------------------------------------------------------------
+ * BlogPostPageLoading
+ * -----------------------------------------------------------------------------------------------*/
+const BLOG_POST_PAGE_LOADING_NAME = 'BlogPostPageLoading';
+
+const BlogPostPageLoading: FC = (props) => <ArticlePageContentLoading {...props} />;
+
+BlogPostPageLoading.displayName = BLOG_POST_PAGE_LOADING_NAME;
+
+/* -------------------------------------------------------------------------------------------------
+ * BlogPostPageContent
+ * -----------------------------------------------------------------------------------------------*/
+const BLOG_POST_PAGE_CONTENT_NAME = 'BlogPostPageContent';
+
+type BlogPostPageContentProps = ArticlePageContentProps;
+
+const BlogPostPageContent: FC<BlogPostPageContentProps> = (props) => <ArticlePageContent {...props} />;
+
+BlogPostPageContent.displayName = BLOG_POST_PAGE_CONTENT_NAME;
+
+/* -------------------------------------------------------------------------------------------------
+ * BlogPostPageView
+ * -----------------------------------------------------------------------------------------------*/
+const BLOG_POST_PAGE_VIEW_NAME = 'BlogPostPageView';
+
+interface BlogPostPageViewProps {
+  blogPost: BlogPost | null | undefined;
+  breadcrumbs: AppBreadcrumb[];
+  error: FailedResponse | null | undefined;
+  pending: boolean;
+}
+
+const BlogPostPageView: FC<BlogPostPageViewProps> = ({ blogPost, breadcrumbs, error, pending }) => {
+  if (pending) return <BlogPostPageLoading />;
+  if (error) return <BlogPostPageErrorState error={error} />;
+  if (!blogPost) return <BlogPostPageNotFound />;
+  return <BlogPostPageContent article={blogPost} breadcrumbs={breadcrumbs} />;
+};
+
+BlogPostPageView.displayName = BLOG_POST_PAGE_VIEW_NAME;
+
+/* -------------------------------------------------------------------------------------------------
+ * BlogPostPage
+ * -----------------------------------------------------------------------------------------------*/
+const BLOG_POST_PAGE_NAME = 'BlogPostPage';
 
 interface BlogPostPageProps {
   blogPostVariables: BlogPostGetVariables;
   breadcrumbs: AppBreadcrumb[];
 }
 
-export const BlogPostPage: FC<BlogPostPageProps> = ({ blogPostVariables, breadcrumbs }) => {
+const BlogPostPage: FC<BlogPostPageProps> = ({ blogPostVariables, breadcrumbs }) => {
   const blogPostResponse = useBlogPostQuery(blogPostVariables);
-  const blogPost = blogPostResponse.data?.data;
-
-  const headings = blogPost?.contentJSON?.content?.filter((c) => c.type === 'heading');
-  const tocItems: TableOfContentsItem[] | undefined = !headings?.length
-    ? undefined
-    : [
-        {
-          id: slugify(blogPost?.title ?? ''),
-          level: 1,
-          title: blogPost?.title,
-        },
-        ...headings.map((c) => ({
-          id: slugify(getJsonContentTitleString(c)),
-          level: c.attrs?.level ?? 2,
-          title: renderPoseTitle(c),
-        })),
-      ];
-
-  const sidebar = (
-    <>
-      <TableOfContents items={tocItems} />
-      {blogPost?.id && <RelatedArticles articleId={blogPost.id} />}
-    </>
-  );
-
-  // Handle loading state
-  if (blogPostResponse.isPending) {
-    return (
-      <>
-        <ReadingProgress />
-        <ContentWithSidebar sidebar={sidebar}>
-          <BlogPostDetailSkeleton />
-        </ContentWithSidebar>
-      </>
-    );
-  }
-
-  // Handle error state
-  if (blogPostResponse.isError) {
-    const errorMessage = blogPostResponse.error?.error?.message || 'An error occurred while loading the blog post';
-    return (
-      <>
-        <ReadingProgress />
-        <BlogPostErrorState error={{ message: errorMessage } as Error} onRetry={() => blogPostResponse.refetch()} />
-      </>
-    );
-  }
-
-  // Handle not found state
-  if (!blogPost) {
-    return (
-      <>
-        <ReadingProgress />
-        <BlogPostNotFoundState />
-      </>
-    );
-  }
 
   return (
-    <>
-      {/* Reading progress indicator */}
-      <ReadingProgress />
-
-      <ContentWithSidebar sidebar={sidebar}>
-        {/* Navigation section */}
-        <Breadcrumbs className="mb-6" items={breadcrumbs} />
-
-        <article aria-labelledby="blog-post-title">
-          {/* Blog post header */}
-          <header className="mb-8">
-            <Heading className="mb-6 text-balance" id={slugify(blogPost?.title ?? '')} order={1}>
-              {blogPost.title}
-            </Heading>
-
-            <BlogPostMetadata
-              author={blogPost.author}
-              publishedAt={blogPost.publishedAt}
-              readingTime={blogPost.readingTime}
-              tags={blogPost.tags}
-            />
-          </header>
-
-          {/* Blog post content */}
-          {blogPost.contentJSON ? (
-            <PoseDocument doc={blogPost.contentJSON} />
-          ) : (
-            <output aria-live="polite" className="py-12 text-center">
-              <p className="text-muted-foreground">No content available for this blog post.</p>
-            </output>
-          )}
-        </article>
-
-        {/* Related articles at the bottom */}
-        <RelatedArticles articleId={blogPost.id} className="border-t pt-6 xl:hidden" />
-      </ContentWithSidebar>
-    </>
+    <BlogPostPageView
+      blogPost={blogPostResponse.data?.data}
+      breadcrumbs={breadcrumbs}
+      error={blogPostResponse.error}
+      pending={blogPostResponse.isPending}
+    />
   );
 };
+
+BlogPostPage.displayName = BLOG_POST_PAGE_NAME;
+
+/* -----------------------------------------------------------------------------------------------*/
+
+const Root = BlogPostPage;
+const Content = BlogPostPageContent;
+const Loading = BlogPostPageLoading;
+const ErrorState = BlogPostPageErrorState;
+const View = BlogPostPageView;
+const NotFound = BlogPostPageNotFound;
+
+export {
+  Root,
+  Content,
+  Loading,
+  ErrorState,
+  View,
+  NotFound,
+  //
+  BlogPostPage,
+  BlogPostPageContent,
+  BlogPostPageLoading,
+  BlogPostPageErrorState,
+  BlogPostPageView,
+  BlogPostPageNotFound,
+};
+
+export type { BlogPostPageProps, BlogPostPageContentProps, BlogPostPageViewProps };

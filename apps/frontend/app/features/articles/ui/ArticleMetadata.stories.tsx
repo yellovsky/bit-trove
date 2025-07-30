@@ -1,12 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { BlogPostMetadata } from './BlogPostMetadata';
+import { ArticleMetadata } from './ArticleMetadata';
 
 const meta = {
   args: {
-    author: {
-      name: 'John Doe',
-    },
     publishedAt: '2024-01-15T10:30:00Z',
     readingTime: 5,
     tags: [
@@ -16,14 +13,6 @@ const meta = {
     ],
   },
   argTypes: {
-    author: {
-      control: 'object',
-      description: 'Author information with name',
-      table: {
-        category: 'Content',
-        type: { summary: '{ name: string } | null' },
-      },
-    },
     className: {
       control: 'text',
       description: 'Additional CSS classes',
@@ -57,18 +46,18 @@ const meta = {
       },
     },
   },
-  component: BlogPostMetadata,
+  component: ArticleMetadata,
   parameters: {
     docs: {
       description: {
         component:
-          'BlogPostMetadata displays author information, publication date, reading time, and tags for blog posts. It provides a comprehensive overview of the post metadata in a clean, accessible format.',
+          'ArticleMetadata displays author information, publication date, reading time, and tags for articles. It provides a comprehensive overview of the article metadata in a clean, accessible format.',
       },
     },
   },
   tags: ['autodocs'],
-  title: 'Features/BlogPosts/BlogPostMetadata',
-} satisfies Meta<typeof BlogPostMetadata>;
+  title: 'Features/Articles/ArticleMetadata',
+} satisfies Meta<typeof ArticleMetadata>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -79,9 +68,6 @@ type Story = StoryObj<typeof meta>;
  */
 export const Complete: Story = {
   args: {
-    author: {
-      name: 'John Doe',
-    },
     publishedAt: '2024-01-15T10:30:00Z',
     readingTime: 8,
     tags: [
@@ -107,7 +93,6 @@ export const Complete: Story = {
  */
 export const WithoutAuthor: Story = {
   args: {
-    author: null,
     publishedAt: '2024-01-15T10:30:00Z',
     readingTime: 5,
     tags: [
@@ -130,9 +115,6 @@ export const WithoutAuthor: Story = {
  */
 export const WithoutDate: Story = {
   args: {
-    author: {
-      name: 'Jane Smith',
-    },
     publishedAt: null,
     readingTime: 3,
     tags: [
@@ -156,9 +138,6 @@ export const WithoutDate: Story = {
  */
 export const WithoutReadingTime: Story = {
   args: {
-    author: {
-      name: 'Alice Johnson',
-    },
     publishedAt: '2024-01-15T10:30:00Z',
     readingTime: undefined,
     tags: [{ id: '1', name: 'Quick Read', slug: 'quick-read' }],
@@ -179,9 +158,6 @@ export const WithoutReadingTime: Story = {
  */
 export const WithoutTags: Story = {
   args: {
-    author: {
-      name: 'Bob Wilson',
-    },
     publishedAt: '2024-01-15T10:30:00Z',
     readingTime: 12,
     tags: undefined,
@@ -201,9 +177,6 @@ export const WithoutTags: Story = {
  */
 export const ManyTags: Story = {
   args: {
-    author: {
-      name: 'David Miller',
-    },
     publishedAt: '2024-01-15T10:30:00Z',
     readingTime: 15,
     tags: [
@@ -233,9 +206,6 @@ export const ManyTags: Story = {
  */
 export const LongAuthorName: Story = {
   args: {
-    author: {
-      name: 'Dr. Elizabeth Alexandra Montgomery-Jones',
-    },
     publishedAt: '2024-01-15T10:30:00Z',
     readingTime: 7,
     tags: [
@@ -259,9 +229,6 @@ export const LongAuthorName: Story = {
  */
 export const LongTagNames: Story = {
   args: {
-    author: {
-      name: 'Sarah Chen',
-    },
     publishedAt: '2024-01-15T10:30:00Z',
     readingTime: 10,
     tags: [
@@ -286,9 +253,6 @@ export const LongTagNames: Story = {
  */
 export const WithCustomStyling: Story = {
   args: {
-    author: {
-      name: 'Mike Anderson',
-    },
     className: 'border border-border rounded-lg p-4 bg-muted/50',
     publishedAt: '2024-01-15T10:30:00Z',
     readingTime: 6,
@@ -312,9 +276,6 @@ export const WithCustomStyling: Story = {
  */
 export const InteractiveTest: Story = {
   args: {
-    author: {
-      name: 'Test User',
-    },
     publishedAt: '2024-01-15T10:30:00Z',
     readingTime: 5,
     tags: [
