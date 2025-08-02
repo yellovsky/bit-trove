@@ -25,6 +25,7 @@ import { ErrorScreen } from '@shared/ui/ErrorScreen';
 
 import { AppSuspenseWarning } from '@app/app-suspense-warning';
 import { ClientHintCheck, getHints } from '@app/client-hints';
+import { GoogleAnalytics } from '@app/google-analytics';
 
 import {
   ContentLanguageProvider,
@@ -94,6 +95,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         <ClientHintCheck />
         <meta charSet="utf-8" />
         <meta content="width=device-width, initial-scale=1" name="viewport" />
+        <GoogleAnalytics />
         <Meta />
         <Links />
       </head>
