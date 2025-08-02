@@ -71,6 +71,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   const { i18n } = useTranslation();
   const loaderData = useLoaderData<typeof loader>();
+  const isProduction = loaderData.clientEnv.APP_ENV === 'production';
 
   useHydrateAtoms([
     [queryClientAtom, queryClient],
@@ -95,7 +96,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         <ClientHintCheck />
         <meta charSet="utf-8" />
         <meta content="width=device-width, initial-scale=1" name="viewport" />
-        <GoogleAnalytics />
+        {isProduction && <GoogleAnalytics />}
         <Meta />
         <Links />
       </head>
