@@ -13,6 +13,6 @@ export class SitemapIndexNode {
 			<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 				${this.sitemaps.map((node) => node.toString()).join('')}
 			</sitemapindex>
-		`;
+		`.trim();
   }
 }
